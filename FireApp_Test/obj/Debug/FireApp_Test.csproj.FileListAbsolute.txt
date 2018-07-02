@@ -8,3 +8,6 @@ S:\Diplomarbeit\FireApp\FireApp_Test\obj\Debug\FireApp.Test.pdb
 P:\01_Diplomarbeit\fireapp\_Binaries\Test\FireApp.Test.exe.config
 P:\01_Diplomarbeit\fireapp\FireApp_Test\obj\Debug\FireApp.Test.exe
 P:\01_Diplomarbeit\fireapp\FireApp_Test\obj\Debug\FireApp.Test.pdb
+C:\proj\fireapp\_Binaries\Test\FireApp.Test.exe.config
+C:\proj\fireapp\FireApp_Test\obj\Debug\FireApp.Test.exe
+C:\proj\fireapp\FireApp_Test\obj\Debug\FireApp.Test.pdb
