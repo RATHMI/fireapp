@@ -26,7 +26,7 @@ namespace FireApp.Test {
 
             var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
 
-            var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0");
+            var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/{0}/{0}");
 
             //var res2 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
 
@@ -38,7 +38,7 @@ namespace FireApp.Test {
             //@philippollmann: just a short test
             foreach (var entry in byId)
             {
-                System.Console.WriteLine("Id: " + entry.Id);
+                System.Console.WriteLine("Id: " + entry.Id.SourceId + " " + entry.Id.EventId);
             }
             
             /*DbInteractions dbi = new DbInteractions(addr);

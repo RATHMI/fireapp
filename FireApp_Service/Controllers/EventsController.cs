@@ -20,14 +20,14 @@ namespace FireApp.Service.Controllers {
             }
         }
 
-        [HttpGet, Route("id")]
-        public FireEvent GetFireEventById(FireEventId id)
+        [HttpGet, Route("id/{sourceId}/{eventId}")]
+        public FireEvent GetFireEventById(int sourceId, int eventId)
         {
             using (var db = AppData.FireEventDB())
             {
                 var table = db.FrieEventTable();
 
-                return table.FindOne(x => x.Id == id);
+                return table.FindOne(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);
             }
         }
 
