@@ -1,0 +1,4 @@
+D:\Solutions\FireApp\FireApp_Domain\bin\Release\FireApp.Domain.dll
+D:\Solutions\FireApp\FireApp_Domain\bin\Release\FireApp.Domain.pdb
+D:\Solutions\FireApp\FireApp_Domain\obj\Release\FireApp.Domain.dll
+D:\Solutions\FireApp\FireApp_Domain\obj\Release\FireApp.Domain.pdb
