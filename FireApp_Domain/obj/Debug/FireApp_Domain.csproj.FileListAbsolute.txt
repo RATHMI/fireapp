@@ -3,3 +3,8 @@ S:\Diplomarbeit\FireApp\_Binaries\Domain\FireApp.Domain.pdb
 S:\Diplomarbeit\FireApp\FireApp_Domain\obj\Debug\FireApp_Domain.csprojResolveAssemblyReference.cache
 S:\Diplomarbeit\FireApp\FireApp_Domain\obj\Debug\FireApp.Domain.dll
 S:\Diplomarbeit\FireApp\FireApp_Domain\obj\Debug\FireApp.Domain.pdb
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.dll.config
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.dll
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.pdb
+C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.dll
+C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.pdb

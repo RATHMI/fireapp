@@ -20,6 +20,16 @@ namespace FireApp.Service.Controllers {
             }
         }
 
+        [HttpGet, Route("id")]
+        public FireEvent GetFireEventById(FireEventId id)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FrieEventTable();
+
+                return table.FindOne(x => x.Id == id);
+            }
+        }
 
         [HttpGet, Route("inserttest/{name}")]
         public bool DetailsByCompanyId(string name) {
@@ -40,7 +50,7 @@ namespace FireApp.Service.Controllers {
             }
         }
 
-        [HttpGet, Route("getNameTest/{name}")]
+        /*[HttpGet, Route("getNameTest/{name}")]
         public IEnumerable<FireEvent> GetName(string name)
         {
             using (var db = AppData.FireEventDB())
@@ -49,5 +59,6 @@ namespace FireApp.Service.Controllers {
                 return table.Find(x => x.Name == name);             
             }
         }
+        */
     }
 }

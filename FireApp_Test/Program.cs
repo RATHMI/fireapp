@@ -11,35 +11,38 @@ namespace FireApp.Test {
         private static HttpClient httpClient;
 
         internal string ServiceUrl { get; private set; }
+        static string addr = "http://localhost:50862/events/";
 
         static void Main(string[] args) {
             httpClient = new HttpClient();
 
-            var addr = "http://192.168.1.105:50862/events/"; 
-
             var newItem = new FireEvent {
-                At = DateTime.Now,
-                By = "test1",
-                Name = "name1"
+                Id = new FireEventId { SourceId = 0, EventId = 0 },
+                TimeStamp = DateTime.Now,
+                TargetId = "testtarget",
+                TargetDescription = "testdescription",
+                EventType = EventTypes.disfunction
             };
 
             var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
 
-            var all1 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
+            var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0");
 
-            var res2 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
+            //var res2 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
 
-            var all2 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
+           // var all2 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
 
-            var name1 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
-
+            //var name1 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
+            
 
             //@philippollmann: just a short test
-            foreach (var entry in name1)
+            foreach (var entry in byId)
             {
-                System.Console.WriteLine("Name: " + entry.Name + "\nDate: " + entry.Id);
+                System.Console.WriteLine("Id: " + entry.Id);
             }
-
+            
+            /*DbInteractions dbi = new DbInteractions(addr);
+            var res1 = dbi.GetAllFireEvents();*/
             System.Console.ReadKey();
         }
 
@@ -49,7 +52,8 @@ namespace FireApp.Test {
         }*/
 
         #region Templates
-        public static T ServiceGetCall<T>(string callAddress) {
+        private static T ServiceGetCall<T>(string callAddress)
+        {
             HttpResponseMessage resp = httpClient.GetAsync(callAddress).Result;
             resp.EnsureSuccessStatusCode();
             return resp.Content.ReadAsAsync<T>().Result;
@@ -67,7 +71,8 @@ namespace FireApp.Test {
         //    return resp.Content.ReadAsAsync<R>().Result;
         //}
 
-        public static R ServicePostCall<T, R>(string callAddress, T element) {
+        private static R ServicePostCall<T, R>(string callAddress, T element)
+        {
             HttpResponseMessage resp = httpClient.PostAsJsonAsync<T>(callAddress, element).Result;
             resp.EnsureSuccessStatusCode();
             return resp.Content.ReadAsAsync<R>().Result;
