@@ -33,12 +33,14 @@ namespace FireApp.Test {
 
             var name1 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
 
+
+            //@philippollmann: just a short test
             foreach (var entry in name1)
             {
                 System.Console.WriteLine("Name: " + entry.Name + "\nDate: " + entry.Id);
             }
 
-            System.Console.ReadKey();*/
+            System.Console.ReadKey();
         }
 
         /*public T GetFireEvenByName(string name)
