@@ -12,7 +12,6 @@ namespace FireApp.Service.Controllers {
     [RoutePrefix("events")]
     public class EventsController : ApiController {
 
-
         [HttpPost, Route("upload")]
         public bool DetailsByCompanyId([FromBody] FireEvent fe) {
             using (var db = AppData.FireEventDB()) {
@@ -27,9 +26,8 @@ namespace FireApp.Service.Controllers {
             using (var db = AppData.FireEventDB()) {
                 var table = db.FrieEventTable();
                 return table.Upsert(new FireEvent {
-                    At = DateTime.Now,
-                    By = "asdasddas",
-                    Name = name
+                    TimeStamp = DateTime.Now,
+                    TargetId = "asdasddas",
                 });
             }
         }
