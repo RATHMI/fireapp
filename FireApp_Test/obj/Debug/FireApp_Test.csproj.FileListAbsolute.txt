@@ -5,3 +5,6 @@ S:\Diplomarbeit\FireApp\_Binaries\Test\FireApp.Test.pdb
 S:\Diplomarbeit\FireApp\FireApp_Test\obj\Debug\FireApp_Test.csprojResolveAssemblyReference.cache
 S:\Diplomarbeit\FireApp\FireApp_Test\obj\Debug\FireApp.Test.exe
 S:\Diplomarbeit\FireApp\FireApp_Test\obj\Debug\FireApp.Test.pdb
+P:\01_Diplomarbeit\fireapp\_Binaries\Test\FireApp.Test.exe.config
+P:\01_Diplomarbeit\fireapp\FireApp_Test\obj\Debug\FireApp.Test.exe
+P:\01_Diplomarbeit\fireapp\FireApp_Test\obj\Debug\FireApp.Test.pdb
