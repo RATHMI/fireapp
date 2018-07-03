@@ -14,34 +14,34 @@ namespace FireApp.Test {
         internal string ServiceUrl { get; private set; }
         static string addr = "http://localhost:50862/events/";
 
+        const string userName = "someuser@someemail.com";
+        const string password = "Password1!";
+        const string apiBaseUri = "http://localhost:18342";
+        const string apiGetPeoplePath = "/api/people";
+
         static void Main(string[] args)
         {
             httpClient = new HttpClient();
             string rv;
 
-            //var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
+            #region testsWithoutAuthorization
             System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
             FireEvent fe = new FireEvent(new FireEventId(9, 9), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.test);
             rv = Tests.UploadFireEvent(addr, fe);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
             
-            // did not work because of the wrong generic datatype
-            // used ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0/0");
-            // instead of ServiceGetCall<FireEvent>(addr + "id/0/0");
             var byId = ServiceGetCall<FireEvent>(addr + "id/9/9");
             System.Console.WriteLine("\r\n\r\nTest GetFireEventById");
             rv = Tests.GetFireEventById(addr, new FireEventId(9,9));
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
             
-            //var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "sid/0");
             System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceId");
             rv = Tests.GetFireEventsBySourceId(addr, 9);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
-            // var all2 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
             System.Console.WriteLine("\r\n\r\nTest GetAllFireEvents");
             rv = Tests.GetAllFireEvents(addr);
             System.Console.WriteLine(rv);
@@ -65,9 +65,68 @@ namespace FireApp.Test {
             System.Console.WriteLine("\r\nendTime: " + endTime.ToString());
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            #endregion
 
+            #region testsWithAuthorization
+            //https://blogs.msdn.microsoft.com/martinkearn/2015/03/25/securing-and-securely-calling-web-api-and-authorize/
+            //Get the token
+            var token = GetAPIToken(userName, password, apiBaseUri).Result;
+            Console.WriteLine("Token: {0}", token);
 
-            System.Console.ReadKey();
+            //Make the call
+            var response = GetRequest(token, apiBaseUri, apiGetPeoplePath).Result;
+            Console.WriteLine("response: {0}", response);
+
+            //wait for key press to exit
+            Console.ReadKey();
+        }
+
+        private static async Task<string> GetAPIToken(string userName, string password, string apiBaseUri)
+        {
+            using (var client = new HttpClient())
+            {
+                //setup client
+                client.BaseAddress = new Uri(apiBaseUri);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //setup login data
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                     new KeyValuePair<string, string>("grant_type", "password"),
+                     new KeyValuePair<string, string>("username", userName),
+                     new KeyValuePair<string, string>("password", password),
+                 });
+
+                //send request
+                HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
+
+                //get access token from response body
+                var responseJson = await responseMessage.Content.ReadAsStringAsync();
+                var jObject = JObject.Parse(responseJson);
+                return jObject.GetValue("access_token").ToString();
+            }
+        }
+
+        static async Task<string> GetRequest(string token, string apiBaseUri, string requestPath)
+        {
+            using (var client = new HttpClient())
+            {
+                //setup client
+                client.BaseAddress = new Uri(apiBaseUri);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+                //make request
+                HttpResponseMessage response = await client.GetAsync(requestPath);
+                var responseString = await response.Content.ReadAsStringAsync();
+                return responseString;
+            }
+        }
+        #endregion
+
+        System.Console.ReadKey();
         }
 
         #region Templates

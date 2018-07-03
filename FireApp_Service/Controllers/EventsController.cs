@@ -52,7 +52,7 @@ namespace FireApp.Service.Controllers
          * returns a list of all Fireevents with a matching sourceId
          * (all Fireevents from a distinct fire alarm system)
          ******************************************************************************************/
-        [HttpGet, Route("sid/{sourceId}")]
+        [HttpGet, Route("sid/{sourceId}"), Authorize(Roles = "Owner")]
         public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
             using (var db = AppData.FireEventDB())
