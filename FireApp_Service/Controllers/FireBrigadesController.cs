@@ -7,8 +7,10 @@ using System.Web.Http;
 
 namespace FireApp.Service.Controllers
 {
-    [RoutePrefix("company")]
-    public class CompanyController : ApiController
+    [RoutePrefix("firebrigade")]
+    public class FireBrigadesController : ApiController
     {
+
+
     }
 }
