@@ -38,6 +38,62 @@ namespace FireApp.Test
             return getStringFromFireEvent(fe);
         }
 
+        public static string GetFireEventsBySourceIdTargetId(string address, int sourceId, string targetId)
+        {
+            address += "stid/";
+            address += sourceId.ToString();
+            address += "/";
+            address += targetId;
+
+            IEnumerable<FireEvent> events = ServiceGetCall<IEnumerable<FireEvent>>(address);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (FireEvent fe in events)
+            {
+                sb.Append(getStringFromFireEvent(fe));
+            }
+
+            return sb.ToString();
+        }
+
+        public static string GetFireEventsBySourceIdEventType(string address, int sourceId, EventTypes eventType)
+        {
+            address += "sidet/";
+            address += sourceId.ToString();
+            address += "/";
+            address += eventType;
+
+            IEnumerable<FireEvent> events = ServiceGetCall<IEnumerable<FireEvent>>(address);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (FireEvent fe in events)
+            {
+                sb.Append(getStringFromFireEvent(fe));
+            }
+
+            return sb.ToString();
+        }
+
+        public static string GetFireEventsBySourceIdTimespan(string address, int sourceId, DateTime startTime, DateTime endTime)
+        {
+            address += "sidts/";           
+            address += sourceId.ToString();
+            address += "/";
+            address += startTime.Ticks.ToString();
+            address += "/";
+            address += endTime.Ticks.ToString();
+
+            IEnumerable<FireEvent> events = ServiceGetCall<IEnumerable<FireEvent>>(address);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (FireEvent fe in events)
+            {
+                sb.Append(getStringFromFireEvent(fe));
+            }
+
+            return sb.ToString();
+        }
+
         public static string GetAllFireEvents(string address)
         {
             address += "all";
@@ -60,16 +116,30 @@ namespace FireApp.Test
         }
 
         private static string getStringFromFireEvent(FireEvent fe)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("\r\nsourceId: ");
-            sb.Append(fe.Id.SourceId);
-            sb.Append("\r\neventId: ");
-            sb.Append(fe.Id.EventId);
-            sb.Append("\r\nTimestamp: ");
-            sb.Append(fe.TimeStamp.ToLongTimeString());
 
-            return sb.ToString();
+        {
+            string rv;
+            if (fe != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("\r\n\r\nsourceId: ");
+                sb.Append(fe.Id.SourceId);
+                sb.Append("\r\neventId: ");
+                sb.Append(fe.Id.EventId);
+                sb.Append("\r\ntargetId: ");
+                sb.Append(fe.TargetId);
+                sb.Append("\r\ntargetDescription: ");
+                sb.Append(fe.TargetDescription);
+                sb.Append("\r\nTimestamp: ");
+                sb.Append(fe.TimeStamp.ToLongTimeString());
+                sb.Append("\r\neventType: ");
+                sb.Append(fe.EventType);
+
+                rv = sb.ToString();
+            }else{
+                rv = "FireEvent is null";
+            }
+            return rv;
         }
 
         #region Templates

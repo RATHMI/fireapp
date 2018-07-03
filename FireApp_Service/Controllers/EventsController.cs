@@ -25,7 +25,6 @@ namespace FireApp.Service.Controllers {
             }
         }
 
-        //Todo: does not work currently, don't know what the issue is
         /*******************************************************************************************
          * public FireEvent GetFireEventById(int sourceId, int eventId)
          * 
@@ -50,13 +49,73 @@ namespace FireApp.Service.Controllers {
          * (all Fireevents from a distinct fire alarm system)
          ******************************************************************************************/
         [HttpGet, Route("sid/{sourceId}")]
-        public IEnumerable<FireEvent> GetFireEventBySourceId(int sourceId)
+        public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
             using (var db = AppData.FireEventDB())
             {
                 var table = db.FrieEventTable();
 
                 return table.Find(x => x.Id.SourceId == sourceId);
+            }
+        }
+
+        /*******************************************************************************************
+         * public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
+         * 
+         * returns a list of all FireEvents with matching sourceId and targetId
+         ******************************************************************************************/
+        [HttpGet, Route("stid/{sourceId}/{targetId}")]
+        public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FrieEventTable();
+
+                return table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId);
+            }
+        }
+
+        /*******************************************************************************************
+         * public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
+         * 
+         * returns a list of all FireEvents with matching sourceId and eventType
+         ******************************************************************************************/
+        [HttpGet, Route("sidet/{sourceId}/{eventType}")]
+        public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FrieEventTable();
+
+                return table.Find(x => x.Id.SourceId == sourceId && x.EventType == eventType);
+            }
+        }
+
+        /*******************************************************************************************
+         * IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, DateTime startTime, DateTime endTime)
+         * 
+         * returns a list of all FireEvents with matching sourceId and and a Timestamp between 
+         * startTime and endTime
+         ******************************************************************************************/
+        [HttpGet, Route("sidts/{sourceId}/{startTime}/{endTime}")]
+        public IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FrieEventTable();
+
+                var allEvents =  table.Find(x => x.Id.SourceId == sourceId);
+                List<FireEvent> result = new List<FireEvent>();
+
+                foreach (FireEvent fe in allEvents)
+                {
+                    if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
+                    {
+                        result.Add(fe);
+                    }
+                }
+
+                return result;
             }
         }
 
@@ -72,10 +131,6 @@ namespace FireApp.Service.Controllers {
                 return table.FindAll();
             }
         }
-
-
-
-
 
 
         /*
