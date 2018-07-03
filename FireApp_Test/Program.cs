@@ -29,7 +29,7 @@ namespace FireApp.Test {
             // did not work because of the wrong generic datatype
             // used ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0/0");
             // instead of ServiceGetCall<FireEvent>(addr + "id/0/0");
-            //var byId = ServiceGetCall<FireEvent>(addr + "id/0/0");
+            var byId = ServiceGetCall<FireEvent>(addr + "id/9/9");
             System.Console.WriteLine("\r\n\r\nTest GetFireEventById");
             rv = Tests.GetFireEventById(addr, new FireEventId(0,0));
             System.Console.WriteLine(rv);
@@ -48,10 +48,35 @@ namespace FireApp.Test {
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
 
-
-
-
             System.Console.ReadKey();
         }
+
+        #region Templates
+        private static T ServiceGetCall<T>(string callAddress)
+        {
+            HttpResponseMessage resp = httpClient.GetAsync(callAddress).Result;
+            resp.EnsureSuccessStatusCode();
+            return resp.Content.ReadAsAsync<T>().Result;
+        }
+
+        //public static T ServiceDeleteCall<T>(string callAddress) {
+        //    HttpResponseMessage resp = httpClient.DeleteAsync(ServiceUrl + callAddress).Result;
+        //    resp.EnsureSuccessStatusCode();
+        //    return resp.Content.ReadAsAsync<T>().Result;
+        //}
+
+        //public static R ServicePutCall<T, R>(string callAddress, T element) {
+        //    HttpResponseMessage resp = httpClient.PutAsJsonAsync<T>(ServiceUrl + callAddress, element).Result;
+        //    resp.EnsureSuccessStatusCode();
+        //    return resp.Content.ReadAsAsync<R>().Result;
+        //}
+
+        private static R ServicePostCall<T, R>(string callAddress, T element)
+        {
+            HttpResponseMessage resp = httpClient.PostAsJsonAsync<T>(callAddress, element).Result;
+            resp.EnsureSuccessStatusCode();
+            return resp.Content.ReadAsAsync<R>().Result;
+        }
+        #endregion
     }
 }
