@@ -21,7 +21,7 @@ namespace FireApp.Test {
 
             //var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
             System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
-            FireEvent fe = new FireEvent(new FireEventId(9, 9), DateTime.Now, "test", "description", EventTypes.test);
+            FireEvent fe = new FireEvent(new FireEventId(9, 9), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.test);
             rv = Tests.UploadFireEvent(addr, fe);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
@@ -59,7 +59,10 @@ namespace FireApp.Test {
 
             System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceIdTimespan");
             DateTime startTime = new DateTime(100);
-            rv = Tests.GetFireEventsBySourceIdTimespan(addr, 9, startTime ,DateTime.Now);
+            DateTime endTime = DateTime.Now;
+            rv = Tests.GetFireEventsBySourceIdTimespan(addr, 9, startTime, endTime);
+            System.Console.WriteLine("\r\nstartTime: " + startTime.ToString());
+            System.Console.WriteLine("\r\nendTime: " + endTime.ToString());
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 

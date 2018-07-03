@@ -131,7 +131,7 @@ namespace FireApp.Test
                 sb.Append("\r\ntargetDescription: ");
                 sb.Append(fe.TargetDescription);
                 sb.Append("\r\nTimestamp: ");
-                sb.Append(fe.TimeStamp.ToLongTimeString());
+                sb.Append(fe.TimeStamp.ToString());
                 sb.Append("\r\neventType: ");
                 sb.Append(fe.EventType);
 
