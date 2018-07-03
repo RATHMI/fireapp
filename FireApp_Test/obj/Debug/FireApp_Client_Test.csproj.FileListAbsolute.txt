@@ -4,3 +4,9 @@ C:\proj\fireapp\FireApp_Test\obj\Debug\FireApp.Test.pdb
 C:\proj\fireapp\_Binaries\Test\FireApp.Test.exe
 C:\proj\fireapp\_Binaries\Test\FireApp.Test.pdb
 C:\proj\fireapp\FireApp_Test\obj\Debug\FireApp_Client_Test.csprojResolveAssemblyReference.cache
+C:\proj\fireapp-test\_Binaries\Test\FireApp.Test.exe.config
+C:\proj\fireapp-test\FireApp_Test\obj\Debug\FireApp.Test.exe
+C:\proj\fireapp-test\FireApp_Test\obj\Debug\FireApp.Test.pdb
+C:\proj\fireapp-test\_Binaries\Test\FireApp.Test.exe
+C:\proj\fireapp-test\_Binaries\Test\FireApp.Test.pdb
+C:\proj\fireapp-test\FireApp_Test\obj\Debug\FireApp_Client_Test.csprojResolveAssemblyReference.cache

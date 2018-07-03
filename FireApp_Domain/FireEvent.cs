@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain {
     public class FireEvent {
+        public FireEvent()
+        {
+
+        }
         public FireEvent(FireEventId id, DateTime time, string targetId, string targetDescription, EventTypes eventType)
         {
             this.Id = id;
@@ -14,7 +18,7 @@ namespace FireApp.Domain {
             this.TargetDescription = targetDescription;
             this.EventType = eventType;
         }
-       
+        
         public FireEventId Id { get; set; } // a composite primary key consisting of source and event id
 
         public DateTime TimeStamp { get; set; } // Time when the FireEvent accored
@@ -29,6 +33,10 @@ namespace FireApp.Domain {
 
     // help class to use a composite primary key 
     public class FireEventId {
+        public FireEventId()
+        {
+
+        }
         public FireEventId (int sourceId, int eventId)
         {
             this.SourceId = sourceId;

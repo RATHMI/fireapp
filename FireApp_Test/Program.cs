@@ -25,7 +25,7 @@ namespace FireApp.Test {
             rv = Tests.UploadFireEvent(addr, fe);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-
+            
             // did not work because of the wrong generic datatype
             // used ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0/0");
             // instead of ServiceGetCall<FireEvent>(addr + "id/0/0");
@@ -34,7 +34,7 @@ namespace FireApp.Test {
             rv = Tests.GetFireEventById(addr, new FireEventId(0,0));
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-
+            
             //var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "sid/0");
             System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceId");
             rv = Tests.GetFireEventsBySourceId(addr, 0);
