@@ -7,76 +7,51 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FireApp.Test {
-    class Program {
-        private static HttpClient httpClient;
+    class Program
+    {
+        private static HttpClient httpClient = new HttpClient();
 
         internal string ServiceUrl { get; private set; }
         static string addr = "http://localhost:50862/events/";
 
-        static void Main(string[] args) {
+        static void Main(string[] args)
+        {
             httpClient = new HttpClient();
+            string rv;
 
-            var newItem = new FireEvent {
-                Id = new FireEventId { SourceId = 0, EventId = 0 },
-                TimeStamp = DateTime.Now,
-                TargetId = "testtarget",
-                TargetDescription = "testdescription",
-                EventType = EventTypes.disfunction
-            };
+            //var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
+            System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
+            FireEvent fe = new FireEvent(new FireEventId(9, 9), DateTime.Now, "test", "description", EventTypes.disfunction);
+            rv = Tests.UploadFireEvent(addr, fe);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
-            var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
+            // did not work because of the wrong generic datatype
+            // used ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0/0");
+            // instead of ServiceGetCall<FireEvent>(addr + "id/0/0");
+            //var byId = ServiceGetCall<FireEvent>(addr + "id/0/0");
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventById");
+            rv = Tests.GetFireEventById(addr, new FireEventId(0,0));
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
-            var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/{0}/{0}");
+            //var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "sid/0");
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceId");
+            rv = Tests.GetFireEventsBySourceId(addr, 0);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
-            //var res2 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
+            // var all2 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
+            System.Console.WriteLine("\r\n\r\nTest GetAllFireEvents");
+            rv = Tests.GetAllFireEvents(addr);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
-           // var all2 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
 
-            //var name1 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
-            
 
-            //@philippollmann: just a short test
-            foreach (var entry in byId)
-            {
-                System.Console.WriteLine("Id: " + entry.Id.SourceId + " " + entry.Id.EventId);
-            }
-            
-            /*DbInteractions dbi = new DbInteractions(addr);
-            var res1 = dbi.GetAllFireEvents();*/
+
+
             System.Console.ReadKey();
         }
-
-        /*public T GetFireEvenByName(string name)
-        {
-            return ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
-        }*/
-
-        #region Templates
-        private static T ServiceGetCall<T>(string callAddress)
-        {
-            HttpResponseMessage resp = httpClient.GetAsync(callAddress).Result;
-            resp.EnsureSuccessStatusCode();
-            return resp.Content.ReadAsAsync<T>().Result;
-        }
-
-        //public static T ServiceDeleteCall<T>(string callAddress) {
-        //    HttpResponseMessage resp = httpClient.DeleteAsync(ServiceUrl + callAddress).Result;
-        //    resp.EnsureSuccessStatusCode();
-        //    return resp.Content.ReadAsAsync<T>().Result;
-        //}
-
-        //public static R ServicePutCall<T, R>(string callAddress, T element) {
-        //    HttpResponseMessage resp = httpClient.PutAsJsonAsync<T>(ServiceUrl + callAddress, element).Result;
-        //    resp.EnsureSuccessStatusCode();
-        //    return resp.Content.ReadAsAsync<R>().Result;
-        //}
-
-        private static R ServicePostCall<T, R>(string callAddress, T element)
-        {
-            HttpResponseMessage resp = httpClient.PostAsJsonAsync<T>(callAddress, element).Result;
-            resp.EnsureSuccessStatusCode();
-            return resp.Content.ReadAsAsync<R>().Result;
-        }
-        #endregion
     }
 }

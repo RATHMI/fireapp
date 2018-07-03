@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain {
     public class FireEvent {
-
+        public FireEvent(FireEventId id, DateTime time, string targetId, string targetDescription, EventTypes eventType)
+        {
+            this.Id = id;
+            this.TimeStamp = time;
+            this.TargetId = targetId;
+            this.TargetDescription = targetDescription;
+            this.EventType = eventType;
+        }
        
         public FireEventId Id { get; set; } // a composite primary key consisting of source and event id
 
@@ -22,9 +29,14 @@ namespace FireApp.Domain {
 
     // help class to use a composite primary key 
     public class FireEventId {
+        public FireEventId (int sourceId, int eventId)
+        {
+            this.SourceId = sourceId;
+            this.EventId = eventId;
+        }
         public int SourceId { get; set; } // Id of the BMA (Brandmeldeanlage)
         public int EventId { get; set; } // incrementing id of the events which are raised by the BMA
     }
 
-    public enum EventTypes { alarm, disfunction};
+    public enum EventTypes { alarm, disfunction, test};
 }
