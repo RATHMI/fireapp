@@ -112,7 +112,7 @@
     <Compile Include="AppResources.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="AppStartup.cs" />
-    <Compile Include="Controllers\FireBrigadesController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
