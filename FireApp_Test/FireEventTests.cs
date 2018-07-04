@@ -58,7 +58,7 @@ namespace FireApp.Test
 
         public static string GetFireEventsBySourceIdEventType(string address, int sourceId, EventTypes eventType)
         {
-            address += "sidet/";
+            address += "et/";
             address += sourceId.ToString();
             address += "/";
             address += eventType;
@@ -76,7 +76,7 @@ namespace FireApp.Test
 
         public static string GetFireEventsBySourceIdTimespan(string address, int sourceId, DateTime startTime, DateTime endTime)
         {
-            address += "sidts/";           
+            address += "ts/";           
             address += sourceId.ToString();
             address += "/";
             address += startTime.Ticks.ToString();

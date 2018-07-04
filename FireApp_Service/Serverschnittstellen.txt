@@ -17,16 +17,16 @@ http://ip:50862/events/
     .)  ../stid/{sourceId}/{targetId}
         abrufen aller FireEvents eines bestimmten Melders einer Brandmeldeanlage
         
-    .)  ../sidet/{sourceId}/{eventType}
+    .)  ../et/{sourceId}/{eventType}
         abrufen aller FireEvents eines bestimmten EventTypes einer BMA
         
     .)  ../et/{eventType}
         abrufen aller FireEvents eines bestimmten EventTypes
         
-    .)  ../sidts/{sourceId}/{startTime}/{endTime}
+    .)  ../time/{sourceId}/{startTime}/{endTime}
         abrufen aller FireEvents einer BMA zwischen startTime und endTime
         
-    .)  ../ts/{startTime}/{endTime}
+    .)  ../time/{startTime}/{endTime}
         abrufen aller FireEvents zwischen startTime und endTime
         
 
