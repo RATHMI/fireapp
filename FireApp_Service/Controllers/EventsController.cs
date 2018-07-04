@@ -52,7 +52,7 @@ namespace FireApp.Service.Controllers
          * returns a list of all Fireevents with a matching sourceId
          * (all Fireevents from a distinct fire alarm system)
          ******************************************************************************************/
-        [HttpGet, Route("sid/{sourceId}"), Authorize]
+        [HttpGet, Route("sid/{sourceId}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
             using (var db = AppData.FireEventDB())
@@ -96,6 +96,22 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
+         * public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
+         * 
+         * returns a list of all FireEvents with matching eventType
+         ******************************************************************************************/
+        [HttpGet, Route("et/{eventType}")]
+        public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FireEventTable();
+
+                return table.Find(x => x.EventType == eventType);
+            }
+        }
+
+        /*******************************************************************************************
          * IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, DateTime startTime, DateTime endTime)
          * 
          * returns a list of all FireEvents with matching sourceId and and a Timestamp between 
@@ -124,6 +140,34 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
+         *  public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
+         * 
+         * returns a list of all FireEvents with a Timestamp between 
+         * startTime and endTime
+         ******************************************************************************************/
+        [HttpGet, Route("ts/{startTime}/{endTime}")]
+        public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FireEventTable();
+
+                var allEvents = table.FindAll();
+                List<FireEvent> result = new List<FireEvent>();
+
+                foreach (FireEvent fe in allEvents)
+                {
+                    if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
+                    {
+                        result.Add(fe);
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        /*******************************************************************************************
          * public IEnumerable<FireEvent> All()
          * 
          * returns a list with all Fireevents
@@ -137,18 +181,5 @@ namespace FireApp.Service.Controllers
                 return table.FindAll();
             }
         }
-
-
-        /*
-        [HttpGet, Route("inserttest/{name}")]
-        public bool DetailsByCompanyId(string name) {
-            using (var db = AppData.FireEventDB()) {
-                var table = db.FireEventTable();
-                return table.Upsert(new FireEvent {
-                    TimeStamp = DateTime.Now,
-                    TargetId = "asdasddas",
-                });
-            }
-        }*/
     }
 }

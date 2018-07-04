@@ -18,12 +18,11 @@ namespace FireApp.Test {
         {
             httpClient = new HttpClient();
             string rv;
-
             /*
             #region testsFireEvents
             addr = "http://localhost:50862/events/";
             System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
-            FireEvent fe = new FireEvent(new FireEventId(9, 9), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.test);
+            FireEvent fe = new FireEvent(new FireEventId(9,9), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.test);
             rv = FireEventTests.UploadFireEvent(addr, fe);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");

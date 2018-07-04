@@ -8,50 +8,50 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Controllers
 {
-    [RoutePrefix("fas")]
-    public class FireAlarmSystemController : ApiController
+    [RoutePrefix("fb")]
+    public class FireBrigadeController : ApiController
     {
         /*******************************************************************************************
-         * public bool CreateFireAlarmSystem([FromBody] FireAlarmSystem fas)
+         * public bool CreateFireBrigade([FromBody] FireBrigade fb)
          * 
-         * inserts a FireAlarmSystem into the database or updates it if it already exists
+         * inserts a FireBrigade into the database or updates it if it already exists
          ******************************************************************************************/
         [HttpPost, Route("upload")]
-        public bool CreateFireAlarmSystem([FromBody] FireAlarmSystem fas)
+        public bool CreateFireBrigade([FromBody] FireBrigade fb)
         {
-            using (var db = AppData.FireAlarmSystemDB())
+            using (var db = AppData.FireBrigadeDB())
             {
-                var table = db.FireAlarmSystemTable();
-                return table.Upsert(fas);
+                var table = db.FireBrigadeTable();
+                return table.Upsert(fb);
             }
         }
 
         /*******************************************************************************************
-         * public IEnumerable<FireAlarmSystem> All()
+         * public IEnumerable<FireBrigade> All()
          * 
-         * returns a list with all FireAlarmSystems
+         * returns a list with all FireBrigades
          ******************************************************************************************/
         [HttpGet, Route("all")]
-        public IEnumerable<FireAlarmSystem> All()
+        public IEnumerable<FireBrigade> All()
         {
-            using (var db = AppData.FireAlarmSystemDB())
+            using (var db = AppData.FireBrigadeDB())
             {
-                var table = db.FireAlarmSystemTable();
+                var table = db.FireBrigadeTable();
                 return table.FindAll();
             }
         }
 
         /*******************************************************************************************
-         * public IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
+         * public FireBrigade GetFireBrigadeById(int id)
          * 
-         * return a FireAlarmSystem with a matching id
+         * return a FireBrigade with a matching id
          ******************************************************************************************/
         [HttpGet, Route("id/{id}")]
-        public FireAlarmSystem GetFireAlarmSystemById(int id)
+        public FireBrigade GetFireBrigadeById(int id)
         {
-            using (var db = AppData.FireAlarmSystemDB())
+            using (var db = AppData.FireBrigadeDB())
             {
-                var table = db.FireAlarmSystemTable();
+                var table = db.FireBrigadeTable();
 
                 return table.FindOne(x => x.Id == id);
             }
