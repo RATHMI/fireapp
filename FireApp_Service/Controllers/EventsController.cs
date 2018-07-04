@@ -100,7 +100,7 @@ namespace FireApp.Service.Controllers
          * 
          * returns a list of all FireEvents with matching eventType
          ******************************************************************************************/
-        [HttpGet, Route("time/{eventType}")]
+        [HttpGet, Route("et/{eventType}")]
         public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
         {
             using (var db = AppData.FireEventDB())
@@ -117,7 +117,6 @@ namespace FireApp.Service.Controllers
          * returns a list of all FireEvents with matching sourceId and and a Timestamp between 
          * startTime and endTime
          ******************************************************************************************/
-        //[HttpGet, Route("sidts/{sourceId}/{startTime}/{endTime}")]
         [HttpGet, Route("time/{sourceId}/{startTime}/{endTime}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
@@ -146,7 +145,7 @@ namespace FireApp.Service.Controllers
          * returns a list of all FireEvents with a Timestamp between 
          * startTime and endTime
          ******************************************************************************************/
-        [HttpGet, Route("ts/{startTime}/{endTime}")]
+        [HttpGet, Route("time/{startTime}/{endTime}")]
         public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
         {
             using (var db = AppData.FireEventDB())
