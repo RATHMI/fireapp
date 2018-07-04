@@ -1,0 +1,22 @@
+FireEvents
+
+http://ip:50862/events/
+
+    .)  ../update
+        hochladen bzw updaten eines FireEvents
+    .)  ../all
+        abrufen aller FireEvents
+    .)  ../id/{sourceId}/{eventId}
+        abrufen eines bestimmten FireEvents
+    .)  ../sid/{sourceId}
+        abrufen aller FireEvents einer BMA
+    .)  ../stid/{sourceId}/{targetId}
+        abrufen aller FireEvents eines bestimmten Melders einer Brandmeldeanlage
+    .)  ../sidet/{sourceId}/{eventType}
+        abrufen aller FireEvents eines bestimmten EventTypes einer BMA
+    .)  ../et/{eventType}
+        abrufen aller FireEvents eines bestimmten EventTypes
+    .)  ../sidts/{sourceId}/{startTime}/{endTime}
+        abrufen aller FireEvents einer BMA zwischen startTime und endTime
+    .)  ../ts/{startTime}/{endTime}
+        abrufen aller FireEvents zwischen startTime und endTime
