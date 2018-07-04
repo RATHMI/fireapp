@@ -82,3 +82,9 @@ P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\System.Web.Http.WebHost.xml
 P:\01_Diplomarbeit\fireapp\FireApp_Service\obj\Debug\FireApp_Service.csprojResolveAssemblyReference.cache
 P:\01_Diplomarbeit\fireapp\FireApp_Service\obj\Debug\FireApp.Service.dll
 P:\01_Diplomarbeit\fireapp\FireApp_Service\obj\Debug\FireApp.Service.pdb
+C:\proj\fireapp\FireApp_Service\bin\AuthorizationServerProvider.dll
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.dll
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.dll
+C:\proj\fireapp\FireApp_Service\bin\AuthorizationServerProvider.pdb
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.xml
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.xml
