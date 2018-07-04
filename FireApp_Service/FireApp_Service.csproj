@@ -105,6 +105,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Serverschnittstellen.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +113,9 @@
     <Compile Include="AppResources.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="AppStartup.cs" />
+    <Compile Include="Controllers\FireAlarmSystemController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
+    <Compile Include="Controllers\FireBrigadeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

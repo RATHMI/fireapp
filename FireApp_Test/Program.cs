@@ -7,49 +7,82 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FireApp.Test {
-    class Program {
-        private static HttpClient httpClient;
+    class Program
+    {
+        private static HttpClient httpClient = new HttpClient();
 
         internal string ServiceUrl { get; private set; }
         static string addr = "http://localhost:50862/events/";
 
-        static void Main(string[] args) {
+        static void Main(string[] args)
+        {
             httpClient = new HttpClient();
-
-            var newItem = new FireEvent {
-                Id = new FireEventId { SourceId = 0, EventId = 0 },
-                TimeStamp = DateTime.Now,
-                TargetId = "testtarget",
-                TargetDescription = "testdescription",
-                EventType = EventTypes.disfunction
-            };
-
-            var res1 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
-
-            var byId = ServiceGetCall<IEnumerable<FireEvent>>(addr + "id/0");
-
-            //var res2 = ServicePostCall<FireEvent, bool>(addr + "upload", newItem);
-
-           // var all2 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "all");
-
-            //var name1 = ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
+            string rv;
+            /*
+            #region testsFireEvents
+            addr = "http://localhost:50862/events/";
+            System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
+            FireEvent fe = new FireEvent(new FireEventId(9,9), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.test);
+            rv = FireEventTests.UploadFireEvent(addr, fe);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
             
-
-            //@philippollmann: just a short test
-            foreach (var entry in byId)
-            {
-                System.Console.WriteLine("Id: " + entry.Id);
-            }
+            var byId = ServiceGetCall<FireEvent>(addr + "id/9/9");
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventById");
+            rv = FireEventTests.GetFireEventById(addr, new FireEventId(9,9));
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
             
-            /*DbInteractions dbi = new DbInteractions(addr);
-            var res1 = dbi.GetAllFireEvents();*/
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceId");
+            rv = FireEventTests.GetFireEventsBySourceId(addr, 9);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+            System.Console.WriteLine("\r\n\r\nTest GetAllFireEvents");
+            rv = FireEventTests.GetAllFireEvents(addr);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceIdTargetId");
+            rv = FireEventTests.GetFireEventsBySourceIdTargetId(addr, 9, "test");
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceIdEventType");
+            rv = FireEventTests.GetFireEventsBySourceIdEventType(addr, 9, EventTypes.test);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+            System.Console.WriteLine("\r\n\r\nTest GetFireEventsBySourceIdTimespan");
+            DateTime startTime = new DateTime(100);
+            DateTime endTime = DateTime.Now;
+            rv = FireEventTests.GetFireEventsBySourceIdTimespan(addr, 9, startTime, endTime);
+            System.Console.WriteLine("\r\nstartTime: " + startTime.ToString());
+            System.Console.WriteLine("\r\nendTime: " + endTime.ToString());
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            #endregion
+            */
+            #region testsFireAlarmSystems
+            addr = "http://localhost:50862/fas/";
+
+            System.Console.WriteLine("\r\n\r\nTest UploadFireAlarmSystem");
+            FireAlarmSystem fas = new FireAlarmSystem();
+            fas.City = "Linz";
+            fas.Address = "Wolfgang-Pauli-Straße 2";
+            rv = FireAlarmSystemTests.UploadFireAlarmSystem(addr, fas);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+            System.Console.WriteLine("\r\n\r\nTest GetAllFireAlarmSystems");
+            rv = FireAlarmSystemTests.GetAllFireAlarmSystems(addr);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            #endregion
+
+
             System.Console.ReadKey();
         }
-
-        /*public T GetFireEvenByName(string name)
-        {
-            return ServiceGetCall<IEnumerable<FireEvent>>(addr + "getNameTest/test1234");
-        }*/
 
         #region Templates
         private static T ServiceGetCall<T>(string callAddress)

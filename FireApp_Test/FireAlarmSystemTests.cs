@@ -1,34 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 using FireApp.Domain;
 
 namespace FireApp.Test
 {
-    public class DbInteractions
+    public static class FireAlarmSystemTests
     {
-        private static HttpClient httpClient;
-        private string address;
+        private static HttpClient httpClient = new HttpClient();
 
-        public DbInteractions(string address)
+        public static string UploadFireAlarmSystem(string address, FireAlarmSystem fas)
         {
-            httpClient = new HttpClient();
-            this.address = address;
+            address += "upload";
+            return "Upload successful: " + ServicePostCall<FireAlarmSystem, bool>(address, fas).ToString(); ;
         }
 
-        public IEnumerable<FireEvent> GetAllFireEvents()
+        public static string GetAllFireAlarmSystems(string address)
         {
-            return ServiceGetCall<IEnumerable<FireEvent>>(address + "all");
+            address += "all";
+
+            IEnumerable<FireAlarmSystem> fireAlarmSystems = ServiceGetCall<IEnumerable<FireAlarmSystem>>(address);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (FireAlarmSystem fas in fireAlarmSystems)
+            {
+                sb.Append(getStringFromFireAlarmSystem(fas));
+            }
+
+            return sb.ToString();
         }
 
-        public IEnumerable<FireEvent> GetFireEventById(FireApp.Domain.FireEventId id)
+        private static string getStringFromFireAlarmSystem(FireAlarmSystem fas)
         {
-            return ServiceGetCall<IEnumerable<FireEvent>>(address + "id"); // todo: change address
+            string rv;
+            if (fas != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("\r\n\r\nId: ");
+                sb.Append(fas.Id);
+                sb.Append("\r\nCity: ");
+                sb.Append(fas.City);
+                sb.Append("\r\nAddress: ");
+                sb.Append(fas.Address);
+                
+                rv = sb.ToString();
+            }
+            else
+            {
+                rv = "FireEvent is null";
+            }
+            return rv;
         }
-
 
         #region Templates
         private static T ServiceGetCall<T>(string callAddress)
@@ -58,4 +83,6 @@ namespace FireApp.Test
         }
         #endregion
     }
+
+
 }
