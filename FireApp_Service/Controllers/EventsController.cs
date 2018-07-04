@@ -181,5 +181,4 @@ namespace FireApp.Service.Controllers
                 return table.FindAll();
             }
         }
-    }
 }
