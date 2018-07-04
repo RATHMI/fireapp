@@ -13,15 +13,38 @@ namespace FireApp.Service {
         static AppData() {
             BsonMapper.Global.Entity<FireEvent>()
                 .Id(x => x.Id, true);
-
+            BsonMapper.Global.Entity<FireAlarmSystem>()
+                .Id(x => x.Id, true);
         }
 
         #region FireEventDB
         public static LiteDatabase FireEventDB() {
             return new LiteDatabase(AppSettings.FireEventDBPath);
         }
-        public static LiteCollection<FireEvent> FrieEventTable(this LiteDatabase db) {
+        public static LiteCollection<FireEvent> FireEventTable(this LiteDatabase db) {
             return db.GetCollection<FireEvent>("events");
+        }
+        #endregion
+
+        #region FireAlarmSystemDB
+        public static LiteDatabase FireAlarmSystemDB()
+        {
+            return new LiteDatabase(AppSettings.FireEventDBPath);
+        }
+        public static LiteCollection<FireAlarmSystem> FireAlarmSystemTable(this LiteDatabase db)
+        {
+            return db.GetCollection<FireAlarmSystem>("fas");
+        }
+        #endregion
+
+        #region FireBrigadeDB
+        public static LiteDatabase FireBrigadeDB()
+        {
+            return new LiteDatabase(AppSettings.FireEventDBPath);
+        }
+        public static LiteCollection<FireAlarmSystem> FireBrigadeTable(this LiteDatabase db)
+        {
+            return db.GetCollection<FireAlarmSystem>("fb");
         }
         #endregion
     }

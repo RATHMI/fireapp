@@ -24,7 +24,7 @@ namespace FireApp.Service.Controllers
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
                 return table.Upsert(fe);
             }
         }
@@ -40,7 +40,7 @@ namespace FireApp.Service.Controllers
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
 
                 return table.FindOne(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);
             }
@@ -52,12 +52,12 @@ namespace FireApp.Service.Controllers
          * returns a list of all Fireevents with a matching sourceId
          * (all Fireevents from a distinct fire alarm system)
          ******************************************************************************************/
-        [HttpGet, Route("sid/{sourceId}"), Authorize(Roles = "Owner")]
+        [HttpGet, Route("sid/{sourceId}"), Authorize]
         public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
 
                 return table.Find(x => x.Id.SourceId == sourceId);
             }
@@ -73,7 +73,7 @@ namespace FireApp.Service.Controllers
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
 
                 return table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId);
             }
@@ -89,7 +89,7 @@ namespace FireApp.Service.Controllers
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
 
                 return table.Find(x => x.Id.SourceId == sourceId && x.EventType == eventType);
             }
@@ -106,7 +106,7 @@ namespace FireApp.Service.Controllers
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
 
                 var allEvents = table.Find(x => x.Id.SourceId == sourceId);
                 List<FireEvent> result = new List<FireEvent>();
@@ -133,7 +133,7 @@ namespace FireApp.Service.Controllers
         {
             using (var db = AppData.FireEventDB())
             {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
                 return table.FindAll();
             }
         }
@@ -143,7 +143,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("inserttest/{name}")]
         public bool DetailsByCompanyId(string name) {
             using (var db = AppData.FireEventDB()) {
-                var table = db.FrieEventTable();
+                var table = db.FireEventTable();
                 return table.Upsert(new FireEvent {
                     TimeStamp = DateTime.Now,
                     TargetId = "asdasddas",

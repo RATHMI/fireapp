@@ -8,7 +8,7 @@ using FireApp.Domain;
 
 namespace FireApp.Test
 {
-    public static class Tests
+    public static class FireEventTests
     {
         private static HttpClient httpClient = new HttpClient();
 
@@ -116,7 +116,6 @@ namespace FireApp.Test
         }
 
         private static string getStringFromFireEvent(FireEvent fe)
-
         {
             string rv;
             if (fe != null)
