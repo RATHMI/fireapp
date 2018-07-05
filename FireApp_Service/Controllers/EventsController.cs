@@ -130,6 +130,9 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
+=======
+         * 
+>>>>>>> parent of 0a2821b... nix geht super soch
          * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
          * 
          * returns a list with all active FireEvents with a matching TargetState
