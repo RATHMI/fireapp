@@ -13,6 +13,7 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("events")]
     public class EventsController : ApiController
     {
+
         /*******************************************************************************************
          * public bool DetailsByCompanyId([FromBody] FireEvent fe)
          * 
@@ -21,7 +22,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
-            return DatabaseOperations.UploadFireEvent(fe);         
+            return DatabaseOperations.UploadFireEvent(fe);
         }
 
         /*******************************************************************************************
@@ -65,9 +66,9 @@ namespace FireApp.Service.Controllers
          * 
          * returns a list of all FireEvents with matching sourceId, targetId and timeStamp
          ******************************************************************************************/
-         [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
+        [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
-            (int sourceId, string targetId, long timeStamp)
+           (int sourceId, string targetId, long timeStamp)
         {
             return DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp);
         }
@@ -141,6 +142,7 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.CountFireEventsByEventTypePerYear(eventType, year);
         }
 
+
         /*******************************************************************************************
          * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
          * 
@@ -173,5 +175,7 @@ namespace FireApp.Service.Controllers
         {
             return DatabaseOperations.GetAllTargets();
         }
+
+
     }
 }

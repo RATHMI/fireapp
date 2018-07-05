@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace FireApp.Service {
     public static class AppData {
-        public static LocalData Data;
+        //public static LocalData Data;
 
         static AppData() {
             BsonMapper.Global.Entity<FireEvent>()
