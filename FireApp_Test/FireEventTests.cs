@@ -76,7 +76,7 @@ namespace FireApp.Test
 
         public static string GetFireEventsBySourceIdTimespan(string address, int sourceId, DateTime startTime, DateTime endTime)
         {
-            address += "ts/";           
+            address += "time/";           
             address += sourceId.ToString();
             address += "/";
             address += startTime.Ticks.ToString();

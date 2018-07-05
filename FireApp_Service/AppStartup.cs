@@ -29,10 +29,5 @@ namespace FireApp.Service {
 
             app.UseWebApi(config);
         }
-
-
-        Thread t = new Thread(() => {
-
-        });
     }
 }

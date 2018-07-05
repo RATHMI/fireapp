@@ -20,7 +20,7 @@ namespace FireApp.Service.Controllers
          * inserts a FireEvent into the database or updates it if it already exists
          ******************************************************************************************/
         [HttpPost, Route("upload")]
-        public bool DetailsByCompanyId([FromBody] FireEvent fe)
+        public bool UploadFireEvent([FromBody] FireEvent fe)
         {
             using (var db = AppData.FireEventDB())
             {

@@ -10,6 +10,9 @@ using System.Xml.Serialization;
 
 namespace FireApp.Service {
     public static class AppData {
+        //public static List<FireEvent> allFireEvents;
+        //public static List<FireEvent> activeFireEvents;
+
         static AppData() {
             BsonMapper.Global.Entity<FireEvent>()
                 .Id(x => x.Id, true);
@@ -17,9 +20,9 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
-        }
 
-        public static List<FireEvent> activeAlarms = 
+            //allFireEvents = (DatabaseOperations.GetAllFireEvents()).ToList<FireEvent>();
+        }
 
         #region FireEventDB
         public static LiteDatabase FireEventDB() {
