@@ -19,11 +19,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool CreateFireBrigade([FromBody] FireBrigade fb)
         {
-            using (var db = AppData.FireBrigadeDB())
-            {
-                var table = db.FireBrigadeTable();
-                return table.Upsert(fb);
-            }
+            return DatabaseOperations.UploadFireBrigade(fb);
         }
 
         /*******************************************************************************************
@@ -34,11 +30,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public IEnumerable<FireBrigade> All()
         {
-            using (var db = AppData.FireBrigadeDB())
-            {
-                var table = db.FireBrigadeTable();
-                return table.FindAll();
-            }
+            return DatabaseOperations.GetAllFireBrigades();
         }
 
         /*******************************************************************************************
@@ -49,12 +41,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public FireBrigade GetFireBrigadeById(int id)
         {
-            using (var db = AppData.FireBrigadeDB())
-            {
-                var table = db.FireBrigadeTable();
-
-                return table.FindOne(x => x.Id == id);
-            }
+            return DatabaseOperations.GetFireBrigadeById(id);
         }
     }
 }

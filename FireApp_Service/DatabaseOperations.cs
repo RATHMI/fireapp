@@ -10,7 +10,7 @@ namespace FireApp.Service
     {
         #region FireEvents
         /*******************************************************************************************
-        * public IEnumerable<FireEvent> All()
+        * public static IEnumerable<FireEvent> All()
         * 
         * returns a list with all Fireevents
         ******************************************************************************************/
@@ -24,7 +24,7 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * public bool UploadFireEvent(FireEvent fe)
+         * public static bool UploadFireEvent(FireEvent fe)
          * 
          * inserts a FireEvent into the database or updates it if it already exists
          ******************************************************************************************/
@@ -46,7 +46,7 @@ namespace FireApp.Service
                         default: state = TargetState.disfunction; break;
                     }
 
-                    Target target = new Target(new TargetId(fe.Id.SourceId, fe.TargetId), state);
+                    Target target = new Target(new TargetId(fe.Id.SourceId, fe.TargetId), state, fe.TimeStamp);
                     var table = db.TargetTable();
                     return table.Upsert(target);
                 }
@@ -73,7 +73,7 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * public FireEvent GetFireEventById(int sourceId, int eventId)
+         * public static FireEvent GetFireEventById(int sourceId, int eventId)
          * 
          * returns a distinct Fireevent with a matching sourceId and eventId
          * (a Fireevent from a distinct fire alarm system with the matching eventId)
@@ -89,7 +89,7 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventBySourceId(int sourceId)
+         * public static IEnumerable<FireEvent> GetFireEventBySourceId(int sourceId)
          * 
          * returns a list of all Fireevents with a matching sourceId
          * (all Fireevents from a distinct fire alarm system)
@@ -105,7 +105,7 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
+         * public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
          * 
          * returns a list of all FireEvents with matching sourceId and targetId
          ******************************************************************************************/
@@ -120,7 +120,24 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
+         * public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp(
+         * int sourceId, string targetId, DateTime timeStamp)
+         * 
+         * returns a list of all FireEvents with matching sourceId, targetId and timeStamp
+         ******************************************************************************************/
+        public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
+            (int sourceId, string targetId, DateTime timeStamp)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FireEventTable();
+
+                return table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId && x.TimeStamp == timeStamp);
+            }
+        }
+
+        /*******************************************************************************************
+         * public static IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
          * 
          * returns a list of all FireEvents with matching sourceId and eventType
          ******************************************************************************************/
@@ -135,7 +152,7 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
+         * public static IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
          * 
          * returns a list of all FireEvents with matching eventType
          ******************************************************************************************/
@@ -150,7 +167,8 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         * IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, DateTime startTime, DateTime endTime)
+         * public static IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, 
+         * DateTime startTime, DateTime endTime)
          * 
          * returns a list of all FireEvents with matching sourceId and and a Timestamp between 
          * startTime and endTime
@@ -177,7 +195,7 @@ namespace FireApp.Service
         }
 
         /*******************************************************************************************
-         *  public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
+         * public static IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
          * 
          * returns a list of all FireEvents with a Timestamp between 
          * startTime and endTime
@@ -200,6 +218,124 @@ namespace FireApp.Service
                 }
 
                 return result;
+            }
+        }
+
+        #endregion
+
+        #region FireAlarmSystems
+        /*******************************************************************************************
+         * public static bool UploadFireAlarmSystem(FireAlarmSystem fas)
+         * 
+         * inserts a FireAlarmSystem into the database or updates it if it already exists
+         ******************************************************************************************/
+        public static bool UploadFireAlarmSystem(FireAlarmSystem fas)
+        {
+            using (var db = AppData.FireAlarmSystemDB())
+            {
+                var table = db.FireAlarmSystemTable();
+                return table.Upsert(fas);
+            }
+        }
+
+        /*******************************************************************************************
+         * public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
+         * 
+         * returns a list with all FireAlarmSystems
+         ******************************************************************************************/
+        public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
+        {
+            using (var db = AppData.FireAlarmSystemDB())
+            {
+                var table = db.FireAlarmSystemTable();
+                return table.FindAll();
+            }
+        }
+
+        /*******************************************************************************************
+         * public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
+         * 
+         * return a FireAlarmSystem with a matching id
+         ******************************************************************************************/
+        public static FireAlarmSystem GetFireAlarmSystemById(int id)
+        {
+            using (var db = AppData.FireAlarmSystemDB())
+            {
+                var table = db.FireAlarmSystemTable();
+
+                return table.FindOne(x => x.Id == id);
+            }
+        }
+        #endregion
+
+        #region FireBrigades
+        /*******************************************************************************************
+         * public static bool UploadFireBrigade(FireBrigade fb)
+         * 
+         * inserts a FireBrigade into the database or updates it if it already exists
+         ******************************************************************************************/
+        public static bool UploadFireBrigade(FireBrigade fb)
+        {
+            using (var db = AppData.FireBrigadeDB())
+            {
+                var table = db.FireBrigadeTable();
+                return table.Upsert(fb);
+            }
+        }
+
+        /*******************************************************************************************
+         * public static IEnumerable<FireBrigade> GetAllFireBrigades()
+         * 
+         * returns a list with all FireBrigades
+         ******************************************************************************************/
+        public static IEnumerable<FireBrigade> GetAllFireBrigades()
+        {
+            using (var db = AppData.FireBrigadeDB())
+            {
+                var table = db.FireBrigadeTable();
+                return table.FindAll();
+            }
+        }
+
+        /*******************************************************************************************
+         * public static FireBrigade GetFireBrigadeById(int id)
+         * 
+         * return a FireBrigade with a matching id
+         ******************************************************************************************/
+        public static FireBrigade GetFireBrigadeById(int id)
+        {
+            using (var db = AppData.FireBrigadeDB())
+            {
+                var table = db.FireBrigadeTable();
+
+                return table.FindOne(x => x.Id == id);
+            }
+        }
+        #endregion
+
+        #region activeEvents
+        /*******************************************************************************************
+         * public static IEnumerable<FireEvent> GetAllActiveFireEvents(TargetState state)
+         * 
+         * returns a list with all active FireEvents with a matching TargetState
+         ******************************************************************************************/
+        public static IEnumerable<FireEvent> GetAllActiveFireEvents(TargetState state)
+        {
+            using (var db = AppData.TargetDB())
+            {
+                var table = db.TargetTable();
+                List<Target> targets = table.FindAll().ToList<Target>();
+                List<FireEvent> fireEvents = new List<FireEvent>();
+
+                foreach(Target t in targets)
+                {
+                    if (t.State == state)
+                    {
+                        fireEvents.AddRange(GetFireEventsBySourceIdTargetIdTimeStamp(t.Id.SourceId, t.Id.Target, t.TimeStamp));
+                    }
+                }
+
+                return fireEvents;
             }
         }
 

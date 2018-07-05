@@ -10,15 +10,18 @@ namespace FireApp.Domain
     {
         public Target() { }
 
-        public Target(TargetId id, TargetState state)
+        public Target(TargetId id, TargetState state, DateTime timeStamp)
         {
             this.Id = id;
             this.State = state;
+            this.TimeStamp = timeStamp;
         }
 
         public TargetId Id { get; set; }
 
         public TargetState State { get; set; }
+
+        public DateTime TimeStamp { get; set; }
 
     }
 
