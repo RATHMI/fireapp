@@ -25,5 +25,15 @@ namespace FireApp.Service
                 return table.Upsert(fe);
             }
         }
+
+        public static FireEvent GetFireEventById(int sourceId, int eventId)
+        {
+            using (var db = AppData.FireEventDB())
+            {
+                var table = db.FireEventTable();
+
+                return table.FindOne(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);
+            }
+        }
     }
 }

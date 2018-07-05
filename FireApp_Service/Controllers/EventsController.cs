@@ -13,6 +13,14 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("events")]
     public class EventsController : ApiController
     {
+        //private List<FireEvent> allFireEvents;
+        //private List<FireEvent> activeFireEvents;
+
+        public EventsController()
+        {
+            //allFireEvents = (DatabaseOperations.GetAllFireEvents()).ToList<FireEvent>();
+        }
+
 
         /*******************************************************************************************
          * public bool DetailsByCompanyId([FromBody] FireEvent fe)
@@ -22,11 +30,8 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-                return table.Upsert(fe);
-            }
+            AppData.Data.AddFireEvent(fe);
+            return DatabaseOperations.UploadFireEvent(fe);         
         }
 
         /*******************************************************************************************
@@ -175,11 +180,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public IEnumerable<FireEvent> All()
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-                return table.FindAll();
-            }
+            return DatabaseOperations.GetAllFireEvents();
         }
     }
 }

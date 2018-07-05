@@ -125,6 +125,7 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FireBrigadeController.cs" />
     <Compile Include="DatabaseOperations.cs" />
+    <Compile Include="LocalData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
