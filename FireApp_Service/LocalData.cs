@@ -11,6 +11,8 @@ namespace FireApp.Service
         public List<FireEvent> allFireEvents;
         public List<FireEvent> activeFireEvents;
 
+        // May use instead of DB in case of performance issues
+
         public LocalData()
         {
             allFireEvents = DatabaseOperations.GetAllFireEvents().ToList<FireEvent>();
