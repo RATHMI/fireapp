@@ -49,7 +49,7 @@ namespace FireApp.Service
 
                     Target target = new Target(new TargetId(fe.Id.SourceId, fe.TargetId), state, fe.TimeStamp);
                     var table = db.TargetTable();
-                    return table.Upsert(target);
+                    table.Upsert(target);
                 }
             } else {
                 if (fe.EventType == EventTypes.reset){
