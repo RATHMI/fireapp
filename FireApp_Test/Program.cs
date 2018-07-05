@@ -22,11 +22,19 @@ namespace FireApp.Test {
             #region testsFireEvents
             addr = "http://localhost:50862/events/";
             System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
-            FireEvent fe = new FireEvent(new FireEventId(0,0), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.test);
+            FireEvent fe = new FireEvent(new FireEventId(1,0), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.alarm);
             rv = FireEventTests.UploadFireEvent(addr, fe);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-            
+
+            Task.Delay(1000);
+
+            System.Console.WriteLine("\r\n\r\nTest active");
+            rv = FireEventTests.GetActiveFireEvents(addr);
+            System.Console.WriteLine(rv);
+            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+            /*
             var byId = ServiceGetCall<FireEvent>(addr + "id/9/9");
             System.Console.WriteLine("\r\n\r\nTest GetFireEventById");
             rv = FireEventTests.GetFireEventById(addr, new FireEventId(9,9));
@@ -61,8 +69,9 @@ namespace FireApp.Test {
             System.Console.WriteLine("\r\nendTime: " + endTime.ToString());
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            */
             #endregion
-            
+
             #region testsFireAlarmSystems
             addr = "http://localhost:50862/fas/";
 

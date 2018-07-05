@@ -60,6 +60,19 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
+         * public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp(
+         * int sourceId, string targetId, DateTime timeStamp)
+         * 
+         * returns a list of all FireEvents with matching sourceId, targetId and timeStamp
+         ******************************************************************************************/
+         [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
+        public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
+            (int sourceId, string targetId, long timeStamp)
+        {
+            return DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp);
+        }
+
+        /*******************************************************************************************
          * public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
          * 
          * returns a list of all FireEvents with matching sourceId and eventType
@@ -122,11 +135,31 @@ namespace FireApp.Service.Controllers
          * returns a list with all active FireEvents with a matching TargetState
          ******************************************************************************************/
         [HttpGet, Route("active/{targetState}")]
-        public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
+        public IEnumerable<FireEvent> Active(string targetState)
         {
             return DatabaseOperations.GetAllActiveFireEvents(targetState);
         }
 
+        /*******************************************************************************************
+         * public IEnumerable<FireEvent> Active()
+         * 
+         * returns a list with all active FireEvents
+         ******************************************************************************************/
+        [HttpGet, Route("active")]
+        public IEnumerable<FireEvent> Active()
+        {
+            return DatabaseOperations.GetAllActiveFireEvents();
+        }
 
+        /*******************************************************************************************
+         * public IEnumerable<Target> Targets()
+         * 
+         * returns a list with all Targets
+         ******************************************************************************************/
+        [HttpGet, Route("target")]
+        public IEnumerable<Target> Targets()
+        {
+            return DatabaseOperations.GetAllTargets();
+        }
     }
 }

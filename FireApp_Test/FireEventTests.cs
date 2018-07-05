@@ -56,6 +56,26 @@ namespace FireApp.Test
             return sb.ToString();
         }
 
+        public static string GetFireEventsBySourceIdTargetIdTimeStamp(string address, int sourceId, string targetId, DateTime timeStamp)
+        {
+            address += "stidt/";
+            address += sourceId.ToString();
+            address += "/";
+            address += targetId;
+            address += "/";
+            address += timeStamp.Ticks.ToString();
+
+            IEnumerable<FireEvent> events = ServiceGetCall<IEnumerable<FireEvent>>(address);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (FireEvent fe in events)
+            {
+                sb.Append(getStringFromFireEvent(fe));
+            }
+
+            return sb.ToString();
+        }
+
         public static string GetFireEventsBySourceIdEventType(string address, int sourceId, EventTypes eventType)
         {
             address += "et/";
@@ -115,6 +135,20 @@ namespace FireApp.Test
             return "Upload successful: " + ServicePostCall<FireEvent, bool>(address, fe).ToString(); ;
         }
 
+        public static string GetActiveFireEvents(string address)
+        {
+            address += "active";
+            IEnumerable<FireEvent> events = ServiceGetCall<IEnumerable<FireEvent>>(address);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (FireEvent fe in events)
+            {
+                sb.Append(getStringFromFireEvent(fe));
+            }
+
+            return sb.ToString();
+        }
+
         private static string getStringFromFireEvent(FireEvent fe)
         {
             string rv;
@@ -140,6 +174,7 @@ namespace FireApp.Test
             }
             return rv;
         }
+
 
         #region Templates
         private static T ServiceGetCall<T>(string callAddress)

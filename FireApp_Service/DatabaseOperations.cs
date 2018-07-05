@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FireApp.Domain;
+using System.Threading;
 
 namespace FireApp.Service
 {
@@ -126,13 +127,22 @@ namespace FireApp.Service
          * returns a list of all FireEvents with matching sourceId, targetId and timeStamp
          ******************************************************************************************/
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
-            (int sourceId, string targetId, DateTime timeStamp)
+            (int sourceId, string targetId, long timeStamp)
         {
             using (var db = AppData.FireEventDB())
             {
                 var table = db.FireEventTable();
 
-                return table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId && x.TimeStamp == timeStamp);
+                var events = table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId);
+                List<FireEvent> results = new List<FireEvent>();
+                foreach (FireEvent e in events)
+                {
+                    if(e.TimeStamp.Ticks == timeStamp)
+                    {
+                        results.Add(e);
+                    }
+                }
+                return results;
             }
         }
 
@@ -319,7 +329,7 @@ namespace FireApp.Service
          * 
          * returns a list with all active FireEvents with a matching TargetState
          ******************************************************************************************/
-        public static IEnumerable<FireEvent> GetAllActiveFireEvents(TargetState state)
+        public static IEnumerable<FireEvent> GetAllActiveFireEvents(string state)
         {
             using (var db = AppData.TargetDB())
             {
@@ -329,9 +339,9 @@ namespace FireApp.Service
 
                 foreach(Target t in targets)
                 {
-                    if (t.State == state)
-                    {
-                        fireEvents.AddRange(GetFireEventsBySourceIdTargetIdTimeStamp(t.Id.SourceId, t.Id.Target, t.TimeStamp));
+                    if (t.State.ToString() == state.ToString())
+                    {                     
+                        fireEvents.AddRange(GetFireEventsBySourceIdTargetIdTimeStamp(t.Id.SourceId, t.Id.Target, t.TimeStamp.Ticks));
                     }
                 }
 
@@ -339,6 +349,44 @@ namespace FireApp.Service
             }
         }
 
+        /*******************************************************************************************
+         * public static IEnumerable<FireEvent> GetAllActiveFireEvents()
+         * 
+         * returns a list with all active FireEvents
+         ******************************************************************************************/
+        public static IEnumerable<FireEvent> GetAllActiveFireEvents()
+        {
+            using (var db = AppData.TargetDB())
+            {
+                var table = db.TargetTable();
+                List<Target> targets = table.FindAll().ToList<Target>();
+                List<FireEvent> fireEvents = new List<FireEvent>();
+
+                foreach (Target t in targets)
+                {
+                    fireEvents.AddRange(GetFireEventsBySourceIdTargetIdTimeStamp(t.Id.SourceId, t.Id.Target, t.TimeStamp.Ticks));
+                }
+
+                return fireEvents;
+            }
+        }
+
+        #endregion
+
+        #region Targets
+        /*******************************************************************************************
+        * public static IEnumerable<Target> GetAllTargets()
+        * 
+        * returns a list with all Fireevents
+        ******************************************************************************************/
+        public static IEnumerable<Target> GetAllTargets()
+        {
+            using (var db = AppData.TargetDB())
+            {
+                var table = db.TargetTable();
+                return table.FindAll();
+            }
+        }
         #endregion
     }
 }
