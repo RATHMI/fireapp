@@ -141,6 +141,18 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
+         * public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
+         * 
+         * returns an array with the number of FireEvents of the given EventType where each column
+         * represents one month
+         ******************************************************************************************/
+        [HttpGet, Route("typeyear/{eventType}/{year}")]
+        public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
+        {
+            return DatabaseOperations.CountFireEventsByEventTypePerYear(eventType, year);
+        }
+
+        /*******************************************************************************************
          * public IEnumerable<FireEvent> Active()
          * 
          * returns a list with all active FireEvents
