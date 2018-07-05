@@ -231,42 +231,6 @@ namespace FireApp.Service
             }
         }
 
-        /*******************************************************************************************
-       * public static IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
-       * 
-       * returns a list of all FireEvents with a Timestamp between 
-       * startTime and endTime
-       ******************************************************************************************/
-        public static Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
-        {
-            IEnumerable<FireEvent> events = GetFireEventsByEventType(eventType);
-            Int32[] months = new Int32[12];
-
-            foreach (FireEvent fe in events)
-            {
-                if (fe.TimeStamp.Year == year)
-                {
-                    switch (fe.TimeStamp.Month)
-                    {
-                        case 1: months[0]++; break;
-                        case 2: months[1]++; break;
-                        case 3: months[2]++; break;
-                        case 4: months[3]++; break;
-                        case 5: months[4]++; break;
-                        case 6: months[5]++; break;
-                        case 7: months[6]++; break;
-                        case 8: months[7]++; break;
-                        case 9: months[8]++; break;
-                        case 10: months[9]++; break;
-                        case 11: months[10]++; break;
-                        case 12: months[11]++; break;
-                    }
-                }
-            }
-
-            return months;
-        }
-
         #endregion
 
         #region FireAlarmSystems
