@@ -13,15 +13,6 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("events")]
     public class EventsController : ApiController
     {
-        //private List<FireEvent> allFireEvents;
-        //private List<FireEvent> activeFireEvents;
-
-        public EventsController()
-        {
-            //allFireEvents = (DatabaseOperations.GetAllFireEvents()).ToList<FireEvent>();
-        }
-
-
         /*******************************************************************************************
          * public bool DetailsByCompanyId([FromBody] FireEvent fe)
          * 

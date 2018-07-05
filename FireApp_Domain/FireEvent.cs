@@ -40,5 +40,5 @@ namespace FireApp.Domain {
         public int EventId { get; set; } // incrementing id of the events which are raised by the BMA
     }
 
-    public enum EventTypes { alarm, disfunction, test, reset, info, disorder};
+    public enum EventTypes { alarm, disfunction, test = 3, info, outoforder, alarmreset, disfunctionreset, outoforderreset};
 }
