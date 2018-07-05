@@ -20,9 +20,13 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
+<<<<<<< HEAD
 
             //allFireEvents = (DatabaseOperations.GetAllFireEvents()).ToList<FireEvent>();
         }
+=======
+        } 
+>>>>>>> ef367051e0fc54f5e88446537f26b23720ae2ce5
 
         #region FireEventDB
         public static LiteDatabase FireEventDB() {
