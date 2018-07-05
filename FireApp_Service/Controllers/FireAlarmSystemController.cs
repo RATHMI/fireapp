@@ -56,5 +56,7 @@ namespace FireApp.Service.Controllers
                 return table.FindOne(x => x.Id == id);
             }
         }
+
+
     }
 }

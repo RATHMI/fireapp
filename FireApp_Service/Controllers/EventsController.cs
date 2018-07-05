@@ -21,7 +21,6 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
-            AppData.Data.AddFireEvent(fe);
             return DatabaseOperations.UploadFireEvent(fe);         
         }
 
@@ -34,12 +33,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{sourceId}/{eventId}")]
         public FireEvent GetFireEventById(int sourceId, int eventId)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                return table.FindOne(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);
-            }
+            return DatabaseOperations.GetFireEventById(sourceId, eventId);
         }
 
         /*******************************************************************************************
@@ -51,12 +45,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("sid/{sourceId}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                return table.Find(x => x.Id.SourceId == sourceId);
-            }
+            return DatabaseOperations.GetFireEventsBySourceId(sourceId);
         }
 
         /*******************************************************************************************
@@ -67,12 +56,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("stid/{sourceId}/{targetId}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                return table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId);
-            }
+            return DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId);
         }
 
         /*******************************************************************************************
@@ -83,12 +67,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("et/{sourceId}/{eventType}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                return table.Find(x => x.Id.SourceId == sourceId && x.EventType == eventType);
-            }
+            return DatabaseOperations.GetFireEventsBySourceIdEventType(sourceId, eventType);
         }
 
         /*******************************************************************************************
@@ -99,12 +78,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("et/{eventType}")]
         public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                return table.Find(x => x.EventType == eventType);
-            }
+            return DatabaseOperations.GetFireEventsByEventType(eventType);
         }
 
         /*******************************************************************************************
@@ -116,23 +90,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("time/{sourceId}/{startTime}/{endTime}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                var allEvents = table.Find(x => x.Id.SourceId == sourceId);
-                List<FireEvent> result = new List<FireEvent>();
-
-                foreach (FireEvent fe in allEvents)
-                {
-                    if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
-                    {
-                        result.Add(fe);
-                    }
-                }
-
-                return result;
-            }
+            return DatabaseOperations.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime);
         }
 
         /*******************************************************************************************
@@ -144,23 +102,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("time/{startTime}/{endTime}")]
         public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                var allEvents = table.FindAll();
-                List<FireEvent> result = new List<FireEvent>();
-
-                foreach (FireEvent fe in allEvents)
-                {
-                    if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
-                    {
-                        result.Add(fe);
-                    }
-                }
-
-                return result;
-            }
+            return DatabaseOperations.GetFireEventsByTimespan(startTime, endTime);
         }
 
         /*******************************************************************************************
