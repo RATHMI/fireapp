@@ -118,3 +118,7 @@ S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Service\bin\System.Net.Http.F
 S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Service\bin\System.Web.Http.xml
 S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Service\bin\System.Web.Http.Owin.xml
 S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Service\bin\System.Web.Http.WebHost.xml
+P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.dll
+P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.dll
+P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.xml
+P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.xml
