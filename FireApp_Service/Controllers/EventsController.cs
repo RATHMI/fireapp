@@ -172,7 +172,7 @@ namespace FireApp.Service.Controllers
          * 
          * returns a list with all Fireevents
          ******************************************************************************************/
-        [HttpGet, Route("all"), Authorize]
+        [HttpGet, Route("all")]
         public IEnumerable<FireEvent> All()
         {
             using (var db = AppData.FireEventDB())

@@ -19,6 +19,8 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
         }
 
+        public static List<FireEvent> activeAlarms = 
+
         #region FireEventDB
         public static LiteDatabase FireEventDB() {
             return new LiteDatabase(AppSettings.FireEventDBPath);
