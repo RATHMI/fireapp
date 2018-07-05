@@ -17,13 +17,9 @@ namespace FireApp.Service.Controllers
          * inserts a FireAlarmSystem into the database or updates it if it already exists
          ******************************************************************************************/
         [HttpPost, Route("upload")]
-        public bool CreateFireAlarmSystem([FromBody] FireAlarmSystem fas)
+        public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
-            using (var db = AppData.FireAlarmSystemDB())
-            {
-                var table = db.FireAlarmSystemTable();
-                return table.Upsert(fas);
-            }
+            return DatabaseOperations.UploadFireAlarmSystem(fas);
         }
 
         /*******************************************************************************************
@@ -34,11 +30,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public IEnumerable<FireAlarmSystem> All()
         {
-            using (var db = AppData.FireAlarmSystemDB())
-            {
-                var table = db.FireAlarmSystemTable();
-                return table.FindAll();
-            }
+            return DatabaseOperations.GetAllFireAlarmSystems();
         }
 
         /*******************************************************************************************
@@ -49,12 +41,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public FireAlarmSystem GetFireAlarmSystemById(int id)
         {
-            using (var db = AppData.FireAlarmSystemDB())
-            {
-                var table = db.FireAlarmSystemTable();
-
-                return table.FindOne(x => x.Id == id);
-            }
+            return DatabaseOperations.GetFireAlarmSystemById(id);
         }
 
 

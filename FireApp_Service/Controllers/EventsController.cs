@@ -115,5 +115,18 @@ namespace FireApp.Service.Controllers
         {
             return DatabaseOperations.GetAllFireEvents();
         }
+
+        /*******************************************************************************************
+         * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
+         * 
+         * returns a list with all active FireEvents with a matching TargetState
+         ******************************************************************************************/
+        [HttpGet, Route("active/{targetState}")]
+        public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
+        {
+            return DatabaseOperations.GetAllActiveFireEvents(targetState);
+        }
+
+
     }
 }
