@@ -1,0 +1,11 @@
+diff a/FireApp_Service/Controllers/EventsController.cs b/FireApp_Service/Controllers/EventsController.cs	(rejected hunks)
+@@ -130,6 +130,9 @@
+         }
+ 
+         /*******************************************************************************************
++=======
++         * 
++>>>>>>> parent of 0a2821b... nix geht super soch
+          * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
+          * 
+          * returns a list with all active FireEvents with a matching TargetState

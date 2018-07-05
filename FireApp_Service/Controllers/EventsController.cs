@@ -13,6 +13,7 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("events")]
     public class EventsController : ApiController
     {
+
         /*******************************************************************************************
          * public bool DetailsByCompanyId([FromBody] FireEvent fe)
          * 
@@ -21,7 +22,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
-            return DatabaseOperations.UploadFireEvent(fe);         
+            return DatabaseOperations.UploadFireEvent(fe);
         }
 
         /*******************************************************************************************
@@ -65,9 +66,9 @@ namespace FireApp.Service.Controllers
          * 
          * returns a list of all FireEvents with matching sourceId, targetId and timeStamp
          ******************************************************************************************/
-         [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
+        [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
-            (int sourceId, string targetId, long timeStamp)
+           (int sourceId, string targetId, long timeStamp)
         {
             return DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp);
         }
@@ -130,9 +131,25 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
+<<<<<<< HEAD
 =======
          * 
 >>>>>>> parent of 0a2821b... nix geht super soch
+=======
+         * public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
+         * 
+         * returns an array with the number of FireEvents of the given EventType where each column
+         * represents one month
+         ******************************************************************************************/
+        [HttpGet, Route("typeyear/{eventType}/{year}")]
+        public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
+        {
+            return DatabaseOperations.CountFireEventsByEventTypePerYear(eventType, year);
+        }
+
+
+        /*******************************************************************************************
+>>>>>>> 0a2821bf6909a5fab58ef9bce61b9211f31a1ee4
          * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
          * 
          * returns a list with all active FireEvents with a matching TargetState
@@ -164,5 +181,7 @@ namespace FireApp.Service.Controllers
         {
             return DatabaseOperations.GetAllTargets();
         }
+
+
     }
 }
