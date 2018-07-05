@@ -131,11 +131,6 @@ namespace FireApp.Service.Controllers
         }
 
         /*******************************************************************************************
-<<<<<<< HEAD
-=======
-         * 
->>>>>>> parent of 0a2821b... nix geht super soch
-=======
          * public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
          * 
          * returns an array with the number of FireEvents of the given EventType where each column
@@ -149,7 +144,6 @@ namespace FireApp.Service.Controllers
 
 
         /*******************************************************************************************
->>>>>>> 0a2821bf6909a5fab58ef9bce61b9211f31a1ee4
          * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
          * 
          * returns a list with all active FireEvents with a matching TargetState
