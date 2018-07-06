@@ -16,8 +16,7 @@ namespace FireApp.Service
         /// <returns>returns all FireEvents from local Database</returns>
         public static IEnumerable<FireEvent> GetAllFireEvents()
         {
-            //return (IEnumerable<FireEvent>)Data.GetAllFireEvents();
-            return QueryFireEvents();
+            return (IEnumerable<FireEvent>)LocalDatabase.GetAllFireEvents();
         }
 
         /// <summary>
@@ -74,12 +73,8 @@ namespace FireApp.Service
         /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
         public static FireEvent GetFireEventById(int sourceId, int eventId)
         {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                return table.FindOne(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);
-            }
+            List<FireEvent> events = LocalDatabase.GetAllFireEvents();
+            return events.Find(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);          
         }
 
         /// <summary>

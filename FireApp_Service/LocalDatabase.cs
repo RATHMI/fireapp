@@ -3,27 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FireApp.Domain;
+using FireApp.Service.Cache;
 
 namespace FireApp.Service
 {
-    public class LocalDatabase
+    public static class LocalDatabase
     {
-        private List<FireEvent> allFireEvents;
-        private List<FireEvent> activeFireEvents;
+        static string allFireEventsString = "allFireEvents";
+        static string activeFireEventsString = "activeFireEvents";
 
-        public LocalDatabase()
+        static LocalDatabase(){}
+
+        public static List<FireEvent> GetAllFireEvents()
         {
-            allFireEvents = DatabaseOperations.QueryFireEvents().ToList<FireEvent>();
-            activeFireEvents = DatabaseOperations.QueryActiveFireEvents().ToList<FireEvent>();
+            return (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
         }
 
-        public List<FireEvent> GetAllFireEvents()
+        public static void UpsertActiveFireEvent(FireEvent fe)
         {
-            return allFireEvents;
-        }
-
-        public void UpsertActiveFireEvent(FireEvent fe)
-        {
+            List<FireEvent> activeFireEvents = GetActiveFireEvents();
             FireEvent old = activeFireEvents.FirstOrDefault(x => x.Id.SourceId == fe.Id.SourceId && x.TargetId == fe.TargetId);
             if (old != null)
             {
@@ -33,17 +31,28 @@ namespace FireApp.Service
             {
                 activeFireEvents.Add(fe);
             }
+            GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
+            GlobalCachingProvider.Instance.AddItem(activeFireEventsString, activeFireEvents);
         }
 
-        public List<FireEvent> GetActiveFireEvents()
+        public static List<FireEvent> GetActiveFireEvents()
         {
-            return activeFireEvents;
+            return (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
         }
 
-        public void DeleteActiveFireEvent(FireEvent fe)
+        public static void DeleteActiveFireEvent(FireEvent fe)
         {
+            List<FireEvent> activeFireEvents = GetActiveFireEvents();
             FireEvent old = activeFireEvents.FirstOrDefault(x => x.Id.SourceId == fe.Id.SourceId && x.TargetId == fe.TargetId);
             activeFireEvents.Remove(fe);
+            GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
+            GlobalCachingProvider.Instance.AddItem(activeFireEventsString, activeFireEvents);
+        }
+
+        public static void InitializeDatabase(List<FireEvent> all, List<FireEvent> active)
+        {
+            GlobalCachingProvider.Instance.AddItem(allFireEventsString, all);
+            GlobalCachingProvider.Instance.AddItem(activeFireEventsString, active);
         }
     }
 }
