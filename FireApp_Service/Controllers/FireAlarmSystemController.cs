@@ -11,33 +11,32 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("fas")]
     public class FireAlarmSystemController : ApiController
     {
-        /*******************************************************************************************
-         * public bool CreateFireAlarmSystem([FromBody] FireAlarmSystem fas)
-         * 
-         * inserts a FireAlarmSystem into the database or updates it if it already exists
-         ******************************************************************************************/
+        /// <summary>
+        /// inserts a FireAlarmSystem into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="fas">The FireAlarmSystem you want to insert</param>
+        /// <returns>returns true if the insert was successful</returns>
         [HttpPost, Route("upload")]
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
             return DatabaseOperations.UploadFireAlarmSystem(fas);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireAlarmSystem> All()
-         * 
-         * returns a list with all FireAlarmSystems
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list with all FireAlarmSystems</returns>
         [HttpGet, Route("all")]
         public IEnumerable<FireAlarmSystem> All()
         {
             return DatabaseOperations.GetAllFireAlarmSystems();
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
-         * 
-         * return a FireAlarmSystem with a matching id
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
+        /// <returns>returns a FireAlarmSystem with a matching id</returns>
         [HttpGet, Route("id/{id}")]
         public FireAlarmSystem GetFireAlarmSystemById(int id)
         {

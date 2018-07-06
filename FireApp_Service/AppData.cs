@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace FireApp.Service {
     public static class AppData {
-        //public static LocalData Data;
+        public static LocalDatabase Data;
 
         static AppData() {
             BsonMapper.Global.Entity<FireEvent>()
@@ -18,8 +18,6 @@ namespace FireApp.Service {
             BsonMapper.Global.Entity<FireAlarmSystem>()
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
-                .Id(x => x.Id, true);
-            BsonMapper.Global.Entity<Target>()
                 .Id(x => x.Id, true);
         }
         
@@ -54,14 +52,17 @@ namespace FireApp.Service {
         }
         #endregion
 
-        #region TargetDB
-        public static LiteDatabase TargetDB()
+        #region ActiveFireEventDB
+        /// <summary>
+        /// Stores all active FireEvents
+        /// </summary>
+        public static LiteDatabase ActiveFireEventDB()
         {
             return new LiteDatabase(AppSettings.FireEventDBPath);
         }
-        public static LiteCollection<Target> TargetTable(this LiteDatabase db)
+        public static LiteCollection<FireEvent> ActiveFireEventTable(this LiteDatabase db)
         {
-            return db.GetCollection<Target>("target");
+            return db.GetCollection<FireEvent>("active");
         }
         #endregion
     }

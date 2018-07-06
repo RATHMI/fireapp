@@ -25,47 +25,58 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.UploadFireEvent(fe);
         }
 
-        /*******************************************************************************************
-         * public FireEvent GetFireEventById(int sourceId, int eventId)
-         * 
-         * returns a distinct Fireevent with a matching sourceId and eventId
-         * (a Fireevent from a distinct fire alarm system with the matching eventId)
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
+        /// the FireEvent</param>
+        /// <param name="eventId">The ongoing number of the FireEvents of one
+        /// FireAlarmSystem</param>
+        /// <returns>returns a distinct FireEvent with a matching sourceId and eventId 
+        /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
         [HttpGet, Route("id/{sourceId}/{eventId}")]
         public FireEvent GetFireEventById(int sourceId, int eventId)
         {
             return DatabaseOperations.GetFireEventById(sourceId, eventId);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventBySourceId(int sourceId)
-         * 
-         * returns a list of all Fireevents with a matching sourceId
-         * (all Fireevents from a distinct fire alarm system)
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
+        /// the FireEvent</param>
+        /// <returns>returns a list of all Fireevents with a matching sourceId 
+        /// (all Fireevents from a distinct fire alarm system)</returns>
         [HttpGet, Route("sid/{sourceId}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
             return DatabaseOperations.GetFireEventsBySourceId(sourceId);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
-         * 
-         * returns a list of all FireEvents with matching sourceId and targetId
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
+        /// the FireEvent</param>
+        /// <param name="targetId">The id of the fire detector that sent the 
+        /// FireEvent</param>
+        /// <returns>returns a list of all FireEvents with matching sourceId and targetId</returns>
         [HttpGet, Route("stid/{sourceId}/{targetId}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
             return DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp(
-         * int sourceId, string targetId, DateTime timeStamp)
-         * 
-         * returns a list of all FireEvents with matching sourceId, targetId and timeStamp
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
+        /// the FireEvent</param>
+        /// <param name="targetId">The id of the fire detector that sent the 
+        /// FireEvent</param>
+        /// <param name="timeStamp">The date and time that the FireEvent occured</param>
+        /// <returns>returns a list of all FireEvents with matching sourceId, targetId and 
+        /// timeStamp</returns>
         [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
            (int sourceId, string targetId, long timeStamp)
@@ -73,109 +84,111 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
-         * 
-         * returns a list of all FireEvents with matching sourceId and eventType
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
+        /// the FireEvent</param>
+        /// <param name="eventType">The EventType of the FireEvent</param>
+        /// <returns>returns a list of all FireEvents with matching sourceId and eventType</returns>
         [HttpGet, Route("et/{sourceId}/{eventType}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             return DatabaseOperations.GetFireEventsBySourceIdEventType(sourceId, eventType);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
-         * 
-         * returns a list of all FireEvents with matching eventType
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="eventType">The EventType of the FireEvents</param>
+        /// <returns>returns a list of all FireEvents with matching eventType</returns>
         [HttpGet, Route("et/{eventType}")]
         public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
         {
             return DatabaseOperations.GetFireEventsByEventType(eventType);
         }
 
-        /*******************************************************************************************
-         * IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, DateTime startTime, DateTime endTime)
-         * 
-         * returns a list of all FireEvents with matching sourceId and and a Timestamp between 
-         * startTime and endTime
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
+        /// the FireEvent</param>
+        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
+        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
+        /// <returns>returns a list of all FireEvents with matching sourceId and and a Timestamp between 
+        /// startTime and endTime</returns>
         [HttpGet, Route("time/{sourceId}/{startTime}/{endTime}")]
         public IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
             return DatabaseOperations.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime);
         }
 
-        /*******************************************************************************************
-         *  public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
-         * 
-         * returns a list of all FireEvents with a Timestamp between 
-         * startTime and endTime
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
+        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
+        /// <returns>returns a list of all FireEvents with a Timestamp between 
+        /// startTime and endTime</returns>
         [HttpGet, Route("time/{startTime}/{endTime}")]
         public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
         {
             return DatabaseOperations.GetFireEventsByTimespan(startTime, endTime);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> All()
-         * 
-         * returns a list with all Fireevents
-         ******************************************************************************************/
+         /// <summary>
+         /// 
+         /// </summary>
+         /// <returns>returns all FireEvents</returns>
         [HttpGet, Route("all")]
         public IEnumerable<FireEvent> All()
         {
             return DatabaseOperations.GetAllFireEvents();
         }
 
-        /*******************************************************************************************
-         * public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
-         * 
-         * returns an array with the number of FireEvents of the given EventType where each column
-         * represents one month
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="eventType">The EventType of the FireEvents</param>
+        /// <param name="year">The year of the FireEvents' TimeStamp</param>
+        /// <returns>returns an array with the number of FireEvents of the given EventType 
+        /// that occured in the given year. Each column represents one month</returns>
         [HttpGet, Route("typeyear/{eventType}/{year}")]
         public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
         {
             return DatabaseOperations.CountFireEventsByEventTypePerYear(eventType, year);
         }
 
-
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> Active([FromBody] TargetState targetState)
-         * 
-         * returns a list with all active FireEvents with a matching TargetState
-         ******************************************************************************************/
+         /// <summary>
+         /// 
+         /// </summary>
+         /// <param name="targetState">The TargetState of the active FireEvents</param>
+         /// <returns>returns a list of all active FireEvents of the given 
+         /// TargetState</returns>
         [HttpGet, Route("active/{targetState}")]
         public IEnumerable<FireEvent> Active(string targetState)
         {
             return DatabaseOperations.GetAllActiveFireEvents(targetState);
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<FireEvent> Active()
-         * 
-         * returns a list with all active FireEvents
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list of all active FireEvents</returns>
         [HttpGet, Route("active")]
         public IEnumerable<FireEvent> Active()
         {
             return DatabaseOperations.GetAllActiveFireEvents();
         }
 
-        /*******************************************************************************************
-         * public IEnumerable<Target> Targets()
-         * 
-         * returns a list with all Targets
-         ******************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list with all Targets</returns>
         [HttpGet, Route("target")]
         public IEnumerable<Target> Targets()
         {
             return DatabaseOperations.GetAllTargets();
         }
-
-
     }
 }
