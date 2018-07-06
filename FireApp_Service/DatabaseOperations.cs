@@ -407,7 +407,7 @@ namespace FireApp.Service
                 fe.EventType == EventTypes.outoforder)
             {
                 // insert into local database
-                //AppData.Data.UpsertActiveFireEvent(fe);
+                LocalDatabase.UpsertActiveFireEvent(fe);
               
                 // insert into remote database
                 using (var db = AppData.ActiveFireEventDB())
@@ -421,7 +421,7 @@ namespace FireApp.Service
                 if (fe.EventType == EventTypes.reset)
                 {
                     // delete active FireEvent from local database
-                    //AppData.Data.DeleteActiveFireEvent(fe);
+                    LocalDatabase.DeleteActiveFireEvent(fe);
 
                     // delete active FireEvent from remote database
                     using (var db = AppData.ActiveFireEventDB())

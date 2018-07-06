@@ -18,6 +18,8 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
+            BsonMapper.Global.Entity<FireEvent>()
+                .Id(x => x.Id, true);
 
             LocalDatabase.InitializeDatabase((List<FireEvent>)DatabaseOperations.QueryFireEvents(), 
                 (List<FireEvent>)DatabaseOperations.QueryActiveFireEvents());
