@@ -165,10 +165,10 @@ namespace FireApp.Service.Controllers
          /// <param name="targetState">The TargetState of the active FireEvents</param>
          /// <returns>returns a list of all active FireEvents of the given 
          /// TargetState</returns>
-        [HttpGet, Route("active/{targetState}")]
-        public IEnumerable<FireEvent> Active(string targetState)
+        [HttpGet, Route("active/{eventType}")]
+        public IEnumerable<FireEvent> Active([FromBody]EventTypes eventType)
         {
-            return DatabaseOperations.GetAllActiveFireEvents(targetState);
+            return DatabaseOperations.GetAllActiveFireEvents(eventType);
         }
 
         /// <summary>
@@ -181,14 +181,5 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.GetAllActiveFireEvents();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>returns a list with all Targets</returns>
-        [HttpGet, Route("target")]
-        public IEnumerable<Target> Targets()
-        {
-            return DatabaseOperations.GetAllTargets();
-        }
     }
 }
