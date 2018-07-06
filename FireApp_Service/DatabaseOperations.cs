@@ -38,11 +38,11 @@ namespace FireApp.Service
         /// <returns>returns all active FireEvents from database</returns>
         public static IEnumerable<FireEvent> QueryActiveFireEvents()
         {
-            /*using (var db = AppData.ActiveFireEventDB())
+            using (var db = AppData.ActiveFireEventDB())
             {
                 var table = db.ActiveFireEventTable();
                 return table.FindAll();
-            }*/
+            }
             return null;
         }
 
@@ -75,7 +75,14 @@ namespace FireApp.Service
         public static FireEvent GetFireEventById(int sourceId, int eventId)
         {
             List<FireEvent> events = LocalDatabase.GetAllFireEvents();
-            return events.Find(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);          
+            if (events != null)
+            {
+                return events.Find(x => x.Id.SourceId == sourceId && x.Id.EventId == eventId);
+            }
+            else
+            {
+                return null;
+            }     
         }
 
         /// <summary>
@@ -369,8 +376,7 @@ namespace FireApp.Service
         /// TargetState</returns>
         public static IEnumerable<FireEvent> GetAllActiveFireEvents(EventTypes eventType)
         {
-            /*
-            List<FireEvent> events = AppData.Data.GetActiveFireEvents();
+            List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
             List<FireEvent> result = new List<FireEvent>();
             foreach(FireEvent fe in events)
             {
@@ -380,9 +386,7 @@ namespace FireApp.Service
                 }
             }
 
-            return (IEnumerable<FireEvent>)result;
-            */
-            return null;
+            return (IEnumerable<FireEvent>)result;          
         }
 
         /// <summary>
@@ -391,8 +395,7 @@ namespace FireApp.Service
         /// <returns>returns a list of all active FireEvents</returns>
         public static IEnumerable<FireEvent> GetAllActiveFireEvents()
         {
-            //return (IEnumerable<FireEvent>)AppData.Data.GetActiveFireEvents();
-            return null;
+            return (IEnumerable<FireEvent>)LocalDatabase.GetActiveFireEvents();
         }
 
         /// <summary>
@@ -410,13 +413,12 @@ namespace FireApp.Service
                 // insert into local database
                 LocalDatabase.UpsertActiveFireEvent(fe);
               
-                // insert into remote database
-                /*
+                // insert into remote database                
                 using (var db = AppData.ActiveFireEventDB())
                 {                    
                     var table = db.ActiveFireEventTable();
                     return table.Upsert(fe);
-                }*/
+                }
             }
             else
             {
@@ -426,7 +428,7 @@ namespace FireApp.Service
                     LocalDatabase.DeleteActiveFireEvent(fe);
 
                     // delete active FireEvent from remote database
-                    /*using (var db = AppData.ActiveFireEventDB())
+                    using (var db = AppData.ActiveFireEventDB())
                     {
                         var table = db.ActiveFireEventTable();
                         FireEvent target = table.FindOne(x => x.Id.SourceId == fe.Id.SourceId && x.TargetId == fe.TargetId);
@@ -439,7 +441,7 @@ namespace FireApp.Service
                                 return false;
                             }
                         }
-                    }*/
+                    }
                 }
             }
             return false;            

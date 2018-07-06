@@ -29,11 +29,12 @@ namespace FireApp.Test {
 
             Task.Delay(1000);
 
+            /*
             System.Console.WriteLine("\r\n\r\nTest active");
             rv = FireEventTests.GetActiveFireEvents(addr);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-
+            */
             /*
             var byId = ServiceGetCall<FireEvent>(addr + "id/9/9");
             System.Console.WriteLine("\r\n\r\nTest GetFireEventById");
