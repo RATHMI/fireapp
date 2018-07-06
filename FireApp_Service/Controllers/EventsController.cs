@@ -13,7 +13,6 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("events")]
     public class EventsController : ApiController
     {
-
         /// <summary>
         /// inserts a FireEvent into the database or updates it if it already exists
         /// </summary>

@@ -16,7 +16,8 @@ namespace FireApp.Service
         /// <returns>returns all FireEvents from local Database</returns>
         public static IEnumerable<FireEvent> GetAllFireEvents()
         {
-            return (IEnumerable<FireEvent>)AppData.Data.GetAllFireEvents();
+            //return (IEnumerable<FireEvent>)Data.GetAllFireEvents();
+            return QueryFireEvents();
         }
 
         /// <summary>
@@ -372,6 +373,7 @@ namespace FireApp.Service
         /// TargetState</returns>
         public static IEnumerable<FireEvent> GetAllActiveFireEvents(EventTypes eventType)
         {
+            /*
             List<FireEvent> events = AppData.Data.GetActiveFireEvents();
             List<FireEvent> result = new List<FireEvent>();
             foreach(FireEvent fe in events)
@@ -383,6 +385,8 @@ namespace FireApp.Service
             }
 
             return (IEnumerable<FireEvent>)result;
+            */
+            return null;
         }
 
         /// <summary>
@@ -391,7 +395,8 @@ namespace FireApp.Service
         /// <returns>returns a list of all active FireEvents</returns>
         public static IEnumerable<FireEvent> GetAllActiveFireEvents()
         {
-            return (IEnumerable<FireEvent>)AppData.Data.GetActiveFireEvents();
+            //return (IEnumerable<FireEvent>)AppData.Data.GetActiveFireEvents();
+            return null;
         }
 
         /// <summary>
@@ -407,7 +412,7 @@ namespace FireApp.Service
                 fe.EventType == EventTypes.outoforder)
             {
                 // insert into local database
-                AppData.Data.UpsertActiveFireEvent(fe);
+                //AppData.Data.UpsertActiveFireEvent(fe);
               
                 // insert into remote database
                 using (var db = AppData.ActiveFireEventDB())
@@ -421,7 +426,7 @@ namespace FireApp.Service
                 if (fe.EventType == EventTypes.reset)
                 {
                     // delete active FireEvent from local database
-                    AppData.Data.DeleteActiveFireEvent(fe);
+                    //AppData.Data.DeleteActiveFireEvent(fe);
 
                     // delete active FireEvent from remote database
                     using (var db = AppData.ActiveFireEventDB())

@@ -10,7 +10,6 @@ using System.Xml.Serialization;
 
 namespace FireApp.Service {
     public static class AppData {
-        public static LocalDatabase Data;
 
         static AppData() {
             BsonMapper.Global.Entity<FireEvent>()
@@ -19,6 +18,8 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
+
+
         }
         
         #region FireEventDB
