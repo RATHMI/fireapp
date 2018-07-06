@@ -14,11 +14,11 @@ namespace FireApp.Service.Controllers
     public class EventsController : ApiController
     {
 
-        /*******************************************************************************************
-         * public bool DetailsByCompanyId([FromBody] FireEvent fe)
-         * 
-         * inserts a FireEvent into the database or updates it if it already exists
-         ******************************************************************************************/
+        /// <summary>
+        /// inserts a FireEvent into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="fe">FireEvent that should be inserted into the Database</param>
+        /// <returns>returns true if new object was inserted</returns>
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
