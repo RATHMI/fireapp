@@ -47,9 +47,9 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all Fireevents with a matching sourceId 
         /// (all Fireevents from a distinct fire alarm system)</returns>
         [HttpGet, Route("sid/{sourceId}")]
-        public IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
+        public FireEvent[] GetFireEventsBySourceId(int sourceId)
         {
-            return DatabaseOperations.GetFireEventsBySourceId(sourceId);
+            return (DatabaseOperations.GetFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace FireApp.Service.Controllers
         /// FireEvent</param>
         /// <returns>returns a list of all FireEvents with matching sourceId and targetId</returns>
         [HttpGet, Route("stid/{sourceId}/{targetId}")]
-        public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
+        public FireEvent[] GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
-            return DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId);
+            return (DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -77,10 +77,10 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all FireEvents with matching sourceId, targetId and 
         /// timeStamp</returns>
         [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
-        public IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
+        public FireEvent[] GetFireEventsBySourceIdTargetIdTimeStamp
            (int sourceId, string targetId, long timeStamp)
         {
-            return DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp);
+            return (DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace FireApp.Service.Controllers
         /// <param name="eventType">The EventType of the FireEvent</param>
         /// <returns>returns a list of all FireEvents with matching sourceId and eventType</returns>
         [HttpGet, Route("et/{sourceId}/{eventType}")]
-        public IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
+        public FireEvent[] GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            return DatabaseOperations.GetFireEventsBySourceIdEventType(sourceId, eventType);
+            return (DatabaseOperations.GetFireEventsBySourceIdEventType(sourceId, eventType)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace FireApp.Service.Controllers
         /// <param name="eventType">The EventType of the FireEvents</param>
         /// <returns>returns a list of all FireEvents with matching eventType</returns>
         [HttpGet, Route("et/{eventType}")]
-        public IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
+        public FireEvent[] GetFireEventsByEventType(EventTypes eventType)
         {
-            return DatabaseOperations.GetFireEventsByEventType(eventType);
+            return (DatabaseOperations.GetFireEventsByEventType(eventType)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -117,9 +117,9 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all FireEvents with matching sourceId and and a Timestamp between 
         /// startTime and endTime</returns>
         [HttpGet, Route("time/{sourceId}/{startTime}/{endTime}")]
-        public IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
+        public FireEvent[] GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
-            return DatabaseOperations.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime);
+            return (DatabaseOperations.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -130,9 +130,9 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all FireEvents with a Timestamp between 
         /// startTime and endTime</returns>
         [HttpGet, Route("time/{startTime}/{endTime}")]
-        public IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
+        public FireEvent[] GetFireEventsByTimespan(long startTime, long endTime)
         {
-            return DatabaseOperations.GetFireEventsByTimespan(startTime, endTime);
+            return (DatabaseOperations.GetFireEventsByTimespan(startTime, endTime)).ToArray<FireEvent>();
         }
 
          /// <summary>
@@ -140,9 +140,9 @@ namespace FireApp.Service.Controllers
          /// </summary>
          /// <returns>returns all FireEvents</returns>
         [HttpGet, Route("all")]
-        public IEnumerable<FireEvent> All()
+        public FireEvent[] All()
         {
-            return DatabaseOperations.GetAllFireEvents();
+            return (DatabaseOperations.GetAllFireEvents()).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -165,9 +165,9 @@ namespace FireApp.Service.Controllers
          /// <returns>returns a list of all active FireEvents of the given 
          /// TargetState</returns>
         [HttpGet, Route("active/{eventType}")]
-        public IEnumerable<FireEvent> Active([FromBody]EventTypes eventType)
+        public FireEvent[] Active([FromBody]EventTypes eventType)
         {
-            return DatabaseOperations.GetAllActiveFireEvents(eventType);
+            return (DatabaseOperations.GetAllActiveFireEvents(eventType)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -175,9 +175,9 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <returns>returns a list of all active FireEvents</returns>
         [HttpGet, Route("active")]
-        public IEnumerable<FireEvent> Active()
+        public FireEvent[] Active()
         {
-            return DatabaseOperations.GetAllActiveFireEvents();
+            return (DatabaseOperations.GetAllActiveFireEvents()).ToArray<FireEvent>();
         }
 
     }

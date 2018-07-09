@@ -27,9 +27,9 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <returns>returns a list with all FireAlarmSystems</returns>
         [HttpGet, Route("all")]
-        public IEnumerable<FireAlarmSystem> All()
+        public FireAlarmSystem[] All()
         {
-            return DatabaseOperations.GetAllFireAlarmSystems();
+            return (DatabaseOperations.GetAllFireAlarmSystems()).ToArray<FireAlarmSystem>();
         }
 
         /// <summary>

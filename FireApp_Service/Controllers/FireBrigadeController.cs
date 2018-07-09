@@ -27,9 +27,9 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <returns>returns a list with all FireBrigades</returns>
         [HttpGet, Route("all")]
-        public IEnumerable<FireBrigade> All()
+        public FireBrigade[] All()
         {
-            return DatabaseOperations.GetAllFireBrigades();
+            return (DatabaseOperations.GetAllFireBrigades()).ToArray<FireBrigade>();
         }
 
         /// <summary>
