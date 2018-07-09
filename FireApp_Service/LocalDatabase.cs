@@ -117,8 +117,8 @@ namespace FireApp.Service
 
         public static void InitializeDatabase()
         {
-            List<FireEvent> all = (List<FireEvent>)DatabaseOperations.QueryFireEvents();
-            List<FireEvent> active = (List<FireEvent>)DatabaseOperations.QueryActiveFireEvents();
+            List<FireEvent> all = (DatabaseOperations.QueryFireEvents()).ToList<FireEvent>();
+            List<FireEvent> active = (DatabaseOperations.QueryActiveFireEvents()).ToList<FireEvent>();
         
             if(all != null)
             {

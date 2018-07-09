@@ -28,6 +28,7 @@ namespace FireApp.Service {
             config.MapHttpAttributeRoutes();
 
             app.UseWebApi(config);
+            LocalDatabase.InitializeDatabase();
         }
     }
 }
