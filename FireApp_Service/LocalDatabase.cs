@@ -7,13 +7,23 @@ using FireApp.Service.Cache;
 
 namespace FireApp.Service
 {
+    /// <summary>
+    /// this class is for storing the FireEvents in a cache
+    /// </summary>
     public static class LocalDatabase
     {
+        // the key to retrieve the list of all FireEvents from the cache
         static string allFireEventsString = "allFireEvents";
+
+        // the key to retrieve the list of active FireEvents from the cache
         static string activeFireEventsString = "activeFireEvents";
 
         static LocalDatabase(){}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
         public static List<FireEvent> GetAllFireEvents()
         {
             List<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
@@ -24,6 +34,10 @@ namespace FireApp.Service
             return rv;
         }
 
+        /// <summary>
+        /// Inserts or updates an active FireEvent in the cache
+        /// </summary>
+        /// <param name="fe">active FireEvent that should be stored in the cache</param>
         public static void UpsertActiveFireEvent(FireEvent fe)
         {
             List<FireEvent> activeFireEvents = GetActiveFireEvents();
@@ -52,6 +66,10 @@ namespace FireApp.Service
             GlobalCachingProvider.Instance.AddItem(activeFireEventsString, activeFireEvents);
         }
 
+        /// <summary>
+        /// Inserts or updates a FireEvent in the cache
+        /// </summary>
+        /// <param name="fe">FireEvent that should be stored in the cache</param>
         public static void UpsertFireEvent(FireEvent fe)
         {
             List<FireEvent> allFireEvents = GetAllFireEvents();
@@ -80,6 +98,10 @@ namespace FireApp.Service
             GlobalCachingProvider.Instance.AddItem(activeFireEventsString, allFireEvents);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list of all active FireEvents from the cache</returns>
         public static List<FireEvent> GetActiveFireEvents()
         {
             List<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
@@ -90,6 +112,10 @@ namespace FireApp.Service
             return rv;
         }
 
+        /// <summary>
+        /// Deletes the active FireEvent 'fe' from the cache
+        /// </summary>
+        /// <param name="fe">The active FireEvent that should be deleted from the cache</param>
         public static void DeleteActiveFireEvent(FireEvent fe)
         {
             List<FireEvent> activeFireEvents = GetActiveFireEvents();
@@ -108,19 +134,22 @@ namespace FireApp.Service
             {
                 activeFireEvents.Remove(fe);
                 GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
-                if (activeFireEvents != null)
+                if (activeFireEvents != null)   // Server crashes if you try to insert null
                 {
                     GlobalCachingProvider.Instance.AddItem(activeFireEventsString, activeFireEvents);
                 }
             }
         }
 
+        /// <summary>
+        /// Queries all FireEvents from the database and stores it in the cache
+        /// </summary>
         public static void InitializeDatabase()
         {
             List<FireEvent> all = (DatabaseOperations.QueryFireEvents()).ToList<FireEvent>();
             List<FireEvent> active = (DatabaseOperations.QueryActiveFireEvents()).ToList<FireEvent>();
-        
-            if(all != null)
+            
+            if(all != null)     // trying to insert null into the cache creates a server error
             {
                 GlobalCachingProvider.Instance.AddItem(allFireEventsString, all);
             }
@@ -129,7 +158,7 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(allFireEventsString, new List<FireEvent>());
             }
 
-            if (active != null)
+            if(active != null)  // trying to insert null into the cache creates a server error
             {
                 GlobalCachingProvider.Instance.AddItem(activeFireEventsString, active);
             }

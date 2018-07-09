@@ -20,8 +20,12 @@ namespace FireApp.Service {
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
         }
-        
+
         #region FireEventDB
+        /// <summary>
+        /// Stores all FireEvents
+        /// </summary>
+        /// <returns>returns the database</returns>
         public static LiteDatabase FireEventDB() {
             return new LiteDatabase(AppSettings.FireEventDBPath);
         }
@@ -31,6 +35,10 @@ namespace FireApp.Service {
         #endregion
 
         #region FireAlarmSystemDB
+        /// <summary>
+        /// Stores FireAlarmSystems
+        /// </summary>
+        /// <returns>returns the database</returns>
         public static LiteDatabase FireAlarmSystemDB()
         {
             return new LiteDatabase(AppSettings.FireEventDBPath);
@@ -42,6 +50,10 @@ namespace FireApp.Service {
         #endregion
 
         #region FireBrigadeDB
+        /// <summary>
+        /// Stores all FireBrigades
+        /// </summary>
+        /// <returns>returns the database</returns>
         public static LiteDatabase FireBrigadeDB()
         {
             return new LiteDatabase(AppSettings.FireEventDBPath);
@@ -56,6 +68,7 @@ namespace FireApp.Service {
         /// <summary>
         /// Stores all active FireEvents
         /// </summary>
+        /// <returns>returns the database</returns>
         public static LiteDatabase ActiveFireEventDB()
         {
             return new LiteDatabase(AppSettings.FireEventDBPath);
