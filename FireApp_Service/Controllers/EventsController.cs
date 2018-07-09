@@ -24,6 +24,17 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.UploadFireEvent(fe);
         }
 
+        #region allFireEvents
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns all FireEvents</returns>
+        [HttpGet, Route("all")]
+        public FireEvent[] All()
+        {
+            return (DatabaseOperations.GetAllFireEvents()).ToArray<FireEvent>();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -118,14 +129,14 @@ namespace FireApp.Service.Controllers
             return (DatabaseOperations.GetFireEventsByTimespan(startTime, endTime)).ToArray<FireEvent>();
         }
 
-         /// <summary>
-         /// 
-         /// </summary>
-         /// <returns>returns all FireEvents</returns>
-        [HttpGet, Route("all")]
-        public FireEvent[] All()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
+        [HttpGet, Route("time/{sourceId}/{year}/{month}/{day}")]
+        public FireEvent[] GetFireEventsByDate(int sourceId, int year, int month, int day)
         {
-            return (DatabaseOperations.GetAllFireEvents()).ToArray<FireEvent>();
+            return (DatabaseOperations.GetFireEventsByDate(sourceId, year, month, day)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -140,13 +151,15 @@ namespace FireApp.Service.Controllers
         {
             return DatabaseOperations.CountFireEventsByEventTypePerYear(eventType, year);
         }
+        #endregion
 
-         /// <summary>
-         /// 
-         /// </summary>
-         /// <param name="targetState">The TargetState of the active FireEvents</param>
-         /// <returns>returns a list of all active FireEvents of the given 
-         /// TargetState</returns>
+        #region activeFireEvents
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetState">The TargetState of the active FireEvents</param>
+        /// <returns>returns a list of all active FireEvents of the given 
+        /// TargetState</returns>
         [HttpGet, Route("active/{eventType}")]
         public FireEvent[] Active([FromBody]EventTypes eventType)
         {
@@ -163,5 +176,6 @@ namespace FireApp.Service.Controllers
             return (DatabaseOperations.GetAllActiveFireEvents()).ToArray<FireEvent>();
         }
 
+        #endregion
     }
 }

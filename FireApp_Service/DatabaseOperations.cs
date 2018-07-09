@@ -210,6 +210,57 @@ namespace FireApp.Service
             }
         }
 
+        /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
+        public static IEnumerable<FireEvent> GetFireEventsByDate(int sourceId, int year, int month, int day)
+        {
+            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> results = new List<FireEvent>();
+
+            foreach(FireEvent fe in events)
+            {
+                if(fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
+                {
+                    results.Add(fe);
+                }
+            }
+
+            return results;
+        }
+
+        /// <returns>returns all FireEvents from the given sourceId in the given year and month</returns>
+        public static IEnumerable<FireEvent> GetFireEventsByDate(int sourceId, int year, int month)
+        {
+            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> results = new List<FireEvent>();
+
+            foreach (FireEvent fe in events)
+            {
+                if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month)
+                {
+                    results.Add(fe);
+                }
+            }
+
+            return results;
+        }
+
+        /// <returns>returns all FireEvents from the given sourceId in the given year</returns>
+        public static IEnumerable<FireEvent> GetFireEventsByDate(int sourceId, int year)
+        {
+            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> results = new List<FireEvent>();
+
+            foreach (FireEvent fe in events)
+            {
+                if (fe.TimeStamp.Year == year)
+                {
+                    results.Add(fe);
+                }
+            }
+
+            return results;
+        }
+
         /// <summary>
         /// 
         /// </summary>
