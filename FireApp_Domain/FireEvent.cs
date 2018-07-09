@@ -25,6 +25,11 @@ namespace FireApp.Domain {
         public string TargetDescription { get; set; } // Description of the Location/Fire Detector (e.g. Melder Büro)
         
         public EventTypes EventType { get; set; } // type of the event that ocurred
+
+        public override string ToString()
+        {
+            return $"{this.Id.SourceId.ToString()};{this.Id.EventId.ToString()};{this.TargetId.ToString()};{this.TargetDescription};{this.TimeStamp.ToString()};{this.EventType.ToString()}";
+        }
     }
 
 

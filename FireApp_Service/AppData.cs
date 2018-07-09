@@ -21,6 +21,7 @@ namespace FireApp.Service {
             BsonMapper.Global.Entity<FireEvent>()
                 .Id(x => x.Id, true);
 
+            // causes an error
             //LocalDatabase.InitializeDatabase((List<FireEvent>)DatabaseOperations.QueryFireEvents(), 
                 //(List<FireEvent>)DatabaseOperations.QueryActiveFireEvents());
         }
