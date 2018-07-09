@@ -11,7 +11,7 @@ http://ip:50862/events/
     .)  ../id/{sourceId}/{eventId}
         abrufen eines bestimmten FireEvents
         
-    .)  ../sid/{sourceId}
+    .)  ../id/{sourceId}
         abrufen aller FireEvents einer BMA
         
     .)  ../stid/{sourceId}/{targetId}
@@ -28,6 +28,16 @@ http://ip:50862/events/
         
     .)  ../time/{startTime}/{endTime}
         abrufen aller FireEvents zwischen startTime und endTime
+
+	.)  ../typeyear/{eventType}/{year}
+		liefert ein Feld von Integern, wobei jedes Feldelement die Anzahl der FireEvent des gegebenen EventTypes,
+		eines Monats, des angegebenen Jahres repräsentiert.
+
+	.)	../active/{eventType}
+		abrufen aller aktiven FireEvents des angegebenen EventTypes
+
+	.)	../active
+		abrufen aller aktiven FireEvents
         
 
 FireAlarmSystems (Brandmeldeanlagen)

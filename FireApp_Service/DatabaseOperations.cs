@@ -118,37 +118,7 @@ namespace FireApp.Service
 
                 return table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId);
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
-        /// <param name="targetId">The id of the fire detector that sent the 
-        /// FireEvent</param>
-        /// <param name="timeStamp">The date and time that the FireEvent occured</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId, targetId and 
-        /// timeStamp</returns>
-        public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetIdTimeStamp
-            (int sourceId, string targetId, long timeStamp)
-        {
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-
-                var events = table.Find(x => x.Id.SourceId == sourceId && x.TargetId == targetId);
-                List<FireEvent> results = new List<FireEvent>();
-                foreach (FireEvent e in events)
-                {
-                    if(e.TimeStamp.Ticks == timeStamp)
-                    {
-                        results.Add(e);
-                    }
-                }
-                return results;
-            }
-        }
+        }       
 
         /// <summary>
         /// 

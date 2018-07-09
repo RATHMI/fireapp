@@ -46,7 +46,7 @@ namespace FireApp.Service.Controllers
         /// the FireEvent</param>
         /// <returns>returns a list of all Fireevents with a matching sourceId 
         /// (all Fireevents from a distinct fire alarm system)</returns>
-        [HttpGet, Route("sid/{sourceId}")]
+        [HttpGet, Route("id/{sourceId}")]
         public FireEvent[] GetFireEventsBySourceId(int sourceId)
         {
             return (DatabaseOperations.GetFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
@@ -64,24 +64,7 @@ namespace FireApp.Service.Controllers
         public FireEvent[] GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
             return (DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId)).ToArray<FireEvent>();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
-        /// <param name="targetId">The id of the fire detector that sent the 
-        /// FireEvent</param>
-        /// <param name="timeStamp">The date and time that the FireEvent occured</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId, targetId and 
-        /// timeStamp</returns>
-        [HttpGet, Route("stidt/{sourceId}/{targetId}/{timeStamp}")]
-        public FireEvent[] GetFireEventsBySourceIdTargetIdTimeStamp
-           (int sourceId, string targetId, long timeStamp)
-        {
-            return (DatabaseOperations.GetFireEventsBySourceIdTargetIdTimeStamp(sourceId, targetId, timeStamp)).ToArray<FireEvent>();
-        }
+        }      
 
         /// <summary>
         /// 

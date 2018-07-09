@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <title>API Interface Description</title>
+</head>
+<body>
+    <h1 valign="center" font-size="48px">API Interface Description</h1>
+    <table width=100%>
+        <tr>
+            <th>URL</th>
+            <th>return value</th>
+            <th>description</th>
+        </tr>
+        <tr>
+            <td>http://ip:port/events/update</td>
+            <td>true if update was successful</td>
+            <td>transmit FireEvent via POST in Body</td>
+        </tr>
+        <tr>
+            <td>http://ip:port/events/all</td>
+            <td>Array of all FireEvents</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>http://ip:port/events/id/{sourceId}</td>
+            <td>returns all FireEvent from one FireAlarmSystem</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>http://ip:port/events/id/{sourceId}/{eventId}</td>
+            <td>returns a specific FireEvent</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>http://ip:port/events/...</td>
+        </tr>
+    </table>
+</body>
+</html>
