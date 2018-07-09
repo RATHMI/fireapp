@@ -114,7 +114,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApiInterfaceDescription.html" />
+    <Content Include="index.html" />
     <Content Include="Serverschnittstellen.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -135,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\Web.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
