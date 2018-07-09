@@ -43,7 +43,6 @@ namespace FireApp.Service
                 var table = db.ActiveFireEventTable();
                 return table.FindAll();
             }
-            return null;
         }
 
         /// <summary>
@@ -54,6 +53,7 @@ namespace FireApp.Service
         public static bool UploadFireEvent(FireEvent fe)
         {
             UploadActiveFireEvent(fe);
+            LocalDatabase.UpsertFireEvent(fe);
 
             using (var db = AppData.FireEventDB())
             {

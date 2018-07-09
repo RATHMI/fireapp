@@ -18,42 +18,32 @@ namespace FireApp.Service.Cache
 
         protected MemoryCache cache = new MemoryCache("CachingProvider");
 
-        static readonly object padlock = new object();
-
         protected virtual void AddItem(string key, object value)
         {
-            lock (padlock)
-            {
-                cache.Add(key, value, DateTimeOffset.MaxValue);
-            }
+            cache.AddOrGetExisting(key, value, DateTimeOffset.MaxValue);
         }
 
         protected virtual void RemoveItem(string key)
         {
-            lock (padlock)
-            {
-                cache.Remove(key);
-            }
+            cache.Remove(key);
         }
 
         protected virtual object GetItem(string key, bool remove)
         {
-            lock (padlock)
+
+            var res = cache[key];
+
+            if (res != null)
             {
-                var res = cache[key];
-
-                if (res != null)
-                {
-                    if (remove == true)
-                        cache.Remove(key);
-                }
-                else
-                {
-                    WriteToLog("CachingProvider-GetItem: Don't contains key: " + key);
-                }
-
-                return res;
+                if (remove == true)
+                    cache.Remove(key);
             }
+            else
+            {
+                WriteToLog("CachingProvider-GetItem: Don't contains key: " + key);
+            }
+
+            return res;            
         }
 
         #region Error Logs

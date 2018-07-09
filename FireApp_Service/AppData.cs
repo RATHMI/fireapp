@@ -11,19 +11,14 @@ using System.Xml.Serialization;
 namespace FireApp.Service {
     public static class AppData {
 
-        static AppData() {
+        static AppData()
+        {
             BsonMapper.Global.Entity<FireEvent>()
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireAlarmSystem>()
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
-            BsonMapper.Global.Entity<FireEvent>()
-                .Id(x => x.Id, true);
-
-            // causes an error
-            //LocalDatabase.InitializeDatabase((List<FireEvent>)DatabaseOperations.QueryFireEvents(), 
-                //(List<FireEvent>)DatabaseOperations.QueryActiveFireEvents());
         }
         
         #region FireEventDB
