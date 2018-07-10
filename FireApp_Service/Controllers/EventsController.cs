@@ -21,7 +21,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
-            return DatabaseOperations.UploadFireEvent(fe);
+            return DatabaseOperations.UpsertFireEvent(fe);
         }
 
         #region allFireEvents

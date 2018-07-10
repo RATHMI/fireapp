@@ -134,7 +134,6 @@ namespace FireApp.Service
         }
         #endregion
 
-        //todo: add delete method
         #region ActiveFireEvents
         /// <summary>
         /// Inserts or updates an active FireEvent in the cache
@@ -212,7 +211,6 @@ namespace FireApp.Service
         }
         #endregion
 
-        //todo: add delete method
         #region FireAlarmSystems
         /// <summary>
         /// 
@@ -259,9 +257,37 @@ namespace FireApp.Service
             GlobalCachingProvider.Instance.RemoveItem(fireAlarmSystemsString);
             GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, allFireAlarmSystems);
         }
+
+        /// <summary>
+        /// deletes a FireAlarmSystem from the cache
+        /// </summary>
+        /// <param name="id">id of the FireAlarmSystem you want to delete</param>
+        public static void DeleteFireAlarmSystem(int id)
+        {
+            List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems();
+            FireAlarmSystem old = null;
+
+            foreach (FireAlarmSystem fas in allFireAlarmSystems)
+            {
+                if (fas.Id == id)
+                {
+                    old = fas;
+                    break;
+                }
+            }
+
+            if (old != null)
+            {
+                allFireAlarmSystems.Remove(old);
+                GlobalCachingProvider.Instance.RemoveItem(fireAlarmSystemsString);
+                if (allFireAlarmSystems != null)
+                {
+                    GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, allFireAlarmSystems);
+                }
+            }            
+        }
         #endregion
 
-        //todo: add delete method
         #region FireBrigades
         /// <summary>
         /// 
@@ -269,7 +295,7 @@ namespace FireApp.Service
         /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
         public static List<FireBrigade> GetAllFireBrigades()
         {
-            List<FireBrigade> rv = (List<FireBrigade>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
+            List<FireBrigade> rv = (List<FireBrigade>)GlobalCachingProvider.Instance.GetItem(fireBrigadesString, false);
             if (rv == null)
             {
                 rv = new List<FireBrigade>();
@@ -308,9 +334,46 @@ namespace FireApp.Service
             GlobalCachingProvider.Instance.RemoveItem(fireBrigadesString);
             GlobalCachingProvider.Instance.AddItem(fireBrigadesString, allFireBrigades);
         }
+
+        /// <summary>
+        /// deletes a FireBrigade from the cache and from the lists of the FireAlarmSystems
+        /// </summary>
+        /// <param name="id">id of the FireBrigade you want to delete</param>
+        public static void DeleteFireBrigade(int id)
+        {
+            List<FireBrigade> allFireBrigades = GetAllFireBrigades();
+            FireBrigade old = null;
+
+            foreach (FireBrigade fb in allFireBrigades)
+            {
+                if (fb.Id == id)
+                {
+                    old = fb;
+                    break;
+                }
+            }
+
+            if (old != null)
+            {
+                allFireBrigades.Remove(old);
+                GlobalCachingProvider.Instance.RemoveItem(fireBrigadesString);
+                if(allFireBrigades != null)
+                {
+                    GlobalCachingProvider.Instance.AddItem(fireBrigadesString, allFireBrigades);
+                }
+
+                foreach(FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
+                {
+                    if (fas.FireBrigades.Contains(id))
+                    {
+                        fas.FireBrigades.Remove(id);
+                        LocalDatabase.UpsertFireAlarmSystem(fas);
+                    }
+                }
+            }
+        }
         #endregion
 
-        //todo: add delete method
         #region ServiceMembers
         /// <summary>
         /// 
@@ -356,6 +419,45 @@ namespace FireApp.Service
 
             GlobalCachingProvider.Instance.RemoveItem(serviceMembersString);
             GlobalCachingProvider.Instance.AddItem(serviceMembersString, allServiceMembers);
+        }
+
+        /// <summary>
+        /// deletes a ServiceMember from the cache and from the lists of the FireAlarmSystems
+        /// </summary>
+        /// <param name="id">id of the ServiceMember you want to delete</param>
+        public static void DeleteServiceMember(int id)
+        {
+            List<ServiceMember> allServiceMembers = GetAllServiceMembers();
+            ServiceMember old = null;
+
+            foreach (ServiceMember sm in allServiceMembers)
+            {
+                if (sm.Id == id)
+                {
+                    old = sm;
+                    break;
+                }
+            }
+
+            if (old != null)
+            {
+                allServiceMembers.Remove(old);
+                GlobalCachingProvider.Instance.RemoveItem(serviceMembersString);
+                if (allServiceMembers != null)
+                {
+                    GlobalCachingProvider.Instance.AddItem(serviceMembersString, allServiceMembers);
+                }
+
+                foreach (FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
+                {
+                    if (fas.ServiceMembers.Contains(id))
+                    {
+                        fas.ServiceMembers.Remove(id);
+                        LocalDatabase.UpsertFireAlarmSystem(fas);
+                    }
+                }
+            }
+          
         }
         #endregion
 

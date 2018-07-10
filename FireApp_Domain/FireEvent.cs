@@ -70,7 +70,7 @@ namespace FireApp.Domain {
         test = 3,
         reset = 4,
         info = 5,
-        outoforder = 6,
+        deactivated = 6,
         prealarm = 7,
         activation = 8
     };

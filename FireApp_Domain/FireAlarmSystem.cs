@@ -13,6 +13,24 @@ namespace FireApp.Domain
     {
         public FireAlarmSystem() {}
 
+        public FireAlarmSystem(
+            int id,
+            string company,
+            string description,
+            string country,
+            string city,
+            int postalCode,
+            string address)
+        {
+            this.Id = id;
+            this.Company = company;
+            this.Description = description;
+            this.Country = country;
+            this.City = city;
+            this.PostalCode = postalCode;
+            this.Address = address;
+        }
+
         // identifier of the FireAlarmSystem
         public int Id { get; set; }                         
 

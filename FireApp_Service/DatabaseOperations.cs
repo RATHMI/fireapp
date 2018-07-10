@@ -91,9 +91,9 @@ namespace FireApp.Service
         /// </summary>
         /// <param name="fe">FireEvent that should be inserted into the Database</param>
         /// <returns>returns true if new object was inserted</returns>
-        public static bool UploadFireEvent(FireEvent fe)
+        public static bool UpsertFireEvent(FireEvent fe)
         {
-            UploadActiveFireEvent(fe);
+            UpsertActiveFireEvent(fe);
             LocalDatabase.UpsertFireEvent(fe);
 
             using (var db = AppData.FireEventDB())
@@ -143,7 +143,7 @@ namespace FireApp.Service
             else
             {
                 return null;
-            }     
+            }
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace FireApp.Service
             {
                 return null;
             }
-        }       
+        }
 
         /// <summary>
         /// 
@@ -237,7 +237,7 @@ namespace FireApp.Service
             else
             {
                 return null;
-            }            
+            }
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace FireApp.Service
             else
             {
                 return null;
-            }            
+            }
         }
 
         /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
@@ -275,9 +275,9 @@ namespace FireApp.Service
             List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
 
-            foreach(FireEvent fe in events)
+            foreach (FireEvent fe in events)
             {
-                if(fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
+                if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
                 {
                     results.Add(fe);
                 }
@@ -332,9 +332,9 @@ namespace FireApp.Service
             IEnumerable<FireEvent> events = GetFireEventsByEventType(eventType);
             Int32[] months = new Int32[12];
 
-            foreach(FireEvent fe in events)
+            foreach (FireEvent fe in events)
             {
-                if(fe.TimeStamp.Year == year)
+                if (fe.TimeStamp.Year == year)
                 {
                     switch (fe.TimeStamp.Month)
                     {
@@ -356,10 +356,9 @@ namespace FireApp.Service
 
             return months;
         }
-
+        
         #endregion
 
-        //todo: use localDB
         #region activeEvents
         /// <summary>
         /// 
@@ -396,7 +395,7 @@ namespace FireApp.Service
         /// </summary>
         /// <param name="fe">The FireEvent you want to create a target of</param>
         /// <returns>returns true if Target was inserted or deleted</returns>
-        public static bool UploadActiveFireEvent(FireEvent fe)
+        public static bool UpsertActiveFireEvent(FireEvent fe)
         {
             if (fe.EventType == EventTypes.prealarm ||
                 fe.EventType == EventTypes.alarm ||
@@ -444,14 +443,13 @@ namespace FireApp.Service
 
         #endregion
 
-        //todo: use localDB
         #region FireAlarmSystems
         /// <summary>
         /// inserts a FireAlarmSystem into the database or updates it if it already exists
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to insert</param>
         /// <returns>returns true if FireAlarmSystem was inserted</returns>
-        public static bool UploadFireAlarmSystem(FireAlarmSystem fas)
+        public static bool UpsertFireAlarmSystem(FireAlarmSystem fas)
         {
             LocalDatabase.UpsertFireAlarmSystem(fas);
 
@@ -468,11 +466,7 @@ namespace FireApp.Service
         /// <returns>returns a list with all FireAlarmSystems</returns>
         public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
         {
-            using (var db = AppData.FireAlarmSystemDB())
-            {
-                var table = db.FireAlarmSystemTable();
-                return table.FindAll();
-            }
+            return (IEnumerable<FireAlarmSystem>)LocalDatabase.GetAllFireAlarmSystems();
         }
 
         /// <summary>
@@ -482,12 +476,15 @@ namespace FireApp.Service
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
         public static FireAlarmSystem GetFireAlarmSystemById(int id)
         {
-            using (var db = AppData.FireAlarmSystemDB())
+            List<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
+            if(fireAlarmSystems != null)
             {
-                var table = db.FireAlarmSystemTable();
-
-                return table.FindOne(x => x.Id == id);
+                return fireAlarmSystems.Find(x => x.Id == id);
             }
+            else
+            {
+                return null;
+            }       
         }     
 
         /// <summary>
@@ -505,7 +502,8 @@ namespace FireApp.Service
                 FireBrigade fb = DatabaseOperations.GetFireBrigadeById(firebrigade);
                 if(fb != null)
                 {
-                    rv = fas.FireBrigades.Add(firebrigade);
+                    fas.FireBrigades.Add(firebrigade);
+                    rv = UpsertFireAlarmSystem(fas);                 
                 }
             }
 
@@ -527,7 +525,8 @@ namespace FireApp.Service
                 ServiceMember sm = DatabaseOperations.GetServiceMemberById(serviceMember);
                 if (sm != null)
                 {
-                    rv = fas.ServiceMembers.Add(serviceMember);
+                    fas.ServiceMembers.Add(serviceMember);
+                    rv = UpsertFireAlarmSystem(fas);
                 }
             }
 
@@ -535,14 +534,13 @@ namespace FireApp.Service
         }
         #endregion
 
-        //todo: use localDB
         #region FireBrigades
         /// <summary>
         /// inserts a FireBrigade into the database or updates it if it already exists
         /// </summary>
         /// <param name="fb"></param>
         /// <returns>returns true if the insert was successful</returns>
-        public static bool UploadFireBrigade(FireBrigade fb)
+        public static bool UpsertFireBrigade(FireBrigade fb)
         {
             LocalDatabase.UpsertFireBrigade(fb);
 
@@ -559,11 +557,7 @@ namespace FireApp.Service
         /// <returns>returns a list with all FireBrigades</returns>
         public static IEnumerable<FireBrigade> GetAllFireBrigades()
         {
-            using (var db = AppData.FireBrigadeDB())
-            {
-                var table = db.FireBrigadeTable();
-                return table.FindAll();
-            }
+            return (IEnumerable<FireBrigade>)LocalDatabase.GetAllFireBrigades();
         }
 
         /// <summary>
@@ -573,23 +567,25 @@ namespace FireApp.Service
         /// <returns>returns a FireBrigade with a matching id</returns>
         public static FireBrigade GetFireBrigadeById(int id)
         {
-            using (var db = AppData.FireBrigadeDB())
+            List<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
+            if(fireBrigades != null)
             {
-                var table = db.FireBrigadeTable();
-
-                return table.FindOne(x => x.Id == id);
+                return fireBrigades.Find(x => x.Id == id);
+            }
+            else
+            {
+                return null;
             }
         }
         #endregion
 
-        //todo: use localDB
         #region ServiceMembers
         /// <summary>
         /// inserts a ServiceMember into the database or updates it if it already exists
         /// </summary>
         /// <param name="sm">The ServiceMember you want to insert</param>
         /// <returns>returns true if ServiceMember was inserted</returns>
-        public static bool UploadServiceMember(ServiceMember sm)
+        public static bool UpsertServiceMember(ServiceMember sm)
         {
             LocalDatabase.UpsertServiceMember(sm);
 
@@ -606,11 +602,7 @@ namespace FireApp.Service
         /// <returns>returns a list with all ServiceMembers</returns>
         public static IEnumerable<ServiceMember> GetAllServiceMembers()
         {
-            using (var db = AppData.ServiceMemberDB())
-            {
-                var table = db.ServiceMemberTable();
-                return table.FindAll();
-            }
+            return (IEnumerable<ServiceMember>)LocalDatabase.GetAllServiceMembers();
         }
 
         /// <summary>
@@ -620,11 +612,14 @@ namespace FireApp.Service
         /// <returns>returns a ServiceMember with a matching id</returns>
         public static ServiceMember GetServiceMemberById(int id)
         {
-            using (var db = AppData.ServiceMemberDB())
+            List<ServiceMember> serviceMembers = LocalDatabase.GetAllServiceMembers();
+            if (serviceMembers != null)
             {
-                var table = db.ServiceMemberTable();
-
-                return table.FindOne(x => x.Id == id);
+                return serviceMembers.Find(x => x.Id == id);
+            }
+            else
+            {
+                return null;
             }
         }
         #endregion    

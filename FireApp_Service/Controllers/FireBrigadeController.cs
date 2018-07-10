@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool CreateFireBrigade([FromBody] FireBrigade fb)
         {
-            return DatabaseOperations.UploadFireBrigade(fb);
+            return DatabaseOperations.UpsertFireBrigade(fb);
         }
 
         /// <summary>

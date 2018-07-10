@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
-            return DatabaseOperations.UploadFireAlarmSystem(fas);
+            return DatabaseOperations.UpsertFireAlarmSystem(fas);
         }
 
         /// <summary>
