@@ -129,6 +129,7 @@
     <Compile Include="Controllers\FireAlarmSystemController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FireBrigadeController.cs" />
+    <Compile Include="Controllers\ServiceMemberController.cs" />
     <Compile Include="DatabaseOperations.cs" />
     <Compile Include="LocalDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -36,11 +36,11 @@ namespace FireApp.Domain
 
         // list of the identifiers of the FireBrigades 
         // that should have access to certain information
-        public List<int> FireBrigades { get; set; }
+        public HashSet<int> FireBrigades { get; set; }
 
         // list of the identifiers of the ServiceMembers 
         // that should have access to certain information
-        public List<int> ServiceMembers { get; set; }
+        public HashSet<int> ServiceMembers { get; set; }
 
         /// <summary>
         /// checks if the id of a FireBrigade is in the list 

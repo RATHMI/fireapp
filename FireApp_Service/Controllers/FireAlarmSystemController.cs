@@ -43,6 +43,16 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.GetFireAlarmSystemById(id);
         }
 
-
+        /// <summary>
+        /// Adds a FireBrigade to the list of FireBrigades of a FireAlarmSystem
+        /// </summary>
+        /// <param name="id">identifier of the FireAlarmSystem</param>
+        /// <param name="firebrigade">identifier of the firebrigade</param>
+        /// <returns>returns true if the FireBrigade was added or already is in the list</returns>
+        [HttpGet, Route("{id}/addfirebrigade/{firebrigade}")]
+        public bool AddFireBrigadeToFireAlarmSystem(int id, int firebrigade)
+        {
+            return DatabaseOperations.AddFireBrigadeToFireAlarmSystem(id, firebrigade);
+        }
     }
 }

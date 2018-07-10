@@ -302,10 +302,10 @@ namespace FireApp.Service
 
         #region FireAlarmSystems
         /// <summary>
-        /// 
+        /// inserts a FireAlarmSystem into the database or updates it if it already exists
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to insert</param>
-        /// <returns>inserts a FireAlarmSystem into the database or updates it if it already exists</returns>
+        /// <returns>returns true if FireAlarmSystem was inserted</returns>
         public static bool UploadFireAlarmSystem(FireAlarmSystem fas)
         {
             using (var db = AppData.FireAlarmSystemDB())
@@ -341,6 +341,50 @@ namespace FireApp.Service
 
                 return table.FindOne(x => x.Id == id);
             }
+        }     
+
+        /// <summary>
+        /// Adds a FireBrigade to the list of FireBrigades of a FireAlarmSystem
+        /// </summary>
+        /// <param name="id">identifier of the FireAlarmSystem</param>
+        /// <param name="firebrigade">identifier of the firebrigade</param>
+        /// <returns>returns true if the FireBrigade was added</returns>
+        public static bool AddFireBrigadeToFireAlarmSystem(int id, int firebrigade)
+        {
+            bool rv = false;
+            FireAlarmSystem fas = DatabaseOperations.GetFireAlarmSystemById(id);
+            if(fas != null)
+            {
+                FireBrigade fb = DatabaseOperations.GetFireBrigadeById(firebrigade);
+                if(fb != null)
+                {
+                    return fas.FireBrigades.Add(firebrigade);
+                }
+            }
+
+            return rv;
+        }
+
+        /// <summary>
+        /// Adds a ServiceMember to the list of ServiceMembers of a FireAlarmSystem
+        /// </summary>
+        /// <param name="id">identifier of the FireAlarmSystem</param>
+        /// <param name="firebrigade">identifier of the ServiceMember</param>
+        /// <returns>returns true if the ServiceMember was added</returns>
+        public static bool AddServiceMemberToFireAlarmSystem(int id, int serviceMember)
+        {
+            bool rv = false;
+            FireAlarmSystem fas = DatabaseOperations.GetFireAlarmSystemById(id);
+            if (fas != null)
+            {
+                ServiceMember sm = DatabaseOperations.GetServiceMemberById(serviceMember);
+                if (sm != null)
+                {
+                    return fas.ServiceMembers.Add(serviceMember);
+                }
+            }
+
+            return rv;
         }
         #endregion
 
@@ -382,6 +426,50 @@ namespace FireApp.Service
             using (var db = AppData.FireBrigadeDB())
             {
                 var table = db.FireBrigadeTable();
+
+                return table.FindOne(x => x.Id == id);
+            }
+        }
+        #endregion
+
+        #region ServiceMembers
+        /// <summary>
+        /// inserts a ServiceMember into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="sm">The ServiceMember you want to insert</param>
+        /// <returns>returns true if ServiceMember was inserted</returns>
+        public static bool UploadFireAlarmSystem(ServiceMember sm)
+        {
+            using (var db = AppData.ServiceMemberDB())
+            {
+                var table = db.ServiceMemberTable();
+                return table.Upsert(sm);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list with all ServiceMembers</returns>
+        public static IEnumerable<ServiceMember> GetAllServiceMembers()
+        {
+            using (var db = AppData.ServiceMemberDB())
+            {
+                var table = db.ServiceMemberTable();
+                return table.FindAll();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">The id of the ServiceMember you are looking for</param>
+        /// <returns>returns a ServiceMember with a matching id</returns>
+        public static ServiceMember GetServiceMemberById(int id)
+        {
+            using (var db = AppData.ServiceMemberDB())
+            {
+                var table = db.ServiceMemberTable();
 
                 return table.FindOne(x => x.Id == id);
             }

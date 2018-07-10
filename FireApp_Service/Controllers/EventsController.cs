@@ -57,7 +57,7 @@ namespace FireApp.Service.Controllers
         /// the FireEvent</param>
         /// <returns>returns a list of all Fireevents with a matching sourceId 
         /// (all Fireevents from a distinct fire alarm system)</returns>
-        [HttpGet, Route("id/{sourceId}")]
+        [HttpGet, Route("source/{sourceId}")]
         public FireEvent[] GetFireEventsBySourceId(int sourceId)
         {
             return (DatabaseOperations.GetFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
@@ -71,7 +71,7 @@ namespace FireApp.Service.Controllers
         /// <param name="targetId">The id of the fire detector that sent the 
         /// FireEvent</param>
         /// <returns>returns a list of all FireEvents with matching sourceId and targetId</returns>
-        [HttpGet, Route("stid/{sourceId}/{targetId}")]
+        [HttpGet, Route("target/{sourceId}/{targetId}")]
         public FireEvent[] GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
             return (DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId)).ToArray<FireEvent>();
