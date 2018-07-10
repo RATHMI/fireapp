@@ -5,6 +5,7 @@ using System.Web;
 using FireApp.Domain;
 using System.Threading;
 using FireApp.Service;
+using System.Net;
 
 namespace FireApp.Service.DatabaseOperations
 {
@@ -49,7 +50,7 @@ namespace FireApp.Service.DatabaseOperations
             List<FireEvent> events = LocalDatabase.GetAllFireEvents();
             if (events != null)
             {
-                return (IEnumerable<FireEvent>)events.Find(x => x.Id.SourceId == sourceId);
+                return (IEnumerable<FireEvent>)events.FindAll(x => x.Id.SourceId == sourceId);
             }
             else
             {
@@ -68,10 +69,10 @@ namespace FireApp.Service.DatabaseOperations
         /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
         public static FireEvent GetFireEventById(int sourceId, int eventId)
         {
-            List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = GetFireEventsBySourceId(sourceId);
             if (events != null)
             {
-                return events.Find(x => x.Id.EventId == eventId);
+                return events.First(x => x.Id.EventId == eventId);
             }
             else
             {
@@ -92,7 +93,7 @@ namespace FireApp.Service.DatabaseOperations
             List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
             if (events != null)
             {
-                return (IEnumerable<FireEvent>)events.Find(x => x.TargetId == targetId);
+                return (IEnumerable<FireEvent>)events.FindAll(x => x.TargetId == targetId);
             }
             else
             {
@@ -113,7 +114,7 @@ namespace FireApp.Service.DatabaseOperations
 
             if (events != null)
             {
-                return (IEnumerable<FireEvent>)events.Find(x => x.EventType == eventType);
+                return (IEnumerable<FireEvent>)events.FindAll(x => x.EventType == eventType);
             }
             else
             {
@@ -132,7 +133,7 @@ namespace FireApp.Service.DatabaseOperations
 
             if (events != null)
             {
-                return (IEnumerable<FireEvent>)events.Find(x => x.EventType == eventType);
+                return (IEnumerable<FireEvent>)events.FindAll(x => x.EventType == eventType);
             }
             else
             {
@@ -289,15 +290,6 @@ namespace FireApp.Service.DatabaseOperations
 
             return months;
         }
-
-        #endregion
-
-       
-
-        
-
-        
-
         
     }
 }

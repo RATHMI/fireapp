@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using FireApp.Service.DatabaseOperations;
 
 namespace FireApp.Service.Controllers
 {
@@ -21,7 +22,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
-            return DatabaseOperations.UpsertFireEvent(fe);
+            return DatabaseOperations.Events.UpsertFireEvent(fe);
         }
 
         #region allFireEvents
@@ -32,7 +33,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireEvent[] All()
         {
-            return (DatabaseOperations.GetAllFireEvents()).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetAllFireEvents()).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{sourceId}/{eventId}")]
         public FireEvent GetFireEventById(int sourceId, int eventId)
         {
-            return DatabaseOperations.GetFireEventById(sourceId, eventId);
+            return DatabaseOperations.Events.GetFireEventById(sourceId, eventId);
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("source/{sourceId}")]
         public FireEvent[] GetFireEventsBySourceId(int sourceId)
         {
-            return (DatabaseOperations.GetFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("target/{sourceId}/{targetId}")]
         public FireEvent[] GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
-            return (DatabaseOperations.GetFireEventsBySourceIdTargetId(sourceId, targetId)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsBySourceIdTargetId(sourceId, targetId)).ToArray<FireEvent>();
         }      
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("et/{sourceId}/{eventType}")]
         public FireEvent[] GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            return (DatabaseOperations.GetFireEventsBySourceIdEventType(sourceId, eventType)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsBySourceIdEventType(sourceId, eventType)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("et/{eventType}")]
         public FireEvent[] GetFireEventsByEventType(EventTypes eventType)
         {
-            return (DatabaseOperations.GetFireEventsByEventType(eventType)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsByEventType(eventType)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("time/{sourceId}/{startTime}/{endTime}")]
         public FireEvent[] GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
-            return (DatabaseOperations.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("time/{startTime}/{endTime}")]
         public FireEvent[] GetFireEventsByTimespan(long startTime, long endTime)
         {
-            return (DatabaseOperations.GetFireEventsByTimespan(startTime, endTime)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsByTimespan(startTime, endTime)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("time/{sourceId}/{year}/{month}/{day}")]
         public FireEvent[] GetFireEventsByDate(int sourceId, int year, int month, int day)
         {
-            return (DatabaseOperations.GetFireEventsByDate(sourceId, year, month, day)).ToArray<FireEvent>();
+            return (DatabaseOperations.Events.GetFireEventsByDate(sourceId, year, month, day)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -149,7 +150,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("typeyear/{eventType}/{year}")]
         public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
         {
-            return DatabaseOperations.CountFireEventsByEventTypePerYear(eventType, year);
+            return DatabaseOperations.Events.CountFireEventsByEventTypePerYear(eventType, year);
         }
         #endregion
 
@@ -163,7 +164,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("active/{eventType}")]
         public FireEvent[] Active(EventTypes eventType)
         {
-            return (DatabaseOperations.GetAllActiveFireEvents(eventType)).ToArray<FireEvent>();
+            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -173,7 +174,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("active")]
         public FireEvent[] Active()
         {
-            return (DatabaseOperations.GetAllActiveFireEvents()).ToArray<FireEvent>();
+            return (DatabaseOperations.ActiveEvents.GetAllActiveFireEvents()).ToArray<FireEvent>();
         }
 
         #endregion

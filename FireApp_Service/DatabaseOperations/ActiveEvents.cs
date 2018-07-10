@@ -99,7 +99,7 @@ namespace FireApp.Service.DatabaseOperations
             List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
             if (events != null)
             {
-                return (IEnumerable<FireEvent>)events.Find(x => x.Id.SourceId == sourceId);
+                return (IEnumerable<FireEvent>)events.FindAll(x => x.Id.SourceId == sourceId);
             }
             else
             {
@@ -176,7 +176,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
         public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)
         {
-            List<FireEvent> events = DatabaseOperations.GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> events = GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
             if (events != null)
             {
@@ -198,7 +198,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
         public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month)
         {
-            List<FireEvent> events = DatabaseOperations.GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> events = GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
             if (events != null)
             {
@@ -220,7 +220,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
         public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year)
         {
-            List<FireEvent> events = DatabaseOperations.GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> events = GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
             if (events != null)
             {

@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
-            return DatabaseOperations.UpsertFireAlarmSystem(fas);
+            return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireAlarmSystem[] All()
         {
-            return (DatabaseOperations.GetAllFireAlarmSystems()).ToArray<FireAlarmSystem>();
+            return (DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems()).ToArray<FireAlarmSystem>();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public FireAlarmSystem GetFireAlarmSystemById(int id)
         {
-            return DatabaseOperations.GetFireAlarmSystemById(id);
+            return DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("{id}/addfirebrigade/{firebrigade}")]
         public bool AddFireBrigadeToFireAlarmSystem(int id, int firebrigade)
         {
-            return DatabaseOperations.AddFireBrigadeToFireAlarmSystem(id, firebrigade);
+            return DatabaseOperations.FireAlarmSystems.AddFireBrigadeToFireAlarmSystem(id, firebrigade);
         }
 
         

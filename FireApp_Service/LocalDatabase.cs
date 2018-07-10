@@ -34,11 +34,11 @@ namespace FireApp.Service
         /// </summary>
         public static void InitializeDatabase()
         {
-            List<FireEvent> events = (DatabaseOperations.QueryFireEvents()).ToList<FireEvent>();
-            List<FireEvent> active = (DatabaseOperations.QueryActiveFireEvents()).ToList<FireEvent>();
-            List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
-            List<FireBrigade> fireBrigades = (DatabaseOperations.QueryFireBrigades()).ToList<FireBrigade>();
-            List<ServiceMember> serviceMembers = (DatabaseOperations.QueryServiceMembers()).ToList<ServiceMember>();
+            List<FireEvent> events = (DatabaseOperations.Queries.QueryFireEvents()).ToList<FireEvent>();
+            List<FireEvent> active = (DatabaseOperations.Queries.QueryActiveFireEvents()).ToList<FireEvent>();
+            List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.Queries.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
+            List<FireBrigade> fireBrigades = (DatabaseOperations.Queries.QueryFireBrigades()).ToList<FireBrigade>();
+            List<ServiceMember> serviceMembers = (DatabaseOperations.Queries.QueryServiceMembers()).ToList<ServiceMember>();
 
             if (events != null)     // trying to insert null into the cache creates a server error
             {

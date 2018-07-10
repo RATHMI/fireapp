@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool CreateFireBrigade([FromBody] FireBrigade fb)
         {
-            return DatabaseOperations.UpsertFireBrigade(fb);
+            return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireBrigade[] All()
         {
-            return (DatabaseOperations.GetAllFireBrigades()).ToArray<FireBrigade>();
+            return (DatabaseOperations.FireBrigades.GetAllFireBrigades()).ToArray<FireBrigade>();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public FireBrigade GetFireBrigadeById(int id)
         {
-            return DatabaseOperations.GetFireBrigadeById(id);
+            return DatabaseOperations.FireBrigades.GetFireBrigadeById(id);
         }
     }
 }
