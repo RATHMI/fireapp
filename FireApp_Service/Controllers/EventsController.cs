@@ -161,7 +161,7 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all active FireEvents of the given 
         /// TargetState</returns>
         [HttpGet, Route("active/{eventType}")]
-        public FireEvent[] Active([FromBody]EventTypes eventType)
+        public FireEvent[] Active(EventTypes eventType)
         {
             return (DatabaseOperations.GetAllActiveFireEvents(eventType)).ToArray<FireEvent>();
         }
