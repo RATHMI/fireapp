@@ -130,7 +130,12 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FireBrigadeController.cs" />
     <Compile Include="Controllers\ServiceMemberController.cs" />
-    <Compile Include="DatabaseOperations.cs" />
+    <Compile Include="DatabaseOperations\ActiveEvents.cs" />
+    <Compile Include="DatabaseOperations\Events.cs" />
+    <Compile Include="DatabaseOperations\FireAlarmSystems.cs" />
+    <Compile Include="DatabaseOperations\FireBrigades.cs" />
+    <Compile Include="DatabaseOperations\Queries.cs" />
+    <Compile Include="DatabaseOperations\ServiceMembers.cs" />
     <Compile Include="LocalDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
