@@ -54,5 +54,7 @@ namespace FireApp.Service.Controllers
         {
             return DatabaseOperations.AddFireBrigadeToFireAlarmSystem(id, firebrigade);
         }
+
+        
     }
 }

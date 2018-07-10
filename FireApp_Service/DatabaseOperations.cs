@@ -358,7 +358,7 @@ namespace FireApp.Service
                 FireBrigade fb = DatabaseOperations.GetFireBrigadeById(firebrigade);
                 if(fb != null)
                 {
-                    return fas.FireBrigades.Add(firebrigade);
+                    rv = fas.FireBrigades.Add(firebrigade);
                 }
             }
 
@@ -380,7 +380,7 @@ namespace FireApp.Service
                 ServiceMember sm = DatabaseOperations.GetServiceMemberById(serviceMember);
                 if (sm != null)
                 {
-                    return fas.ServiceMembers.Add(serviceMember);
+                    rv = fas.ServiceMembers.Add(serviceMember);
                 }
             }
 
