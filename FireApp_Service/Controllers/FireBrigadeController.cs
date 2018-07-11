@@ -25,7 +25,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a list with all FireBrigades</returns>
+        /// <returns>returns a list of all FireBrigades</returns>
         [HttpGet, Route("all")]
         public FireBrigade[] All()
         {
@@ -38,9 +38,9 @@ namespace FireApp.Service.Controllers
         /// <param name="id">The id of the FireBrigade you are looking for</param>
         /// <returns>returns a FireBrigade with a matching id</returns>
         [HttpGet, Route("id/{id}")]
-        public FireBrigade GetFireBrigadeById(int id)
+        public FireBrigade[] GetFireBrigadeById(int id)
         {
-            return DatabaseOperations.FireBrigades.GetFireBrigadeById(id);
+            return DatabaseOperations.FireBrigades.GetFireBrigadeById(id).ToArray();
         }
     }
 }

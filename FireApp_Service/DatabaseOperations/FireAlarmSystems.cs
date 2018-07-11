@@ -63,7 +63,7 @@ namespace FireApp.Service.DatabaseOperations
             FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
             if (fas != null)
             {
-                FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade);
+                FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade).First<FireBrigade>();
                 if (fb != null)
                 {
                     fas.FireBrigades.Add(firebrigade);
@@ -86,7 +86,7 @@ namespace FireApp.Service.DatabaseOperations
             FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
             if (fas != null)
             {
-                ServiceMember sm = DatabaseOperations.ServiceMembers.GetServiceMemberById(serviceMember);
+                ServiceMember sm = DatabaseOperations.ServiceMembers.GetServiceMemberById(serviceMember).First<ServiceMember>();
                 if (sm != null)
                 {
                     fas.ServiceMembers.Add(serviceMember);

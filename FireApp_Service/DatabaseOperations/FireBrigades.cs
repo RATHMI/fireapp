@@ -38,12 +38,12 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the FireBrigade you are looking for</param>
         /// <returns>returns a FireBrigade with a matching id</returns>
-        public static FireBrigade GetFireBrigadeById(int id)
+        public static IEnumerable<FireBrigade> GetFireBrigadeById(int id)
         {
             List<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
             if (fireBrigades != null)
             {
-                return fireBrigades.Find(x => x.Id == id);
+                return fireBrigades.FindAll(x => x.Id == id);
             }
             else
             {

@@ -38,12 +38,12 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the ServiceMember you are looking for</param>
         /// <returns>returns a ServiceMember with a matching id</returns>
-        public static ServiceMember GetServiceMemberById(int id)
+        public static IEnumerable<ServiceMember> GetServiceMemberById(int id)
         {
             List<ServiceMember> serviceMembers = LocalDatabase.GetAllServiceMembers();
             if (serviceMembers != null)
             {
-                return serviceMembers.Find(x => x.Id == id);
+                return serviceMembers.FindAll(x => x.Id == id);
             }
             else
             {
