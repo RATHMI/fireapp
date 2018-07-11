@@ -45,7 +45,7 @@ namespace FireApp.Domain {
         /// makes it easier to access the data
         /// </summary>
         /// <returns>returns a string that describes the FireEvent</returns>
-        public  string ToShortString()
+        public string ToShortString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(this.Id.SourceId.ToString());
@@ -67,6 +67,34 @@ namespace FireApp.Domain {
             sb.Append(this.TimeStamp.ToString());
             sb.Append(";");
             sb.Append(this.EventType.ToString());
+
+            return sb.ToString();
+        }
+
+        public string ToLog()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("FireEvent [");
+
+            sb.Append("id={FireEventId(");
+            sb.Append(Id.SourceId.ToString());
+            sb.Append(",");
+            sb.Append(Id.EventId.ToString());
+            sb.Append(")}");
+
+            sb.Append(",timestamp=");
+            sb.Append(TimeStamp.ToString());
+
+            sb.Append(",targetid=");
+            sb.Append(TargetId.ToString());
+
+            sb.Append(",targetdescription=");
+            sb.Append(TargetDescription.ToString());
+
+            sb.Append(",eventtype=");
+            sb.Append(EventType.ToString());
+
+            sb.Append("]");
 
             return sb.ToString();
         }

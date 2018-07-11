@@ -158,7 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
-    <Content Include="Serverschnittstellen.txt" />
+    <Content Include="Controllers\Serverschnittstellen.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +183,7 @@
     <Compile Include="DatabaseOperations\Queries.cs" />
     <Compile Include="DatabaseOperations\ServiceMembers.cs" />
     <Compile Include="LocalDatabase.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

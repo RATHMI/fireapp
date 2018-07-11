@@ -98,5 +98,67 @@ namespace FireApp.Domain
             }
             return found;
         }
+
+        public string ToLog()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("FireAlarmSystem [");
+
+            sb.Append("id=");
+            sb.Append(Id.ToString());
+
+            sb.Append(",company=");
+            sb.Append(Company.ToString());
+
+            sb.Append(",description=");
+            sb.Append(Description.ToString());
+
+            sb.Append(",country=");
+            sb.Append(Country.ToString());
+
+            sb.Append(",city=");
+            sb.Append(City.ToString());
+
+            sb.Append(",postalcode=");
+            sb.Append(PostalCode.ToString());
+
+            sb.Append(",address=");
+            sb.Append(Address.ToString());
+
+            sb.Append(",firebrigades={");
+            if(FireBrigades.Count > 1)
+            {
+                foreach(int fb in FireBrigades)
+                {
+                    sb.Append(fb.ToString());
+                    sb.Append(";");
+                }
+                sb.Remove(sb.Length - 1, 1);
+            }else
+            {
+                sb.Append(FireBrigades.First<int>());
+            }            
+            sb.Append("}");
+
+            sb.Append(",servicemembers={");
+
+            if (ServiceMembers.Count > 1)
+            {
+                foreach (int sm in ServiceMembers)
+                {
+                    sb.Append(sm.ToString());
+                    sb.Append(";");
+                }
+                sb.Remove(sb.Length - 1, 1);
+            }
+            else
+            {
+                sb.Append(ServiceMembers.First<int>());
+            }
+            sb.Append("}");
+            sb.Append("]");
+
+            return sb.ToString();
+        }
     }
 }
