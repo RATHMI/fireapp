@@ -195,7 +195,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="website\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireApp_Domain\FireApp_Domain.csproj">
       <Project>{1024446b-7f5d-4982-a8ad-6768db546f4a}</Project>
