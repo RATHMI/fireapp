@@ -45,9 +45,9 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a distinct FireEvent with a matching sourceId and eventId 
         /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
         [HttpGet, Route("id/{sourceId}/{eventId}")]
-        public FireEvent GetFireEventById(int sourceId, int eventId)
+        public FireEvent[] GetFireEventById(int sourceId, int eventId)
         {
-            return DatabaseOperations.Events.GetFireEventById(sourceId, eventId);
+            return DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToArray<FireEvent>();
         }
 
         /// <summary>

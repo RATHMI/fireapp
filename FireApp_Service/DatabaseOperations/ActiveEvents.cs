@@ -107,71 +107,93 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
-        /// <returns>returns all active FireEvents at the given date</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsByDate(int year, int month, int day)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
+        /// <param name="eventType">The EventType of the active FireEvents</param>
+        /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
+        /// EventType</returns>
+        public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
-            List<FireEvent> results = new List<FireEvent>();
-            if (events != null)
+            List<FireEvent> events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            List<FireEvent> result = new List<FireEvent>();
+            foreach (FireEvent fe in events)
             {
-                foreach (FireEvent fe in events)
+                if (fe.EventType == eventType)
                 {
-                    if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
-                    {
-                        results.Add(fe);
-                    }
+                    result.Add(fe);
                 }
-                return results;
             }
-            else
-            {
-                return null;
-            }
+
+            return (IEnumerable<FireEvent>)result;
         }
 
-        /// <returns>returns all active FireEvents in the given month and year</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsByDate(int year, int month)
-        {
-            List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
-            List<FireEvent> results = new List<FireEvent>();
-            if (events != null)
-            {
-                foreach (FireEvent fe in events)
-                {
-                    if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month)
-                    {
-                        results.Add(fe);
-                    }
-                }
-                return results;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        ///// <returns>returns all active fireevents at the given date</returns>
+        //public static ienumerable<fireevent> getactivefireeventsbydate(int year, int month, int day)
+        //{
+        //    list<fireevent> events = localdatabase.getactivefireevents();
+        //    list<fireevent> results = new list<fireevent>();
+        //    if (events != null)
+        //    {
+        //        foreach (fireevent fe in events)
+        //        {
+        //            if (fe.timestamp.year == year && fe.timestamp.month == month && fe.timestamp.day == day)
+        //            {
+        //                results.add(fe);
+        //            }
+        //        }
+        //        return results;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
-        /// <returns>returns all active FireEvents in the given year</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsByDate(int year)
-        {
-            List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
-            List<FireEvent> results = new List<FireEvent>();
-            if (events != null)
-            {
-                foreach (FireEvent fe in events)
-                {
-                    if (fe.TimeStamp.Year == year)
-                    {
-                        results.Add(fe);
-                    }
-                }
-                return results;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        ///// <returns>returns all active fireevents in the given month and year</returns>
+        //public static ienumerable<fireevent> getactivefireeventsbydate(int year, int month)
+        //{
+        //    list<fireevent> events = localdatabase.getactivefireevents();
+        //    list<fireevent> results = new list<fireevent>();
+        //    if (events != null)
+        //    {
+        //        foreach (fireevent fe in events)
+        //        {
+        //            if (fe.timestamp.year == year && fe.timestamp.month == month)
+        //            {
+        //                results.add(fe);
+        //            }
+        //        }
+        //        return results;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        ///// <returns>returns all active fireevents in the given year</returns>
+        //public static ienumerable<fireevent> getactivefireeventsbydate(int year)
+        //{
+        //    list<fireevent> events = localdatabase.getactivefireevents();
+        //    list<fireevent> results = new list<fireevent>();
+        //    if (events != null)
+        //    {
+        //        foreach (fireevent fe in events)
+        //        {
+        //            if (fe.timestamp.year == year)
+        //            {
+        //                results.add(fe);
+        //            }
+        //        }
+        //        return results;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
         public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)

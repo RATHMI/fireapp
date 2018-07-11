@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1 valign="center" font-size="48px">API Interface Description</h1>
-    <table width=100% border="1,1">
+    <table width=100% font-size="14px">
         <tr>
             <th>URL</th>
             <th>return type</th>
@@ -38,7 +38,7 @@
         </tr>
         <tr>
             <td>&emsp;../id/{sourceId}/{eventId}</td>
-            <td>FireEvent</td>
+            <td>FireEvent[]</td>
             <td>returns a specific FireEvent</td>
             <td></td>
         </tr>
@@ -103,9 +103,59 @@
         <tr>
             <td colspan="4">http://ip:port/active/..</td>
         </tr>
+        <tr>
+            <td>&emsp;../all</td>
+            <td>FireEvent[]</td>
+            <td>returns a list of all active FireEvents</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&emsp;../type/{eventType}</td>
+            <td>FireEvent[]</td>
+            <td>returns a list of all active FireEvents of the given EventType</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&emsp;../source/{sourceId}</td>
+            <td>FireEvent[]</td>
+            <td>a list of active FireEvents with a matching sourceId</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&emsp;../type/{sourceId}/{eventType}</td>
+            <td>FireEvent[]</td>
+            <td>returns a list of all active FireEvents with a matching sourceId an of the given EventType</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&emsp;../date/{sourceId}/{year}/{month}/{day}</td>
+            <td>FireEvent[]</td>
+            <td>returns all active FireEvents from the given sourceId at the given date</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&emsp;../date/{sourceId}/{year}/{month}</td>
+            <td>FireEvent[]</td>
+            <td>returns all active FireEvents from the given sourceId in the given month and year</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&emsp;../date/{sourceId}/{year}</td>
+            <td>FireEvent[]</td>
+            <td>returns all active FireEvents from the given sourceId in the given year</td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="4">http://ip:port/fas/..</td>
+        </tr>
+        
         <!--
         <tr>
-            <td>http://ip:port/..</td>
+            <td>&emsp;../</td>
             <td></td>
             <td></td>
             <td></td>

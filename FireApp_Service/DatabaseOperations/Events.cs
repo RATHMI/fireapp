@@ -67,12 +67,12 @@ namespace FireApp.Service.DatabaseOperations
         /// FireAlarmSystem</param>
         /// <returns>returns a distinct FireEvent with a matching sourceId and eventId 
         /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
-        public static FireEvent GetFireEventById(int sourceId, int eventId)
+        public static IEnumerable<FireEvent> GetFireEventById(int sourceId, int eventId)
         {
-            IEnumerable<FireEvent> events = GetFireEventsBySourceId(sourceId);
+            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
             if (events != null)
             {
-                return events.First(x => x.Id.EventId == eventId);
+                return events.FindAll(x => x.Id.EventId == eventId);
             }
             else
             {
