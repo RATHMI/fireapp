@@ -30,7 +30,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list with all FireAlarmSystems</returns>
         public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
         {
-            return (IEnumerable<FireAlarmSystem>)LocalDatabase.GetAllFireAlarmSystems();
+            return (IEnumerable<FireAlarmSystem>)LocalDatabase.GetAllFireAlarmSystems().OrderBy(x => x.Company);
         }
 
         /// <summary>
