@@ -129,8 +129,8 @@ namespace FireApp.Service
                 allFireEvents.Add(fe);
             }
 
-            GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
-            GlobalCachingProvider.Instance.AddItem(activeFireEventsString, allFireEvents);
+            GlobalCachingProvider.Instance.RemoveItem(allFireEventsString);
+            GlobalCachingProvider.Instance.AddItem(allFireEventsString, allFireEvents);
         }
         #endregion
 
