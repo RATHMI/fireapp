@@ -10,7 +10,12 @@ namespace FireApp.Domain
     {
         public ServiceMember() { }
 
-        //todo: add constructor
+        public ServiceMember(int id, string firstName, string lastName)
+        {
+            this.Id = id;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+        }
 
         public int Id { get; set; }
 
