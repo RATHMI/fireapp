@@ -30,7 +30,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list with all FireBrigades</returns>
         public static IEnumerable<FireBrigade> GetAllFireBrigades()
         {
-            return (IEnumerable<FireBrigade>)LocalDatabase.GetAllFireBrigades();
+            return (IEnumerable<FireBrigade>)LocalDatabase.GetAllFireBrigades().OrderBy(x => x.Name);
         }
 
         /// <summary>
