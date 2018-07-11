@@ -148,7 +148,7 @@ namespace FireApp.Service.DatabaseOperations
         /// the FireEvent</param>
         /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
         /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId and and a Timestamp between 
+        /// <returns>returns a list of all FireEvents with a matching sourceId and and a Timestamp between 
         /// startTime and endTime</returns>
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {

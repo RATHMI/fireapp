@@ -25,7 +25,6 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.Events.UpsertFireEvent(fe);
         }
 
-        #region allFireEvents
         /// <summary>
         /// 
         /// </summary>
@@ -85,7 +84,7 @@ namespace FireApp.Service.Controllers
         /// the FireEvent</param>
         /// <param name="eventType">The EventType of the FireEvent</param>
         /// <returns>returns a list of all FireEvents with matching sourceId and eventType</returns>
-        [HttpGet, Route("et/{sourceId}/{eventType}")]
+        [HttpGet, Route("type/{sourceId}/{eventType}")]
         public FireEvent[] GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             return (DatabaseOperations.Events.GetFireEventsBySourceIdEventType(sourceId, eventType)).ToArray<FireEvent>();
@@ -96,7 +95,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="eventType">The EventType of the FireEvents</param>
         /// <returns>returns a list of all FireEvents with matching eventType</returns>
-        [HttpGet, Route("et/{eventType}")]
+        [HttpGet, Route("type/{eventType}")]
         public FireEvent[] GetFireEventsByEventType(EventTypes eventType)
         {
             return (DatabaseOperations.Events.GetFireEventsByEventType(eventType)).ToArray<FireEvent>();
@@ -134,10 +133,30 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
-        [HttpGet, Route("time/{sourceId}/{year}/{month}/{day}")]
+        [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]
         public FireEvent[] GetFireEventsByDate(int sourceId, int year, int month, int day)
         {
             return (DatabaseOperations.Events.GetFireEventsByDate(sourceId, year, month, day)).ToArray<FireEvent>();
+        }
+
+        ///<summary>
+        ///
+        ///</summary>
+        /// <returns>returns all FireEvents from the given sourceId in the given year and month</returns>
+        [HttpGet, Route("date/{sourceId}/{year}/{month}")]
+        public FireEvent[] GetFireEventsByDate(int sourceId, int year, int month)
+        {
+            return (DatabaseOperations.Events.GetFireEventsByDate(sourceId, year, month)).ToArray<FireEvent>();
+        }
+
+        ///<summary>
+        ///
+        ///</summary>
+        /// <returns>returns all FireEvents from the given sourceId in the given year</returns>
+        [HttpGet, Route("date/{sourceId}/{year}")]
+        public FireEvent[] GetFireEventsByDate(int sourceId, int year)
+        {
+            return (DatabaseOperations.Events.GetFireEventsByDate(sourceId, year)).ToArray<FireEvent>();
         }
 
         /// <summary>
@@ -152,31 +171,5 @@ namespace FireApp.Service.Controllers
         {
             return DatabaseOperations.Events.CountFireEventsByEventTypePerYear(eventType, year);
         }
-        #endregion
-
-        #region activeFireEvents
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="targetState">The TargetState of the active FireEvents</param>
-        /// <returns>returns a list of all active FireEvents of the given 
-        /// TargetState</returns>
-        [HttpGet, Route("active/{eventType}")]
-        public FireEvent[] Active(EventTypes eventType)
-        {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType)).ToArray<FireEvent>();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>returns a list of all active FireEvents</returns>
-        [HttpGet, Route("active")]
-        public FireEvent[] Active()
-        {
-            return (DatabaseOperations.ActiveEvents.GetAllActiveFireEvents()).ToArray<FireEvent>();
-        }
-
-        #endregion
     }
 }

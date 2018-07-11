@@ -3,7 +3,7 @@ FireEvents
 http://ip:50862/events/
 
     .)  ../update
-        hochladen bzw updaten eines FireEvents
+        hochladen bzw updaten eines FireEvents; übertragen eines FireEvents im Body
         
     .)  ../all
         abrufen aller FireEvents
@@ -11,16 +11,16 @@ http://ip:50862/events/
     .)  ../id/{sourceId}/{eventId}
         abrufen eines bestimmten FireEvents
         
-    .)  ../id/{sourceId}
+    .)  ../source/{sourceId}
         abrufen aller FireEvents einer BMA
         
-    .)  ../stid/{sourceId}/{targetId}
+    .)  ../target/{sourceId}/{targetId}
         abrufen aller FireEvents eines bestimmten Melders einer Brandmeldeanlage
         
-    .)  ../et/{sourceId}/{eventType}
+    .)  ../type/{sourceId}/{eventType}
         abrufen aller FireEvents eines bestimmten EventTypes einer BMA
         
-    .)  ../et/{eventType}
+    .)  ../type/{eventType}
         abrufen aller FireEvents eines bestimmten EventTypes
         
     .)  ../time/{sourceId}/{startTime}/{endTime}
@@ -28,16 +28,32 @@ http://ip:50862/events/
         
     .)  ../time/{startTime}/{endTime}
         abrufen aller FireEvents zwischen startTime und endTime
-
+        
+    .)  ../date/{sourceId}/{year}/{month}/{day}
+        abrufen aller FireEvents eines FireAlarmSystems an diesem Tag
+        
+    .)  ../date/{sourceId}/{year}/{month}
+    abrufen aller FireEvents eines FireAlarmSystems in diesem Monat
+    
+    .)  ../date/{sourceId}/{year}
+    abrufen aller FireEvents eines FireAlarmSystems in diesem Jahr
+        
 	.)  ../typeyear/{eventType}/{year}
 		liefert ein Feld von Integern, wobei jedes Feldelement die Anzahl der FireEvent des gegebenen EventTypes,
 		eines Monats, des angegebenen Jahres repräsentiert.
 
-	.)	../active/{eventType}
+
+active FireEvents
+
+http://ip:50862/active/
+
+        .)	../all
+		abrufen aller aktiven FireEvents
+
+    	.)	../type/{eventType}
 		abrufen aller aktiven FireEvents des angegebenen EventTypes
 
-	.)	../active
-		abrufen aller aktiven FireEvents
+        
         
 
 FireAlarmSystems (Brandmeldeanlagen)
