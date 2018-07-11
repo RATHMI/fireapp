@@ -30,7 +30,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns all FireEvents</returns>
-        [HttpGet, Route("all")]
+        [HttpGet, Route("all"), Authorize]
         public FireEvent[] All()
         {
             return (DatabaseOperations.Events.GetAllFireEvents()).ToArray<FireEvent>();

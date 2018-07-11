@@ -122,3 +122,9 @@ P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.dll
 P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.dll
 P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.xml
 P:\01_Diplomarbeit\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.xml
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.AspNet.Identity.Core.dll
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.Cookies.dll
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.AspNet.Identity.Core.xml
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.Cookies.xml
