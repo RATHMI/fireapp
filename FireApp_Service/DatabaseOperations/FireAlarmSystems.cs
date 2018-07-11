@@ -38,12 +38,12 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
-        public static FireAlarmSystem GetFireAlarmSystemById(int id)
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
         {
             List<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
             if (fireAlarmSystems != null)
             {
-                return fireAlarmSystems.Find(x => x.Id == id);
+                return fireAlarmSystems.FindAll(x => x.Id == id);
             }
             else
             {
@@ -57,10 +57,10 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="id">identifier of the FireAlarmSystem</param>
         /// <param name="firebrigade">identifier of the firebrigade</param>
         /// <returns>returns true if the FireBrigade was added</returns>
-        public static bool AddFireBrigadeToFireAlarmSystem(int id, int firebrigade)
+        public static bool AddFireBrigade(int id, int firebrigade)
         {
             bool rv = false;
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id);
+            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
             if (fas != null)
             {
                 FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade);
@@ -78,12 +78,12 @@ namespace FireApp.Service.DatabaseOperations
         /// Adds a ServiceMember to the list of ServiceMembers of a FireAlarmSystem
         /// </summary>
         /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="firebrigade">identifier of the ServiceMember</param>
+        /// <param name="serviceMember">identifier of the ServiceMember</param>
         /// <returns>returns true if the ServiceMember was added</returns>
-        public static bool AddServiceMemberToFireAlarmSystem(int id, int serviceMember)
+        public static bool AddServiceMember(int id, int serviceMember)
         {
             bool rv = false;
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id);
+            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
             if (fas != null)
             {
                 ServiceMember sm = DatabaseOperations.ServiceMembers.GetServiceMemberById(serviceMember);

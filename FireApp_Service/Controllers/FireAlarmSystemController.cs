@@ -25,7 +25,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a list with all FireAlarmSystems</returns>
+        /// <returns>returns a list of all FireAlarmSystems</returns>
         [HttpGet, Route("all")]
         public FireAlarmSystem[] All()
         {
@@ -38,9 +38,9 @@ namespace FireApp.Service.Controllers
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
         [HttpGet, Route("id/{id}")]
-        public FireAlarmSystem GetFireAlarmSystemById(int id)
+        public FireAlarmSystem[] GetFireAlarmSystemById(int id)
         {
-            return DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id);
+            return DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).ToArray<FireAlarmSystem>();
         }
 
         /// <summary>
@@ -48,13 +48,23 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">identifier of the FireAlarmSystem</param>
         /// <param name="firebrigade">identifier of the firebrigade</param>
-        /// <returns>returns true if the FireBrigade was added or already is in the list</returns>
-        [HttpGet, Route("{id}/addfirebrigade/{firebrigade}")]
+        /// <returns>returns true if the FireBrigade was added</returns>
+        [HttpGet, Route("addfirebrigade/{id}/{firebrigade}")]
         public bool AddFireBrigadeToFireAlarmSystem(int id, int firebrigade)
         {
-            return DatabaseOperations.FireAlarmSystems.AddFireBrigadeToFireAlarmSystem(id, firebrigade);
+            return DatabaseOperations.FireAlarmSystems.AddFireBrigade(id, firebrigade);
         }
 
-        
+        /// <summary>
+        /// Adds a ServiceMember to the list of ServiceMembers of a FireAlarmSystem
+        /// </summary>
+        /// <param name="id">identifier of the FireAlarmSystem</param>
+        /// <param name="serviceMember">identifier of the ServiceMember</param>
+        /// <returns>returns true if the ServiceMember was added</returns>
+        [HttpGet, Route("addservicemember/{id}/{servicemember}")]
+        public bool AddServiceMemberToFireAlarmSystem(int id, int serviceMember)
+        {
+            return DatabaseOperations.FireAlarmSystems.AddServiceMember(id, serviceMember);
+        }
     }
 }
