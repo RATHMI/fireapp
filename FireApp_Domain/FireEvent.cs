@@ -33,12 +33,42 @@ namespace FireApp.Domain {
         public EventTypes EventType { get; set; } 
 
         /// <summary>
-        /// makes it easier to access the values and print them out
+        /// makes it easier to log the data
         /// </summary>
         /// <returns>returns a string that describes the FireEvent</returns>
         public override string ToString()
         {
             return $"{this.Id.SourceId.ToString()};{this.Id.EventId.ToString()};{this.TargetId.ToString()};{this.TargetDescription};{this.TimeStamp.ToString()};{this.EventType.ToString()}";
+        }
+
+        /// <summary>
+        /// makes it easier to access the data
+        /// </summary>
+        /// <returns>returns a string that describes the FireEvent</returns>
+        public  string ToShortString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.Id.SourceId.ToString());
+            sb.Append(";");
+            sb.Append(this.Id.EventId.ToString());
+            sb.Append(";");
+            sb.Append(this.TargetId.ToString());
+            sb.Append(";");
+            if (this.TargetDescription.Length <= 20)
+            {
+                sb.Append(this.TargetDescription);
+            }
+            else
+            {
+                sb.Append(this.TargetDescription.Substring(0, 20));
+                sb.Append("...");
+            }
+            sb.Append(";");
+            sb.Append(this.TimeStamp.ToString());
+            sb.Append(";");
+            sb.Append(this.EventType.ToString());
+
+            return sb.ToString();
         }
     }
 
