@@ -30,7 +30,7 @@ namespace FireApp.Service.DatabaseOperations
             DatabaseOperations.ActiveEvents.UpsertActiveFireEvent(fe);
             LocalDatabase.UpsertFireEvent(fe);
 
-            Logging.Logger.Log("upsert : " + fe.ToLog());
+            //Logging.Logger.Log("upsert : " + fe.ToLog());
 
             using (var db = AppData.FireEventDB())
             {
