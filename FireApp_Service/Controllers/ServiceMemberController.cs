@@ -17,7 +17,7 @@ namespace FireApp.Service.Controllers
         /// <param name="sm">The ServiceMember you want to insert</param>
         /// <returns>returns true if ServiceMember was inserted</returns>
         [HttpPost, Route("upload")]
-        public static bool UpsertServiceMember(ServiceMember sm)
+        public bool UpsertServiceMember(ServiceMember sm)
         {
             return DatabaseOperations.ServiceMembers.UpsertServiceMember(sm);
         }
@@ -27,7 +27,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <returns>returns a list with all ServiceMembers</returns>
         [HttpGet, Route("all")]
-        public static ServiceMember[] GetAllServiceMembers()
+        public ServiceMember[] GetAllServiceMembers()
         {
             return DatabaseOperations.ServiceMembers.GetAllServiceMembers().ToArray<ServiceMember>();
         }
@@ -38,7 +38,7 @@ namespace FireApp.Service.Controllers
         /// <param name="id">The id of the ServiceMember you are looking for</param>
         /// <returns>returns a ServiceMember with a matching id</returns>
         [HttpGet, Route("id/{id}")]
-        public static ServiceMember[] GetServiceMemberById(int id)
+        public ServiceMember[] GetServiceMemberById(int id)
         {
             return DatabaseOperations.ServiceMembers.GetServiceMemberById(id).ToArray<ServiceMember>();
         }
