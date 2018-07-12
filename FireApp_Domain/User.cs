@@ -10,7 +10,7 @@ namespace FireApp.Domain
     {
         private User() { }
 
-        public User(string userName, string password, string firstName, string lastName, string email, UserTypes userType, int authorizedObject)
+        public User(string userName, string password, string firstName, string lastName, string email, UserTypes userType, int authorizedObjectId)
         {
             this.Id = userName;
             this.Password = password;
@@ -18,14 +18,14 @@ namespace FireApp.Domain
             this.LastName = lastName;
             this.Email = email;
             this.UserType = userType;
-            this.AuthorizedObject = authorizedObject;
+            this.AuthorizedObjectId = authorizedObjectId;
         }
 
         public string Id { get; set; }
         public string Password { get; set; }
 
         public UserTypes UserType { get; set; }
-        public int AuthorizedObject { get; set; }
+        public int AuthorizedObjectId { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

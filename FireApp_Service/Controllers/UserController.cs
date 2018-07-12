@@ -23,9 +23,16 @@ namespace FireApp.Service.Controllers
         }
 
         [HttpPost, Route("authenticate")]
-        public string Authenticate(string username, string password)
+        public string Authenticate([FromBody]UserLogin login)
         {
-            return null;
+            return Authentication.Token.RefreshToken(login);
+        }
+
+        [HttpGet, Route("getuser")]
+        public User GetUser()
+        {
+            string token = Authentication.Token.GetTokenFromHeader(Request.Headers);
+            return Authentication.Token.VerifyToken(token);
         }
 
     }
