@@ -72,5 +72,18 @@ namespace FireApp.Service.DatabaseOperations
                 return table.FindAll();
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list with all Users from database</returns>
+        public static IEnumerable<User> QueryUsers()
+        {
+            using (var db = AppData.UserDB())
+            {
+                var table = db.UserTable();
+                return table.FindAll();
+            }
+        }
     }
 }

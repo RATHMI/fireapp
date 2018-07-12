@@ -164,8 +164,7 @@
     <Compile Include="AppData.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="AppStartup.cs" />
-    <Compile Include="Authentication\JwtAuthenticationAttribute.cs" />
-    <Compile Include="Authentication\JwtManager.cs" />
+    <Compile Include="Authentication\Token.cs" />
     <Compile Include="Cache\CachingProviderBase.cs" />
     <Compile Include="Cache\GlobalCachingProvider.cs" />
     <Compile Include="Cache\IGlobalCachingProvider.cs" />
@@ -174,7 +173,7 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FireBrigadeController.cs" />
     <Compile Include="Controllers\ServiceMemberController.cs" />
-    <Compile Include="Controllers\TokenController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DatabaseOperations\ActiveEvents.cs" />
     <Compile Include="DatabaseOperations\Events.cs" />
     <Compile Include="DatabaseOperations\FireAlarmSystems.cs" />
@@ -182,6 +181,7 @@
     <Compile Include="DatabaseOperations\FireEventFilter.cs" />
     <Compile Include="DatabaseOperations\Queries.cs" />
     <Compile Include="DatabaseOperations\ServiceMembers.cs" />
+    <Compile Include="DatabaseOperations\Users.cs" />
     <Compile Include="LocalDatabase.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

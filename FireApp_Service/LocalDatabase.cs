@@ -27,6 +27,9 @@ namespace FireApp.Service
         // the key to retrieve the list of FireBrigades from the cache
         const string serviceMembersString = "serviceMembers";
 
+        // the key to retrieve the list of Users from the cache
+        const string userString = "users";
+
         static LocalDatabase(){}
 
         /// <summary>
@@ -39,6 +42,7 @@ namespace FireApp.Service
             List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.Queries.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
             List<FireBrigade> fireBrigades = (DatabaseOperations.Queries.QueryFireBrigades()).ToList<FireBrigade>();
             List<ServiceMember> serviceMembers = (DatabaseOperations.Queries.QueryServiceMembers()).ToList<ServiceMember>();
+            List<User> users = (DatabaseOperations.Queries.QueryUsers()).ToList<User>();
 
             if (events != null)     // trying to insert null into the cache creates a server error
             {
@@ -64,7 +68,7 @@ namespace FireApp.Service
             }
             else
             {
-                GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, new List<FireEvent>());
+                GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, new List<FireAlarmSystem>());
             }
 
             if (fireBrigades != null)     // trying to insert null into the cache creates a server error
@@ -73,7 +77,7 @@ namespace FireApp.Service
             }
             else
             {
-                GlobalCachingProvider.Instance.AddItem(fireBrigadesString, new List<FireEvent>());
+                GlobalCachingProvider.Instance.AddItem(fireBrigadesString, new List<FireBrigade>());
             }
 
             if (serviceMembers != null)     // trying to insert null into the cache creates a server error
@@ -82,7 +86,16 @@ namespace FireApp.Service
             }
             else
             {
-                GlobalCachingProvider.Instance.AddItem(serviceMembersString, new List<FireEvent>());
+                GlobalCachingProvider.Instance.AddItem(serviceMembersString, new List<ServiceMember>());
+            }
+
+            if (users != null)     // trying to insert null into the cache creates a server error
+            {
+                GlobalCachingProvider.Instance.AddItem(userString, users);
+            }
+            else
+            {
+                GlobalCachingProvider.Instance.AddItem(userString, new List<User>());
             }
         }
 
@@ -458,6 +471,84 @@ namespace FireApp.Service
                 }
             }
           
+        }
+        #endregion
+
+        #region Users
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a List of all Users that are stored in the cache</returns>
+        public static List<User> GetAllUsers()
+        {
+            List<User> rv = (List<User>)GlobalCachingProvider.Instance.GetItem(userString, false);
+            if (rv == null)
+            {
+                rv = new List<User>();
+            }
+            return rv;
+        }
+
+        /// <summary>
+        /// Inserts or updates a User in the cache
+        /// </summary>
+        /// <param name="user">User that should be stored in the cache</param>
+        public static void UpsertUser(User user)
+        {
+            List<User> allUsers = GetAllUsers();
+            User old = null;
+
+            foreach (User u in allUsers)
+            {
+                if (u.Id == user.Id)
+                {
+                    old = u;
+                    break;
+                }
+            }
+
+            if (old != null)
+            {
+                allUsers.Remove(old);
+                allUsers.Add(user);
+            }
+            else
+            {
+                allUsers.Add(user);
+            }
+
+            GlobalCachingProvider.Instance.RemoveItem(userString);
+            GlobalCachingProvider.Instance.AddItem(userString, allUsers);
+        }
+
+        /// <summary>
+        /// deletes a User from the cache
+        /// </summary>
+        /// <param name="username">id of the User you want to delete</param>
+        public static void DeleteUser(string userName)
+        {
+            List<User> allUsers = GetAllUsers();
+            User old = null;
+
+            foreach (User u in allUsers)
+            {
+                if (u.Id == userName)
+                {
+                    old = u;
+                    break;
+                }
+            }
+
+            if (old != null)
+            {
+                allUsers.Remove(old);
+                GlobalCachingProvider.Instance.RemoveItem(userString);
+                if (allUsers != null)
+                {
+                    GlobalCachingProvider.Instance.AddItem(userString, allUsers);
+                }               
+            }
+
         }
         #endregion
 

@@ -14,13 +14,23 @@ namespace FireApp.Service.DatabaseOperations
         //todo: set right filter options
         private static EventTypes[] serviceMemberFilter = { EventTypes.disfunction };
 
-        //todo: comment
+        /// <summary>
+        /// Only returns FireEvents that have an EventType that is free for FireBrigades
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> FireBrigadeFilter(IEnumerable<FireEvent> fireEvents)
         {            
             return baseFilter(fireEvents, fireBrigadeFilter);
         }
 
-        //todo: comment
+        /// <summary>
+        /// Only returns FireEvents that have an EventType that is free for FireBrigades and where this
+        /// FireBrigade is in the list of FireBrigades of the FireAlarmSystem that sent the FireEvent
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <param name="fireBrigade">the id of a FireBrigade</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> FireBrigadeFilter(IEnumerable<FireEvent> fireEvents, int fireBrigade)
         {
             List<FireEvent> results = new List<FireEvent>();
@@ -45,13 +55,23 @@ namespace FireApp.Service.DatabaseOperations
             return baseFilter(results, fireBrigadeFilter);
         }
 
-        //todo: comment
+        /// <summary>
+        /// Only returns FireEvents that have an EventType that is free for ServiceMembers
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> ServiceMemberFilter(IEnumerable<FireEvent> fireEvents)
         {
             return baseFilter(fireEvents, serviceMemberFilter);
         }
 
-        //todo: comment
+        /// <summary>
+        /// Only returns FireEvents that have an EventType that is free for ServiceMembers and where this
+        /// ServiceMember is in the list of ServiceMembers of the FireAlarmSystem that sent the FireEvent
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <param name="serviceMember">the id of a ServiceMember</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> ServiceMemberFilter(IEnumerable<FireEvent> fireEvents, int serviceMember)
         {
             List<FireEvent> results = new List<FireEvent>();
@@ -76,7 +96,12 @@ namespace FireApp.Service.DatabaseOperations
             return baseFilter(results, serviceMemberFilter);
         }
 
-        //todo: comment
+        /// <summary>
+        /// Only returns FireEvents that have an EventType that is in the given array of EventTypes
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <param name="types">an array of EventTypes you want the filtered FireEvents to have</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
         private static IEnumerable<FireEvent> baseFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
         {
             List<FireEvent> results = new List<FireEvent>();

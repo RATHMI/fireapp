@@ -21,6 +21,8 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<ServiceMember>()
                 .Id(x => x.Id, true);
+            BsonMapper.Global.Entity<User>()
+                .Id(x => x.Id, true);
         }
 
         #region FireEventDB
@@ -93,6 +95,21 @@ namespace FireApp.Service {
         public static LiteCollection<FireEvent> ActiveFireEventTable(this LiteDatabase db)
         {
             return db.GetCollection<FireEvent>("active");
+        }
+        #endregion
+
+        #region UserDB
+        /// <summary>
+        /// Stores all Users
+        /// </summary>
+        /// <returns>returns the database</returns>
+        public static LiteDatabase UserDB()
+        {
+            return new LiteDatabase(AppSettings.FireEventDBPath);
+        }
+        public static LiteCollection<User> UserTable(this LiteDatabase db)
+        {
+            return db.GetCollection<User>("user");
         }
         #endregion
     }
