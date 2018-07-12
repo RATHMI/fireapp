@@ -41,22 +41,25 @@ namespace FireApp.Service.Authentication
 
         public static User VerifyToken(string token)
         {
-            List<User> users = DatabaseOperations.Users.GetAllUsers().ToList<User>();
-            foreach(User u in users)
+            if (token != null)
             {
-                if(u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
+                List<User> users = DatabaseOperations.Users.GetAllUsers().ToList<User>();
+                foreach (User u in users)
                 {
-                    return u;
+                    if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
+                    {
+                        return u;
+                    }
                 }
             }
 
             return null;
         }
 
-        public static string GetTokenFromHeader(HttpRequestHeaders header)
+        public static string GetTokenFromHeader(HttpRequestHeaders headers)
         {
             IEnumerable<string> key = new List<string>();
-            if (header.TryGetValues("token", out key) != false)
+            if (headers.TryGetValues("token", out key) != false)
             {                
                 return key.First<string>();
             }
@@ -65,6 +68,19 @@ namespace FireApp.Service.Authentication
                 return null;
             }
 
+        }
+
+        public static User CheckAccess(HttpRequestHeaders headers, UserTypes[] userTypes)
+        {
+            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(headers));
+            if (user != null)
+            {
+                if (userTypes.Contains(user.UserType))
+                {
+                    return user;
+                }
+            }
+            return null;
         }
     }
 }

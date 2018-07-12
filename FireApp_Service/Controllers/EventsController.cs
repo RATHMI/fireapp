@@ -44,7 +44,12 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]     //todo: access only for admin
         public FireEvent[] All()
         {
-            return (DatabaseOperations.Events.GetAllFireEvents()).ToArray<FireEvent>();
+            //User user = Authentication.Token.CheckAccess(Request.Headers, new UserTypes[] { UserTypes.admin });
+            //if (user != null)
+            //{
+                return (DatabaseOperations.Events.GetAllFireEvents()).ToArray<FireEvent>();
+            //}
+            //return null;
         }
 
         /// <summary>
@@ -59,7 +64,28 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{sourceId}/{eventId}")]     //todo: access only for admin, fas, restricted access for fb, sm
         public FireEvent[] GetFireEventById(int sourceId, int eventId)
         {
-            return DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToArray<FireEvent>();
+            //todo: what the fuck!
+            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+            if (user != null)
+            {
+                List<FireEvent> events = DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToList<FireEvent>();
+                if (user.UserType == UserTypes.admin)
+                {
+                    return events.ToArray<FireEvent>();
+                }
+                if(user.UserType == UserTypes.firealarmsystem)
+                {
+                    if(user.AuthorizedObjectId == (events.First<FireEvent>()).Id.SourceId)
+                    {
+                        return events.ToArray<FireEvent>();
+                    }
+                }
+                if (user.UserType == UserTypes.firebrigade)
+                {
+                    return FireEventFilter.FireBrigadeFilter(events, user.AuthorizedObjectId).ToArray<FireEvent>();
+                }
+            }
+            return null;
         }
 
         /// <summary>
