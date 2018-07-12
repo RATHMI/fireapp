@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations
+namespace FireApp.Service.Filter
 {
     public static class FireEventFilter
     {
@@ -94,6 +94,26 @@ namespace FireApp.Service.DatabaseOperations
             }
 
             return baseFilter(results, serviceMemberFilter);
+        }
+
+        /// <summary>
+        /// Only returns FireEvents from this FireAlarmSystem
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <param name="fireAlarmSystem">the id of the FireAlarmSystem</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
+        public static IEnumerable<FireEvent> FireAlarmSystemFilter(IEnumerable<FireEvent> fireEvents, int fireAlarmSystem)
+        {
+            List<FireEvent> results = new List<FireEvent>();
+            foreach (FireEvent fe in fireEvents)
+            {
+                if (fe.Id.SourceId == fireAlarmSystem)
+                {
+                    results.Add(fe);
+                }
+            }
+
+            return results;
         }
 
         /// <summary>

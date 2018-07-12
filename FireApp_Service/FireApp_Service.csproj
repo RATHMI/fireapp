@@ -178,7 +178,7 @@
     <Compile Include="DatabaseOperations\Events.cs" />
     <Compile Include="DatabaseOperations\FireAlarmSystems.cs" />
     <Compile Include="DatabaseOperations\FireBrigades.cs" />
-    <Compile Include="DatabaseOperations\FireEventFilter.cs" />
+    <Compile Include="Filter\FireEventFilter.cs" />
     <Compile Include="DatabaseOperations\Queries.cs" />
     <Compile Include="DatabaseOperations\ServiceMembers.cs" />
     <Compile Include="DatabaseOperations\Users.cs" />
