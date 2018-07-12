@@ -8,7 +8,7 @@ namespace FireApp.Domain
 {
     public class FireBrigade
     {
-        public FireBrigade() { }
+        private FireBrigade() {}
 
         public FireBrigade(int id, string name)
         {

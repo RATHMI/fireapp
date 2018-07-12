@@ -8,7 +8,7 @@ namespace FireApp.Domain
 {
     public class ServiceMember
     {
-        public ServiceMember() { }
+        private ServiceMember() { }
 
         public ServiceMember(int id, string firstName, string lastName)
         {

@@ -17,7 +17,7 @@ namespace FireApp.Service.DatabaseOperations
         {
             LocalDatabase.UpsertFireAlarmSystem(fas);
 
-            //Logging.Logger.Log("upsert : " + fas.ToLog());
+            //Logging.Logger.Log("upsert : " + fas.ToLog(), AppSettings.FireEventDBPath + "/_Log/log.txt");
 
             using (var db = AppData.FireAlarmSystemDB())
             {

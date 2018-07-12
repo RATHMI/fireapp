@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain {
     public class FireEvent {
-        public FireEvent(){}
+        private FireEvent(){}
 
         public FireEvent(FireEventId id, DateTime time, string targetId, string targetDescription, EventTypes eventType)
         {

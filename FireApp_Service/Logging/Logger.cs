@@ -8,14 +8,28 @@ namespace FireApp.Service.Logging
 {
     public static class Logger
     {
-        private const string logPath = "../../_Logs/log.txt";
-        public static void Log(string logMessage)
+        public static void Log(string logMessage, string logPath)
         {
-            using (StreamWriter w = File.AppendText(logPath))
+            try
             {
-                w.WriteLine("\r\n{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
-                w.WriteLine(" : {0}", logMessage);
-            }        
+                if (!File.Exists(logPath))
+                {
+                    File.Create(logPath);
+                }
+                using (StreamWriter w = File.AppendText(logPath))
+                {
+                    w.WriteLine("\r\n{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
+                    w.WriteLine(" : {0}", logMessage);
+                }
+            }
+            catch(IOException ex)
+            {
+                Console.WriteLine("Problem with logger\n" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem with logger\n" + ex.Message);
+            }
         }       
     }
 }

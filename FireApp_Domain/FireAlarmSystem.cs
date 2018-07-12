@@ -11,7 +11,20 @@ namespace FireApp.Domain
     /// </summary>
     public class FireAlarmSystem
     {
-        public FireAlarmSystem() {}
+        private FireAlarmSystem() {}
+
+        public FireAlarmSystem(int id)
+        {
+            this.Id = id;
+            this.Company = "";
+            this.Description = "";
+            this.Country = "";
+            this.City = "";
+            this.PostalCode = 0;
+            this.Address = "";
+            FireBrigades = new HashSet<int>();
+            ServiceMembers = new HashSet<int>();
+        }
 
         public FireAlarmSystem(
             int id,
@@ -29,6 +42,8 @@ namespace FireApp.Domain
             this.City = city;
             this.PostalCode = postalCode;
             this.Address = address;
+            FireBrigades = new HashSet<int>();
+            ServiceMembers = new HashSet<int>();
         }
 
         // identifier of the FireAlarmSystem
@@ -102,61 +117,69 @@ namespace FireApp.Domain
         public string ToLog()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("FireAlarmSystem [");
-
-            sb.Append("id=");
-            sb.Append(Id.ToString());
-
-            sb.Append(",company=");
-            sb.Append(Company.ToString());
-
-            sb.Append(",description=");
-            sb.Append(Description.ToString());
-
-            sb.Append(",country=");
-            sb.Append(Country.ToString());
-
-            sb.Append(",city=");
-            sb.Append(City.ToString());
-
-            sb.Append(",postalcode=");
-            sb.Append(PostalCode.ToString());
-
-            sb.Append(",address=");
-            sb.Append(Address.ToString());
-
-            sb.Append(",firebrigades={");
-            if(FireBrigades.Count > 1)
+            try
             {
-                foreach(int fb in FireBrigades)
+                sb.Append("FireAlarmSystem [");
+
+                sb.Append("id=");
+                sb.Append(Id.ToString());
+
+                sb.Append(",company=");
+                sb.Append(Company.ToString());
+
+                sb.Append(",description=");
+                sb.Append(Description.ToString());
+
+                sb.Append(",country=");
+                sb.Append(Country.ToString());
+
+                sb.Append(",city=");
+                sb.Append(City.ToString());
+
+                sb.Append(",postalcode=");
+                sb.Append(PostalCode.ToString());
+
+                sb.Append(",address=");
+                sb.Append(Address.ToString());
+
+                sb.Append(",firebrigades={");
+                if (FireBrigades.Count > 1)
                 {
-                    sb.Append(fb.ToString());
-                    sb.Append(";");
+                    foreach (int fb in FireBrigades)
+                    {
+                        sb.Append(fb.ToString());
+                        sb.Append(";");
+                    }
+                    sb.Remove(sb.Length - 1, 1);
                 }
-                sb.Remove(sb.Length - 1, 1);
-            }else
-            {
-                sb.Append(FireBrigades.First<int>());
-            }            
-            sb.Append("}");
-
-            sb.Append(",servicemembers={");
-
-            if (ServiceMembers.Count > 1)
-            {
-                foreach (int sm in ServiceMembers)
+                else
                 {
-                    sb.Append(sm.ToString());
-                    sb.Append(";");
+                    sb.Append(FireBrigades.First<int>());
                 }
-                sb.Remove(sb.Length - 1, 1);
+                sb.Append("}");
+
+                sb.Append(",servicemembers={");
+
+                if (ServiceMembers.Count > 1)
+                {
+                    foreach (int sm in ServiceMembers)
+                    {
+                        sb.Append(sm.ToString());
+                        sb.Append(";");
+                    }
+                    sb.Remove(sb.Length - 1, 1);
+                }
+                else
+                {
+                    sb.Append(ServiceMembers.First<int>());
+                }
+                sb.Append("}");
+                sb.Append("]");
             }
-            else
+            catch(Exception ex)
             {
-                sb.Append(ServiceMembers.First<int>());
+                Console.WriteLine(ex.Message);
             }
-            sb.Append("}");
-            sb.Append("]");
 
             return sb.ToString();
         }
