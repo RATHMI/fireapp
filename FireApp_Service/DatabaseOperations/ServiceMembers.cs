@@ -49,6 +49,6 @@ namespace FireApp.Service.DatabaseOperations
             {
                 return null;
             }
-        }  
+        }
     }
 }
