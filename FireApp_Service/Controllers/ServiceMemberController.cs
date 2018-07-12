@@ -33,6 +33,17 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// Checks if an id is already used by another ServiceMember
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other ServiceMember</returns>
+        [HttpPost, Route("checkid/{id}")]
+        public static bool CheckId(int id)
+        {
+            return DatabaseOperations.ServiceMembers.CheckId(id);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="id">The id of the ServiceMember you are looking for</param>

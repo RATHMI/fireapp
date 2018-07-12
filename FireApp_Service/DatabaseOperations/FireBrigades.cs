@@ -25,6 +25,24 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Checks if an id is already used by another FireBrigade
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other FireBrigade</returns>
+        public static bool CheckId(int id)
+        {
+            List<FireBrigade> all = LocalDatabase.GetAllFireBrigades();
+            foreach (FireBrigade fb in all)
+            {
+                if (fb.Id == id)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns>returns a list with all FireBrigades</returns>

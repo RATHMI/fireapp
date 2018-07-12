@@ -27,6 +27,24 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Checks if an id is already used by another FireAlarmSystem
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other FireAlarmSystem</returns>
+        public static bool CheckId(int id)
+        {
+            List<FireAlarmSystem> all = LocalDatabase.GetAllFireAlarmSystems();
+            foreach (FireAlarmSystem fas in all)
+            {
+                if (fas.Id == id)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns>returns a list with all FireAlarmSystems</returns>

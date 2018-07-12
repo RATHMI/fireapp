@@ -17,9 +17,20 @@ namespace FireApp.Service.Controllers
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
         [HttpPost, Route("upload")]
-        public static bool UpsertServiceMember(User user)
+        public static bool UpsertUser(User user)
         {
             return DatabaseOperations.Users.UpsertUser(user);
+        }
+
+        /// <summary>
+        /// Checks if an id is already used by another User
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other User</returns>
+        [HttpPost, Route("checkid/{id}")]
+        public static bool CheckId(string id)
+        {
+            return DatabaseOperations.Users.CheckId(id);
         }
 
         [HttpPost, Route("authenticate")]

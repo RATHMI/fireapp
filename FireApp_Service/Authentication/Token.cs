@@ -16,7 +16,7 @@ namespace FireApp.Service.Authentication
             {
                 if (user.Password == login.Password)
                 {
-                    user.Token = Authentication.Token.GenerateToken();
+                    user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
                     user.TokenCreationDate = DateTime.Now;
                     DatabaseOperations.Users.UpsertUser(user);
                     return user.Token;
@@ -32,11 +32,11 @@ namespace FireApp.Service.Authentication
             }
         }
 
-        public static string GenerateToken()
+        public static string GenerateToken(int hash)
         {
             Random random = new Random();
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, 50).Select(s => s[random.Next(s.Length)]).ToArray());
+            return hash.ToString() + new string(Enumerable.Repeat(chars, 50).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         public static User VerifyToken(string token)

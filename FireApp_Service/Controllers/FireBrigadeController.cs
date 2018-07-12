@@ -23,6 +23,17 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// Checks if an id is already used by another FireBrigade
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other FireBrigade</returns>
+        [HttpPost, Route("checkid/{id}")]
+        public static bool CheckId(int id)
+        {
+            return DatabaseOperations.FireBrigades.CheckId(id);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns>returns a list of all FireBrigades</returns>

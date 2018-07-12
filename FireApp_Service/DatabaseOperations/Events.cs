@@ -40,6 +40,24 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Checks if an id is already used by another FireEvent
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other FireEvent</returns>
+        public static bool CheckId(FireEventId id)
+        {
+            List<FireEvent> all = LocalDatabase.GetAllFireEvents();
+            foreach(FireEvent fe in all)
+            {
+                if(fe.Id.SourceId == id.SourceId && fe.Id.EventId == id.EventId)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 

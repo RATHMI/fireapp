@@ -25,6 +25,24 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Checks if an id is already used by another User
+        /// </summary>
+        /// <param name="id">the id you want to check</param>
+        /// <returns>returns true if id is not used by other User</returns>
+        public static bool CheckId(string id)
+        {
+            List<User> all = LocalDatabase.GetAllUsers();
+            foreach (User user in all)
+            {
+                if (user.Id == id)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns>returns a list with all Users</returns>

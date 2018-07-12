@@ -26,6 +26,18 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// Checks if an id is already used by another FireEvent
+        /// </summary>
+        /// <param name="sourceId">the sourceId you want to check</param>
+        /// <param name="eventId">the eventId you want to check</param>
+        /// <returns>returns true if id is not used by other FireEvent</returns>
+        [HttpPost, Route("checkid/{sourceId}/{eventId}")]     
+        public bool CheckId(int sourceId, int eventId)
+        {
+            return DatabaseOperations.Events.CheckId(new FireEventId(sourceId, eventId));
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns>returns all FireEvents</returns>
