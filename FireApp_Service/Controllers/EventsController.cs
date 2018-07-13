@@ -64,31 +64,15 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{sourceId}/{eventId}")]     //todo: access only for admin, fas, restricted access for fb, sm
         public FireEvent[] GetFireEventById(int sourceId, int eventId)
         {
-            //todo: what the fuck! move code to namespace "filter"
-            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-            if (user != null)
-            {
-                List<FireEvent> events = DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToList<FireEvent>();
-                if (user.UserType == UserTypes.admin)
-                {
-                    return events.ToArray<FireEvent>();
-                }
-                if(user.UserType == UserTypes.firealarmsystem)
-                {
-                    return Filter.FireEventFilter
-                        .FireAlarmSystemFilter(events, user.AuthorizedObjectId)
-                        .ToArray<FireEvent>();
-                }
-                if (user.UserType == UserTypes.firebrigade)
-                {
-                    return Filter.FireEventFilter.FireBrigadeFilter(events, user.AuthorizedObjectId).ToArray<FireEvent>();
-                }
-                if (user.UserType == UserTypes.servicemember)
-                {
-                    return Filter.FireEventFilter.ServiceMemberFilter(events, user.AuthorizedObjectId).ToArray<FireEvent>();
-                }
-            }
-            return null;
+            //User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+           // if (user != null)
+            //{
+                //List<FireEvent> events = DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToList<FireEvent>();
+                //return Filter.FireEventFilter.UserFilter(events, user).ToArray<FireEvent>();
+            //}
+            //return null;
+
+            return DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToArray<FireEvent>();
         }
 
         /// <summary>

@@ -15,6 +15,34 @@ namespace FireApp.Service.Filter
         private static EventTypes[] serviceMemberFilter = { EventTypes.disfunction };
 
         /// <summary>
+        /// filters a list of FireEvents according to the rights of a user
+        /// </summary>
+        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
+        /// <param name="user">the user you want the FireEvents to filter for</param>
+        /// <returns>returns a filtered list of FireEvents</returns>
+        public static IEnumerable<FireEvent> UserFilter(IEnumerable<FireEvent> fireEvents, User user)
+        {
+            if (user.UserType == UserTypes.admin)
+            {
+                return fireEvents;
+            }
+            if (user.UserType == UserTypes.firealarmsystem)
+            {
+                return Filter.FireEventFilter.FireAlarmSystemFilter(fireEvents, user.AuthorizedObjectId);
+            }
+            if (user.UserType == UserTypes.firebrigade)
+            {
+                return Filter.FireEventFilter.FireBrigadeFilter(fireEvents, user.AuthorizedObjectId);
+            }
+            if (user.UserType == UserTypes.servicemember)
+            {
+                return Filter.FireEventFilter.ServiceMemberFilter(fireEvents, user.AuthorizedObjectId);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Only returns FireEvents that have an EventType that is free for FireBrigades
         /// </summary>
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
@@ -36,6 +64,7 @@ namespace FireApp.Service.Filter
             List<FireEvent> results = new List<FireEvent>();
             List<Int32> fireAlarmSystems = new List<Int32>();
 
+            // get all IDs of the FireAlarmSystems where the FireBrigade is present
             foreach(FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
             {
                 if (fas.CheckFireBrigade(fireBrigade))
@@ -44,7 +73,8 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            foreach(FireEvent fe in fireEvents)
+            // get all FireEvents from the FireAlarmSystems that are linked to the FireBrigade
+            foreach (FireEvent fe in fireEvents)
             {
                 if (fireAlarmSystems.Contains(fe.Id.SourceId))
                 {
@@ -77,6 +107,7 @@ namespace FireApp.Service.Filter
             List<FireEvent> results = new List<FireEvent>();
             List<Int32> fireAlarmSystems = new List<Int32>();
 
+            // get all IDs of the FireAlarmSystems where the ServiceMember is present
             foreach (FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
             {
                 if (fas.CheckServiceMember(serviceMember))
@@ -85,6 +116,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
+            // get all FireEvents from the FireAlarmSystems that are linked to the ServiceMember
             foreach (FireEvent fe in fireEvents)
             {
                 if (fireAlarmSystems.Contains(fe.Id.SourceId))

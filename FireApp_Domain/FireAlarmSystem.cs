@@ -9,7 +9,7 @@ namespace FireApp.Domain
     /// <summary>
     /// represents a fire alarm system
     /// </summary>
-    public class FireAlarmSystem
+    public class FireAlarmSystem : ICloneable
     {
         private FireAlarmSystem() {}
 
@@ -182,6 +182,31 @@ namespace FireApp.Domain
             }
 
             return sb.ToString();
+        }
+
+        public object Clone()
+        {
+            FireAlarmSystem fas =
+                new FireAlarmSystem
+                (
+                    this.Id,
+                    this.Company,
+                    this.Description,
+                    this.Country,
+                    this.City,
+                    this.PostalCode,
+                    this.Address
+                );
+            foreach(int fb in this.FireBrigades)
+            {
+                fas.FireBrigades.Add(fb);
+            }
+            foreach (int sm in this.ServiceMembers)
+            {
+                fas.ServiceMembers.Add(sm);
+            }
+
+            return fas;
         }
     }
 }
