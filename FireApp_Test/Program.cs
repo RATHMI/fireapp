@@ -21,12 +21,17 @@ namespace FireApp.Test {
             
             #region testsFireEvents
             addr = "http://localhost:50862/events/";
-            System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
-            FireEvent fe = new FireEvent(new FireEventId(99,0), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.alarm);
-            rv = FireEventTests.UploadFireEvent(addr, fe);
+            //System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
+            //FireEvent fe = new FireEvent(new FireEventId(99,0), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.alarm);
+            //rv = FireEventTests.UploadFireEvent(addr, fe);
+            //System.Console.WriteLine(rv);
+            //System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+
+
+            System.Console.WriteLine("\r\n\r\nTest GetAllFireEvents");
+            rv = FireEventTests.GetAllFireEvents(addr);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-
             Task.Delay(1000);
 
             /*
@@ -73,22 +78,22 @@ namespace FireApp.Test {
             */
             #endregion
 
-            #region testsFireAlarmSystems
-            addr = "http://localhost:50862/fas/";
+            //#region testsFireAlarmSystems
+            //addr = "http://localhost:50862/fas/";
 
-            System.Console.WriteLine("\r\n\r\nTest UploadFireAlarmSystem");
-            FireAlarmSystem fas = new FireAlarmSystem();
-            fas.City = "Linz";
-            fas.Address = "Wolfgang-Pauli-Straße 2";
-            rv = FireAlarmSystemTests.UploadFireAlarmSystem(addr, fas);
-            System.Console.WriteLine(rv);
-            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            //System.Console.WriteLine("\r\n\r\nTest UploadFireAlarmSystem");
+            //FireAlarmSystem fas = new FireAlarmSystem();
+            //fas.City = "Linz";
+            //fas.Address = "Wolfgang-Pauli-Straße 2";
+            //rv = FireAlarmSystemTests.UploadFireAlarmSystem(addr, fas);
+            //System.Console.WriteLine(rv);
+            //System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
 
-            System.Console.WriteLine("\r\n\r\nTest GetAllFireAlarmSystems");
-            rv = FireAlarmSystemTests.GetAllFireAlarmSystems(addr);
-            System.Console.WriteLine(rv);
-            System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-            #endregion
+            //System.Console.WriteLine("\r\n\r\nTest GetAllFireAlarmSystems");
+            //rv = FireAlarmSystemTests.GetAllFireAlarmSystems(addr);
+            //System.Console.WriteLine(rv);
+            //System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            //#endregion
 
 
             System.Console.ReadKey();

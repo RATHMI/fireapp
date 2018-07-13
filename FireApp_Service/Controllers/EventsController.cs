@@ -44,10 +44,10 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]     //todo: access only for admin
         public FireEvent[] All()
         {
-            //User user = Authentication.Token.CheckAccess(Request.Headers, new UserTypes[] { UserTypes.admin });
+            //User user = Authentication.Token.CheckAccess(Request.Headers, new UserTypes[] { UserTypes.admin }).First<User>();
             //if (user != null)
             //{
-            //return Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user).ToArray<FireEvent>();
+            //    return Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user).ToArray<FireEvent>();
             //}
             //return null;
 

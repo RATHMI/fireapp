@@ -8,6 +8,7 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Controllers
 {
+    //todo: implement authentication
     [RoutePrefix("user")]
     public class UserController : ApiController
     {
@@ -33,17 +34,68 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.Users.CheckId(id);
         }
 
-        [HttpPost, Route("authenticate")]
+        /// <summary>
+        /// This method generates a new token and 
+        /// saves it in the User object with the matching UserLogin. 
+        /// </summary>
+        /// <param name="login">the login data of a user</param>
+        /// <returns>returns the token if the login worked or null if not</returns>
+        [HttpPost, Route("authenticate")]   //todo: it may be easier to transmit login seperate in headers for app
         public string Authenticate([FromBody]UserLogin login)
         {
             return Authentication.Token.RefreshToken(login);
         }
 
+        /// <summary>
+        /// Checks if the token of the request is valid
+        /// </summary>
+        /// <returns>returns the user if the token is valid</returns>
         [HttpGet, Route("getuser")]
-        public User GetUser()
+        public User[] GetUser()
         {
             string token = Authentication.Token.GetTokenFromHeader(Request.Headers);
-            return Authentication.Token.VerifyToken(token);
+            return Authentication.Token.VerifyToken(token).ToArray<User>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list with all Users</returns>
+        [HttpGet, Route("all")]
+        public User[] GetAllUsers()
+        {
+            return DatabaseOperations.Users.GetAllUsers().ToArray<User>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username">The username of the User you are looking for</param>
+        /// <returns>returns a User with a matching username</returns>
+        [HttpGet, Route("id/{username}")]
+        public User[] GetUserById(string userName)
+        {
+            return DatabaseOperations.Users.GetUserById(userName).ToArray<User>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a List of Users with a valid token</returns>
+        [HttpGet, Route("active")]
+        public User[] GetActiveUsers()
+        {
+            return DatabaseOperations.Users.GetActiveUsers().ToArray<User>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a List of Users with an invalid token</returns>
+        [HttpGet, Route("inactive")]
+        public User[] GetInactiveUsers()
+        {
+            return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
         }
 
     }

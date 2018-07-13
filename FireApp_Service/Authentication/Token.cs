@@ -51,7 +51,7 @@ namespace FireApp.Service.Authentication
         /// </summary>
         /// <param name="token">the token you want to verify</param>
         /// <returns>returns the User that is assoziated with the token or null</returns>
-        public static User VerifyToken(string token)
+        public static IEnumerable<User> VerifyToken(string token)
         {
             if (token != null)
             {
@@ -60,7 +60,7 @@ namespace FireApp.Service.Authentication
                 {
                     if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
                     {
-                        return u;
+                        return (IEnumerable<User>)u;
                     }
                 }
             }
@@ -95,18 +95,18 @@ namespace FireApp.Service.Authentication
         /// <param name="headers">The headers of a HttpRequest</param>
         /// <param name="userTypes"></param>
         /// <returns>returns a User if the token an userType are valid</returns>
-        public static User CheckAccess(HttpRequestHeaders headers, UserTypes[] userTypes)
+        public static IEnumerable<User> CheckAccess(HttpRequestHeaders headers, UserTypes[] userTypes)
         {
-            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(headers));
+            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(headers)).First<User>();
             if (user != null)
             {
                 if (userTypes.Contains(user.UserType))
                 {
-                    return user;
+                    return (IEnumerable<User>)user;
                 }
                 else
                 {
-                    return new User("", "", "", "", "", UserTypes.unauthorized, 0);
+                    return ((IEnumerable<User>)new User("", "", "", "", "", UserTypes.unauthorized, 0));
                 }
             }
             return null;

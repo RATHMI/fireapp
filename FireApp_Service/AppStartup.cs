@@ -8,6 +8,7 @@ using Owin;
 using System.Web.Http;
 using System.Net.Http.Formatting;
 using Newtonsoft.Json.Serialization;
+using FireApp.Domain;
 
 [assembly: OwinStartup(typeof(FireApp.Service.AppStartup))]
 namespace FireApp.Service {
@@ -28,6 +29,12 @@ namespace FireApp.Service {
 
             app.UseWebApi(config);
             LocalDatabase.InitializeDatabase();
+
+
+            //debug: use only in debugging
+            User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin, 0);
+            user.Token = "1234";
+            DatabaseOperations.DbUpserts.UpsertUser(new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin, 0));
         }
     }
 }
