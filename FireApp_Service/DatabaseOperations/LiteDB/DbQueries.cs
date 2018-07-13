@@ -6,6 +6,9 @@ using FireApp.Domain;
 
 namespace FireApp.Service.DatabaseOperations
 {
+    /// <summary>
+    /// This class is for querying objects from the LiteDB
+    /// </summary>
     public static class DbQueries
     {
         /// <summary>

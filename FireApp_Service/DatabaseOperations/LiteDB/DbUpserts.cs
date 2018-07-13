@@ -7,6 +7,9 @@ using FireApp.Domain;
 namespace FireApp.Service.DatabaseOperations
 {
     //todo: comment class
+    /// <summary>
+    /// This class is for upserting objects into the LiteDB
+    /// </summary>
     public static class DbUpserts
     {
         public static bool UpsertActiveFireEvent(FireEvent fe)

@@ -7,9 +7,17 @@ using System.Net.Http.Headers;
 
 namespace FireApp.Service.Authentication
 {
-    //todo: comment class
+    /// <summary>
+    /// This class is for authentication via tokens
+    /// </summary>
     public static class Token
     {
+        /// <summary>
+        /// This method generates a new token and 
+        /// saves it in the User object with the matching UserLogin. 
+        /// </summary>
+        /// <param name="login">the login data of a user</param>
+        /// <returns>returns the token if the login worked or null if not</returns>
         public static string RefreshToken(UserLogin login)
         {
             User user = DatabaseOperations.Users.GetUserById(login.Username).First<User>();
@@ -22,17 +30,15 @@ namespace FireApp.Service.Authentication
                     DatabaseOperations.Users.UpsertUser(user);
                     return user.Token;
                 }
-                else
-                {
-                    return null;
-                }
             }
-            else
-            {
-                return null;
-            }
+            return null;        
         }
 
+        /// <summary>
+        /// This method generates a random token
+        /// </summary>
+        /// <param name="hash">an Integer that is used for the first part of the token</param>
+        /// <returns>returns a new random token</returns>
         public static string GenerateToken(int hash)
         {
             Random random = new Random();
@@ -40,6 +46,11 @@ namespace FireApp.Service.Authentication
             return hash.ToString() + new string(Enumerable.Repeat(chars, 50).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        /// <summary>
+        /// This method checks if there is a User with this token and if the token is still valid
+        /// </summary>
+        /// <param name="token">the token you want to verify</param>
+        /// <returns>returns the User that is assoziated with the token or null</returns>
         public static User VerifyToken(string token)
         {
             if (token != null)
@@ -57,6 +68,11 @@ namespace FireApp.Service.Authentication
             return null;
         }
 
+        /// <summary>
+        /// This method extracts a token from the HttpRequestHeaders
+        /// </summary>
+        /// <param name="headers">The headers of a HttpRequest</param>
+        /// <returns>returns the token or null</returns>
         public static string GetTokenFromHeader(HttpRequestHeaders headers)
         {
             IEnumerable<string> key = new List<string>();
@@ -71,6 +87,14 @@ namespace FireApp.Service.Authentication
 
         }
 
+        /// <summary>
+        /// This method extracts a token from the HttpRequestHeaders and fetches the
+        /// User. If the token is valid and the UserType of the User is contained in userTypes
+        /// it returns the user.
+        /// </summary>
+        /// <param name="headers">The headers of a HttpRequest</param>
+        /// <param name="userTypes"></param>
+        /// <returns>returns a User if the token an userType are valid</returns>
         public static User CheckAccess(HttpRequestHeaders headers, UserTypes[] userTypes)
         {
             User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(headers));

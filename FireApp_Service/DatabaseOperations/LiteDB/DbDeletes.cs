@@ -6,7 +6,9 @@ using FireApp.Domain;
 
 namespace FireApp.Service.DatabaseOperations
 {
-    //todo: comment class
+    /// <summary>
+    /// This class is for deleting objects from the LiteDB
+    /// </summary>
     public static class DbDeletes
     {
         public static bool DeleteActiveFireEvent(FireEvent fe)
