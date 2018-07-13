@@ -17,11 +17,7 @@ namespace FireApp.Service.DatabaseOperations
         {
             LocalDatabase.UpsertServiceMember(sm);
 
-            using (var db = AppData.ServiceMemberDB())
-            {
-                var table = db.ServiceMemberTable();
-                return table.Upsert(sm);
-            }
+            return DatabaseOperations.DbUpserts.UpsertServiceMember(sm);
         }
 
         /// <summary>

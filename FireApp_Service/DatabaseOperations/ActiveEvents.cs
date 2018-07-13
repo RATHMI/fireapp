@@ -24,11 +24,7 @@ namespace FireApp.Service.DatabaseOperations
                 LocalDatabase.UpsertActiveFireEvent(fe);
 
                 // insert into remote database                
-                using (var db = AppData.ActiveFireEventDB())
-                {
-                    var table = db.ActiveFireEventTable();
-                    return table.Upsert(fe);
-                }
+                DatabaseOperations.DbUpserts.UpsertActiveFireEvent(fe);
             }
             else
             {
@@ -38,22 +34,7 @@ namespace FireApp.Service.DatabaseOperations
                     LocalDatabase.DeleteActiveFireEvent(fe);
 
                     // delete active FireEvent from remote database
-                    using (var db = AppData.ActiveFireEventDB())
-                    {
-                        var table = db.ActiveFireEventTable();
-                        FireEvent target = table.FindOne(x => x.Id.SourceId == fe.Id.SourceId && x.TargetId == fe.TargetId);
-                        if (target != null)
-                        {
-                            if (table.Delete(x => x.Id == target.Id) == 1)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                    }
+                    return DatabaseOperations.DbDeletes.DeleteActiveFireEvent(fe);
                 }
             }
             return false;

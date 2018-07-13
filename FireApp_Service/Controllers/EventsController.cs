@@ -47,9 +47,11 @@ namespace FireApp.Service.Controllers
             //User user = Authentication.Token.CheckAccess(Request.Headers, new UserTypes[] { UserTypes.admin });
             //if (user != null)
             //{
-                return (DatabaseOperations.Events.GetAllFireEvents()).ToArray<FireEvent>();
+            //return Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user).ToArray<FireEvent>();
             //}
             //return null;
+
+            return (DatabaseOperations.Events.GetAllFireEvents().ToArray<FireEvent>());
         }
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace FireApp.Service.Controllers
            // if (user != null)
             //{
                 //List<FireEvent> events = DatabaseOperations.Events.GetFireEventById(sourceId, eventId).ToList<FireEvent>();
-                //return Filter.FireEventFilter.UserFilter(events, user).ToArray<FireEvent>();
+                //return Filter.FireEventsFilter.UserFilter(events, user).ToArray<FireEvent>();
             //}
             //return null;
 

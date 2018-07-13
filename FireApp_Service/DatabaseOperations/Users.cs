@@ -17,11 +17,7 @@ namespace FireApp.Service.DatabaseOperations
         {
             LocalDatabase.UpsertUser(user);
 
-            using (var db = AppData.UserDB())
-            {
-                var table = db.UserTable();
-                return table.Upsert(user);
-            }
+            return DatabaseOperations.DbUpserts.UpsertUser(user);
         }
 
         /// <summary>
@@ -67,6 +63,42 @@ namespace FireApp.Service.DatabaseOperations
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a List of Users with a valid token</returns>
+        public static IEnumerable<User> GetActiveUsers()
+        {
+            List<User> results = new List<User>();
+            foreach(User user in GetAllUsers().ToList<User>())
+            {
+                if(Authentication.Token.VerifyToken(user.Token) != null)
+                {
+                    results.Add(user);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a List of Users with an invalid token</returns>
+        public static IEnumerable<User> GetInactiveUsers()
+        {
+            List<User> results = new List<User>();
+            foreach (User user in GetAllUsers().ToList<User>())
+            {
+                if (Authentication.Token.VerifyToken(user.Token) == null)
+                {
+                    results.Add(user);
+                }
+            }
+
+            return results;
         }
     }
 }

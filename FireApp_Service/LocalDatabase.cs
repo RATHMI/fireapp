@@ -37,12 +37,12 @@ namespace FireApp.Service
         /// </summary>
         public static void InitializeDatabase()
         {
-            List<FireEvent> events = (DatabaseOperations.Queries.QueryFireEvents()).ToList<FireEvent>();
-            List<FireEvent> active = (DatabaseOperations.Queries.QueryActiveFireEvents()).ToList<FireEvent>();
-            List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.Queries.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
-            List<FireBrigade> fireBrigades = (DatabaseOperations.Queries.QueryFireBrigades()).ToList<FireBrigade>();
-            List<ServiceMember> serviceMembers = (DatabaseOperations.Queries.QueryServiceMembers()).ToList<ServiceMember>();
-            List<User> users = (DatabaseOperations.Queries.QueryUsers()).ToList<User>();
+            List<FireEvent> events = (DatabaseOperations.DbQueries.QueryFireEvents()).ToList<FireEvent>();
+            List<FireEvent> active = (DatabaseOperations.DbQueries.QueryActiveFireEvents()).ToList<FireEvent>();
+            List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.DbQueries.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
+            List<FireBrigade> fireBrigades = (DatabaseOperations.DbQueries.QueryFireBrigades()).ToList<FireBrigade>();
+            List<ServiceMember> serviceMembers = (DatabaseOperations.DbQueries.QueryServiceMembers()).ToList<ServiceMember>();
+            List<User> users = (DatabaseOperations.DbQueries.QueryUsers()).ToList<User>();
 
             if (events != null)     // trying to insert null into the cache creates a server error
             {
@@ -120,30 +120,33 @@ namespace FireApp.Service
         /// <param name="fe">FireEvent that should be stored in the cache</param>
         public static void UpsertFireEvent(FireEvent fe)
         {
-            List<FireEvent> allFireEvents = GetAllFireEvents();
-            FireEvent old = null;
-
-            foreach (FireEvent f in allFireEvents)
+            if (fe != null)
             {
-                if (f.Id.SourceId == fe.Id.SourceId && f.TargetId == fe.TargetId)
+                List<FireEvent> allFireEvents = GetAllFireEvents();
+                FireEvent old = null;
+
+                foreach (FireEvent f in allFireEvents)
                 {
-                    old = f;
-                    break;
+                    if (f.Id.SourceId == fe.Id.SourceId && f.TargetId == fe.TargetId)
+                    {
+                        old = f;
+                        break;
+                    }
                 }
-            }
 
-            if (old != null)
-            {
-                allFireEvents.Remove(old);
-                allFireEvents.Add(fe);
-            }
-            else
-            {
-                allFireEvents.Add(fe);
-            }
+                if (old != null)
+                {
+                    allFireEvents.Remove(old);
+                    allFireEvents.Add(fe);
+                }
+                else
+                {
+                    allFireEvents.Add(fe);
+                }
 
-            GlobalCachingProvider.Instance.RemoveItem(allFireEventsString);
-            GlobalCachingProvider.Instance.AddItem(allFireEventsString, allFireEvents);
+                GlobalCachingProvider.Instance.RemoveItem(allFireEventsString);
+                GlobalCachingProvider.Instance.AddItem(allFireEventsString, allFireEvents);
+            }
         }
         #endregion
 
@@ -154,30 +157,33 @@ namespace FireApp.Service
         /// <param name="fe">active FireEvent that should be stored in the cache</param>
         public static void UpsertActiveFireEvent(FireEvent fe)
         {
-            List<FireEvent> activeFireEvents = GetActiveFireEvents();
-            FireEvent old = null;
-
-            foreach (FireEvent f in activeFireEvents)
+            if (fe != null)
             {
-                if(f.Id.SourceId == fe.Id.SourceId && f.TargetId == fe.TargetId)
+                List<FireEvent> activeFireEvents = GetActiveFireEvents();
+                FireEvent old = null;
+
+                foreach (FireEvent f in activeFireEvents)
                 {
-                    old = f;
-                    break;
+                    if (f.Id.SourceId == fe.Id.SourceId && f.TargetId == fe.TargetId)
+                    {
+                        old = f;
+                        break;
+                    }
                 }
-            }                        
 
-            if (old != null)
-            {
-                activeFireEvents.Remove(old);
-                activeFireEvents.Add(fe);
-            }
-            else
-            {
-                activeFireEvents.Add(fe);
-            }
+                if (old != null)
+                {
+                    activeFireEvents.Remove(old);
+                    activeFireEvents.Add(fe);
+                }
+                else
+                {
+                    activeFireEvents.Add(fe);
+                }
 
-            GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
-            GlobalCachingProvider.Instance.AddItem(activeFireEventsString, activeFireEvents);
+                GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
+                GlobalCachingProvider.Instance.AddItem(activeFireEventsString, activeFireEvents);
+            }
         }
 
         /// <summary>
@@ -245,30 +251,33 @@ namespace FireApp.Service
         /// <param name="fireAlarmSystem">FireBrigade that should be stored in the cache</param>
         public static void UpsertFireAlarmSystem(FireAlarmSystem fireAlarmSystem)
         {
-            List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems();
-            FireAlarmSystem old = null;
-
-            foreach (FireAlarmSystem fas in allFireAlarmSystems)
+            if (fireAlarmSystem != null)
             {
-                if (fas.Id == fireAlarmSystem.Id)
+                List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems();
+                FireAlarmSystem old = null;
+
+                foreach (FireAlarmSystem fas in allFireAlarmSystems)
                 {
-                    old = fas;
-                    break;
+                    if (fas.Id == fireAlarmSystem.Id)
+                    {
+                        old = fas;
+                        break;
+                    }
                 }
-            }
 
-            if (old != null)
-            {
-                allFireAlarmSystems.Remove(old);
-                allFireAlarmSystems.Add(fireAlarmSystem);
-            }
-            else
-            {
-                allFireAlarmSystems.Add(fireAlarmSystem);
-            }
+                if (old != null)
+                {
+                    allFireAlarmSystems.Remove(old);
+                    allFireAlarmSystems.Add(fireAlarmSystem);
+                }
+                else
+                {
+                    allFireAlarmSystems.Add(fireAlarmSystem);
+                }
 
-            GlobalCachingProvider.Instance.RemoveItem(fireAlarmSystemsString);
-            GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, allFireAlarmSystems);
+                GlobalCachingProvider.Instance.RemoveItem(fireAlarmSystemsString);
+                GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, allFireAlarmSystems);
+            }
         }
 
         /// <summary>
@@ -322,30 +331,33 @@ namespace FireApp.Service
         /// <param name="fireBrigade">FireBrigade that should be stored in the cache</param>
         public static void UpsertFireBrigade(FireBrigade fireBrigade)
         {
-            List<FireBrigade> allFireBrigades = GetAllFireBrigades();
-            FireBrigade old = null;
-
-            foreach (FireBrigade fb in allFireBrigades)
+            if (fireBrigade != null)
             {
-                if (fb.Id == fireBrigade.Id)
+                List<FireBrigade> allFireBrigades = GetAllFireBrigades();
+                FireBrigade old = null;
+
+                foreach (FireBrigade fb in allFireBrigades)
                 {
-                    old = fb;
-                    break;
+                    if (fb.Id == fireBrigade.Id)
+                    {
+                        old = fb;
+                        break;
+                    }
                 }
-            }
 
-            if (old != null)
-            {
-                allFireBrigades.Remove(old);
-                allFireBrigades.Add(fireBrigade);
-            }
-            else
-            {
-                allFireBrigades.Add(fireBrigade);
-            }
+                if (old != null)
+                {
+                    allFireBrigades.Remove(old);
+                    allFireBrigades.Add(fireBrigade);
+                }
+                else
+                {
+                    allFireBrigades.Add(fireBrigade);
+                }
 
-            GlobalCachingProvider.Instance.RemoveItem(fireBrigadesString);
-            GlobalCachingProvider.Instance.AddItem(fireBrigadesString, allFireBrigades);
+                GlobalCachingProvider.Instance.RemoveItem(fireBrigadesString);
+                GlobalCachingProvider.Instance.AddItem(fireBrigadesString, allFireBrigades);
+            }
         }
 
         /// <summary>
@@ -408,30 +420,33 @@ namespace FireApp.Service
         /// <param name="serviceMember">ServiceMember that should be stored in the cache</param>
         public static void UpsertServiceMember(ServiceMember serviceMember)
         {
-            List<ServiceMember> allServiceMembers = GetAllServiceMembers();
-            ServiceMember old = null;
-
-            foreach (ServiceMember sm in allServiceMembers)
+            if (serviceMember != null)
             {
-                if (sm.Id == serviceMember.Id)
+                List<ServiceMember> allServiceMembers = GetAllServiceMembers();
+                ServiceMember old = null;
+
+                foreach (ServiceMember sm in allServiceMembers)
                 {
-                    old = sm;
-                    break;
+                    if (sm.Id == serviceMember.Id)
+                    {
+                        old = sm;
+                        break;
+                    }
                 }
-            }
 
-            if (old != null)
-            {
-                allServiceMembers.Remove(old);
-                allServiceMembers.Add(serviceMember);
-            }
-            else
-            {
-                allServiceMembers.Add(serviceMember);
-            }
+                if (old != null)
+                {
+                    allServiceMembers.Remove(old);
+                    allServiceMembers.Add(serviceMember);
+                }
+                else
+                {
+                    allServiceMembers.Add(serviceMember);
+                }
 
-            GlobalCachingProvider.Instance.RemoveItem(serviceMembersString);
-            GlobalCachingProvider.Instance.AddItem(serviceMembersString, allServiceMembers);
+                GlobalCachingProvider.Instance.RemoveItem(serviceMembersString);
+                GlobalCachingProvider.Instance.AddItem(serviceMembersString, allServiceMembers);
+            }
         }
 
         /// <summary>
@@ -495,30 +510,33 @@ namespace FireApp.Service
         /// <param name="user">User that should be stored in the cache</param>
         public static void UpsertUser(User user)
         {
-            List<User> allUsers = GetAllUsers();
-            User old = null;
-
-            foreach (User u in allUsers)
+            if (user != null)
             {
-                if (u.Id == user.Id)
+                List<User> allUsers = GetAllUsers();
+                User old = null;
+
+                foreach (User u in allUsers)
                 {
-                    old = u;
-                    break;
+                    if (u.Id == user.Id)
+                    {
+                        old = u;
+                        break;
+                    }
                 }
-            }
 
-            if (old != null)
-            {
-                allUsers.Remove(old);
-                allUsers.Add(user);
-            }
-            else
-            {
-                allUsers.Add(user);
-            }
+                if (old != null)
+                {
+                    allUsers.Remove(old);
+                    allUsers.Add(user);
+                }
+                else
+                {
+                    allUsers.Add(user);
+                }
 
-            GlobalCachingProvider.Instance.RemoveItem(userString);
-            GlobalCachingProvider.Instance.AddItem(userString, allUsers);
+                GlobalCachingProvider.Instance.RemoveItem(userString);
+                GlobalCachingProvider.Instance.AddItem(userString, allUsers);
+            }
         }
 
         /// <summary>

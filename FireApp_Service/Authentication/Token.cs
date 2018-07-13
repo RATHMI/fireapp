@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 
 namespace FireApp.Service.Authentication
 {
+    //todo: comment class
     public static class Token
     {
         public static string RefreshToken(UserLogin login)
@@ -78,6 +79,10 @@ namespace FireApp.Service.Authentication
                 if (userTypes.Contains(user.UserType))
                 {
                     return user;
+                }
+                else
+                {
+                    return new User("", "", "", "", "", UserTypes.unauthorized, 0);
                 }
             }
             return null;

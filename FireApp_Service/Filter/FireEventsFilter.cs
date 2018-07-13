@@ -6,13 +6,13 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Filter
 {
-    public static class FireEventFilter
+    public static class FireEventsFilter
     {
         //todo: set right filter options
-        private static EventTypes[] fireBrigadeFilter = { EventTypes.alarm };
+        private static EventTypes[] fireBrigadeFilterTypes = { EventTypes.alarm };
 
         //todo: set right filter options
-        private static EventTypes[] serviceMemberFilter = { EventTypes.disfunction };
+        private static EventTypes[] serviceMemberFilterTypes = { EventTypes.disfunction };
 
         /// <summary>
         /// filters a list of FireEvents according to the rights of a user
@@ -22,24 +22,27 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> UserFilter(IEnumerable<FireEvent> fireEvents, User user)
         {
-            if (user.UserType == UserTypes.admin)
+            if (fireEvents != null && user != null)
             {
-                return fireEvents;
-            }
-            if (user.UserType == UserTypes.firealarmsystem)
-            {
-                return Filter.FireEventFilter.FireAlarmSystemFilter(fireEvents, user.AuthorizedObjectId);
-            }
-            if (user.UserType == UserTypes.firebrigade)
-            {
-                return Filter.FireEventFilter.FireBrigadeFilter(fireEvents, user.AuthorizedObjectId);
-            }
-            if (user.UserType == UserTypes.servicemember)
-            {
-                return Filter.FireEventFilter.ServiceMemberFilter(fireEvents, user.AuthorizedObjectId);
+                if (user.UserType == UserTypes.admin)
+                {
+                    return fireEvents;
+                }
+                if (user.UserType == UserTypes.firealarmsystem)
+                {
+                    return fireAlarmSystemFilter(fireEvents, user.AuthorizedObjectId);
+                }
+                if (user.UserType == UserTypes.firebrigade)
+                {
+                    return fireBrigadeFilter(fireEvents, user.AuthorizedObjectId);
+                }
+                if (user.UserType == UserTypes.servicemember)
+                {
+                    return serviceMemberFilter(fireEvents, user.AuthorizedObjectId);
+                }
             }
 
-            return null;
+            return ((IEnumerable<FireEvent>)new List<FireEvent>());
         }
 
         /// <summary>
@@ -47,9 +50,9 @@ namespace FireApp.Service.Filter
         /// </summary>
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> FireBrigadeFilter(IEnumerable<FireEvent> fireEvents)
+        private static IEnumerable<FireEvent> fireBrigadeFilter(IEnumerable<FireEvent> fireEvents)
         {            
-            return baseFilter(fireEvents, fireBrigadeFilter);
+            return baseFilter(fireEvents, fireBrigadeFilterTypes);
         }
 
         /// <summary>
@@ -59,7 +62,7 @@ namespace FireApp.Service.Filter
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
         /// <param name="fireBrigade">the id of a FireBrigade</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> FireBrigadeFilter(IEnumerable<FireEvent> fireEvents, int fireBrigade)
+        private static IEnumerable<FireEvent> fireBrigadeFilter(IEnumerable<FireEvent> fireEvents, int fireBrigade)
         {
             List<FireEvent> results = new List<FireEvent>();
             List<Int32> fireAlarmSystems = new List<Int32>();
@@ -82,7 +85,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            return baseFilter(results, fireBrigadeFilter);
+            return baseFilter(results, fireBrigadeFilterTypes);
         }
 
         /// <summary>
@@ -90,9 +93,9 @@ namespace FireApp.Service.Filter
         /// </summary>
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> ServiceMemberFilter(IEnumerable<FireEvent> fireEvents)
+        private static IEnumerable<FireEvent> serviceMemberFilter(IEnumerable<FireEvent> fireEvents)
         {
-            return baseFilter(fireEvents, serviceMemberFilter);
+            return baseFilter(fireEvents, serviceMemberFilterTypes);
         }
 
         /// <summary>
@@ -102,7 +105,7 @@ namespace FireApp.Service.Filter
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
         /// <param name="serviceMember">the id of a ServiceMember</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> ServiceMemberFilter(IEnumerable<FireEvent> fireEvents, int serviceMember)
+        private static IEnumerable<FireEvent> serviceMemberFilter(IEnumerable<FireEvent> fireEvents, int serviceMember)
         {
             List<FireEvent> results = new List<FireEvent>();
             List<Int32> fireAlarmSystems = new List<Int32>();
@@ -125,7 +128,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            return baseFilter(results, serviceMemberFilter);
+            return baseFilter(results, serviceMemberFilterTypes);
         }
 
         /// <summary>
@@ -134,7 +137,7 @@ namespace FireApp.Service.Filter
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
         /// <param name="fireAlarmSystem">the id of the FireAlarmSystem</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> FireAlarmSystemFilter(IEnumerable<FireEvent> fireEvents, int fireAlarmSystem)
+        private static IEnumerable<FireEvent> fireAlarmSystemFilter(IEnumerable<FireEvent> fireEvents, int fireAlarmSystem)
         {
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in fireEvents)
@@ -157,14 +160,16 @@ namespace FireApp.Service.Filter
         private static IEnumerable<FireEvent> baseFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
         {
             List<FireEvent> results = new List<FireEvent>();
-            foreach (FireEvent fe in fireEvents)
+            if (fireEvents != null && types != null)
             {
-                if (types.Contains(fe.EventType))
+                foreach (FireEvent fe in fireEvents)
                 {
-                    results.Add(fe);
+                    if (types.Contains(fe.EventType))
+                    {
+                        results.Add(fe);
+                    }
                 }
             }
-
             return results;
         }
     }

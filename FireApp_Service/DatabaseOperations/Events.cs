@@ -32,11 +32,7 @@ namespace FireApp.Service.DatabaseOperations
 
             //Logging.Logger.Log("upsert : " + fe.ToLog());
 
-            using (var db = AppData.FireEventDB())
-            {
-                var table = db.FireEventTable();
-                return table.Upsert(fe);
-            }
+            return DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
         }
 
         /// <summary>

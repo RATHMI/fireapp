@@ -6,7 +6,7 @@ using FireApp.Domain;
 
 namespace FireApp.Service.DatabaseOperations
 {
-    public static class Queries
+    public static class DbQueries
     {
         /// <summary>
         /// 

@@ -17,11 +17,7 @@ namespace FireApp.Service.DatabaseOperations
         {
             LocalDatabase.UpsertFireBrigade(fb);
 
-            using (var db = AppData.FireBrigadeDB())
-            {
-                var table = db.FireBrigadeTable();
-                return table.Upsert(fb);
-            }
+            return DatabaseOperations.DbUpserts.UpsertFireBrigade(fb);
         }
 
         /// <summary>
