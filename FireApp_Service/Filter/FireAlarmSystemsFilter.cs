@@ -45,6 +45,8 @@ namespace FireApp.Service.Filter
                     }
                 }
             }
+
+            results.OrderBy(x => x.Company);
             return (IEnumerable<FireAlarmSystem>)results;
         }
 

@@ -38,6 +38,8 @@ namespace FireApp.Service.Filter
                     }
                 }
             }
+
+            results.OrderBy(x => x.GroupName);
             return (IEnumerable<ServiceMember>)results;
         }
 
