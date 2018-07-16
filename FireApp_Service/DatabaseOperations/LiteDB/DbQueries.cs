@@ -66,12 +66,12 @@ namespace FireApp.Service.DatabaseOperations
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a list with all ServiceMembers from database</returns>
-        public static IEnumerable<ServiceMember> QueryServiceMembers()
+        /// <returns>returns a list with all ServiceGroups from database</returns>
+        public static IEnumerable<ServiceGroup> QueryServiceGroups()
         {
-            using (var db = AppData.ServiceMemberDB())
+            using (var db = AppData.ServiceGroupDB())
             {
-                var table = db.ServiceMemberTable();
+                var table = db.ServiceGroupTable();
                 return table.FindAll();
             }
         }

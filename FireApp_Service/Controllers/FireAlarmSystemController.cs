@@ -85,15 +85,15 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Adds a ServiceMember to the list of ServiceMembers of a FireAlarmSystem
+        /// Adds a ServiceGroup to the list of ServiceGroups of a FireAlarmSystem
         /// </summary>
         /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="serviceMember">identifier of the ServiceMember</param>
-        /// <returns>returns true if the ServiceMember was added</returns>
+        /// <param name="serviceGroup">identifier of the ServiceGroup</param>
+        /// <returns>returns true if the ServiceGroup was added</returns>
         [HttpGet, Route("addservicemember/{id}/{servicemember}")]
-        public bool AddServiceMemberToFireAlarmSystem(int id, int serviceMember)
+        public bool AddServiceGroupToFireAlarmSystem(int id, int serviceGroup)
         {
-            return DatabaseOperations.FireAlarmSystems.AddServiceMember(id, serviceMember);
+            return DatabaseOperations.FireAlarmSystems.AddServiceGroup(id, serviceGroup);
         }
     }
 }

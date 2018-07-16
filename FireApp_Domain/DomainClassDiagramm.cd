@@ -28,11 +28,11 @@
       <FileName>FireEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FireApp.Domain.ServiceMember">
+  <Class Name="FireApp.Domain.ServiceGroup">
     <Position X="8" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAQg=</HashCode>
-      <FileName>ServiceMember.cs</FileName>
+      <FileName>ServiceGroup.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FireApp.Domain.UserLogin">

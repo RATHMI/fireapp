@@ -23,7 +23,7 @@ namespace FireApp.Domain
             this.PostalCode = 0;
             this.Address = "";
             FireBrigades = new HashSet<int>();
-            ServiceMembers = new HashSet<int>();
+            ServiceGroups = new HashSet<int>();
         }
 
         public FireAlarmSystem(
@@ -43,7 +43,7 @@ namespace FireApp.Domain
             this.PostalCode = postalCode;
             this.Address = address;
             FireBrigades = new HashSet<int>();
-            ServiceMembers = new HashSet<int>();
+            ServiceGroups = new HashSet<int>();
         }
 
         // identifier of the FireAlarmSystem
@@ -71,9 +71,9 @@ namespace FireApp.Domain
         // that should have access to certain information
         public HashSet<int> FireBrigades { get; set; }
 
-        // list of the identifiers of the ServiceMembers 
+        // list of the identifiers of the ServiceGroups 
         // that should have access to certain information
-        public HashSet<int> ServiceMembers { get; set; }
+        public HashSet<int> ServiceGroups { get; set; }
 
         /// <summary>
         /// checks if the id of a FireBrigade is in the list 
@@ -99,18 +99,18 @@ namespace FireApp.Domain
         }
 
         /// <summary>
-        /// checks if the id of a ServiceMember is in the list 
-        /// of ServiceMembers of this FireAlarmSystem
+        /// checks if the id of a ServiceGroup is in the list 
+        /// of ServiceGroups of this FireAlarmSystem
         /// </summary>
-        /// <param name="id">the id of the ServiceMember you want to check</param>
-        /// <returns>returns true if the list of ServiceMembers contains the id</returns>
-        public bool CheckServiceMember(int id) {
+        /// <param name="id">the id of the ServiceGroup you want to check</param>
+        /// <returns>returns true if the list of ServiceGroups contains the id</returns>
+        public bool CheckServiceGroup(int id) {
             bool found = false;
-            if (this.ServiceMembers != null)
+            if (this.ServiceGroups != null)
             {
-                foreach (int sm in this.ServiceMembers)
+                foreach (int sg in this.ServiceGroups)
                 {
-                    if (sm == id)
+                    if (sg == id)
                     {
                         found = true;
                         break;
@@ -166,18 +166,18 @@ namespace FireApp.Domain
 
                 sb.Append(",servicemembers={");
 
-                if (ServiceMembers.Count > 1)
+                if (ServiceGroups.Count > 1)
                 {
-                    foreach (int sm in ServiceMembers)
+                    foreach (int sg in ServiceGroups)
                     {
-                        sb.Append(sm.ToString());
+                        sb.Append(sg.ToString());
                         sb.Append(";");
                     }
                     sb.Remove(sb.Length - 1, 1);
                 }
                 else
                 {
-                    sb.Append(ServiceMembers.First<int>());
+                    sb.Append(ServiceGroups.First<int>());
                 }
                 sb.Append("}");
                 sb.Append("]");
@@ -207,9 +207,9 @@ namespace FireApp.Domain
             {
                 fas.FireBrigades.Add(fb);
             }
-            foreach (int sm in this.ServiceMembers)
+            foreach (int sg in this.ServiceGroups)
             {
-                fas.ServiceMembers.Add(sm);
+                fas.ServiceGroups.Add(sg);
             }
 
             return fas;

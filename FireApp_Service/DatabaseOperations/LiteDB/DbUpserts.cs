@@ -76,14 +76,14 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
-        public static bool UpsertServiceMember(ServiceMember sm)
+        public static bool UpsertServiceGroup(ServiceGroup sg)
         {
-            if (sm != null)
+            if (sg != null)
             {
-                using (var db = AppData.ServiceMemberDB())
+                using (var db = AppData.ServiceGroupDB())
                 {
-                    var table = db.ServiceMemberTable();
-                    return table.Upsert(sm);
+                    var table = db.ServiceGroupTable();
+                    return table.Upsert(sg);
                 }
             }
             else

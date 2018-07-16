@@ -41,7 +41,7 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(Filter.FireAlarmSystemsFilter.serviceMemberFilter(fireAlarmSystems, authorizedObject));
+                        results.AddRange(Filter.FireAlarmSystemsFilter.serviceGroupFilter(fireAlarmSystems, authorizedObject));
                     }
                 }
             }
@@ -88,7 +88,7 @@ namespace FireApp.Service.Filter
                     if (fas.FireBrigades.Contains(id))
                     {
                         copy = (FireAlarmSystem)fas.Clone();
-                        copy.ServiceMembers.Clear();
+                        copy.ServiceGroups.Clear();
                         results.Add(copy);
                     }
                 }
@@ -98,12 +98,12 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// only returns FireAlarmSystems where the ServiceMember is in the list of ServiceMembers
+        /// only returns FireAlarmSystems where the ServiceGroup is in the list of ServiceGroups
         /// </summary>
         /// <param name="fireAlarmSystems">a list of FireAlarmSystems you want to filter</param>
-        /// <param name="id">the id of the ServiceMember</param>
+        /// <param name="id">the id of the ServiceGroup</param>
         /// <returns>returns a filtered list of FireAlarmSystems</returns>
-        private static IEnumerable<FireAlarmSystem> serviceMemberFilter(IEnumerable<FireAlarmSystem> fireAlarmSystems, int id)
+        private static IEnumerable<FireAlarmSystem> serviceGroupFilter(IEnumerable<FireAlarmSystem> fireAlarmSystems, int id)
         {
             if (fireAlarmSystems != null)
             {
@@ -111,7 +111,7 @@ namespace FireApp.Service.Filter
                 FireAlarmSystem copy;
                 foreach (FireAlarmSystem fas in fireAlarmSystems)
                 {
-                    if (fas.ServiceMembers.Contains(id))
+                    if (fas.ServiceGroups.Contains(id))
                     {
                         copy = (FireAlarmSystem)fas.Clone();
                         copy.FireBrigades.Clear();

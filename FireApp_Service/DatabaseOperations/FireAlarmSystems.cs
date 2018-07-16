@@ -115,16 +115,16 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// Adds a ServiceMember to the list of ServiceMembers of a FireAlarmSystem
+        /// Adds a ServiceGroup to the list of ServiceGroups of a FireAlarmSystem
         /// </summary>
         /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="serviceMember">identifier of the ServiceMember</param>
-        /// <returns>returns true if the ServiceMember was added</returns>
-        public static bool AddServiceMember(int id, int serviceMember)
+        /// <param name="serviceGroup">identifier of the ServiceGroup</param>
+        /// <returns>returns true if the ServiceGroup was added</returns>
+        public static bool AddServiceGroup(int id, int serviceGroup)
         {
             FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
-            ServiceMember sm = DatabaseOperations.ServiceMembers.GetServiceMemberById(serviceMember).First<ServiceMember>();
-            fas.ServiceMembers.Add(serviceMember);
+            ServiceGroup sg = DatabaseOperations.ServiceGroups.GetServiceGroupById(serviceGroup).First<ServiceGroup>();
+            fas.ServiceGroups.Add(serviceGroup);
             return UpsertFireAlarmSystem(fas);
         }
     }

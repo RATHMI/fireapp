@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
-    public class ServiceMember
+    public class ServiceGroup
     {
-        private ServiceMember() { }
+        private ServiceGroup() { }
 
-        public ServiceMember(int id, string groupName)
+        public ServiceGroup(int id, string groupName)
         {
             this.Id = id;
             this.GroupName = groupName;

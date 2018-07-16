@@ -19,7 +19,7 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<FireBrigade>()
                 .Id(x => x.Id, true);
-            BsonMapper.Global.Entity<ServiceMember>()
+            BsonMapper.Global.Entity<ServiceGroup>()
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<User>()
                 .Id(x => x.Id, true);
@@ -68,18 +68,18 @@ namespace FireApp.Service {
         }
         #endregion
 
-        #region ServiceMemberDB
+        #region ServiceGroupDB
         /// <summary>
-        /// Stores all ServiceMembers
+        /// Stores all ServiceGroups
         /// </summary>
         /// <returns>returns the database</returns>
-        public static LiteDatabase ServiceMemberDB()
+        public static LiteDatabase ServiceGroupDB()
         {
             return new LiteDatabase(AppSettings.FireEventDBPath);
         }
-        public static LiteCollection<ServiceMember> ServiceMemberTable(this LiteDatabase db)
+        public static LiteCollection<ServiceGroup> ServiceGroupTable(this LiteDatabase db)
         {
-            return db.GetCollection<ServiceMember>("service");
+            return db.GetCollection<ServiceGroup>("service");
         }
         #endregion
 

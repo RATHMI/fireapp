@@ -45,7 +45,7 @@
     <Compile Include="FireAlarmSystem.cs" />
     <Compile Include="FireBrigade.cs" />
     <Compile Include="FireEvent.cs" />
-    <Compile Include="ServiceMember.cs" />
+    <Compile Include="ServiceGroup.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

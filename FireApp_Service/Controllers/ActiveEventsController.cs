@@ -50,7 +50,7 @@ namespace FireApp.Service.Controllers
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
         /// EventType</returns>
-        [HttpGet, Route("type/{sourceId}/{eventType}")] //todo: Access only for admin, FireAlarmSystem, restricted access for fb and sm
+        [HttpGet, Route("type/{sourceId}/{eventType}")] //todo: Access only for admin, FireAlarmSystem, restricted access for fb and sg
         public FireEvent[] GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType)).ToArray<FireEvent>();

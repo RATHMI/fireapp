@@ -25,7 +25,7 @@ namespace FireApp.Service
         const string fireBrigadesString = "fireBrigades";
 
         // the key to retrieve the list of FireBrigades from the cache
-        const string serviceMembersString = "serviceMembers";
+        const string serviceGroupsString = "serviceGroups";
 
         // the key to retrieve the list of Users from the cache
         const string userString = "users";
@@ -41,7 +41,7 @@ namespace FireApp.Service
             List<FireEvent> active = (DatabaseOperations.DbQueries.QueryActiveFireEvents()).ToList<FireEvent>();
             List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.DbQueries.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
             List<FireBrigade> fireBrigades = (DatabaseOperations.DbQueries.QueryFireBrigades()).ToList<FireBrigade>();
-            List<ServiceMember> serviceMembers = (DatabaseOperations.DbQueries.QueryServiceMembers()).ToList<ServiceMember>();
+            List<ServiceGroup> serviceGroups = (DatabaseOperations.DbQueries.QueryServiceGroups()).ToList<ServiceGroup>();
             List<User> users = (DatabaseOperations.DbQueries.QueryUsers()).ToList<User>();
 
             if (events != null)     // trying to insert null into the cache creates a server error
@@ -80,13 +80,13 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(fireBrigadesString, new List<FireBrigade>());
             }
 
-            if (serviceMembers != null)     // trying to insert null into the cache creates a server error
+            if (serviceGroups != null)     // trying to insert null into the cache creates a server error
             {
-                GlobalCachingProvider.Instance.AddItem(serviceMembersString, serviceMembers);
+                GlobalCachingProvider.Instance.AddItem(serviceGroupsString, serviceGroups);
             }
             else
             {
-                GlobalCachingProvider.Instance.AddItem(serviceMembersString, new List<ServiceMember>());
+                GlobalCachingProvider.Instance.AddItem(serviceGroupsString, new List<ServiceGroup>());
             }
 
             if (users != null)     // trying to insert null into the cache creates a server error
@@ -399,88 +399,88 @@ namespace FireApp.Service
         }
         #endregion
 
-        #region ServiceMembers
+        #region ServiceGroups
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a List of all ServiceMembers that are stored in the cache</returns>
-        public static List<ServiceMember> GetAllServiceMembers()
+        /// <returns>returns a List of all ServiceGroups that are stored in the cache</returns>
+        public static List<ServiceGroup> GetAllServiceGroups()
         {
-            List<ServiceMember> rv = (List<ServiceMember>)GlobalCachingProvider.Instance.GetItem(serviceMembersString, false);
+            List<ServiceGroup> rv = (List<ServiceGroup>)GlobalCachingProvider.Instance.GetItem(serviceGroupsString, false);
             if (rv == null)
             {
-                rv = new List<ServiceMember>();
+                rv = new List<ServiceGroup>();
             }
             return rv;
         }
 
         /// <summary>
-        /// Inserts or updates a ServiceMember in the cache
+        /// Inserts or updates a ServiceGroup in the cache
         /// </summary>
-        /// <param name="serviceMember">ServiceMember that should be stored in the cache</param>
-        public static void UpsertServiceMember(ServiceMember serviceMember)
+        /// <param name="serviceGroup">ServiceGroup that should be stored in the cache</param>
+        public static void UpsertServiceGroup(ServiceGroup serviceGroup)
         {
-            if (serviceMember != null)
+            if (serviceGroup != null)
             {
-                List<ServiceMember> allServiceMembers = GetAllServiceMembers();
-                ServiceMember old = null;
+                List<ServiceGroup> allServiceGroups = GetAllServiceGroups();
+                ServiceGroup old = null;
 
-                foreach (ServiceMember sm in allServiceMembers)
+                foreach (ServiceGroup sg in allServiceGroups)
                 {
-                    if (sm.Id == serviceMember.Id)
+                    if (sg.Id == serviceGroup.Id)
                     {
-                        old = sm;
+                        old = sg;
                         break;
                     }
                 }
 
                 if (old != null)
                 {
-                    allServiceMembers.Remove(old);
-                    allServiceMembers.Add(serviceMember);
+                    allServiceGroups.Remove(old);
+                    allServiceGroups.Add(serviceGroup);
                 }
                 else
                 {
-                    allServiceMembers.Add(serviceMember);
+                    allServiceGroups.Add(serviceGroup);
                 }
 
-                GlobalCachingProvider.Instance.RemoveItem(serviceMembersString);
-                GlobalCachingProvider.Instance.AddItem(serviceMembersString, allServiceMembers);
+                GlobalCachingProvider.Instance.RemoveItem(serviceGroupsString);
+                GlobalCachingProvider.Instance.AddItem(serviceGroupsString, allServiceGroups);
             }
         }
 
         /// <summary>
-        /// deletes a ServiceMember from the cache and from the lists of the FireAlarmSystems
+        /// deletes a ServiceGroup from the cache and from the lists of the FireAlarmSystems
         /// </summary>
-        /// <param name="id">id of the ServiceMember you want to delete</param>
-        public static void DeleteServiceMember(int id)
+        /// <param name="id">id of the ServiceGroup you want to delete</param>
+        public static void DeleteServiceGroup(int id)
         {
-            List<ServiceMember> allServiceMembers = GetAllServiceMembers();
-            ServiceMember old = null;
+            List<ServiceGroup> allServiceGroups = GetAllServiceGroups();
+            ServiceGroup old = null;
 
-            foreach (ServiceMember sm in allServiceMembers)
+            foreach (ServiceGroup sg in allServiceGroups)
             {
-                if (sm.Id == id)
+                if (sg.Id == id)
                 {
-                    old = sm;
+                    old = sg;
                     break;
                 }
             }
 
             if (old != null)
             {
-                allServiceMembers.Remove(old);
-                GlobalCachingProvider.Instance.RemoveItem(serviceMembersString);
-                if (allServiceMembers != null)
+                allServiceGroups.Remove(old);
+                GlobalCachingProvider.Instance.RemoveItem(serviceGroupsString);
+                if (allServiceGroups != null)
                 {
-                    GlobalCachingProvider.Instance.AddItem(serviceMembersString, allServiceMembers);
+                    GlobalCachingProvider.Instance.AddItem(serviceGroupsString, allServiceGroups);
                 }
 
                 foreach (FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
                 {
-                    if (fas.ServiceMembers.Contains(id))
+                    if (fas.ServiceGroups.Contains(id))
                     {
-                        fas.ServiceMembers.Remove(id);
+                        fas.ServiceGroups.Remove(id);
                         LocalDatabase.UpsertFireAlarmSystem(fas);
                     }
                 }

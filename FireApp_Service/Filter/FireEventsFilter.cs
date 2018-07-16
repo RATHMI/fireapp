@@ -12,7 +12,7 @@ namespace FireApp.Service.Filter
         private static EventTypes[] fireBrigadeFilterTypes = { EventTypes.alarm };
 
         //todo: set right filter options
-        private static EventTypes[] serviceMemberFilterTypes = { EventTypes.disfunction };
+        private static EventTypes[] serviceGroupFilterTypes = { EventTypes.disfunction };
 
         /// <summary>
         /// filters a list of FireEvents according to the rights of a user
@@ -47,7 +47,7 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(serviceMemberFilter(fireEvents, authorizedObject));
+                        results.AddRange(serviceGroupFilter(fireEvents, authorizedObject));
                     }
                 }
             }
@@ -100,37 +100,37 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// Only returns FireEvents that have an EventType that is free for ServiceMembers
+        /// Only returns FireEvents that have an EventType that is free for ServiceGroups
         /// </summary>
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        private static IEnumerable<FireEvent> serviceMemberFilter(IEnumerable<FireEvent> fireEvents)
+        private static IEnumerable<FireEvent> serviceGroupFilter(IEnumerable<FireEvent> fireEvents)
         {
-            return baseFilter(fireEvents, serviceMemberFilterTypes);
+            return baseFilter(fireEvents, serviceGroupFilterTypes);
         }
 
         /// <summary>
-        /// Only returns FireEvents that have an EventType that is free for ServiceMembers and where this
-        /// ServiceMember is in the list of ServiceMembers of the FireAlarmSystem that sent the FireEvent
+        /// Only returns FireEvents that have an EventType that is free for ServiceGroups and where this
+        /// ServiceGroup is in the list of ServiceGroups of the FireAlarmSystem that sent the FireEvent
         /// </summary>
         /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="serviceMember">the id of a ServiceMember</param>
+        /// <param name="serviceGroup">the id of a ServiceGroup</param>
         /// <returns>returns a filtered list of FireEvents</returns>
-        private static IEnumerable<FireEvent> serviceMemberFilter(IEnumerable<FireEvent> fireEvents, int serviceMember)
+        private static IEnumerable<FireEvent> serviceGroupFilter(IEnumerable<FireEvent> fireEvents, int serviceGroup)
         {
             List<FireEvent> results = new List<FireEvent>();
             List<Int32> fireAlarmSystems = new List<Int32>();
 
-            // get all IDs of the FireAlarmSystems where the ServiceMember is present
+            // get all IDs of the FireAlarmSystems where the ServiceGroup is present
             foreach (FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
             {
-                if (fas.CheckServiceMember(serviceMember))
+                if (fas.CheckServiceGroup(serviceGroup))
                 {
                     fireAlarmSystems.Add(fas.Id);
                 }
             }
 
-            // get all FireEvents from the FireAlarmSystems that are linked to the ServiceMember
+            // get all FireEvents from the FireAlarmSystems that are linked to the ServiceGroup
             foreach (FireEvent fe in fireEvents)
             {
                 if (fireAlarmSystems.Contains(fe.Id.SourceId))
@@ -140,7 +140,7 @@ namespace FireApp.Service.Filter
             }
 
             return results;
-            //return baseFilter(results, serviceMemberFilterTypes);
+            //return baseFilter(results, serviceGroupFilterTypes);
         }
 
         /// <summary>
