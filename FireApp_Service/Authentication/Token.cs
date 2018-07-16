@@ -20,18 +20,24 @@ namespace FireApp.Service.Authentication
         /// <returns>returns the token if the login worked or null if not</returns>
         public static string RefreshToken(UserLogin login)
         {
-            User user = DatabaseOperations.Users.GetUserById(login.Username).First<User>();
-            if (user != null)
+            try
             {
-                if (user.Password == login.Password)
+                User user = DatabaseOperations.Users.GetUserById(login.Username).First<User>();
+                if (user != null)
                 {
-                    user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
-                    user.TokenCreationDate = DateTime.Now;
-                    DatabaseOperations.Users.UpsertUser(user);
-                    return user.Token;
+                    if (user.Password == login.Password)
+                    {
+                        user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                        DatabaseOperations.Users.UpsertUser(user);
+                        return user.Token;
+                    }
                 }
+                return null;
             }
-            return null;        
+            catch (Exception)
+            {
+                return null;
+            }    
         }
 
         /// <summary>
