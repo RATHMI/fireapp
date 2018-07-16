@@ -52,6 +52,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
+            results.OrderBy(x => x.EventType);
             return (IEnumerable<FireEvent>)results;
         }
 

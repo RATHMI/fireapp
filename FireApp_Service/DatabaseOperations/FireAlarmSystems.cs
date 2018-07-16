@@ -15,11 +15,17 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if FireAlarmSystem was inserted</returns>
         public static bool UpsertFireAlarmSystem(FireAlarmSystem fas)
         {
-            LocalDatabase.UpsertFireAlarmSystem(fas);
+            if (fas != null)
+            {
+                LocalDatabase.UpsertFireAlarmSystem(fas);
 
-            //Logging.Logger.Log("upsert : " + fas.ToLog(), AppSettings.FireEventDBPath + "/_Log/log.txt");
+                //Logging.Logger.Log("upsert : " + fas.ToLog(), AppSettings.FireEventDBPath + "/_Log/log.txt");
 
-            return DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
+                return DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
+            }else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -27,17 +33,22 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">the id you want to check</param>
         /// <returns>returns true if id is not used by other FireAlarmSystem</returns>
-        public static bool CheckId(int id)
+        public static int CheckId(int id)
         {
             List<FireAlarmSystem> all = LocalDatabase.GetAllFireAlarmSystems();
+            int maxId = 0;
             foreach (FireAlarmSystem fas in all)
             {
+                if (maxId < fas.Id)
+                {
+                    maxId = fas.Id;
+                }
                 if (fas.Id == id)
                 {
-                    return false;
+                    return maxId + 1;
                 }
             }
-            return true;
+            return id;
         }
 
         /// <summary>

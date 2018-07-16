@@ -15,13 +15,20 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if User was inserted</returns>
         public static bool UpsertUser(User user)
         {
-            if(user.Token == null)
+            if (user != null)
             {
-                user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
-            }
-            LocalDatabase.UpsertUser(user);
+                if (user.Password.Length >= 8)
+                {
+                    if (user.Token == null)
+                    {
+                        user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                    }
+                    LocalDatabase.UpsertUser(user);
 
-            return DatabaseOperations.DbUpserts.UpsertUser(user);
+                    return DatabaseOperations.DbUpserts.UpsertUser(user);
+                }
+            }
+            return false;
         }
 
         /// <summary>

@@ -84,12 +84,15 @@ namespace FireApp.Domain
         public bool CheckFireBrigade(int id)
         {
             bool found = false;
-            foreach(int fb in FireBrigades)
+            if (this.FireBrigades != null)
             {
-                if(fb == id)
+                foreach (int fb in this.FireBrigades)
                 {
-                    found = true;
-                    break;
+                    if (fb == id)
+                    {
+                        found = true;
+                        break;
+                    }
                 }
             }
             return found;
@@ -103,12 +106,15 @@ namespace FireApp.Domain
         /// <returns>returns true if the list of ServiceMembers contains the id</returns>
         public bool CheckServiceMember(int id) {
             bool found = false;
-            foreach (int sm in ServiceMembers)
+            if (this.ServiceMembers != null)
             {
-                if (sm == id)
+                foreach (int sm in this.ServiceMembers)
                 {
-                    found = true;
-                    break;
+                    if (sm == id)
+                    {
+                        found = true;
+                        break;
+                    }
                 }
             }
             return found;

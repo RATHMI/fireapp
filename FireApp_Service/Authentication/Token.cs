@@ -68,7 +68,9 @@ namespace FireApp.Service.Authentication
                     {
                         if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
                         {
-                            return (IEnumerable<User>)u;
+                            List<User> user = new List<User>();
+                            user.Add(u);
+                            return (IEnumerable<User>)(user);
                         }
                     }
                 }

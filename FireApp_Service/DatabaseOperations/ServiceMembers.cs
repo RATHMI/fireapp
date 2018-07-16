@@ -15,9 +15,15 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if ServiceMember was inserted</returns>
         public static bool UpsertServiceMember(ServiceMember sm)
         {
-            LocalDatabase.UpsertServiceMember(sm);
-
-            return DatabaseOperations.DbUpserts.UpsertServiceMember(sm);
+            if (sm != null)
+            {
+                LocalDatabase.UpsertServiceMember(sm);
+                return DatabaseOperations.DbUpserts.UpsertServiceMember(sm);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -25,17 +31,22 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">the id you want to check</param>
         /// <returns>returns true if id is not used by other ServiceMember</returns>
-        public static bool CheckId(int id)
+        public static int CheckId(int id)
         {
             List<ServiceMember> all = LocalDatabase.GetAllServiceMembers();
+            int max = 0;
             foreach (ServiceMember sm in all)
             {
+                if(max < sm.Id)
+                {
+                    max = sm.Id;
+                }
                 if (sm.Id == id)
                 {
-                    return false;
+                    return max + 1;
                 }
             }
-            return true;
+            return id;
         }
 
         /// <summary>

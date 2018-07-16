@@ -32,6 +32,7 @@ namespace FireApp.Service {
 
 
             //debug: use only in debugging
+            #region debugging
             User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             DatabaseOperations.DbUpserts.UpsertUser(user);
@@ -74,7 +75,7 @@ namespace FireApp.Service {
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(2);
             DatabaseOperations.DbUpserts.UpsertUser(user);
-
+            #endregion
         }
     }
 }

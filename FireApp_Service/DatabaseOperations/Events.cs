@@ -27,12 +27,19 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if new object was inserted</returns>
         public static bool UpsertFireEvent(FireEvent fe)
         {
-            DatabaseOperations.ActiveEvents.UpsertActiveFireEvent(fe);
-            LocalDatabase.UpsertFireEvent(fe);
+            if (fe != null)
+            {
+                DatabaseOperations.ActiveEvents.UpsertActiveFireEvent(fe);
+                LocalDatabase.UpsertFireEvent(fe);
 
-            //Logging.Logger.Log("upsert : " + fe.ToLog());
+                //Logging.Logger.Log("upsert : " + fe.ToLog());
 
-            return DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
+                return DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

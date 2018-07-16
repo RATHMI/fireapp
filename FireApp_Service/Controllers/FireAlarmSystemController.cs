@@ -26,9 +26,9 @@ namespace FireApp.Service.Controllers
         /// Checks if an id is already used by another FireAlarmSystem
         /// </summary>
         /// <param name="id">the id you want to check</param>
-        /// <returns>returns true if id is not used by other FireAlarmSystem</returns>
+        /// <returns>returns id if id is not used by other FireAlarmSystem or else a new id</returns>
         [HttpPost, Route("checkid/{id}")]
-        public bool CheckId(int id)
+        public int CheckId(int id)
         {
             return DatabaseOperations.FireAlarmSystems.CheckId(id);
         }

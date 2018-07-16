@@ -15,9 +15,14 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if the insert was successful</returns>
         public static bool UpsertFireBrigade(FireBrigade fb)
         {
-            LocalDatabase.UpsertFireBrigade(fb);
-
-            return DatabaseOperations.DbUpserts.UpsertFireBrigade(fb);
+            if (fb != null)
+            {
+                LocalDatabase.UpsertFireBrigade(fb);
+                return DatabaseOperations.DbUpserts.UpsertFireBrigade(fb);
+            }else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -25,17 +30,22 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">the id you want to check</param>
         /// <returns>returns true if id is not used by other FireBrigade</returns>
-        public static bool CheckId(int id)
+        public static int CheckId(int id)
         {
             List<FireBrigade> all = LocalDatabase.GetAllFireBrigades();
+            int maxId = 0;
             foreach (FireBrigade fb in all)
             {
+                if (maxId < fb.Id)
+                {
+                    maxId = fb.Id;
+                }
                 if (fb.Id == id)
                 {
-                    return false;
+                    return maxId + 1;
                 }
             }
-            return true;
+            return id;
         }
 
         /// <summary>
