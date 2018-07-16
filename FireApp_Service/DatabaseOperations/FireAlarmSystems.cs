@@ -52,6 +52,25 @@ namespace FireApp.Service.DatabaseOperations
         /// <summary>
         /// 
         /// </summary>
+        /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
+        public static IEnumerable<FireAlarmSystem> GetActiveFireAlarmSystems(User user)
+        {
+            List<FireEvent> events = Filter.FireEventsFilter
+                .UserFilter((List<FireEvent>)DatabaseOperations.ActiveEvents
+                .GetAllActiveFireEvents(), user).ToList<FireEvent>();
+            HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
+
+            foreach(FireEvent fe in events)
+            {
+                results.Add(DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(fe.Id.SourceId).First<FireAlarmSystem>());
+            }
+
+            return (IEnumerable<FireAlarmSystem>)results;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
         public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)

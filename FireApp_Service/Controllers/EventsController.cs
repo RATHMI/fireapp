@@ -50,8 +50,15 @@ namespace FireApp.Service.Controllers
             //    return Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user).ToArray<FireEvent>();
             //}
             //return null;
-
-            return (DatabaseOperations.Events.GetAllFireEvents().ToArray<FireEvent>());
+            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers)).First<User>();
+            if (user != null)
+            {
+                return Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user).ToArray<FireEvent>();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>

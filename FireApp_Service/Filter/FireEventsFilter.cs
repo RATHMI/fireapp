@@ -128,7 +128,8 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            return baseFilter(results, serviceMemberFilterTypes);
+            return results;
+            //return baseFilter(results, serviceMemberFilterTypes);
         }
 
         /// <summary>

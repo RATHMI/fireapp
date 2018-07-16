@@ -46,6 +46,24 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
+        /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
+        [HttpGet, Route("active")]
+        public FireAlarmSystem[] GetActiveFireAlarmSystems()
+        {
+            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers)).First<User>();
+            if (user != null)
+            {
+                return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user)), user).ToArray<FireAlarmSystem>();
+            }
+            else
+            {
+                return null;
+            }         
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
         [HttpGet, Route("id/{id}")]

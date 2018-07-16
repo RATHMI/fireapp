@@ -34,8 +34,37 @@ namespace FireApp.Service {
             //debug: use only in debugging
             User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin, 0);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
-
             DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("fb1", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade, 0);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("fb2", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade, 1);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("fb3", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade, 2);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+
+            user = new User("sm1", "test", "test", "test", "test@siemens.at", UserTypes.servicemember, 0);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("sm2", "test", "test", "test", "test@siemens.at", UserTypes.servicemember, 1);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("sm3", "test", "test", "test", "test@siemens.at", UserTypes.servicemember, 2);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+
+            user = new User("fas1", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem, 0);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("fas2", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem, 1);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+            user = new User("fas3", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem, 2);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            DatabaseOperations.DbUpserts.UpsertUser(user);
+
         }
     }
 }
