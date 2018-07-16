@@ -31,7 +31,10 @@ namespace FireApp.Domain
         public string LastName { get; set; }
         public string Email { get; set; }
 
-        public string Token { get; set; }
+        public string Token {
+            get { return Token; }
+            set { this.Token = value; TokenCreationDate = DateTime.Now; }
+        }
         public DateTime TokenCreationDate { get; set; }
     }
 

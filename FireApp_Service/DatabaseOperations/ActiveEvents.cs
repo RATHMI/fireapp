@@ -84,7 +84,7 @@ namespace FireApp.Service.DatabaseOperations
             }
             else
             {
-                return null;
+                return (IEnumerable<FireEvent>)new List<FireEvent>();
             }
         }
 
@@ -181,21 +181,14 @@ namespace FireApp.Service.DatabaseOperations
         {
             List<FireEvent> events = GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
-            if (events != null)
+            foreach (FireEvent fe in events)
             {
-                foreach (FireEvent fe in events)
+                if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
                 {
-                    if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
-                    {
-                        results.Add(fe);
-                    }
+                    results.Add(fe);
                 }
-                return results;
             }
-            else
-            {
-                return null;
-            }
+            return results;
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
@@ -203,21 +196,14 @@ namespace FireApp.Service.DatabaseOperations
         {
             List<FireEvent> events = GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
-            if (events != null)
+            foreach (FireEvent fe in events)
             {
-                foreach (FireEvent fe in events)
+                if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month)
                 {
-                    if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month)
-                    {
-                        results.Add(fe);
-                    }
+                    results.Add(fe);
                 }
-                return results;
             }
-            else
-            {
-                return null;
-            }
+            return results;
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
@@ -225,21 +211,14 @@ namespace FireApp.Service.DatabaseOperations
         {
             List<FireEvent> events = GetActiveFireEventsBySourceId(sourceId).ToList<FireEvent>();
             List<FireEvent> results = new List<FireEvent>();
-            if (events != null)
+            foreach (FireEvent fe in events)
             {
-                foreach (FireEvent fe in events)
+                if (fe.TimeStamp.Year == year)
                 {
-                    if (fe.TimeStamp.Year == year)
-                    {
-                        results.Add(fe);
-                    }
+                    results.Add(fe);
                 }
-                return results;
             }
-            else
-            {
-                return null;
-            }
+            return results;
         }
     }
 }

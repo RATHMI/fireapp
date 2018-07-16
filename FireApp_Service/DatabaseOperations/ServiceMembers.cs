@@ -55,14 +55,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<ServiceMember> GetServiceMemberById(int id)
         {
             List<ServiceMember> serviceMembers = LocalDatabase.GetAllServiceMembers();
-            if (serviceMembers != null)
-            {
-                return serviceMembers.FindAll(x => x.Id == id);
-            }
-            else
-            {
-                return null;
-            }
+            return serviceMembers.FindAll(x => x.Id == id);
         }
     }
 }

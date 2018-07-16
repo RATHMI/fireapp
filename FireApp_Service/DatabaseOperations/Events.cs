@@ -63,14 +63,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
             List<FireEvent> events = LocalDatabase.GetAllFireEvents();
-            if (events != null)
-            {
-                return (IEnumerable<FireEvent>)events.FindAll(x => x.Id.SourceId == sourceId);
-            }
-            else
-            {
-                return null;
-            }
+            return (IEnumerable<FireEvent>)events.FindAll(x => x.Id.SourceId == sourceId);
         }
 
         /// <summary>
@@ -85,14 +78,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetFireEventById(int sourceId, int eventId)
         {
             List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
-            if (events != null)
-            {
-                return events.FindAll(x => x.Id.EventId == eventId);
-            }
-            else
-            {
-                return null;
-            }
+            return events.FindAll(x => x.Id.EventId == eventId);
         }
 
         /// <summary>
@@ -106,14 +92,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
             List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
-            if (events != null)
-            {
-                return (IEnumerable<FireEvent>)events.FindAll(x => x.TargetId == targetId);
-            }
-            else
-            {
-                return null;
-            }
+            return (IEnumerable<FireEvent>)events.FindAll(x => x.TargetId == targetId);           
         }
 
         /// <summary>
@@ -126,15 +105,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
-
-            if (events != null)
-            {
-                return (IEnumerable<FireEvent>)events.FindAll(x => x.EventType == eventType);
-            }
-            else
-            {
-                return null;
-            }
+            return (IEnumerable<FireEvent>)events.FindAll(x => x.EventType == eventType);
         }
 
         /// <summary>
@@ -145,15 +116,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
         {
             List<FireEvent> events = LocalDatabase.GetAllFireEvents();
-
-            if (events != null)
-            {
-                return (IEnumerable<FireEvent>)events.FindAll(x => x.EventType == eventType);
-            }
-            else
-            {
-                return null;
-            }
+            return (IEnumerable<FireEvent>)events.FindAll(x => x.EventType == eventType);            
         }
 
         /// <summary>
@@ -168,25 +131,17 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
             List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
+            List<FireEvent> result = new List<FireEvent>();
 
-            if (events != null)
+            foreach (FireEvent fe in events)
             {
-                List<FireEvent> result = new List<FireEvent>();
-
-                foreach (FireEvent fe in events)
+                if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
                 {
-                    if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
-                    {
-                        result.Add(fe);
-                    }
+                    result.Add(fe);
                 }
+            }
 
-                return result;
-            }
-            else
-            {
-                return null;
-            }
+            return result;           
         }
 
         /// <summary>
@@ -200,22 +155,15 @@ namespace FireApp.Service.DatabaseOperations
         {
             List<FireEvent> events = LocalDatabase.GetAllFireEvents();
             List<FireEvent> result = new List<FireEvent>();
-            if (events != null)
+            foreach (FireEvent fe in events)
             {
-                foreach (FireEvent fe in events)
+                if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
                 {
-                    if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
-                    {
-                        result.Add(fe);
-                    }
+                    result.Add(fe);
                 }
+            }
 
-                return result;
-            }
-            else
-            {
-                return null;
-            }
+            return result;
         }
 
         /// <returns>returns all FireEvents from the given sourceId at the given date</returns>

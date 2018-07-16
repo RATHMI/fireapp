@@ -55,14 +55,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireBrigade> GetFireBrigadeById(int id)
         {
             List<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
-            if (fireBrigades != null)
-            {
-                return fireBrigades.FindAll(x => x.Id == id);
-            }
-            else
-            {
-                return null;
-            }
+            return fireBrigades.FindAll(x => x.Id == id);
         }
     }
 }

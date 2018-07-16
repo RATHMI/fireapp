@@ -15,6 +15,10 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if User was inserted</returns>
         public static bool UpsertUser(User user)
         {
+            if(user.Token == null)
+            {
+                user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+            }
             LocalDatabase.UpsertUser(user);
 
             return DatabaseOperations.DbUpserts.UpsertUser(user);
@@ -55,14 +59,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<User> GetUserById(string userName)
         {
             List<User> users = LocalDatabase.GetAllUsers();
-            if (users != null)
-            {
-                return users.FindAll(x => x.Id == userName);
-            }
-            else
-            {
-                return null;
-            }
+            return users.FindAll(x => x.Id == userName);
         }
 
         /// <summary>
@@ -74,7 +71,7 @@ namespace FireApp.Service.DatabaseOperations
             List<User> results = new List<User>();
             foreach(User user in GetAllUsers().ToList<User>())
             {
-                if(Authentication.Token.VerifyToken(user.Token) != null)
+                if (DateTime.Now < user.TokenCreationDate.AddDays(365))
                 {
                     results.Add(user);
                 }
@@ -92,7 +89,7 @@ namespace FireApp.Service.DatabaseOperations
             List<User> results = new List<User>();
             foreach (User user in GetAllUsers().ToList<User>())
             {
-                if (Authentication.Token.VerifyToken(user.Token) == null)
+                if (DateTime.Now >= user.TokenCreationDate.AddDays(365))
                 {
                     results.Add(user);
                 }

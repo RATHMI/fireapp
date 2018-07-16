@@ -57,14 +57,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
         {
             List<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
-            if (fireAlarmSystems != null)
-            {
-                return fireAlarmSystems.FindAll(x => x.Id == id);
-            }
-            else
-            {
-                return null;
-            }
+            return fireAlarmSystems.FindAll(x => x.Id == id);
         }
 
         /// <summary>
@@ -75,19 +68,10 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if the FireBrigade was added</returns>
         public static bool AddFireBrigade(int id, int firebrigade)
         {
-            bool rv = false;
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
-            if (fas != null)
-            {
-                FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade).First<FireBrigade>();
-                if (fb != null)
-                {
-                    fas.FireBrigades.Add(firebrigade);
-                    rv = UpsertFireAlarmSystem(fas);
-                }
-            }
-
-            return rv;
+            FireAlarmSystem fas = GetFireAlarmSystemById(id).First<FireAlarmSystem>();
+            FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade).First<FireBrigade>();
+            fas.FireBrigades.Add(firebrigade);
+            return UpsertFireAlarmSystem(fas);  
         }
 
         /// <summary>
@@ -98,19 +82,10 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if the ServiceMember was added</returns>
         public static bool AddServiceMember(int id, int serviceMember)
         {
-            bool rv = false;
             FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
-            if (fas != null)
-            {
-                ServiceMember sm = DatabaseOperations.ServiceMembers.GetServiceMemberById(serviceMember).First<ServiceMember>();
-                if (sm != null)
-                {
-                    fas.ServiceMembers.Add(serviceMember);
-                    rv = UpsertFireAlarmSystem(fas);
-                }
-            }
-
-            return rv;
+            ServiceMember sm = DatabaseOperations.ServiceMembers.GetServiceMemberById(serviceMember).First<ServiceMember>();
+            fas.ServiceMembers.Add(serviceMember);
+            return UpsertFireAlarmSystem(fas);
         }
     }
 }
