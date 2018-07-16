@@ -50,10 +50,10 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("active")]
         public FireAlarmSystem[] GetActiveFireAlarmSystems()
         {
-            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers)).First<User>();
+            IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
             if (user != null)
             {
-                return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user)), user).ToArray<FireAlarmSystem>();
+                return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user.First<User>())), user.First<User>()).ToArray<FireAlarmSystem>();
             }
             else
             {

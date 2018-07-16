@@ -116,7 +116,7 @@ namespace FireApp.Service.Authentication
                 }
                 else
                 {
-                    return ((IEnumerable<User>)new User("", "", "", "", "", UserTypes.unauthorized, 0));
+                    return ((IEnumerable<User>)new User("", "", "", "", "", UserTypes.unauthorized));
                 }
             }
             return null;

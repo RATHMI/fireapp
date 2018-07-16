@@ -16,26 +16,36 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of FireAlarmSystems</returns>
         public static IEnumerable<FireAlarmSystem> UserFilter(IEnumerable<FireAlarmSystem> fireAlarmSystems, User user)
         {
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
             if (fireAlarmSystems != null && user != null)
             {
                 if (user.UserType == UserTypes.admin)
                 {
-                    return fireAlarmSystems;
+                    results.AddRange(fireAlarmSystems);
                 }
                 if (user.UserType == UserTypes.firealarmsystem)
                 {
-                    return Filter.FireAlarmSystemsFilter.fireAlarmSystemFilter(fireAlarmSystems, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange(Filter.FireAlarmSystemsFilter.fireAlarmSystemFilter(fireAlarmSystems, authorizedObject));
+                    }
                 }
                 if (user.UserType == UserTypes.firebrigade)
                 {
-                    return Filter.FireAlarmSystemsFilter.fireBrigadeFilter(fireAlarmSystems, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange(Filter.FireAlarmSystemsFilter.fireBrigadeFilter(fireAlarmSystems, authorizedObject));
+                    }                   
                 }
                 if (user.UserType == UserTypes.servicemember)
                 {
-                    return Filter.FireAlarmSystemsFilter.serviceMemberFilter(fireAlarmSystems, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange(Filter.FireAlarmSystemsFilter.serviceMemberFilter(fireAlarmSystems, authorizedObject));
+                    }
                 }
             }
-            return ((IEnumerable<FireAlarmSystem>)new List<FireAlarmSystem>());
+            return (IEnumerable<FireAlarmSystem>)results;
         }
 
         /// <summary>

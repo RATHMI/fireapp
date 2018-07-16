@@ -10,17 +10,14 @@ namespace FireApp.Domain
     {
         private ServiceMember() { }
 
-        public ServiceMember(int id, string firstName, string lastName)
+        public ServiceMember(int id, string groupName)
         {
             this.Id = id;
-            this.FirstName = firstName;
-            this.LastName = lastName;
+            this.GroupName = groupName;
         }
 
         public int Id { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string GroupName { get; set; }
     }
 }

@@ -16,22 +16,29 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of FireBrigades</returns>
         public static IEnumerable<FireBrigade> UserFilter(IEnumerable<FireBrigade> fireBrigades, User user)
         {
+            List<FireBrigade> results = new List<FireBrigade>();
             if (fireBrigades != null && user != null)
             {
                 if (user.UserType == UserTypes.admin)
                 {
-                    return fireBrigades;
+                    results.AddRange(fireBrigades);
                 }
                 if (user.UserType == UserTypes.firealarmsystem)
                 {
-                    return Filter.FireBrigadesFilter.fireAlarmSystemFilter(fireBrigades, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange((fireAlarmSystemFilter(fireBrigades, authorizedObject)));
+                    }
                 }
                 if (user.UserType == UserTypes.firebrigade)
                 {
-                    return Filter.FireBrigadesFilter.fireBrigadeFilter(fireBrigades, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange((fireBrigadeFilter(fireBrigades, authorizedObject)));
+                    }
                 }
             }
-            return  ((IEnumerable<FireBrigade>)new List<FireBrigade>());
+            return (IEnumerable<FireBrigade>)results;
         }
 
         /// <summary>

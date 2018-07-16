@@ -22,27 +22,37 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> UserFilter(IEnumerable<FireEvent> fireEvents, User user)
         {
+            List<FireEvent> results = new List<FireEvent>();
             if (fireEvents != null && user != null)
             {
                 if (user.UserType == UserTypes.admin)
                 {
-                    return fireEvents;
+                    results.AddRange(fireEvents);
                 }
                 if (user.UserType == UserTypes.firealarmsystem)
                 {
-                    return fireAlarmSystemFilter(fireEvents, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange(fireAlarmSystemFilter(fireEvents, authorizedObject));
+                    }
                 }
                 if (user.UserType == UserTypes.firebrigade)
                 {
-                    return fireBrigadeFilter(fireEvents, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange(fireBrigadeFilter(fireEvents, authorizedObject));
+                    }
                 }
                 if (user.UserType == UserTypes.servicemember)
                 {
-                    return serviceMemberFilter(fireEvents, user.AuthorizedObjectId);
+                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    {
+                        results.AddRange(serviceMemberFilter(fireEvents, authorizedObject));
+                    }
                 }
             }
 
-            return ((IEnumerable<FireEvent>)new List<FireEvent>());
+            return (IEnumerable<FireEvent>)results;
         }
 
         /// <summary>

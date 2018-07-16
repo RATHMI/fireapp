@@ -10,7 +10,7 @@ namespace FireApp.Domain
     {
         private User() { }
 
-        public User(string userName, string password, string firstName, string lastName, string email, UserTypes userType, int authorizedObjectId)
+        public User(string userName, string password, string firstName, string lastName, string email, UserTypes userType)
         {
             this.Id = userName;
             this.Password = password;
@@ -18,7 +18,7 @@ namespace FireApp.Domain
             this.LastName = lastName;
             this.Email = email;
             this.UserType = userType;
-            this.AuthorizedObjectId = authorizedObjectId;
+            this.AuthorizedObjectIds = new HashSet<int>();
         }
 
         private string token;
@@ -26,7 +26,7 @@ namespace FireApp.Domain
         public string Password { get; set; }
 
         public UserTypes UserType { get; set; }
-        public int AuthorizedObjectId { get; set; }
+        public HashSet<int> AuthorizedObjectIds { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
