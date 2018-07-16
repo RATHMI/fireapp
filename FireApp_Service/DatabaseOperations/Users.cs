@@ -59,7 +59,17 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<User> GetUserById(string userName)
         {
             List<User> users = LocalDatabase.GetAllUsers();
-            return users.FindAll(x => x.Id == userName);
+            List<User> results = new List<User>();
+            foreach (User u in users)
+            {
+                if (u.Id == userName)
+                {
+                    results.Add(u);
+                    break;
+                }
+            }
+
+            return results;
         }
 
         /// <summary>

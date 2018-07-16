@@ -78,14 +78,16 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireEvent> GetActiveFireEventsBySourceId(int sourceId)
         {
             List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
-            if (events != null)
+            List<FireEvent> results = new List<FireEvent>();
+            foreach(FireEvent fe in events)
             {
-                return (IEnumerable<FireEvent>)events.FindAll(x => x.Id.SourceId == sourceId);
+                if(fe.Id.SourceId == sourceId)
+                {
+                    results.Add(fe);
+                }
             }
-            else
-            {
-                return (IEnumerable<FireEvent>)new List<FireEvent>();
-            }
+
+            return results;
         }
 
         /// <summary>

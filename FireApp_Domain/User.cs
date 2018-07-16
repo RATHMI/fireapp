@@ -21,6 +21,7 @@ namespace FireApp.Domain
             this.AuthorizedObjectId = authorizedObjectId;
         }
 
+        private string token;
         public string Id { get; set; }
         public string Password { get; set; }
 
@@ -32,8 +33,8 @@ namespace FireApp.Domain
         public string Email { get; set; }
 
         public string Token {
-            get { return Token; }
-            set { this.Token = value; TokenCreationDate = DateTime.Now; }
+            get { return token; }
+            set { this.token = value; TokenCreationDate = DateTime.Now; }
         }
         public DateTime TokenCreationDate { get; set; }
     }

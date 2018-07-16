@@ -57,7 +57,17 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
         {
             List<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
-            return fireAlarmSystems.FindAll(x => x.Id == id);
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+            foreach (FireAlarmSystem fas in fireAlarmSystems)
+            {
+                if (fas.Id == id)
+                {
+                    results.Add(fas);
+                    break;
+                }
+            }
+
+            return results;
         }
 
         /// <summary>
