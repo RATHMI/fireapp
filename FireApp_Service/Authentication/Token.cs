@@ -86,7 +86,8 @@ namespace FireApp.Service.Authentication
         {
             IEnumerable<string> key = new List<string>();
             if (headers.TryGetValues("token", out key) != false)
-            {                
+            {
+                headers.TryGetValues("token", out key);
                 return key.First<string>();
             }
             else
