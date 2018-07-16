@@ -58,9 +58,12 @@ namespace FireApp.Service.Authentication
                 List<User> users = DatabaseOperations.Users.GetAllUsers().ToList<User>();
                 foreach (User u in users)
                 {
-                    if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
+                    if (u != null && u.Token != null)
                     {
-                        return (IEnumerable<User>)u;
+                        if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
+                        {
+                            return (IEnumerable<User>)u;
+                        }
                     }
                 }
             }

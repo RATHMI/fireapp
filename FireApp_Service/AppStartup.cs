@@ -33,8 +33,9 @@ namespace FireApp.Service {
 
             //debug: use only in debugging
             User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin, 0);
-            user.Token = "1234";
-            DatabaseOperations.DbUpserts.UpsertUser(new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin, 0));
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+
+            DatabaseOperations.DbUpserts.UpsertUser(user);
         }
     }
 }
