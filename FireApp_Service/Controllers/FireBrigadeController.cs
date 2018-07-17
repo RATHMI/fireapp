@@ -23,6 +23,18 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// Deletes the FireBrigade from the Database and Cache
+        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// </summary>
+        /// <param name="id">the id of the FireBrigade you want to delete</param>
+        /// <returns>returns true if FireBrigade was deleted from DB</returns>
+        [HttpGet, Route("delete/{id}")]
+        public bool DeleteFireBrigade(int id)
+        {
+            return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
+        }
+
+        /// <summary>
         /// Checks if an id is already used by another FireBrigade
         /// </summary>
         /// <param name="id">the id you want to check</param>

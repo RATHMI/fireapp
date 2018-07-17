@@ -385,16 +385,7 @@ namespace FireApp.Service
                 if(allFireBrigades != null)
                 {
                     GlobalCachingProvider.Instance.AddItem(fireBrigadesString, allFireBrigades);
-                }
-
-                foreach(FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
-                {
-                    if (fas.FireBrigades.Contains(id))
-                    {
-                        fas.FireBrigades.Remove(id);
-                        LocalDatabase.UpsertFireAlarmSystem(fas);
-                    }
-                }
+                }               
             }
         }
         #endregion
@@ -474,16 +465,7 @@ namespace FireApp.Service
                 if (allServiceGroups != null)
                 {
                     GlobalCachingProvider.Instance.AddItem(serviceGroupsString, allServiceGroups);
-                }
-
-                foreach (FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
-                {
-                    if (fas.ServiceGroups.Contains(id))
-                    {
-                        fas.ServiceGroups.Remove(id);
-                        LocalDatabase.UpsertFireAlarmSystem(fas);
-                    }
-                }
+                }               
             }
           
         }

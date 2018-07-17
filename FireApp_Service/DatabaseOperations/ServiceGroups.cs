@@ -27,6 +27,67 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Deletes the ServiceGroup from the Database and Cache
+        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// </summary>
+        /// <param name="id">the id of the ServiceGroup you want to delete</param>
+        /// <returns>returns true if ServiceGroup was deleted from DB</returns>
+        public static bool DeleteServiceGroup(int id)
+        {
+            bool rv = false;
+
+            // delete from DB
+            rv = DatabaseOperations.DbDeletes.DeleteServiceGroup(id);
+            if (rv != true)
+            {
+                // delete local
+                LocalDatabase.DeleteServiceGroup(id);
+
+                // delete from authorizedObjectIds of users local
+                foreach (User u in DatabaseOperations.Users.GetAllUsers())
+                {
+                    if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
+                    {
+                        u.AuthorizedObjectIds.Remove(id);
+                        DatabaseOperations.Users.UpsertUser(u);
+                    }
+                }
+
+                // delete from List of ServiceGroups of FireAlarmSystems local
+                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems())
+                {
+                    if (fas.ServiceGroups.Contains(id))
+                    {
+                        fas.ServiceGroups.Remove(id);
+                        DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
+                    }
+                }
+
+                // delete from authorizedObjectIds of users in DB
+                foreach (User u in DatabaseOperations.DbQueries.QueryUsers())
+                {
+                    if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
+                    {
+                        u.AuthorizedObjectIds.Remove(id);
+                        DatabaseOperations.DbUpserts.UpsertUser(u);
+                    }
+                }
+
+                // delete from List of ServiceGroups of FireAlarmSystems in DB
+                foreach (FireAlarmSystem fas in DatabaseOperations.DbQueries.QueryFireAlarmSystems())
+                {
+                    if (fas.ServiceGroups.Contains(id))
+                    {
+                        fas.ServiceGroups.Remove(id);
+                        DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
+                    }
+                }
+
+            }
+            return rv;
+        }
+
+        /// <summary>
         /// Checks if an id is already used by another ServiceGroup
         /// </summary>
         /// <param name="id">the id you want to check</param>

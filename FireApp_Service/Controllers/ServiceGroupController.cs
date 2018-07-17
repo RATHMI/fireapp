@@ -8,6 +8,7 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Controllers
 {
+    //todo: implement authorization
     [RoutePrefix("service")]
     public class ServiceGroupController : ApiController
     {
@@ -20,6 +21,18 @@ namespace FireApp.Service.Controllers
         public bool UpsertServiceGroup(ServiceGroup sg)
         {
             return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
+        }
+
+        /// <summary>
+        /// Deletes the ServiceGroup from the Database and Cache
+        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// </summary>
+        /// <param name="id">the id of the ServiceGroup you want to delete</param>
+        /// <returns>returns true if ServiceGroup was deleted from DB</returns>
+        [HttpGet, Route("delete/{id}")]
+        public bool DeleteServiceGroup(int id)
+        {
+            return DatabaseOperations.ServiceGroups.DeleteServiceGroup(id);
         }
 
         /// <summary>
