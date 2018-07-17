@@ -71,6 +71,17 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="userName">Id of the User you want to delete</param>
+        /// <returns>returns true if User was deleted</returns>
+        [HttpGet, Route("delete/{username}")]
+        public bool DeleteUser(string userName)
+        {
+            return DatabaseOperations.Users.DeleteUser(userName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns>returns a list with all Users</returns>
         [HttpGet, Route("all")]
         public User[] GetAllUsers()

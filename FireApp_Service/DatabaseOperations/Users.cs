@@ -32,6 +32,21 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userName">Id of the User you want to delete</param>
+        /// <returns>returns true if User was deleted</returns>
+        public static bool DeleteUser(string userName)
+        {
+            if(userName != null)
+            {
+                LocalDatabase.DeleteUser(userName);
+                return DatabaseOperations.DbDeletes.DeleteUser(userName);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Checks if an id is already used by another User
         /// </summary>
         /// <param name="id">the id you want to check</param>

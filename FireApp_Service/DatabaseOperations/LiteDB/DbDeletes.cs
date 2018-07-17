@@ -9,6 +9,7 @@ namespace FireApp.Service.DatabaseOperations
     /// <summary>
     /// This class is for deleting objects from the LiteDB
     /// </summary>
+    //todo: comment class
     public static class DbDeletes
     {
         public static bool DeleteActiveFireEvent(FireEvent fe)
@@ -25,6 +26,27 @@ namespace FireApp.Service.DatabaseOperations
                         {
                             return true;
                         }                     
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool DeleteUser(string userName)
+        {
+            if (userName != null)
+            {
+                using (var db = AppData.UserDB())
+                {
+                    var table = db.UserTable();
+                    User user = table.FindOne(x => x.Id == userName);
+                    if (user != null)
+                    {
+                        if (table.Delete(x => x.Id == user.Id) > 0)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
