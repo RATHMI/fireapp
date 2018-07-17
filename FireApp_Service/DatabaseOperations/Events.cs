@@ -29,10 +29,9 @@ namespace FireApp.Service.DatabaseOperations
         {
             if (fe != null)
             {
+                Logging.Logger.Log("upsert", fe);
                 DatabaseOperations.ActiveEvents.UpsertActiveFireEvent(fe);
                 LocalDatabase.UpsertFireEvent(fe);
-
-                //Logging.Logger.Log("upsert : " + fe.ToLog());
 
                 return DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
             }

@@ -6,9 +6,19 @@ using System.Web;
 
 namespace FireApp.Service.Logging
 {
+    /// <summary>
+    /// This class provides methods to create a log for operations with domain objects
+    /// </summary>
     public static class Logger
     {
-        public static void Log(string logMessage, string logPath)
+        private static string logPath = System.Environment.GetEnvironmentVariable("TEMP") + "\\FireAppLog.txt";
+
+        /// <summary>
+        /// Writes a log message to the logPath
+        /// </summary>
+        /// <param name="logMessage">The type of operation you perform with the oject</param>
+        /// <param name="changedObject">The domain object which you perform an action on</param>
+        public static void Log(string logMessage, object changedObject)
         {
             try
             {
@@ -18,8 +28,9 @@ namespace FireApp.Service.Logging
                 }
                 using (StreamWriter w = File.AppendText(logPath))
                 {
-                    w.WriteLine("\r\n{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
-                    w.WriteLine(" : {0}", logMessage);
+                    w.Write("{0}", DateTime.Now.ToUniversalTime());
+                    w.WriteLine(":{0}:{1}:{2}\r\n", logMessage, changedObject.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(changedObject));
+                    w.Close();
                 }
             }
             catch(IOException ex)

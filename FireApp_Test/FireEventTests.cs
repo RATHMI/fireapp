@@ -179,7 +179,6 @@ namespace FireApp.Test
         #region Templates
         private static T ServiceGetCall<T>(string callAddress)
         {
-            httpClient.DefaultRequestHeaders.Add("token", "1234");
             HttpResponseMessage resp = httpClient.GetAsync(callAddress).Result;
             resp.EnsureSuccessStatusCode();
             return resp.Content.ReadAsAsync<T>().Result;

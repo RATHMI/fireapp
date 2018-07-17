@@ -21,18 +21,19 @@ namespace FireApp.Test {
             
             #region testsFireEvents
             addr = "http://localhost:50862/events/";
-            //System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
-            //FireEvent fe = new FireEvent(new FireEventId(99,0), new DateTime(2018,6,1,0,0,0), "test", "description", EventTypes.alarm);
-            //rv = FireEventTests.UploadFireEvent(addr, fe);
-            //System.Console.WriteLine(rv);
-            //System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-
-
-            System.Console.WriteLine("\r\n\r\nTest GetAllFireEvents");
-            rv = FireEventTests.GetAllFireEvents(addr);
+            System.Console.WriteLine("\r\n\r\nTest UploadFireEvent");
+            FireEvent fe = new FireEvent(new FireEventId(99, 0), new DateTime(2018, 6, 1, 0, 0, 0), "test", "description", EventTypes.alarm);
+            rv = FireEventTests.UploadFireEvent(addr, fe);
             System.Console.WriteLine(rv);
             System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
-            Task.Delay(1000);
+
+
+            //System.Console.WriteLine("\r\n\r\nTest GetAllFireEvents");
+            //rv = FireEventTests.GetAllFireEvents(addr);
+            //System.Console.WriteLine(rv);
+            //System.Console.WriteLine("\r\n------------------------------------------------------------------------------\r\n");
+            //Task.Delay(1000);
+
 
             /*
             System.Console.WriteLine("\r\n\r\nTest active");
