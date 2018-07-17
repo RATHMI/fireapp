@@ -180,6 +180,11 @@
     <Compile Include="DatabaseOperations\Events.cs" />
     <Compile Include="DatabaseOperations\FireAlarmSystems.cs" />
     <Compile Include="DatabaseOperations\FireBrigades.cs" />
+    <Compile Include="FileOperations\FireAlarmSystemFiles.cs" />
+    <Compile Include="FileOperations\FireBrigadeFiles.cs" />
+    <Compile Include="FileOperations\FireEventFiles.cs" />
+    <Compile Include="FileOperations\ServiceGroupFiles.cs" />
+    <Compile Include="FileOperations\UserFiles.cs" />
     <Compile Include="Filter\FireAlarmSystemsFilter.cs" />
     <Compile Include="Filter\FireBrigadesFilter.cs" />
     <Compile Include="Filter\FireEventsFilter.cs" />
