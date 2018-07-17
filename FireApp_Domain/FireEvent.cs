@@ -17,7 +17,7 @@ namespace FireApp.Domain {
             this.EventType = eventType;
         }
 
-        // a composite primary key consisting of source and event id
+        // a composite primary key consisting of sourceId and eventId
         public FireEventId Id { get; set; } 
 
         // Time when the FireEvent accored
@@ -67,34 +67,6 @@ namespace FireApp.Domain {
             sb.Append(this.TimeStamp.ToString());
             sb.Append(";");
             sb.Append(this.EventType.ToString());
-
-            return sb.ToString();
-        }
-
-        public string ToLog()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("FireEvent [");
-
-            sb.Append("id={FireEventId(");
-            sb.Append(Id.SourceId.ToString());
-            sb.Append(",");
-            sb.Append(Id.EventId.ToString());
-            sb.Append(")}");
-
-            sb.Append(",timestamp=");
-            sb.Append(TimeStamp.ToString());
-
-            sb.Append(",targetid=");
-            sb.Append(TargetId.ToString());
-
-            sb.Append(",targetdescription=");
-            sb.Append(TargetDescription.ToString());
-
-            sb.Append(",eventtype=");
-            sb.Append(EventType.ToString());
-
-            sb.Append("]");
 
             return sb.ToString();
         }

@@ -19,7 +19,7 @@ namespace FireApp.Service.DatabaseOperations
             {
                 LocalDatabase.UpsertFireAlarmSystem(fas);
 
-                //Logging.Logger.Log("upsert : " + fas.ToLog(), AppSettings.FireEventDBPath + "/_Log/log.txt");
+                Logging.Logger.Log("upsert", fas);
 
                 return DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
             }else

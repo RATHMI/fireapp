@@ -2,3 +2,10 @@ D:\Solutions\FireApp\FireApp_Domain\bin\Release\FireApp.Domain.dll
 D:\Solutions\FireApp\FireApp_Domain\bin\Release\FireApp.Domain.pdb
 D:\Solutions\FireApp\FireApp_Domain\obj\Release\FireApp.Domain.dll
 D:\Solutions\FireApp\FireApp_Domain\obj\Release\FireApp.Domain.pdb
+C:\proj\fireapp\FireApp_Domain\bin\Release\FireApp.Domain.dll.config
+C:\proj\fireapp\FireApp_Domain\bin\Release\FireApp.Domain.dll
+C:\proj\fireapp\FireApp_Domain\bin\Release\FireApp.Domain.pdb
+C:\proj\fireapp\FireApp_Domain\bin\Release\Newtonsoft.Json.dll
+C:\proj\fireapp\FireApp_Domain\bin\Release\Newtonsoft.Json.xml
+C:\proj\fireapp\FireApp_Domain\obj\Release\FireApp.Domain.dll
+C:\proj\fireapp\FireApp_Domain\obj\Release\FireApp.Domain.pdb
