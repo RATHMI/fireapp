@@ -54,7 +54,18 @@ namespace FireApp.Service.Controllers
         public User[] GetUser()
         {
             string token = Authentication.Token.GetTokenFromHeader(Request.Headers);
-            return Authentication.Token.VerifyToken(token).ToArray<User>();
+            IEnumerable<User> users = Authentication.Token.VerifyToken(token);
+            if(users != null)
+            {
+                User user = users.First<User>();
+                user.Token = null;
+                user.Password = null;
+                return ((IEnumerable<User>)user).ToArray<User>();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
