@@ -30,7 +30,7 @@ namespace FireApp.Service.Filter
                         results.AddRange(fireAlarmSystemFilter(serviceGroup, authorizedObject));
                     }
                 }
-                if (user.UserType == UserTypes.firebrigade)
+                if (user.UserType == UserTypes.servicemember)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {

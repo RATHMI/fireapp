@@ -15,7 +15,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list of all active FireEvents</returns>
-        [HttpGet, Route("all")] //todo: Access only for admin
+        [HttpGet, Route("all")]
         public FireEvent[] Active()
         {
             return (DatabaseOperations.ActiveEvents.GetAllActiveFireEvents()).ToArray<FireEvent>();
@@ -26,7 +26,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents of the given EventType</returns>
-        [HttpGet, Route("type/{eventType}")]    //todo: Access only for admin
+        [HttpGet, Route("type/{eventType}")]
         public FireEvent[] Active(EventTypes eventType)
         {
             return (DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType)).ToArray<FireEvent>();
@@ -37,10 +37,22 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
         /// <returns>a list of active FireEvents with a matching sourceId</returns>
-        [HttpGet, Route("source/{sourceId}")]   //todo: Access only for admin, FireAlarmSystem
+        [HttpGet, Route("source/{sourceId}")]   
         public FireEvent[] GetActiveFireEventsBySourceId(int sourceId)
         {
             return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
+        }
+
+        /// <summary>
+        /// returns a distinct activeFireEvent
+        /// </summary>
+        /// <param name="sourceId">the sourceId of the active FireEvent you are looking for</param>
+        /// <param name="targetId">the targetId of the active FireEvent you are looking for</param>
+        /// <returns>returns a FireEvent with a matching sourceId and targetId</returns>
+        [HttpGet, Route("id/{sourceId}/{targetId}")]
+        public FireEvent[] GetActiveFireEventById(int sourceId, string targetId)
+        {
+            return DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId).ToArray<FireEvent>();
         }
 
         /// <summary>

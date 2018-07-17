@@ -50,6 +50,28 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// returns a distinct activeFireEvent
+        /// </summary>
+        /// <param name="sourceId">the sourceId of the active FireEvent you are looking for</param>
+        /// <param name="targetId">the targetId of the active FireEvent you are looking for</param>
+        /// <returns>returns a FireEvent with a matching sourceId and targetId</returns>
+        public static IEnumerable<FireEvent> GetActiveFireEventById(int sourceId, string targetId)
+        {
+            List<FireEvent> events = LocalDatabase.GetActiveFireEvents();
+            List<FireEvent> result = new List<FireEvent>();
+            foreach (FireEvent fe in events)
+            {
+                if (fe.Id.SourceId == sourceId && fe.TargetId == targetId)
+                {
+                    result.Add(fe);
+                    break;
+                }
+            }
+
+            return (IEnumerable<FireEvent>)result;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="eventType">The EventType of the active FireEvents</param>

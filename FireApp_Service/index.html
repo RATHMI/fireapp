@@ -42,6 +42,9 @@
                 </div>
                 <!-- /row -->
                 <div class="row">
+                    <div class="white-box">
+                        <p>To use these REST-API interfaces you have to authenticate by sending a token with the key "token" in the header of your request</p>
+                    </div>
                     <div class="col-sg-12">
                         <div class="white-box">
                             <div class="table-responsive">
@@ -149,6 +152,11 @@
                                                 <td>a list of active FireEvents with a matching sourceId</td>
                                             </tr>
                                             <tr>
+                                                <td>&emsp;../id/{sourceId}/{targetId}</td>
+                                                <td>FireEvent[]</td>
+                                                <td>a list of active FireEvents with a matching sourceId and targetId</td>
+                                            </tr>
+                                            <tr>
                                                 <td>&emsp;../type/{sourceId}/{eventType}</td>
                                                 <td>FireEvent[]</td>
                                                 <td>returns a list of all active FireEvents with a matching sourceId an of the given EventType</td>
@@ -182,13 +190,18 @@
                                             </tr>
                                             <tr>
                                                 <td>&emsp;../checkid/{id}</td>
-                                                <td>bool</td>
-                                                <td>true if id does not already exist</td>
+                                                <td>int</td>
+                                                <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
                                             </tr>
                                             <tr>
                                                 <td>&emsp;../all</td>
                                                 <td>FireAlarmSystem[]</td>
                                                 <td>returns a list of all FireAlarmSystems</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&emsp;../active</td>
+                                                <td>FireAlarmSystem[]</td>
+                                                <td>returns a list of all FireAlarmSystems with active FireEvents</td>
                                             </tr>
                                              <tr>
                                                 <td>&emsp;../id/{id}</td>
@@ -218,9 +231,14 @@
                                                 <td>returns true if the insert was successful<br>transmit FireBrigade via POST in Body</td>
                                             </tr>
                                             <tr>
-                                                <td>&emsp;../checkid/{id}</td>
+                                                <td>&emsp;../delete/{id}</td>
                                                 <td>bool</td>
-                                                <td>true if id does not already exist</td>
+                                                <td>returns true if FireBrigade was deleted</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&emsp;../checkid/{id}</td>
+                                                <td>int</td>
+                                                <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
                                             </tr>
                                             <tr>
                                                 <td>&emsp;../all</td>
@@ -245,9 +263,14 @@
                                                 <td>returns true if the insert was successful<br>transmit ServiceGroup via POST in Body</td>
                                             </tr>
                                             <tr>
-                                                <td>&emsp;../checkid/{id}</td>
+                                                <td>&emsp;../delete/{id}</td>
                                                 <td>bool</td>
-                                                <td>true if id does not already exist</td>
+                                                <td>returns true if ServiceGroup was deleted</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&emsp;../checkid/{id}</td>
+                                                <td>int</td>
+                                                <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
                                             </tr>
                                             <tr>
                                                 <td>&emsp;../all</td>
@@ -271,6 +294,16 @@
                                                 <td>bool</td>
                                                 <td>returns true if the insert was successful<br>transmit UserLogin via POST in Body</td>
                                             </tr>
+                                             <tr>
+                                                <td>&emsp;../delete/{username}</td>
+                                                <td>bool</td>
+                                                <td>returns true if User was deleted</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&emsp;../all</td>
+                                                <td>User[]</td>
+                                                <td>returns a list of all Users</td>
+                                            </tr>
                                             <tr>
                                                 <td>&emsp;../checkid/{id}</td>
                                                 <td>bool</td>
@@ -286,6 +319,21 @@
                                                 <td>User</td>
                                                 <td>returns User if token is valid or null if it is invalid</td>
                                             </tr>
+                                            <tr>
+                                                <td>&emsp;../id/{username}</td>
+                                                <td>User[]</td>
+                                                <td>returns a distinct user</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&emsp;../active</td>
+                                                <td>User[]</td>
+                                                <td>returns a list of all Users that have created a token in the last 365 days</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&emsp;../inactive</td>
+                                                <td>User[]</td>
+                                                <td>returns a list of all Users that have not created a token in the last 365 days</td>
+                                            </tr>
                                         </tbody>
                                         <!-- End of content -->
                                     </table>
@@ -293,7 +341,7 @@
                         </div>
                         <row class="pull-left" class="col-sg-6">
                             <!--<p><span id="cnt_rows">0</span> Lines</p>-->
-                            <p>Last Update: 11 July 2018</p>
+                            <p>Last Update: 17 July 2018</p>
                         </row>
                         <row class="pull-right" class="col-sg-6">
                             <p>2018 &copy; Siemens Austria</p>
