@@ -57,10 +57,12 @@ namespace FireApp.Service.Controllers
             IEnumerable<User> users = Authentication.Token.VerifyToken(token);
             if(users != null)
             {
-                User user = users.First<User>();
-                user.Token = null;
-                user.Password = null;
-                return ((IEnumerable<User>)user).ToArray<User>();
+                List<User> user = new List<User>();
+                User u = (User)users.First<User>().Clone();
+                u.Token = null;
+                u.Password = null;
+                user.Add(u);
+                return user.ToArray<User>();
             }
             else
             {

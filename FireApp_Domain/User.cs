@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
-    public class User
+    public class User : ICloneable
     {
         private User() { }
 
@@ -37,6 +37,23 @@ namespace FireApp.Domain
             set { this.token = value; TokenCreationDate = DateTime.Now; }
         }
         public DateTime TokenCreationDate { get; set; }
+
+        public object Clone()
+        {
+            User user = new User();
+            user.Id = this.Id;
+            user.Password = this.Password;
+            user.FirstName = this.FirstName;
+            user.LastName = this.LastName;
+            user.Email = this.Email;
+            user.UserType = this.UserType;
+            user.AuthorizedObjectIds = new HashSet<int>();
+            user.AuthorizedObjectIds.ToList<int>().AddRange(this.AuthorizedObjectIds);
+            user.Token = this.Token;
+            user.TokenCreationDate = this.TokenCreationDate;
+
+            return user;
+        }
     }
 
     public enum UserTypes {unauthorized = -1, admin = 0, firealarmsystem = 1, firebrigade = 2, servicemember = 3 }
