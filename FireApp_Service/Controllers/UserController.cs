@@ -40,7 +40,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="login">the login data of a user</param>
         /// <returns>returns the token if the login worked or null if not</returns>
-        [HttpPost, Route("authenticate")]   //todo: it may be easier to transmit login seperate in headers for app
+        [HttpPost, Route("authenticate")]
         public string Authenticate([FromBody]UserLogin login)
         {
             return Authentication.Token.RefreshToken(login);

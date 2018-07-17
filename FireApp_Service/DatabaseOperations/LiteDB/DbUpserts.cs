@@ -6,12 +6,16 @@ using FireApp.Domain;
 
 namespace FireApp.Service.DatabaseOperations
 {
-    //todo: comment class
     /// <summary>
     /// This class is for upserting objects into the LiteDB
     /// </summary>
     public static class DbUpserts
     {
+        /// <summary>
+        /// Upserts an active FireEvent into the LiteDB
+        /// </summary>
+        /// <param name="fe">the FireEvent you want to upsert</param>
+        /// <returns>returns true if the FireEvent was inserted</returns>
         public static bool UpsertActiveFireEvent(FireEvent fe)
         {
             if (fe != null)
@@ -28,6 +32,11 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
+        /// <summary>
+        /// Upserts a FireEvent into the LiteDB
+        /// </summary>
+        /// <param name="fe">the FireEvent you want to upsert</param>
+        /// <returns>returns true if the FireEvent was inserted</returns>
         public static bool UpsertFireEvent(FireEvent fe)
         {
             if (fe != null)
@@ -44,6 +53,11 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
+        /// <summary>
+        /// Upserts a FireAlarmSystem into the LiteDB
+        /// </summary>
+        /// <param name="fas">the FireAlarmSystem you want to upsert</param>
+        /// <returns>returns true if the FireAlarmSystem was inserted</returns>
         public static bool UpsertFireAlarmSystem(FireAlarmSystem fas)
         {
             if (fas != null)
@@ -60,6 +74,11 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
+        /// <summary>
+        /// Upserts a FireBrigade into the LiteDB
+        /// </summary>
+        /// <param name="fb">the FireBrigade you want to upsert</param>
+        /// <returns>returns true if the FireBrigade was inserted</returns>
         public static bool UpsertFireBrigade(FireBrigade fb)
         {
             if (fb != null)
@@ -76,6 +95,11 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
+        /// <summary>
+        /// Upserts a ServiceGroup into the LiteDB
+        /// </summary>
+        /// <param name="sg">the ServiceGroup you want to upsert</param>
+        /// <returns>returns true if the ServiceGroup was inserted</returns>
         public static bool UpsertServiceGroup(ServiceGroup sg)
         {
             if (sg != null)
@@ -92,6 +116,11 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
+        /// <summary>
+        /// Upserts a User into the LiteDB
+        /// </summary>
+        /// <param name="user">the User you want to upsert</param>
+        /// <returns>returns true if the User was inserted</returns>
         public static bool UpsertUser(User user)
         {
             if (user != null)

@@ -9,9 +9,13 @@ namespace FireApp.Service.DatabaseOperations
     /// <summary>
     /// This class is for deleting objects from the LiteDB
     /// </summary>
-    //todo: comment class
     public static class DbDeletes
     {
+        /// <summary>
+        /// Deletes an active FireEvent from the LiteDB
+        /// </summary>
+        /// <param name="fe">the FireEvent you want to delete</param>
+        /// <returns>returns true if FireEvent was deleted</returns>
         public static bool DeleteActiveFireEvent(FireEvent fe)
         {
             if (fe != null)
@@ -33,6 +37,11 @@ namespace FireApp.Service.DatabaseOperations
             return false;
         }
 
+        /// <summary>
+        /// Deletes a User from the LiteDB
+        /// </summary>
+        /// <param name="userName">the UserName of the User you want to delete</param>
+        /// <returns>returns true if a User was deleted</returns>
         public static bool DeleteUser(string userName)
         {
             if (userName != null)
@@ -54,6 +63,11 @@ namespace FireApp.Service.DatabaseOperations
             return false;
         }
 
+        /// <summary>
+        /// Deletes a FireBrigade from the LiteDB
+        /// </summary>
+        /// <param name="id">the id of the FireBrigade you want to delete</param>
+        /// <returns>returns true if a FireBrigade was deleted</returns>
         public static bool DeleteFireBrigade(int id)
         {
             using (var db = AppData.FireBrigadeDB())
@@ -72,6 +86,11 @@ namespace FireApp.Service.DatabaseOperations
             return false;
         }
 
+        /// <summary>
+        /// Deletes a ServiceGroup from the LiteDB
+        /// </summary>
+        /// <param name="id">the id of the ServiceGroup you want to delete</param>
+        /// <returns>returns true if a ServiceGroup was deleted</returns>
         public static bool DeleteServiceGroup(int id)
         {
             using (var db = AppData.ServiceGroupDB())

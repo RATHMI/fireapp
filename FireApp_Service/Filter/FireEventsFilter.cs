@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FireApp.Domain;
+using System.Net.Http.Headers;
 
 namespace FireApp.Service.Filter
 {
     public static class FireEventsFilter
     {
-        //todo: set right filter options
         private static EventTypes[] fireBrigadeFilterTypes = { EventTypes.alarm };
 
-        //todo: set right filter options
         private static EventTypes[] serviceGroupFilterTypes = { EventTypes.disfunction };
 
         /// <summary>
@@ -54,6 +53,31 @@ namespace FireApp.Service.Filter
 
             results.OrderBy(x => x.EventType);
             return (IEnumerable<FireEvent>)results;
+        }
+
+        /// <summary>
+        /// Filters the list of FireEvents by using the property values which were transfered in the headers
+        /// </summary>
+        /// <param name="fireEvents"></param>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public static IEnumerable<FireEvent> PropertyFilter(IEnumerable<FireEvent> fireEvents, HttpRequestHeaders headers)
+        {
+            //todo: implement method
+            List<FireEvent> results = new List<FireEvent>();
+
+            IEnumerable<string> keys = new List<string>();
+            string key;
+            List<string> eventTypes = new List<string>();
+
+            if (headers.TryGetValues("eventtypes", out keys) != false)
+            {
+                headers.TryGetValues("token", out keys);
+                key = keys.First<string>().Trim(new char[] { '"' });
+                eventTypes.AddRange(key.Split(','));
+            }
+
+            return results;
         }
 
         /// <summary>
