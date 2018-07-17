@@ -90,7 +90,7 @@ namespace FireApp.Service.Authentication
             if (headers.TryGetValues("token", out key) != false)
             {
                 headers.TryGetValues("token", out key);
-                return key.First<string>();
+                return key.First<string>().Trim(new char[] { '"' });
             }
             else
             {
