@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FireApp.Domain;
+using System.IO;
 
 namespace FireApp.Service.Controllers
 {
@@ -18,7 +19,7 @@ namespace FireApp.Service.Controllers
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
         [HttpPost, Route("upload")]
-        public static bool UpsertUser(User user)
+        public static bool UpsertUser([FromBody] User user)
         {
             return DatabaseOperations.Users.UpsertUser(user);
         }
@@ -120,6 +121,26 @@ namespace FireApp.Service.Controllers
         public User[] GetInactiveUsers()
         {
             return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
+        }
+
+
+        [HttpGet, Route("filedownload")]
+        public HttpResponseMessage GetUserCSV()
+        {
+            string fileName = "users.CSV";
+
+            //converting CSV file into bytes array  
+            var dataBytes = File.ReadAllBytes("");
+            //adding bytes to memory stream   
+            var dataStream = new MemoryStream(dataBytes);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(dataStream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = fileName;
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
         }
 
     }

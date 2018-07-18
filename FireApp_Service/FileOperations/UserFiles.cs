@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FireApp.Domain;
+using System.IO;
 
 namespace FireApp.Service.FileOperations
 {
@@ -14,9 +15,14 @@ namespace FireApp.Service.FileOperations
             return null;
         }
 
-        public static IEnumerable<User> ConvertUsersIntoCSV(IEnumerable<User> user)
+        public static MemoryStream ConvertUsersIntoCSV(IEnumerable<User> user)
         {
             //todo: implement method
+
+            //converting CSV file into bytes array  
+            //var dataBytes = File.ReadAllBytes(reqBook);
+            //adding bytes to memory stream   
+            //var dataStream = new MemoryStream(dataBytes);
             return null;
         }
     }

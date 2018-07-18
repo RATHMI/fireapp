@@ -20,7 +20,7 @@ namespace FireApp.Domain
             this.Description = "";
             this.Country = "";
             this.City = "";
-            this.PostalCode = 0;
+            this.PostalCode = "0";
             this.Address = "";
             FireBrigades = new HashSet<int>();
             ServiceGroups = new HashSet<int>();
@@ -32,7 +32,7 @@ namespace FireApp.Domain
             string description,
             string country,
             string city,
-            int postalCode,
+            string postalCode,
             string address)
         {
             this.Id = id;
@@ -62,7 +62,8 @@ namespace FireApp.Domain
         public string City { get; set; }
 
         // postal code of the city where the FireAlarmSystem is installed
-        public int PostalCode { get; set; }
+        // not an integer becaus it may contain characters (e.g. A-4020)
+        public string PostalCode { get; set; }
 
         // address of the building where the FireAlarmSystem is installed
         public string Address { get; set; }
@@ -143,6 +144,56 @@ namespace FireApp.Domain
             }
 
             return fas;
+        }
+
+        public string ToCsv()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            return null;
+        } 
+
+        public User GetUserFromCsv(string csv)
+        {
+            string[] values;
+
+            if (csv != null)
+            {
+                try
+                {
+                    values = csv.Split(';');
+                    int id = Convert.ToInt32(values[0]);
+                    string company = values[1];
+                    string description = values[2];
+                    string country = values[3];
+                    string city = values[4];
+                    string postalCode = values[5];
+                    string address = values[6];
+                    HashSet<int> fireBrigades = new HashSet<int>();
+                    foreach(string s in values[7].Split(','))
+                    {
+                        fireBrigades.Add(Convert.ToInt32(s));
+                    }
+                    HashSet<int> serviceGroups = new HashSet<int>();
+                    foreach (string s in values[8].Split(','))
+                    {
+                        serviceGroups.Add(Convert.ToInt32(s));
+                    }
+
+                    //User user = new User()
+
+                    return null;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }            
         }
     }
 }
