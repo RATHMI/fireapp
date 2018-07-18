@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FireApp.Service.DatabaseOperations;
+using Newtonsoft.Json.Converters;
 
 namespace FireApp.Service.Controllers
 {
@@ -59,12 +60,14 @@ namespace FireApp.Service.Controllers
                     if (Request.Headers.TryGetValues("startDate", out key) != false)
                     {
                         Request.Headers.TryGetValues("startDate", out key);
-                        date1 = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(key.First<string>().Trim(new char[] { '"' }));
+                        string datestring = key.First<string>().Trim(new char[] { '"' });
+                        date1 = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(datestring, new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd" });
                     }
                     if (Request.Headers.TryGetValues("endDate", out key) != false)
                     {
                         Request.Headers.TryGetValues("endDate", out key);
-                        date1 = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(key.First<string>().Trim(new char[] { '"' }));
+                        string datestring = key.First<string>().Trim(new char[] { '"' });
+                        date2 = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(datestring, new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd" });
                     }
                     if (Request.Headers.TryGetValues("events", out key) != false)
                     {
