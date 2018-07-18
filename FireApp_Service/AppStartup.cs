@@ -27,54 +27,53 @@ namespace FireApp.Service {
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            app.UseWebApi(config);           
+            app.UseWebApi(config);
+            LocalDatabase.InitializeDatabase();
 
             //debug: use only in debugging
             #region debugging
             User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
 
             user = new User("fb1", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
             user = new User("fb2", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
             user = new User("fb3", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
 
             user = new User("sm1", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
             user = new User("sm2", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
             user = new User("sm3", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
 
             user = new User("fas1", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
             user = new User("fas2", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
+            DatabaseOperations.Users.UpsertUser(user);
             user = new User("fas3", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.DbUpserts.UpsertUser(user);
-
-            LocalDatabase.InitializeDatabase();
+            DatabaseOperations.Users.UpsertUser(user);
             #endregion
         }
     }
