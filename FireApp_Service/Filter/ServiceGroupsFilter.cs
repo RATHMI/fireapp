@@ -6,7 +6,7 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Filter
 {
-    public static class ServiceGroupFilter
+    public static class ServiceGroupsFilter
     {
         /// <summary>
         /// filters a list of ServiceGroups according to the rights of a user

@@ -191,7 +191,8 @@
     <Compile Include="DatabaseOperations\LiteDB\DbQueries.cs" />
     <Compile Include="DatabaseOperations\ServiceGroups.cs" />
     <Compile Include="DatabaseOperations\Users.cs" />
-    <Compile Include="Filter\ServiceGroupFilter.cs" />
+    <Compile Include="Filter\ServiceGroupsFilter.cs" />
+    <Compile Include="Filter\UsersFilter.cs" />
     <Compile Include="LocalDatabase.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

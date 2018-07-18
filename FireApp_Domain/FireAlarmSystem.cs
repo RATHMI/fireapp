@@ -147,14 +147,50 @@ namespace FireApp.Domain
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a string with the names of the CSV values</returns>
+        public static string GetCsvHeader()
+        {
+            return "id;company;description;country;city;postal code;address;fire brigades; service groups";
+        }
+
+        /// <summary>
         /// Turns this FireAlarmSystem into a CSV line
         /// </summary>
         /// <returns>returns a CSV line with the values of the FireAlarmSystem</returns>
         public string ToCsv()
         {
             StringBuilder sb = new StringBuilder();
+            sb.Append(Id);
+            sb.Append(';');
+            sb.Append(Company);
+            sb.Append(';');
+            sb.Append(Description);
+            sb.Append(';');
+            sb.Append(Country);
+            sb.Append(';');
+            sb.Append(City);
+            sb.Append(';');
+            sb.Append(PostalCode);
+            sb.Append(';');
+            sb.Append(Address);
+            sb.Append(';');
+            foreach(int fireBrigade in this.FireBrigades)
+            {
+                sb.Append(fireBrigade);
+                sb.Append(',');
+            }
+            sb.Remove(sb.Length - 1, 1);
+            sb.Append(';');
+            foreach (int serviceGroup in this.ServiceGroups)
+            {
+                sb.Append(serviceGroup);
+                sb.Append(',');
+            }
+            sb.Remove(sb.Length - 1, 1);
 
-            return null;
+            return sb.ToString();
         } 
 
         /// <summary>
@@ -162,7 +198,7 @@ namespace FireApp.Domain
         /// </summary>
         /// <param name="csv">a line of a CSV-File you want to convert</param>
         /// <returns>returns a new FireAlarmSystem or null if an error occures</returns>
-        public FireAlarmSystem GetFireAlarmSystemFromCsv(string csv)
+        public static FireAlarmSystem GetFireAlarmSystemFromCsv(string csv)
         {
             string[] values;
 

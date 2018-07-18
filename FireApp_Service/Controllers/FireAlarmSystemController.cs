@@ -22,6 +22,8 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
         }
 
+        //todo: add interface to upload CSV with option for update or insert
+
         /// <summary>
         /// Checks if an id is already used by another FireAlarmSystem
         /// </summary>

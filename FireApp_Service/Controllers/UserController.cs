@@ -58,12 +58,7 @@ namespace FireApp.Service.Controllers
             IEnumerable<User> users = Authentication.Token.VerifyToken(token);
             if(users != null)
             {
-                List<User> user = new List<User>();
-                User u = (User)users.First<User>().Clone();
-                u.Token = null;
-                u.Password = null;
-                user.Add(u);
-                return user.ToArray<User>();
+                return Filter.UsersFilter.UserFilter(users, users.First<User>()).ToArray<User>();
             }
             else
             {
@@ -89,7 +84,16 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public User[] GetAllUsers()
         {
-            return DatabaseOperations.Users.GetAllUsers().ToArray<User>();
+            //todo: only in debugging
+            IEnumerable<User> admin = DatabaseOperations.Users.GetUserById("admin");
+            if (admin != null && admin.Count<User>() > 0)
+            {
+                return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetAllUsers(), admin.First<User>()).ToArray<User>();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
