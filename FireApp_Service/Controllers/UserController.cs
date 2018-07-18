@@ -97,6 +97,16 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// returns all Users that have a UserType that is matching with a UserType from usertypes
+        /// </summary>
+        /// <param name="usertypes">an array of usertypes</param>
+        /// <returns>returns a list of all users with matching usertypes</returns>
+        public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
+        {
+            return DatabaseOperations.Users.GetUserByUserTypes(usertypes).ToArray<User>();
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="username">The username of the User you are looking for</param>

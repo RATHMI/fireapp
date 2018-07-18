@@ -87,11 +87,23 @@ namespace FireApp.Service.DatabaseOperations
             return (IEnumerable<User>)LocalDatabase.GetAllUsers();
         }
 
+        /// <summary>
+        /// returns all Users that have a UserType that is matching with a UserType from usertypes
+        /// </summary>
+        /// <param name="usertypes">an array of usertypes</param>
+        /// <returns>returns a list of all users with matching usertypes</returns>
         public static IEnumerable<User> GetUserByUserTypes(UserTypes[] usertypes)
         {
             List<User> results = new List<User>();
+            foreach(User user in GetAllUsers())
+            {
+                if (usertypes.Contains(user.UserType))
+                {
+                    results.Add(user);
+                }
+            }
 
-            return results;
+            return (IEnumerable<User>)results;
         }
 
         /// <summary>
