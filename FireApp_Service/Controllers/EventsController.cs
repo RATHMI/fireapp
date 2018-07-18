@@ -55,7 +55,7 @@ namespace FireApp.Service.Controllers
                     List<EventTypes> eventTypes = new List<EventTypes>();
                     string[] types = null;
                     IEnumerable<FireEvent> events = Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user.First<User>()).ToArray<FireEvent>();
-                    IEnumerable<string> key;
+                    IEnumerable<string> key = null;
                     if (Request.Headers.TryGetValues("startDate", out key) != false)
                     {
                         Request.Headers.TryGetValues("startDate", out key);
@@ -69,7 +69,7 @@ namespace FireApp.Service.Controllers
                     if (Request.Headers.TryGetValues("events", out key) != false)
                     {
                         Request.Headers.TryGetValues("events", out key);
-                        types = (Newtonsoft.Json.JsonConvert.DeserializeObject<string>(key.First<string>().Trim('"',','))).Split(',');
+                        types = (key.First<string>().Trim(new char[] {'"', ','})).Split(',');
                     }
 
                     Console.WriteLine(key); // to prevent optimisation
