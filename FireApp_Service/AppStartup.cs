@@ -40,36 +40,36 @@ namespace FireApp.Service {
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(0);
             DatabaseOperations.Users.UpsertUser(user);
-            user = new User("fb2", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
-            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
-            user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.Users.UpsertUser(user);
-            user = new User("fb3", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
-            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
-            user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.Users.UpsertUser(user);
-
             user = new User("sm1", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(0);
+            DatabaseOperations.Users.UpsertUser(user);
+            user = new User("fas1", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            user.AuthorizedObjectIds.Add(0);
+            DatabaseOperations.Users.UpsertUser(user);
+
+            user = new User("fb2", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.UpsertUser(user);
             user = new User("sm2", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.UpsertUser(user);
-            user = new User("sm3", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
-            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
-            user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.Users.UpsertUser(user);
-
-            user = new User("fas1", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
-            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
-            user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.Users.UpsertUser(user);
             user = new User("fas2", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.UpsertUser(user);
+            
+            user = new User("fb3", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            user.AuthorizedObjectIds.Add(2);
+            DatabaseOperations.Users.UpsertUser(user);
+            user = new User("sm3", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
+            Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
+            user.AuthorizedObjectIds.Add(2);
+            DatabaseOperations.Users.UpsertUser(user);    
             user = new User("fas3", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(2);
