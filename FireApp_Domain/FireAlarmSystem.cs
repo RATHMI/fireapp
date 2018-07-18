@@ -180,7 +180,18 @@ namespace FireApp.Domain
                         serviceGroups.Add(Convert.ToInt32(s));
                     }
 
-                    //User user = new User()
+                    FireAlarmSystem fas = new FireAlarmSystem
+                        (
+                            id,
+                            company,
+                            description,
+                            country,
+                            city,
+                            postalCode,
+                            address
+                        );
+                    fas.FireBrigades = fireBrigades;
+                    fas.ServiceGroups = serviceGroups;
 
                     return null;
                 }
