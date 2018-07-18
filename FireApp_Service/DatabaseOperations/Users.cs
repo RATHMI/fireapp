@@ -17,16 +17,13 @@ namespace FireApp.Service.DatabaseOperations
         {
             if (user != null)
             {
-                if (user.Password.Length >= 8)
+                if (user.Token == null)
                 {
-                    if (user.Token == null)
-                    {
-                        user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
-                    }
-                    LocalDatabase.UpsertUser(user);
-
-                    return DatabaseOperations.DbUpserts.UpsertUser(user);
+                    user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
                 }
+                LocalDatabase.UpsertUser(user);
+
+                return DatabaseOperations.DbUpserts.UpsertUser(user);
             }
             return false;
         }

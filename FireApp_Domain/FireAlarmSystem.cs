@@ -146,6 +146,10 @@ namespace FireApp.Domain
             return fas;
         }
 
+        /// <summary>
+        /// Turns this FireAlarmSystem into a CSV line
+        /// </summary>
+        /// <returns>returns a CSV line with the values of the FireAlarmSystem</returns>
         public string ToCsv()
         {
             StringBuilder sb = new StringBuilder();
@@ -153,7 +157,12 @@ namespace FireApp.Domain
             return null;
         } 
 
-        public User GetUserFromCsv(string csv)
+        /// <summary>
+        /// This method turns a line of a CSV-File into a new FireAlarmSystem
+        /// </summary>
+        /// <param name="csv">a line of a CSV-File you want to convert</param>
+        /// <returns>returns a new FireAlarmSystem or null if an error occures</returns>
+        public FireAlarmSystem GetFireAlarmSystemFromCsv(string csv)
         {
             string[] values;
 
@@ -193,7 +202,7 @@ namespace FireApp.Domain
                     fas.FireBrigades = fireBrigades;
                     fas.ServiceGroups = serviceGroups;
 
-                    return null;
+                    return fas;
                 }
                 catch(Exception ex)
                 {
