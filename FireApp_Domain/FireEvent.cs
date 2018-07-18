@@ -70,6 +70,37 @@ namespace FireApp.Domain {
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a string with the names of the CSV values</returns>
+        public static string GetCsvHeader()
+        {
+            return "source ID;event ID;timestamp;target ID; target description;event type";
+        }
+
+        /// <summary>
+        /// Turns this FireEvent into a CSV line
+        /// </summary>
+        /// <returns>returns a CSV line with the values of the FireEvent</returns>
+        public string ToCsv()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Id.SourceId);
+            sb.Append(';');
+            sb.Append(Id.EventId);
+            sb.Append(';');
+            sb.Append(TimeStamp.ToString("yyyy/MM/dd HH:mm:ss"));
+            sb.Append(';');
+            sb.Append(TargetId);
+            sb.Append(';');
+            sb.Append(TargetDescription);
+            sb.Append(';');
+            sb.Append(EventType);
+
+            return sb.ToString();
+        }
     }
 
 
@@ -104,4 +135,7 @@ namespace FireApp.Domain {
         prealarm = 7,
         activation = 8
     };
+
+
+    
 }

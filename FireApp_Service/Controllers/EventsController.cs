@@ -26,6 +26,9 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.Events.UpsertFireEvent(fe);
         }
 
+        //todo: implement method "ToCSV"
+
+
         /// <summary>
         /// Checks if an id is already used by another FireEvent
         /// </summary>

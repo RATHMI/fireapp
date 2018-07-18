@@ -22,6 +22,10 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
         }
 
+        //todo: implement method "ToCSV"
+
+        //todo: implement method "FromCSV"
+
         /// <summary>
         /// Deletes the FireBrigade from the Database and Cache
         /// The assoziations with the users and FireAlarmSystems are also deleted

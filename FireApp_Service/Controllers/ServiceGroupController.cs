@@ -23,6 +23,10 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
         }
 
+        //todo: implement method "ToCSV"
+
+        //todo: implement method "FromCSV"
+
         /// <summary>
         /// Deletes the ServiceGroup from the Database and Cache
         /// The assoziations with the users and FireAlarmSystems are also deleted

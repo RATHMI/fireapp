@@ -24,6 +24,10 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.Users.UpsertUser(user);
         }
 
+        //todo: implement method "ToCSV"
+
+        //todo: implement method "FromCSV"
+
         /// <summary>
         /// Checks if an id is already used by another User
         /// </summary>
@@ -103,7 +107,16 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all users with matching usertypes</returns>
         public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
         {
-            return DatabaseOperations.Users.GetUserByUserTypes(usertypes).ToArray<User>();
+            //todo: only in debugging
+            IEnumerable<User> admin = DatabaseOperations.Users.GetUserById("admin");
+            if (admin != null && admin.Count<User>() > 0)
+            {
+                return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetUserByUserTypes(usertypes), admin.First<User>()).ToArray<User>();
+            }
+            else
+            {
+                return null;
+            }           
         }
 
         /// <summary>
