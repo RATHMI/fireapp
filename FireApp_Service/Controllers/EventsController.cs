@@ -51,6 +51,7 @@ namespace FireApp.Service.Controllers
                 List<FireEvent> results = new List<FireEvent>();
                 try
                 {
+                    //todo: comment
                     DateTime date1 = DateTime.MaxValue;
                     DateTime date2 = DateTime.MaxValue;
                     List<EventTypes> eventTypes = new List<EventTypes>();
@@ -92,7 +93,7 @@ namespace FireApp.Service.Controllers
                     }
 
                     Console.WriteLine(key); // to prevent optimisation
-                    if (date1 != DateTime.MaxValue && date2 != DateTime.MaxValue)
+                    if (date1 <= DateTime.Today && date2 <= DateTime.Today)
                     {
                         results = Filter.FireEventsFilter.DateFilter(events, date1, date2).ToList<FireEvent>();
                     }

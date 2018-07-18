@@ -87,6 +87,13 @@ namespace FireApp.Service.DatabaseOperations
             return (IEnumerable<User>)LocalDatabase.GetAllUsers();
         }
 
+        public static IEnumerable<User> GetUserByUserTypes(UserTypes[] usertypes)
+        {
+            List<User> results = new List<User>();
+
+            return results;
+        }
+
         /// <summary>
         /// 
         /// </summary>
