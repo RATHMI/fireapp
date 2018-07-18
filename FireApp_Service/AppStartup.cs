@@ -27,9 +27,7 @@ namespace FireApp.Service {
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            app.UseWebApi(config);
-            LocalDatabase.InitializeDatabase();
-
+            app.UseWebApi(config);           
 
             //debug: use only in debugging
             #region debugging
@@ -75,6 +73,8 @@ namespace FireApp.Service {
             Authentication.Token.RefreshToken(new UserLogin(user.Id, user.Password));
             user.AuthorizedObjectIds.Add(2);
             DatabaseOperations.DbUpserts.UpsertUser(user);
+
+            LocalDatabase.InitializeDatabase();
             #endregion
         }
     }

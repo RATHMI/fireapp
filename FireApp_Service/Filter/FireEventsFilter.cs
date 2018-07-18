@@ -13,6 +13,42 @@ namespace FireApp.Service.Filter
 
         private static EventTypes[] serviceGroupFilterTypes = { EventTypes.disfunction };
 
+        //todo: comment
+        public static IEnumerable<FireEvent> EventTypeFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
+        {
+            return baseFilter(fireEvents, types);
+        }
+
+        //todo:comment
+        public static IEnumerable<FireEvent> DateFilter(IEnumerable<FireEvent> fireEvents, DateTime date1, DateTime date2)
+        {
+            List<FireEvent> results = new List<FireEvent>();
+            if (fireEvents != null && date1 != null && date2 != null)
+            {
+                DateTime newest;
+                DateTime oldest;
+                if(date1 < date2)
+                {
+                    oldest = date1.Date;
+                    newest = date2.Date;
+                }
+                else
+                {
+                    oldest = date2.Date;
+                    newest = date1.Date;
+                }
+
+                foreach (FireEvent fe in fireEvents)
+                {
+                    if (fe.TimeStamp <= newest && fe.TimeStamp >= oldest)
+                    {
+                        results.Add(fe);
+                    }
+                }
+            }
+            return results;
+        }
+
         /// <summary>
         /// filters a list of FireEvents according to the rights of a user
         /// </summary>
@@ -53,31 +89,6 @@ namespace FireApp.Service.Filter
 
             results.OrderBy(x => x.EventType);
             return (IEnumerable<FireEvent>)results;
-        }
-
-        /// <summary>
-        /// Filters the list of FireEvents by using the property values which were transfered in the headers
-        /// </summary>
-        /// <param name="fireEvents"></param>
-        /// <param name="headers"></param>
-        /// <returns></returns>
-        public static IEnumerable<FireEvent> PropertyFilter(IEnumerable<FireEvent> fireEvents, HttpRequestHeaders headers)
-        {
-            //todo: implement method
-            List<FireEvent> results = new List<FireEvent>();
-
-            IEnumerable<string> keys = new List<string>();
-            string key;
-            List<string> eventTypes = new List<string>();
-
-            if (headers.TryGetValues("eventtypes", out keys) != false)
-            {
-                headers.TryGetValues("token", out keys);
-                key = keys.First<string>().Trim(new char[] { '"' });
-                eventTypes.AddRange(key.Split(','));
-            }
-
-            return results;
         }
 
         /// <summary>
