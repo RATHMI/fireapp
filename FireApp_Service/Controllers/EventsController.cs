@@ -57,17 +57,33 @@ namespace FireApp.Service.Controllers
                     string[] types = null;
                     IEnumerable<FireEvent> events = Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user.First<User>()).ToArray<FireEvent>();
                     IEnumerable<string> key = null;
+                    string[] datestring = null;
+
                     if (Request.Headers.TryGetValues("startDate", out key) != false)
                     {
-                        Request.Headers.TryGetValues("startDate", out key);
-                        string datestring = key.First<string>().Trim(new char[] { '"' });
-                        date1 = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(datestring, new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd" });
+                        Request.Headers.TryGetValues("startDate", out key);                      
+                        try
+                        {
+                            datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
+                            date1 = new DateTime(Convert.ToInt32(datestring[0]), Convert.ToInt32(datestring[1]), Convert.ToInt32(datestring[2]));
+                        }
+                        catch(Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }                                          
                     }
                     if (Request.Headers.TryGetValues("endDate", out key) != false)
                     {
                         Request.Headers.TryGetValues("endDate", out key);
-                        string datestring = key.First<string>().Trim(new char[] { '"' });
-                        date2 = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(datestring, new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd" });
+                        try
+                        {
+                            datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
+                            date2 = new DateTime(Convert.ToInt32(datestring[0]), Convert.ToInt32(datestring[1]), Convert.ToInt32(datestring[2]));
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                     }
                     if (Request.Headers.TryGetValues("events", out key) != false)
                     {
