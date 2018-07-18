@@ -19,7 +19,24 @@ namespace FireApp.Service.DatabaseOperations
             {
                 if (user.Token == null)
                 {
-                    user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                    IEnumerable<User> old = DatabaseOperations.Users.GetUserById(user.Id);
+                    if (old == null)
+                    {
+                        user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                    }
+                    else
+                    {
+                        user.Token = old.First<User>().Token;
+                    }                    
+                }
+                if(user.Password == null)
+                {
+                    IEnumerable<User> old = DatabaseOperations.Users.GetUserById(user.Id);
+                    if(old == null)
+                    {
+                        return false;
+                    }
+                    user.Password = old.First<User>().Password;
                 }
                 LocalDatabase.UpsertUser(user);
 
