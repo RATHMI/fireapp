@@ -48,7 +48,10 @@ namespace FireApp.Domain
             user.Email = this.Email;
             user.UserType = this.UserType;
             user.AuthorizedObjectIds = new HashSet<int>();
-            user.AuthorizedObjectIds.ToList<int>().AddRange(this.AuthorizedObjectIds);
+            foreach(int authorizedObjectId in this.AuthorizedObjectIds)
+            {
+                user.AuthorizedObjectIds.Add(authorizedObjectId);
+            }
             user.Token = this.Token;
             user.TokenCreationDate = this.TokenCreationDate;
 
