@@ -26,6 +26,26 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// upserts a list of FireBrigades into the database
+        /// </summary>
+        /// <param name="fireBrigades">The list of FireBrigades you want to insert</param>
+        /// <returns>returns the number of upserted FireBrigades</returns>
+        public static int UpsertFireBrigades(IEnumerable<FireBrigade> fireBrigades)
+        {
+            int upserted = 0;
+            if (fireBrigades != null)
+            {
+                foreach (FireBrigade fb in fireBrigades)
+                {
+                    UpsertFireBrigade(fb);           
+                    upserted++;
+                }
+            }
+
+            return upserted;
+        }
+
+        /// <summary>
         /// Deletes the FireBrigade from the Database and Cache
         /// The assoziations with the users and FireAlarmSystems are also deleted
         /// </summary>

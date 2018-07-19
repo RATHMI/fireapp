@@ -46,6 +46,25 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// inserts a list of Users into the database or updates them if they already exists
+        /// </summary>
+        /// <param name="users">a list of Users you want to upsert</param>
+        /// <returns>returns the number of Users that were successfully upserted</returns>
+        public static int UpsertUsers(IEnumerable<User> users)  //todo: comment
+        {
+            int upserted = 0;
+            if (users != null)
+            {
+                foreach (User user in users)
+                {
+                    UpsertUser(user);
+                    upserted++;
+                }
+            }
+            return upserted;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="userName">Id of the User you want to delete</param>

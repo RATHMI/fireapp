@@ -7,6 +7,7 @@ using System.Web.Http;
 using FireApp.Domain;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace FireApp.Service.Controllers
 {
@@ -26,10 +27,41 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// inserts a User into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="user">The User you want to insert</param>
+        /// <returns>returns the number of upserted Users.
+        /// -1 : invalid or no token
+        /// -2 : user is not an admin</returns>
+        [HttpPost, Route("upload")]
+        public int UpsertBulk([FromBody] User[] users)
+        {
+            List<User> list = new List<User>();
+            list.AddRange(users);
+            IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+            if (user != null)
+            {
+                if (user.First<User>().UserType == UserTypes.admin)
+                {                                      
+                    return DatabaseOperations.Users.UpsertUsers(list);
+                }
+                else
+                {
+                    return -2;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+            
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns>returns a csv file with all ServiceGroups</returns>
-        [HttpGet, Route("getcsv")]
+        [HttpGet, Route("getcsv")]  //todo: comment
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -78,7 +110,46 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: implement method "FromCSV"
+        /// <summary>
+        /// Retrieves Users from CSV and upserts them
+        /// </summary>
+        /// <param name="bytes">an array of bytes that represents a csv file</param>
+        /// <returns>the number of successfully upserted Users</returns>
+        [HttpPost, Route("uploadcsv")]  //todo: comment
+        public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    if (user.First<User>().UserType == UserTypes.admin)
+                    {
+                        List<User> users = FileOperations.UserFiles.GetUsersFromCSV(bytes).ToList<User>();
+                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(DatabaseOperations.Users.UpsertUsers(users))));
+                    }
+                    else
+                    {
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
+        }
 
         /// <summary>
         /// Checks if an id is already used by another User

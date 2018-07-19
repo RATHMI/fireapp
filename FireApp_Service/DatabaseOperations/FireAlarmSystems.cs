@@ -29,6 +29,26 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// upserts a list of FireAlarmSystems into the database
+        /// </summary>
+        /// <param name="fireAlarmSystems">The list of FireAlarmSystems you want to insert</param>
+        /// <returns>returns the number of upserted FireAlarmSystems</returns>
+        public static int UpsertFireAlarmSystems(IEnumerable<FireAlarmSystem> fireAlarmSystems)
+        {
+            int upserted = 0;
+            if (fireAlarmSystems != null)
+            {
+                foreach (FireAlarmSystem fas in fireAlarmSystems)
+                {
+                    UpsertFireAlarmSystem(fas);
+                    upserted++;
+                }
+            }
+
+            return upserted;
+        }
+
+        /// <summary>
         /// Checks if an id is already used by another FireAlarmSystem
         /// </summary>
         /// <param name="id">the id you want to check</param>

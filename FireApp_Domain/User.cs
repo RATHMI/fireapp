@@ -106,8 +106,6 @@ namespace FireApp.Domain
                 try
                 {
                     values = csv.Split(';');
-                    //"username;password;user type;authorized object IDs;first name;last name;email;last login";
-                    //User(string userName, string password, string firstName, string lastName, string email, UserTypes userType)
                     User sg = new User(values[0], values[1], values[4], values[5], values[6], UserTypes.unauthorized);
                     string[] date = (values[7].Split(' '))[0].Split('.');
                     string[] time = (values[7].Split(' '))[1].Split(':');

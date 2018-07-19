@@ -5,16 +5,30 @@ using System.Web;
 using FireApp.Domain;
 using System.IO;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FireApp.Service.FileOperations
 {
     //todo: comment
     public static class UserFiles
     {
-        public static IEnumerable<User> GetUsersFromCSV(object file)
+        public static IEnumerable<User> GetUsersFromCSV(byte[] bytes)
         {
-            //todo: implement method
-            return null;
+            string csv = System.Text.Encoding.Default.GetString(bytes);
+            List<User> results = new List<User>();
+            try
+            {
+                foreach (string s in csv.Split('\n'))
+                {
+                    results.Add(User.GetUserFromCsv(s));               
+                }                
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return results;
         }
 
         public static byte[] ExportToCSV(IEnumerable<User> users)

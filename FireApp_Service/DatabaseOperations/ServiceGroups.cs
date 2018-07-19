@@ -27,6 +27,26 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// upserts a list of ServiceGroup into the database
+        /// </summary>
+        /// <param name="serviceGroups">The list of ServiceGroups you want to insert</param>
+        /// <returns>returns the number of upserted ServiceGroups</returns>
+        public static int UpsertServiceGroups(IEnumerable<ServiceGroup> serviceGroups)
+        {
+            int upserted = 0;
+            if (serviceGroups != null)
+            {
+                foreach (ServiceGroup sg in serviceGroups)
+                {
+                    UpsertServiceGroup(sg);           
+                    upserted++;
+                }
+            }
+
+            return upserted;
+        }
+
+        /// <summary>
         /// Deletes the ServiceGroup from the Database and Cache
         /// The assoziations with the users and FireAlarmSystems are also deleted
         /// </summary>

@@ -49,7 +49,7 @@ namespace FireApp.Service.Authentication
         {
             Random random = new Random();
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return hash.ToString() + new string(Enumerable.Repeat(chars, 50).Select(s => s[random.Next(s.Length)]).ToArray());
+            return hash.ToString().Substring(random.Next(1, 5)) + new string(Enumerable.Repeat(chars, 50).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         /// <summary>

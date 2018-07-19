@@ -39,7 +39,7 @@ namespace FireApp.Service.DatabaseOperations
             {
                 return false;
             }
-        }
+        }      
 
         /// <summary>
         /// Checks if an id is already used by another FireEvent
