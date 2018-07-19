@@ -12,6 +12,8 @@ using Newtonsoft.Json.Converters;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace FireApp.Service.Controllers
 {
@@ -29,7 +31,10 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.Events.UpsertFireEvent(fe);
         }
 
-        //todo: implement method "ToCSV"
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a csv file with all FireEvents</returns>
         [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
@@ -96,8 +101,9 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <returns>returns all FireEvents that this user is allowed to see</returns>
         [HttpGet, Route("all")]
-        public FireEvent[] All()
+        public HttpResponseMessage All()
         {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
             if (user != null)
             {
@@ -105,20 +111,28 @@ namespace FireApp.Service.Controllers
                 {
                     //todo: comment
                     IEnumerable<FireEvent> events = Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user.First<User>()).ToArray<FireEvent>();
-                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);                    
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);
 
-                    return events.ToArray<FireEvent>();
+                    using (var ms = new MemoryStream())
+                    {
+                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(events));
+                        ms.Write(bytes, 0, bytes.Length);
+                        response.Content = new ByteArrayContent(ms.ToArray());
+                    }
+                    return response;
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    return new FireEvent[0];
+                    response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                    return response;
                 }
                 
             }
             else
             {
-                return null;
+                response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                return response;
             }
         }
 

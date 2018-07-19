@@ -122,7 +122,7 @@ namespace FireApp.Service.Filter
 
                 foreach (FireEvent fe in fireEvents)
                 {
-                    if (fe.TimeStamp <= newest && fe.TimeStamp >= oldest)
+                    if (fe.TimeStamp.Date <= newest && fe.TimeStamp.Date >= oldest)
                     {
                         results.Add(fe);
                     }
