@@ -12,8 +12,6 @@ using Newtonsoft.Json.Converters;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Text;
-using System.Runtime.Serialization.Formatters.Binary;
-using Newtonsoft.Json;
 
 namespace FireApp.Service.Controllers
 {
@@ -101,9 +99,8 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <returns>returns all FireEvents that this user is allowed to see</returns>
         [HttpGet, Route("all")]
-        public HttpResponseMessage All()
+        public FireEvent[] All()
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
             if (user != null)
             {
@@ -111,28 +108,19 @@ namespace FireApp.Service.Controllers
                 {
                     //todo: comment
                     IEnumerable<FireEvent> events = Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user.First<User>()).ToArray<FireEvent>();
-                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);                    
 
-                    using (var ms = new MemoryStream())
-                    {
-                        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(events));
-                        ms.Write(bytes, 0, bytes.Length);
-                        response.Content = new ByteArrayContent(ms.ToArray());
-                    }
-                    return response;
+                    return events.ToArray<FireEvent>();
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                    return response;
-                }
-                
+                    return new FireEvent[0];
+                }      
             }
             else
             {
-                response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-                return response;
+                return null;
             }
         }
 
