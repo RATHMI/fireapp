@@ -26,6 +26,9 @@ namespace FireApp.Domain
         public string Password { get; set; }
 
         public UserTypes UserType { get; set; }
+
+        // this property is a set, because User can be part of 
+        // several institutions of the same type (fire brigade, service group, ...) 
         public HashSet<int> AuthorizedObjectIds { get; set; }
 
         public string FirstName { get; set; }
@@ -38,6 +41,10 @@ namespace FireApp.Domain
         }
         public DateTime TokenCreationDate { get; set; }
 
+        /// <summary>
+        /// creates a deep clone to avoid changes in the original User when changing the clone
+        /// </summary>
+        /// <returns>returns a deep clone of this User</returns>
         public object Clone()
         {
             User user = new User();

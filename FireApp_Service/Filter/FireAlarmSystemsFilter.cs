@@ -6,6 +6,9 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Filter
 {
+    /// <summary>
+    /// This class provide methods to filter FireAlarmSystems by their properties and the UserType
+    /// </summary>
     public static class FireAlarmSystemsFilter
     {
         /// <summary>
@@ -27,21 +30,21 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(Filter.FireAlarmSystemsFilter.fireAlarmSystemFilter(fireAlarmSystems, authorizedObject));
+                        results.AddRange(fireAlarmSystemFilter(fireAlarmSystems, authorizedObject));
                     }
                 }
                 if (user.UserType == UserTypes.firebrigade)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(Filter.FireAlarmSystemsFilter.fireBrigadeFilter(fireAlarmSystems, authorizedObject));
+                        results.AddRange(fireBrigadeFilter(fireAlarmSystems, authorizedObject));
                     }                   
                 }
                 if (user.UserType == UserTypes.servicemember)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(Filter.FireAlarmSystemsFilter.serviceGroupFilter(fireAlarmSystems, authorizedObject));
+                        results.AddRange(.serviceGroupFilter(fireAlarmSystems, authorizedObject));
                     }
                 }
             }

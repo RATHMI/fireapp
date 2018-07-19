@@ -119,9 +119,14 @@ namespace FireApp.Service.Controllers
             {
                 try
                 {
-                    //todo: comment
-                    IEnumerable<FireEvent> events = Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user.First<User>()).ToArray<FireEvent>();
-                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);                    
+                    // get all FireEvents
+                    List<FireEvent> events = DatabaseOperations.Events.GetAllFireEvents().ToList<FireEvent>();
+
+                    // filter FireEvents according to the UserType and AuthorizedObjectIds
+                    events = Filter.FireEventsFilter.UserFilter(events, user.First<User>()).ToList<FireEvent>();
+
+                    // filter FireEvents according to the headers the client sent
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers).ToList<FireEvent>();                    
 
                     return events.ToArray<FireEvent>();
                 }

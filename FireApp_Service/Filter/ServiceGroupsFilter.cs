@@ -6,6 +6,9 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Filter
 {
+    /// <summary>
+    /// This class provide methods to filter ServiceGroups by their properties and the UserType
+    /// </summary>
     public static class ServiceGroupsFilter
     {
         /// <summary>

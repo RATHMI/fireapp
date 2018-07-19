@@ -6,6 +6,9 @@ using FireApp.Domain;
 
 namespace FireApp.Service.Filter
 {
+    /// <summary>
+    /// This class provide methods to filter FireBrigades by their properties and the UserType
+    /// </summary>
     public class FireBrigadesFilter
     {
         /// <summary>
@@ -27,14 +30,14 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange((fireAlarmSystemFilter(fireBrigades, authorizedObject)));
+                        results.AddRange(fireAlarmSystemFilter(fireBrigades, authorizedObject));
                     }
                 }
                 if (user.UserType == UserTypes.firebrigade)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange((fireBrigadeFilter(fireBrigades, authorizedObject)));
+                        results.AddRange(fireBrigadeFilter(fireBrigades, authorizedObject));
                     }
                 }
             }
