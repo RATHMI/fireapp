@@ -126,7 +126,7 @@ namespace FireApp.Service.Controllers
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
         /// EventType</returns>
-        [HttpGet, Route("type/{sourceId}/{eventType}")] //todo: Access only for admin, FireAlarmSystem, restricted access for fb and sg
+        [HttpGet, Route("type/{sourceId}/{eventType}")]
         public FireEvent[] GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             try
@@ -149,7 +149,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
-        [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]    //todo: Access only for admin, FireAlarmSystem
+        [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)
         {
             try
@@ -172,7 +172,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
-        [HttpGet, Route("date/{sourceId}/{year}/{month}")]  //todo: Access only for admin, FireAlarmSystem
+        [HttpGet, Route("date/{sourceId}/{year}/{month}")]
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month)
         {
             try
@@ -195,7 +195,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
-        [HttpGet, Route("date/{sourceId}/{year}")]  //todo: Access only for admin, FireAlarmSystem
+        [HttpGet, Route("date/{sourceId}/{year}")]
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year)
         {
             try

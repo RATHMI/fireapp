@@ -77,7 +77,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a csv file with all ServiceGroups</returns>
-        [HttpGet, Route("getcsv")]  //todo: comment
+        [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -86,17 +86,18 @@ namespace FireApp.Service.Controllers
                 IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
                 if (user != null)
                 {
-                    if (user.First<User>().UserType == UserTypes.admin)
+                    if (user.First<User>().UserType == UserTypes.admin) // only allow admin to get csv file
                     {
                         var stream = new MemoryStream();
+
+                        // convert all users to a byte array
                         byte[] file = FileOperations.UserFiles.ExportToCSV(DatabaseOperations.Users.GetAllUsers());
                         stream.Write(file, 0, file.Length);
 
-                        stream.Position = 0;
-                        result = new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new ByteArrayContent(stream.ToArray())
-                        };
+                        stream.Position = 0;    // set position of stream to start
+                        result = new HttpResponseMessage(HttpStatusCode.OK);
+                        result.Content = new ByteArrayContent(stream.ToArray());
+                        
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
                             {
@@ -131,7 +132,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="bytes">an array of bytes that represents a csv file</param>
         /// <returns>the number of successfully upserted Users</returns>
-        [HttpPost, Route("uploadcsv")]  //todo: comment
+        [HttpPost, Route("uploadcsv")]
         public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -143,7 +144,10 @@ namespace FireApp.Service.Controllers
                     if (user.First<User>().UserType == UserTypes.admin)
                     {
                         List<User> users = FileOperations.UserFiles.GetUsersFromCSV(bytes).ToList<User>();
-                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(DatabaseOperations.Users.UpsertUsers(users))));
+                        int upsertedUsers = DatabaseOperations.Users.UpsertUsers(users);
+
+                        // sets the content of the response to the number of upserted users
+                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upsertedUsers)));
                     }
                     else
                     {

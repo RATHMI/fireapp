@@ -8,9 +8,16 @@ using System.Text;
 
 namespace FireApp.Service.FileOperations
 {
-    //todo: comment
-    public static class FireEventsFiles
+    /// <summary>
+    /// This class includes methods used for converting FireEvents into different file types
+    /// </summary>
+    public static class FireEventsFiles 
     {
+        /// <summary>
+        /// Converts a list of FireEvents into a csv file
+        /// </summary>
+        /// <param name="events">a list of FireEvents you want to convert</param>
+        /// <returns>returns a csv file as a byte array</returns>
         public static byte[] ExportToCSV(IEnumerable<FireEvent> events)
         {
             StringBuilder sb = new StringBuilder();
@@ -22,5 +29,7 @@ namespace FireApp.Service.FileOperations
 
             return Encoding.ASCII.GetBytes(sb.ToString());
         }
+
+        //no methods to import FireEvents because they should only be inserted by a FireAlarmSystem via the controller
     }
 }

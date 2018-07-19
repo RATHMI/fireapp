@@ -50,7 +50,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="users">a list of Users you want to upsert</param>
         /// <returns>returns the number of Users that were successfully upserted</returns>
-        public static int UpsertUsers(IEnumerable<User> users)  //todo: comment
+        public static int UpsertUsers(IEnumerable<User> users)
         {
             int upserted = 0;
             if (users != null)

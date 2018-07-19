@@ -7,15 +7,40 @@ using System.Text;
 
 namespace FireApp.Service.FileOperations
 {
-    //todo: comment
+    /// <summary>
+    /// This class includes methods used for converting FireBrigades into different file types an vice versa
+    /// </summary>
     public static class FireBrigadeFiles
     {
-        public static IEnumerable<FireBrigade> GetFireBrigadesFromCSV(object file)
+        /// <summary>
+        /// converts a csv file into a list of FireBrigades
+        /// </summary>
+        /// <param name="bytes">the csv file as a byte array</param>
+        /// <returns>returns a list of FireBrigades</returns>
+        public static IEnumerable<FireBrigade> GetFireBrigadesFromCSV(byte[] bytes)
         {
-            //todo: implement method
-            return null;
+            string csv = System.Text.Encoding.Default.GetString(bytes);
+            List<FireBrigade> results = new List<FireBrigade>();
+            try
+            {
+                foreach (string s in csv.Split('\n'))
+                {
+                    results.Add(FireBrigade.GetFireBrigadeFromCsv(s));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return results;
         }
 
+        /// <summary>
+        /// Converts a list of FireBrigades into a csv file
+        /// </summary>
+        /// <param name="fireBrigades">a list of FireBrigades you want to convert</param>
+        /// <returns>returns a csv file as a byte array</returns>
         public static byte[] ExportToCSV(IEnumerable<FireBrigade> fireBrigades)
         {
             StringBuilder sb = new StringBuilder();
