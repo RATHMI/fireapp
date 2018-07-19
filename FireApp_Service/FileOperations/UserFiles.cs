@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using System.IO;
+using System.Text;
 
 namespace FireApp.Service.FileOperations
 {
+    //todo: comment
     public static class UserFiles
     {
         public static IEnumerable<User> GetUsersFromCSV(object file)
@@ -15,15 +17,16 @@ namespace FireApp.Service.FileOperations
             return null;
         }
 
-        public static MemoryStream ConvertUsersIntoCSV(IEnumerable<User> user)
+        public static byte[] ExportToCSV(IEnumerable<User> users)
         {
-            //todo: implement method
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(User.GetCsvHeader());
+            foreach (User u in users)
+            {
+                sb.AppendLine(u.ToCsv());
+            }
 
-            //converting CSV file into bytes array  
-            //var dataBytes = File.ReadAllBytes(reqBook);
-            //adding bytes to memory stream   
-            //var dataStream = new MemoryStream(dataBytes);
-            return null;
+            return Encoding.ASCII.GetBytes(sb.ToString());
         }
     }
 }

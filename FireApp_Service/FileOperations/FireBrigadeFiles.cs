@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FireApp.Domain;
+using System.Text;
 
 namespace FireApp.Service.FileOperations
 {
+    //todo: comment
     public static class FireBrigadeFiles
     {
         public static IEnumerable<FireBrigade> GetFireBrigadesFromCSV(object file)
@@ -14,10 +16,16 @@ namespace FireApp.Service.FileOperations
             return null;
         }
 
-        public static IEnumerable<FireBrigade> ConvertFireBrigadesIntoCSV(IEnumerable<FireBrigade> fb)
+        public static byte[] ExportToCSV(IEnumerable<FireBrigade> fireBrigades)
         {
-            //todo: implement method
-            return null;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(FireBrigade.GetCsvHeader());
+            foreach (FireBrigade fb in fireBrigades)
+            {
+                sb.AppendLine(fb.ToCsv());
+            }
+
+            return Encoding.ASCII.GetBytes(sb.ToString());
         }
     }
 }

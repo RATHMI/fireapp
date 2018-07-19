@@ -176,19 +176,9 @@ namespace FireApp.Domain
             sb.Append(';');
             sb.Append(Address);
             sb.Append(';');
-            foreach(int fireBrigade in this.FireBrigades)
-            {
-                sb.Append(fireBrigade);
-                sb.Append(',');
-            }
-            sb.Remove(sb.Length - 1, 1);
+            sb.Append(String.Join(",", FireBrigades));
             sb.Append(';');
-            foreach (int serviceGroup in this.ServiceGroups)
-            {
-                sb.Append(serviceGroup);
-                sb.Append(',');
-            }
-            sb.Remove(sb.Length - 1, 1);
+            sb.Append(String.Join(",", ServiceGroups));
 
             return sb.ToString();
         } 

@@ -79,12 +79,7 @@ namespace FireApp.Domain
             sb.Append(';');
             sb.Append(UserType);
             sb.Append(';');
-            foreach (int authorizedOject in AuthorizedObjectIds)
-            {
-                sb.Append(authorizedOject);
-                sb.Append(',');
-            }
-            sb.Remove(sb.Length - 1, 1);
+            sb.Append(String.Join(",", AuthorizedObjectIds));
             sb.Append(';');
             sb.Append(FirstName);
             sb.Append(';');

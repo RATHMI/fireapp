@@ -9,6 +9,9 @@ using System.Net.Http;
 using System.Web.Http;
 using FireApp.Service.DatabaseOperations;
 using Newtonsoft.Json.Converters;
+using System.Net.Http.Headers;
+using System.Web;
+using System.Text;
 
 namespace FireApp.Service.Controllers
 {
@@ -27,7 +30,54 @@ namespace FireApp.Service.Controllers
         }
 
         //todo: implement method "ToCSV"
+        [HttpGet, Route("getcsv")]
+        public HttpResponseMessage GetCsv()
+        {
+            HttpResponseMessage result;
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    if (user.First<User>().UserType == UserTypes.admin)
+                    {
+                        var stream = new MemoryStream();
+                        byte[] file = FileOperations.FireEventsFiles.ExportToCSV(DatabaseOperations.Events.GetAllFireEvents());
+                        stream.Write(file, 0, file.Length);
 
+                        stream.Position = 0;
+                        result = new HttpResponseMessage(HttpStatusCode.OK)
+                        {
+                            Content = new ByteArrayContent(stream.ToArray())
+                        };
+                        result.Content.Headers.ContentDisposition =
+                            new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                            {
+                                FileName = "FireEvents.csv"
+                            };
+                        result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+                    }
+                    else
+                    {
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
+        }
 
         /// <summary>
         /// Checks if an id is already used by another FireEvent
@@ -51,89 +101,18 @@ namespace FireApp.Service.Controllers
             IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
             if (user != null)
             {
-                List<FireEvent> results = new List<FireEvent>();
                 try
                 {
                     //todo: comment
-                    DateTime date1 = DateTime.MaxValue;
-                    DateTime date2 = DateTime.MaxValue;
-                    List<EventTypes> eventTypes = new List<EventTypes>();
-                    string[] types = null;
                     IEnumerable<FireEvent> events = Filter.FireEventsFilter.UserFilter((DatabaseOperations.Events.GetAllFireEvents()), user.First<User>()).ToArray<FireEvent>();
-                    IEnumerable<string> key = null;
-                    string[] datestring = null;
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);                    
 
-                    if (Request.Headers.TryGetValues("startDate", out key) != false)
-                    {
-                        Request.Headers.TryGetValues("startDate", out key);                      
-                        try
-                        {
-                            datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
-                            date1 = new DateTime(Convert.ToInt32(datestring[0]), Convert.ToInt32(datestring[1]), Convert.ToInt32(datestring[2]));
-                        }
-                        catch(Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }                                          
-                    }
-                    if (Request.Headers.TryGetValues("endDate", out key) != false)
-                    {
-                        Request.Headers.TryGetValues("endDate", out key);
-                        try
-                        {
-                            datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
-                            date2 = new DateTime(Convert.ToInt32(datestring[0]), Convert.ToInt32(datestring[1]), Convert.ToInt32(datestring[2]));
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                    }
-                    if (Request.Headers.TryGetValues("events", out key) != false)
-                    {
-                        Request.Headers.TryGetValues("events", out key);
-                        types = (key.First<string>().Trim(new char[] {'"', ','})).Split(',');
-                    }
-
-                    Console.WriteLine(key); // to prevent optimisation
-                    if (date1 <= DateTime.Today && date2 <= DateTime.Today)
-                    {
-                        results = Filter.FireEventsFilter.DateFilter(events, date1, date2).ToList<FireEvent>();
-                    }
-                    else
-                    {
-                        results = events.ToList<FireEvent>();
-                    }
-
-                    if(types != null)
-                    {
-                        if(types[0] != "all")
-                        {
-                            foreach(string s in types)
-                            {
-                                switch (s)
-                                {
-                                    case "Activation": eventTypes.Add(EventTypes.activation); break;
-                                    case "Alarm": eventTypes.Add(EventTypes.alarm); break;
-                                    case "Deactivated": eventTypes.Add(EventTypes.deactivated); break;
-                                    case "Disfunction": eventTypes.Add(EventTypes.disfunction); break;
-                                    case "Info": eventTypes.Add(EventTypes.info); break;
-                                    case "Prelarm": eventTypes.Add(EventTypes.prealarm); break;
-                                    case "Reset": eventTypes.Add(EventTypes.reset); break;
-                                    case "Test": eventTypes.Add(EventTypes.test); break;
-                                }
-                            }
-                            results = Filter.FireEventsFilter.EventTypeFilter(results, eventTypes.ToArray<EventTypes>()).ToList<FireEvent>();
-                        }
-                    }
-
-
-                    return results.ToArray<FireEvent>();
+                    return events.ToArray<FireEvent>();
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    return results.ToArray();
+                    return new FireEvent[0];
                 }
                 
             }

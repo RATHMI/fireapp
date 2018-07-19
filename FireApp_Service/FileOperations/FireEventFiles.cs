@@ -4,21 +4,23 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using System.IO;
+using System.Text;
 
 namespace FireApp.Service.FileOperations
 {
+    //todo: comment
     public static class FireEventsFiles
     {
-        public static IEnumerable<FireEvent> GetFireEventsFromCSV(object file)
+        public static byte[] ExportToCSV(IEnumerable<FireEvent> events)
         {
-            //todo: implement method
-            return null;
-        }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(FireEvent.GetCsvHeader());
+            foreach(FireEvent fe in events)
+            {
+                sb.AppendLine(fe.ToCsv());
+            }
 
-        public static IEnumerable<FireEvent> ConvertFireEventsIntoCSV(IEnumerable<FireEvent> fe)
-        {
-            //todo: implement method
-            return null;
+            return Encoding.ASCII.GetBytes(sb.ToString());
         }
     }
 }

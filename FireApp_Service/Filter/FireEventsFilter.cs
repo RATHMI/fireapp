@@ -14,6 +14,82 @@ namespace FireApp.Service.Filter
         private static EventTypes[] serviceGroupFilterTypes = { EventTypes.disfunction };
 
         //todo: comment
+        public static IEnumerable<FireEvent> HeadersFilter(IEnumerable<FireEvent> events, HttpRequestHeaders headers)
+        {
+            DateTime date1 = DateTime.MaxValue;
+            DateTime date2 = DateTime.MaxValue;
+            List<EventTypes> eventTypes = new List<EventTypes>();
+            List<FireEvent> results = new List<FireEvent>();
+            string[] types = null;
+            IEnumerable<string> key = null;
+            string[] datestring = null;
+            if (headers.TryGetValues("startDate", out key) != false)
+            {
+                try
+                {
+                    headers.TryGetValues("startDate", out key);
+                    datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
+                    date1 = new DateTime(Convert.ToInt32(datestring[0]), Convert.ToInt32(datestring[1]), Convert.ToInt32(datestring[2]));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            if (headers.TryGetValues("endDate", out key) != false)
+            {                
+                try
+                {
+                    headers.TryGetValues("endDate", out key);
+                    datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
+                    date2 = new DateTime(Convert.ToInt32(datestring[0]), Convert.ToInt32(datestring[1]), Convert.ToInt32(datestring[2]));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            if (headers.TryGetValues("events", out key) != false)
+            {
+                headers.TryGetValues("events", out key);
+                types = (key.First<string>().Trim(new char[] { '"', ',' })).Split(',');
+            }
+
+            Console.WriteLine(key); // to prevent optimisation
+            if (date1 <= DateTime.Today && date2 <= DateTime.Today)
+            {
+                results = DateFilter(events, date1, date2).ToList<FireEvent>();
+            }
+            else
+            {
+                results = events.ToList<FireEvent>();
+            }
+
+            if (types != null)
+            {
+                if (types[0] != "all")
+                {
+                    foreach (string s in types)
+                    {
+                        switch (s)
+                        {
+                            case "Activation": eventTypes.Add(EventTypes.activation); break;
+                            case "Alarm": eventTypes.Add(EventTypes.alarm); break;
+                            case "Deactivated": eventTypes.Add(EventTypes.deactivated); break;
+                            case "Disfunction": eventTypes.Add(EventTypes.disfunction); break;
+                            case "Info": eventTypes.Add(EventTypes.info); break;
+                            case "Prelarm": eventTypes.Add(EventTypes.prealarm); break;
+                            case "Reset": eventTypes.Add(EventTypes.reset); break;
+                            case "Test": eventTypes.Add(EventTypes.test); break;
+                        }
+                    }
+                    results = EventTypeFilter(results, eventTypes.ToArray<EventTypes>()).ToList<FireEvent>();
+                }
+            }
+            return results;
+        }
+
+        //todo: comment
         public static IEnumerable<FireEvent> EventTypeFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
         {
             return baseFilter(fireEvents, types);
