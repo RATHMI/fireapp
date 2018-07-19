@@ -10,7 +10,6 @@ using System.Net.Http.Headers;
 
 namespace FireApp.Service.Controllers
 {
-    //todo: implement authorization
     [RoutePrefix("service")]
     public class ServiceGroupController : ApiController
     {
@@ -106,7 +105,25 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("delete/{id}")]
         public bool DeleteServiceGroup(int id)
         {
-            return DatabaseOperations.ServiceGroups.DeleteServiceGroup(id);
+            try
+            {
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("delete", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.ServiceGroups.GetServiceGroupById(id));
+                        return DatabaseOperations.ServiceGroups.DeleteServiceGroup(id);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return false;          
         }
 
         /// <summary>
@@ -116,7 +133,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public ServiceGroup[] GetAllServiceGroups()
         {
-            return DatabaseOperations.ServiceGroups.GetAllServiceGroups().ToArray<ServiceGroup>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetAllServiceGroups(), user.First<User>()).ToArray<ServiceGroup>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -138,7 +171,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public ServiceGroup[] GetServiceGroupById(int id)
         {
-            return DatabaseOperations.ServiceGroups.GetServiceGroupById(id).ToArray<ServiceGroup>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetServiceGroupById(id), user.First<User>()).ToArray<ServiceGroup>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }

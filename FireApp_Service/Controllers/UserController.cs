@@ -11,7 +11,6 @@ using System.Text;
 
 namespace FireApp.Service.Controllers
 {
-    //todo: implement authentication
     [RoutePrefix("user")]
     public class UserController : ApiController
     {
@@ -218,7 +217,25 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("delete/{username}")]
         public bool DeleteUser(string userName)
         {
-            return DatabaseOperations.Users.DeleteUser(userName);
+            try
+            {
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("delete", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.Users.GetUserById(userName));
+                        return DatabaseOperations.Users.DeleteUser(userName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return false;            
         }
 
         /// <summary>
@@ -228,16 +245,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public User[] GetAllUsers()
         {
-            //todo: only in debugging
-            IEnumerable<User> admin = DatabaseOperations.Users.GetUserById("admin");
-            if (admin != null && admin.Count<User>() > 0)
+            try
             {
-                return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetAllUsers(), admin.First<User>()).ToArray<User>();
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetAllUsers(), user.First<User>()).ToArray<User>();
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
-            }
+            }           
         }
 
         /// <summary>
@@ -247,16 +271,23 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all users with matching usertypes</returns>
         public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
         {
-            //todo: only in debugging
-            IEnumerable<User> admin = DatabaseOperations.Users.GetUserById("admin");
-            if (admin != null && admin.Count<User>() > 0)
+            try
             {
-                return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetUserByUserTypes(usertypes), admin.First<User>()).ToArray<User>();
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetUserByUserTypes(usertypes), user.First<User>()).ToArray<User>();
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
-            }           
+            }                      
         }
 
         /// <summary>
@@ -267,7 +298,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{username}")]
         public User[] GetUserById(string userName)
         {
-            return DatabaseOperations.Users.GetUserById(userName).ToArray<User>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return DatabaseOperations.Users.GetUserById(userName).ToArray<User>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }           
         }
 
         /// <summary>
@@ -277,7 +324,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("active")]
         public User[] GetActiveUsers()
         {
-            return DatabaseOperations.Users.GetActiveUsers().ToArray<User>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return DatabaseOperations.Users.GetActiveUsers().ToArray<User>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }       
         }
 
         /// <summary>
@@ -287,28 +350,24 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("inactive")]
         public User[] GetInactiveUsers()
         {
-            return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
-        }
-
-
-        [HttpGet, Route("filedownload")]
-        public HttpResponseMessage GetUserCSV()
-        {
-            string fileName = "users.CSV";
-
-            //converting CSV file into bytes array  
-            var dataBytes = File.ReadAllBytes("");
-            //adding bytes to memory stream   
-            var dataStream = new MemoryStream(dataBytes);
-
-            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
-            httpResponseMessage.Content = new StreamContent(dataStream);
-            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            httpResponseMessage.Content.Headers.ContentDisposition.FileName = fileName;
-            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-
-            return httpResponseMessage;
-        }
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }      
 
     }
 }

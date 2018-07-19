@@ -105,7 +105,24 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("delete/{id}")]
         public bool DeleteFireBrigade(int id)
         {
-            return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
+            try
+            {
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.FireBrigades.GetFireBrigadeById(id));
+                        return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;           
         }
 
         /// <summary>
@@ -126,7 +143,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireBrigade[] All()
         {
-            return (DatabaseOperations.FireBrigades.GetAllFireBrigades()).ToArray<FireBrigade>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetAllFireBrigades(), user.First<User>()).ToArray<FireBrigade>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -137,7 +170,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public FireBrigade[] GetFireBrigadeById(int id)
         {
-            return DatabaseOperations.FireBrigades.GetFireBrigadeById(id).ToArray();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetFireBrigadeById(id), user.First<User>()).ToArray<FireBrigade>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }
