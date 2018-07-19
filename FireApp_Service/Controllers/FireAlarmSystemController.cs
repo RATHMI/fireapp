@@ -144,7 +144,7 @@ namespace FireApp.Service.Controllers
             try
             {
                 IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (user != null)
+                if (user != null && user.Count() > 0)
                 {
                     return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user.First<User>())), user.First<User>()).ToArray<FireAlarmSystem>();
                 }

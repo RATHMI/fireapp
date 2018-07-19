@@ -87,10 +87,14 @@ namespace FireApp.Service.DatabaseOperations
                 .UserFilter((List<FireEvent>)DatabaseOperations.ActiveEvents
                 .GetAllActiveFireEvents(), user).ToList<FireEvent>();
             HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
-
+            IEnumerable<FireAlarmSystem> fas;
             foreach(FireEvent fe in events)
             {
-                results.Add(DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(fe.Id.SourceId).First<FireAlarmSystem>());
+                fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(fe.Id.SourceId);
+                if (fas != null && fas.Count() > 0)
+                {
+                    results.Add(fas.First<FireAlarmSystem>());
+                }
             }
 
             return (IEnumerable<FireAlarmSystem>)results;
