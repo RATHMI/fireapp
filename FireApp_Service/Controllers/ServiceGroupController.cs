@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FireApp.Domain;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace FireApp.Service.Controllers
 {
@@ -23,7 +25,58 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
         }
 
-        //todo: implement method "ToCSV"
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a csv file with all ServiceGroups</returns>
+        [HttpGet, Route("getcsv")]
+        public HttpResponseMessage GetCsv()
+        {
+            HttpResponseMessage result;
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    if (user.First<User>().UserType == UserTypes.admin)
+                    {
+                        var stream = new MemoryStream();
+                        byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(DatabaseOperations.ServiceGroups.GetAllServiceGroups());
+                        stream.Write(file, 0, file.Length);
+
+                        stream.Position = 0;
+                        result = new HttpResponseMessage(HttpStatusCode.OK)
+                        {
+                            Content = new ByteArrayContent(stream.ToArray())
+                        };
+                        result.Content.Headers.ContentDisposition =
+                            new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                            {
+                                FileName = "ServiceGroups.csv"
+                            };
+                        result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+                    }
+                    else
+                    {
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
+        }
 
         //todo: implement method "FromCSV"
 

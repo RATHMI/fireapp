@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FireApp.Domain;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace FireApp.Service.Controllers
 {
@@ -22,7 +24,6 @@ namespace FireApp.Service.Controllers
             return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
         }
 
-        //todo: implement method "ToCSV"
 
         //todo: implement method "FromCSV" with option insert or update to prevent unwanted updates
 
@@ -45,6 +46,59 @@ namespace FireApp.Service.Controllers
         public FireAlarmSystem[] All()
         {
             return (DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems()).ToArray<FireAlarmSystem>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a csv file with all FireAlarmSystems</returns>
+        [HttpGet, Route("getcsv")]
+        public HttpResponseMessage GetCsv()
+        {
+            HttpResponseMessage result;
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    if (user.First<User>().UserType == UserTypes.admin)
+                    {
+                        var stream = new MemoryStream();
+                        byte[] file = FileOperations.FireAlarmSystemFiles.ExportToCSV(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems());
+                        stream.Write(file, 0, file.Length);
+
+                        stream.Position = 0;
+                        result = new HttpResponseMessage(HttpStatusCode.OK)
+                        {
+                            Content = new ByteArrayContent(stream.ToArray())
+                        };
+                        result.Content.Headers.ContentDisposition =
+                            new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                            {
+                                FileName = "FireAlarmSystems.csv"
+                            };
+                        result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+                    }
+                    else
+                    {
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
         }
 
         /// <summary>

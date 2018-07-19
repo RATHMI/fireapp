@@ -48,295 +48,345 @@
                     <div class="col-sg-12">
                         <div class="white-box">
                             <div class="table-responsive">
-                                    <table class="table table-striped dataTable no-footer" id="fas">
-                                        <thead>
-                                            <th>URL</th>
-                                            <th>RETURN VALUE</th>
-                                            <th>DESCRIPTION</th>
-                                        </thead>
-                                        <!-- Content goes here -->
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="4"><b>http://ip:port/events/..</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../update</td>
-                                                <td>bool</td>
-                                                <td>true if update was successful<br>transmit FireEvent via POST in Body</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../checkid/{sourceId}/{eventId}</td>
-                                                <td>bool</td>
-                                                <td>true if id does not already exist</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../all</td>
-                                                <td>FireEvent[]</td>
-                                                <td>Array of all FireEvents</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../source/{sourceId}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all FireEvent from one FireAlarmSystem</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../id/{sourceId}/{eventId}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a specific FireEvent</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../target/{sourceId}/{targetId}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all FireEvents of a distinct target of a FireAlarmSystem</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../type/{sourceId}/{eventType}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all FireEvents from a FireAlarmSystem with the given EventType</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../type/{eventType}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all FireEvents with the given EventType</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../time/{sourceId}/{startTime}/{endTime}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all FireEvents with a matching sourceId and and a Timestamp between startTime and endTime</td>           
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../time/{startTime}/{endTime}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all FireEvents with a Timestamp between startTime and endTime</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../date/{sourceId}/{year}/{month}/{day}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all FireEvents of a FireAlarmSystem on the given date</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../date/{sourceId}/{year}/{month}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all FireEvents of a FireAlarmSystem in the given year and month</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../date/{sourceId}/{year}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all FireEvents of a FireAlarmSystem in the given year</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../typeyear/{eventType}/{year}</td>
-                                                <td>Int32[12]</td>
-                                                <td>returns an array with the number of FireEvents of the given EventType that occured in the given year.<br> Each column represents one month</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="4">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"><b>http://ip:port/active/..</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../all</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all active FireEvents</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../type/{eventType}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all active FireEvents of the given EventType</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../source/{sourceId}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>a list of active FireEvents with a matching sourceId</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../id/{sourceId}/{targetId}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>a list of active FireEvents with a matching sourceId and targetId</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../type/{sourceId}/{eventType}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns a list of all active FireEvents with a matching sourceId an of the given EventType</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../date/{sourceId}/{year}/{month}/{day}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all active FireEvents from the given sourceId at the given date</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../date/{sourceId}/{year}/{month}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all active FireEvents from the given sourceId in the given month and year</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../date/{sourceId}/{year}</td>
-                                                <td>FireEvent[]</td>
-                                                <td>returns all active FireEvents from the given sourceId in the given year</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="4">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"><b>http://ip:port/fas/..</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../upload</td>
-                                                <td>bool</td>
-                                                <td>returns true if the insert was successful<br>transmit FireAlarmSystem via POST in Body</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../checkid/{id}</td>
-                                                <td>int</td>
-                                                <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../all</td>
-                                                <td>FireAlarmSystem[]</td>
-                                                <td>returns a list of all FireAlarmSystems</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../active</td>
-                                                <td>FireAlarmSystem[]</td>
-                                                <td>returns a list of all FireAlarmSystems with active FireEvents</td>
-                                            </tr>
-                                             <tr>
-                                                <td>&emsp;../id/{id}</td>
-                                                <td>FireAlarmSystem[]</td>
-                                                <td>returns a FireAlarmSystem with a matching id</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../addfirebrigade/{id}/{firebrigade}</td>
-                                                <td>bool</td>
-                                                <td>returns true if the FireBrigade was added</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../addservicemember/{id}/{servicemember}</td>
-                                                <td>bool</td>
-                                                <td>returns true if the ServiceGroup was added</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="4">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"><b>http://ip:port/fb/..</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../upload</td>
-                                                <td>bool</td>
-                                                <td>returns true if the insert was successful<br>transmit FireBrigade via POST in Body</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../delete/{id}</td>
-                                                <td>bool</td>
-                                                <td>returns true if FireBrigade was deleted</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../checkid/{id}</td>
-                                                <td>int</td>
-                                                <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../all</td>
-                                                <td>FireBrigade[]</td>
-                                                <td>returns a list of all FireBrigades</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../id/{id}</td>
-                                                <td>FireBrigade[]</td>
-                                                <td>returns a FireBrigade with a matching id</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="4">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"><b>http://ip:port/service/..</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../upload</td>
-                                                <td>bool</td>
-                                                <td>returns true if the insert was successful<br>transmit ServiceGroup via POST in Body</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../delete/{id}</td>
-                                                <td>bool</td>
-                                                <td>returns true if ServiceGroup was deleted</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../checkid/{id}</td>
-                                                <td>int</td>
-                                                <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../all</td>
-                                                <td>ServiceGroup[]</td>
-                                                <td>returns a list of all ServiceGroups</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../id/{id}</td>
-                                                <td>ServiceGroup[]</td>
-                                                <td>returns a ServiceGroup with a matching id</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="4">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"><b>http://ip:port/user/..</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../upload</td>
-                                                <td>bool</td>
-                                                <td>returns true if the insert was successful<br>transmit UserLogin via POST in Body</td>
-                                            </tr>
-                                             <tr>
-                                                <td>&emsp;../delete/{username}</td>
-                                                <td>bool</td>
-                                                <td>returns true if User was deleted</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../all</td>
-                                                <td>User[]</td>
-                                                <td>returns a list of all Users</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../checkid/{id}</td>
-                                                <td>bool</td>
-                                                <td>true if id does not already exist</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../authenticate</td>
-                                                <td>string</td>
-                                                <td>returns new token or null if login data was incorrect. <br /> transmit UserLogin via POST in Body</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../getuser</td>
-                                                <td>User</td>
-                                                <td>returns User if token is valid or null if it is invalid</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../id/{username}</td>
-                                                <td>User[]</td>
-                                                <td>returns a distinct user</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../active</td>
-                                                <td>User[]</td>
-                                                <td>returns a list of all Users that have created a token in the last 365 days</td>
-                                            </tr>
-                                            <tr>
-                                                <td>&emsp;../inactive</td>
-                                                <td>User[]</td>
-                                                <td>returns a list of all Users that have not created a token in the last 365 days</td>
-                                            </tr>
-                                        </tbody>
-                                        <!-- End of content -->
-                                    </table>
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <!-- Content goes here -->
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/events/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../update</td>
+                                            <td>bool</td>
+                                            <td>true if update was successful<br>transmit FireEvent via POST in Body</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{sourceId}/{eventId}</td>
+                                            <td>bool</td>
+                                            <td>true if id does not already exist</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireEvent[]</td>
+                                            <td>Array of all FireEvents</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../source/{sourceId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all FireEvent from one FireAlarmSystem</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{sourceId}/{eventId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a specific FireEvent</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../target/{sourceId}/{targetId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all FireEvents of a distinct target of a FireAlarmSystem</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../type/{sourceId}/{eventType}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all FireEvents from a FireAlarmSystem with the given EventType</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../type/{eventType}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all FireEvents with the given EventType</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../time/{sourceId}/{startTime}/{endTime}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all FireEvents with a matching sourceId and and a Timestamp between startTime and endTime</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../time/{startTime}/{endTime}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all FireEvents with a Timestamp between startTime and endTime</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../date/{sourceId}/{year}/{month}/{day}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all FireEvents of a FireAlarmSystem on the given date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../date/{sourceId}/{year}/{month}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all FireEvents of a FireAlarmSystem in the given year and month</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../date/{sourceId}/{year}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all FireEvents of a FireAlarmSystem in the given year</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../typeyear/{eventType}/{year}</td>
+                                            <td>Int32[12]</td>
+                                            <td>returns an array with the number of FireEvents of the given EventType that occured in the given year.<br> Each column represents one month</td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/active/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all active FireEvents</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../type/{eventType}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all active FireEvents of the given EventType</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../source/{sourceId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>a list of active FireEvents with a matching sourceId</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{sourceId}/{targetId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>a list of active FireEvents with a matching sourceId and targetId</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../type/{sourceId}/{eventType}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns a list of all active FireEvents with a matching sourceId an of the given EventType</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../date/{sourceId}/{year}/{month}/{day}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all active FireEvents from the given sourceId at the given date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../date/{sourceId}/{year}/{month}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all active FireEvents from the given sourceId in the given month and year</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../date/{sourceId}/{year}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>returns all active FireEvents from the given sourceId in the given year</td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/fas/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>returns true if the insert was successful<br>transmit FireAlarmSystem via POST in Body</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>int</td>
+                                            <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>returns a list of all FireAlarmSystems</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../active</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>returns a list of all FireAlarmSystems with active FireEvents</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{id}</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>returns a FireAlarmSystem with a matching id</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../addfirebrigade/{id}/{firebrigade}</td>
+                                            <td>bool</td>
+                                            <td>returns true if the FireBrigade was added</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../addservicemember/{id}/{servicemember}</td>
+                                            <td>bool</td>
+                                            <td>returns true if the ServiceGroup was added</td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/fb/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>returns true if the insert was successful<br>transmit FireBrigade via POST in Body</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../delete/{id}</td>
+                                            <td>bool</td>
+                                            <td>returns true if FireBrigade was deleted</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>int</td>
+                                            <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireBrigade[]</td>
+                                            <td>returns a list of all FireBrigades</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{id}</td>
+                                            <td>FireBrigade[]</td>
+                                            <td>returns a FireBrigade with a matching id</td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/service/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>returns true if the insert was successful<br>transmit ServiceGroup via POST in Body</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../delete/{id}</td>
+                                            <td>bool</td>
+                                            <td>returns true if ServiceGroup was deleted</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>int</td>
+                                            <td>returns parameter id if it is not already used by another FireAlarmSystem or new unused id</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>ServiceGroup[]</td>
+                                            <td>returns a list of all ServiceGroups</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{id}</td>
+                                            <td>ServiceGroup[]</td>
+                                            <td>returns a ServiceGroup with a matching id</td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/user/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>returns true if the insert was successful<br>transmit UserLogin via POST in Body</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../delete/{username}</td>
+                                            <td>bool</td>
+                                            <td>returns true if User was deleted</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>User[]</td>
+                                            <td>returns a list of all Users</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>bool</td>
+                                            <td>true if id does not already exist</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../authenticate</td>
+                                            <td>string</td>
+                                            <td>returns new token or null if login data was incorrect. <br /> transmit UserLogin via POST in Body</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getuser</td>
+                                            <td>User</td>
+                                            <td>returns User if token is valid or null if it is invalid</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{username}</td>
+                                            <td>User[]</td>
+                                            <td>returns a distinct user</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../active</td>
+                                            <td>User[]</td>
+                                            <td>returns a list of all Users that have created a token in the last 365 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../inactive</td>
+                                            <td>User[]</td>
+                                            <td>returns a list of all Users that have not created a token in the last 365 days</td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
                             </div>
                         </div>
                         <row class="pull-left" class="col-sg-6">
