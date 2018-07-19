@@ -23,6 +23,7 @@ namespace FireApp.Service.Filter
             string[] types = null;
             IEnumerable<string> key = null;
             string[] datestring = null;
+            int sourceId = -1;
             try
             {
                 if (headers.TryGetValues("startDate", out key) != false)
@@ -56,6 +57,18 @@ namespace FireApp.Service.Filter
                     headers.TryGetValues("events", out key);
                     types = (key.First<string>().Trim(new char[] { '"', ',' })).Split(',');
                 }
+                if (headers.TryGetValues("sourceId", out key) != false)
+                {
+                    try
+                    {
+                        headers.TryGetValues("sourceId", out key);
+                        sourceId = Convert.ToInt32(key.First<string>().Trim(new char[] { '"' }).Split('-'));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
 
                 Console.WriteLine(key); // to prevent optimisation
                 if (date1 < DateTime.MaxValue && date2 < DateTime.MaxValue)
@@ -87,6 +100,11 @@ namespace FireApp.Service.Filter
                         }
                         results = EventTypeFilter(results, eventTypes.ToArray<EventTypes>()).ToList<FireEvent>();
                     }
+                }
+
+                if(sourceId != -1)
+                {
+                    results = fireAlarmSystemFilter(results, sourceId).ToList<FireEvent>();
                 }
             }catch(Exception ex)
             {
