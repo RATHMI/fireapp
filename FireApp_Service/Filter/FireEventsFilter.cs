@@ -80,7 +80,7 @@ namespace FireApp.Service.Filter
                                 case "Deactivated": eventTypes.Add(EventTypes.deactivated); break;
                                 case "Disfunction": eventTypes.Add(EventTypes.disfunction); break;
                                 case "Info": eventTypes.Add(EventTypes.info); break;
-                                case "Prelarm": eventTypes.Add(EventTypes.prealarm); break;
+                                case "Prealarm": eventTypes.Add(EventTypes.prealarm); break;
                                 case "Reset": eventTypes.Add(EventTypes.reset); break;
                                 case "Test": eventTypes.Add(EventTypes.test); break;
                             }

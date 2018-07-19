@@ -18,7 +18,7 @@ namespace FireApp.Service.Logging
         /// </summary>
         /// <param name="logMessage">The type of operation you perform with the oject</param>
         /// <param name="changedObject">The domain object which you perform an action on</param>
-        public static void Log(string logMessage, object changedObject)
+        public static void Log(string logMessage, string user, object changedObject)
         {
             try
             {

@@ -21,7 +21,24 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
-            return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
+            try { 
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fas);
+                        return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);               
+                return false;
+            }
+            return false;
         }
 
 
@@ -45,7 +62,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireAlarmSystem[] All()
         {
-            return (DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems()).ToArray<FireAlarmSystem>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems(), user.First<User>()).ToArray<FireAlarmSystem>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -108,15 +141,24 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("active")]
         public FireAlarmSystem[] GetActiveFireAlarmSystems()
         {
-            IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-            if (user != null)
+            try
             {
-                return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user.First<User>())), user.First<User>()).ToArray<FireAlarmSystem>();
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user.First<User>())), user.First<User>()).ToArray<FireAlarmSystem>();
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
-            }         
+            }
+                
         }
 
         /// <summary>
@@ -127,31 +169,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{id}")]
         public FireAlarmSystem[] GetFireAlarmSystemById(int id)
         {
-            return DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).ToArray<FireAlarmSystem>();
-        }
-
-        /// <summary>
-        /// Adds a FireBrigade to the list of FireBrigades of a FireAlarmSystem
-        /// </summary>
-        /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="firebrigade">identifier of the firebrigade</param>
-        /// <returns>returns true if the FireBrigade was added</returns>
-        [HttpGet, Route("addfirebrigade/{id}/{firebrigade}")]
-        public bool AddFireBrigadeToFireAlarmSystem(int id, int firebrigade)
-        {
-            return DatabaseOperations.FireAlarmSystems.AddFireBrigade(id, firebrigade);
-        }
-
-        /// <summary>
-        /// Adds a ServiceGroup to the list of ServiceGroups of a FireAlarmSystem
-        /// </summary>
-        /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="serviceGroup">identifier of the ServiceGroup</param>
-        /// <returns>returns true if the ServiceGroup was added</returns>
-        [HttpGet, Route("addservicemember/{id}/{servicemember}")]
-        public bool AddServiceGroupToFireAlarmSystem(int id, int serviceGroup)
-        {
-            return DatabaseOperations.FireAlarmSystems.AddServiceGroup(id, serviceGroup);
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id), user.First<User>()).ToArray<FireAlarmSystem>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }

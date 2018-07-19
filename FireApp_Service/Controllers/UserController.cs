@@ -21,9 +21,26 @@ namespace FireApp.Service.Controllers
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
         [HttpPost, Route("upload")]
-        public bool UpsertUser([FromBody] User user)
+        public bool UpsertUser([FromBody] User u)
         {
-            return DatabaseOperations.Users.UpsertUser(user);
+            try { 
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", u);
+                        return DatabaseOperations.Users.UpsertUser(u);
+                    }
+                }       
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);               
+                return false;
+            }
+            return false;
         }
 
         /// <summary>

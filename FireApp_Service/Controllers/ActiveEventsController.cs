@@ -18,7 +18,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireEvent[] Active()
         {
-            return (DatabaseOperations.ActiveEvents.GetAllActiveFireEvents()).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetAllActiveFireEvents(), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -29,7 +45,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("type/{eventType}")]
         public FireEvent[] Active(EventTypes eventType)
         {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType)).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -40,7 +72,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("source/{sourceId}")]   
         public FireEvent[] GetActiveFireEventsBySourceId(int sourceId)
         {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId)).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -52,7 +100,23 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("id/{sourceId}/{targetId}")]
         public FireEvent[] GetActiveFireEventById(int sourceId, string targetId)
         {
-            return DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -65,28 +129,92 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("type/{sourceId}/{eventType}")] //todo: Access only for admin, FireAlarmSystem, restricted access for fb and sg
         public FireEvent[] GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType)).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
         [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]    //todo: Access only for admin, FireAlarmSystem
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)
         {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day)).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
         [HttpGet, Route("date/{sourceId}/{year}/{month}")]  //todo: Access only for admin, FireAlarmSystem
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month)
         {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month)).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
         [HttpGet, Route("date/{sourceId}/{year}")]  //todo: Access only for admin, FireAlarmSystem
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year)
         {
-            return (DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year)).ToArray<FireEvent>();
+            try
+            {
+                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (user != null)
+                {
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year), user.First<User>()).ToArray<FireEvent>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }

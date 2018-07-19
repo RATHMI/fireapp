@@ -25,7 +25,20 @@ namespace FireApp.Service.Controllers
         /// <returns>returns true if new object was inserted</returns>
         [HttpPost, Route("upload")]     //todo: access only for admin, actual fire alarm system
         public bool UploadFireEvent([FromBody] FireEvent fe)
-        { 
+        {
+            try { 
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    User user = users.First<User>();
+                    Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fe);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);               
+                return false;
+            }
             return DatabaseOperations.Events.UpsertFireEvent(fe);
         }
 
@@ -89,7 +102,7 @@ namespace FireApp.Service.Controllers
         /// <param name="eventId">the eventId you want to check</param>
         /// <returns>returns true if id is not used by other FireEvent</returns>
         [HttpPost, Route("checkid/{sourceId}/{eventId}")]     
-        public bool CheckId(int sourceId, int eventId)  //todo: implement authentication
+        public bool CheckId(int sourceId, int eventId)
         {
             return DatabaseOperations.Events.CheckId(new FireEventId(sourceId, eventId));
         }

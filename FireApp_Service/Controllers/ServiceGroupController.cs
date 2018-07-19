@@ -22,7 +22,24 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UpsertServiceGroup(ServiceGroup sg)
         {
-            return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
+            try { 
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", sg);
+                        return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);               
+                return false;
+            }
+            return false;          
         }
 
         /// <summary>

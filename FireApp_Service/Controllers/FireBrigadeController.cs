@@ -21,7 +21,24 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool CreateFireBrigade([FromBody] FireBrigade fb)
         {
-            return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
+            try { 
+                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                if (users != null)
+                {
+                    if (users.First<User>().UserType == UserTypes.admin)
+                    {
+                        User user = users.First<User>();
+                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fb);
+                        return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);               
+                return false;
+            }
+            return false;          
         }
 
         /// <summary>

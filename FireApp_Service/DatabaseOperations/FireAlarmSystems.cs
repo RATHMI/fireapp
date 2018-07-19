@@ -18,9 +18,6 @@ namespace FireApp.Service.DatabaseOperations
             if (fas != null)
             {
                 LocalDatabase.UpsertFireAlarmSystem(fas);
-
-                Logging.Logger.Log("upsert", fas);
-
                 return DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
             }else
             {
