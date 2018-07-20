@@ -120,17 +120,17 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                
+
                     // get all FireEvents
-                    List<FireEvent> events = DatabaseOperations.Events.GetAllFireEvents().ToList<FireEvent>();
+                    IEnumerable<FireEvent> events = DatabaseOperations.Events.GetAllFireEvents();
 
                     // filter FireEvents according to the UserType and AuthorizedObjectIds
-                    events = Filter.FireEventsFilter.UserFilter(events, user).ToList<FireEvent>();
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
 
                     // filter FireEvents according to the headers the client sent
-                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers).ToList<FireEvent>();                    
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);                    
 
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -165,7 +165,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventById(sourceId, eventId);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -198,7 +198,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsBySourceId(sourceId);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -232,7 +232,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsBySourceIdTargetId(sourceId, targetId);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -265,7 +265,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsBySourceIdEventType(sourceId, eventType);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -296,7 +296,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsByEventType(eventType);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -331,7 +331,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsBySourceIdTimespan(sourceId, startTime, endTime);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -364,7 +364,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsByTimespan(startTime, endTime);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -394,7 +394,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsByDate(sourceId, year, month, day);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -424,7 +424,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsByDate(sourceId, year, month);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -454,7 +454,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.Events.GetFireEventsByDate(sourceId, year);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {

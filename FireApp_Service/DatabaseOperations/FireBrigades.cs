@@ -110,7 +110,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if id is not used by other FireBrigade</returns>
         public static int CheckId(int id)
         {
-            List<FireBrigade> all = LocalDatabase.GetAllFireBrigades();
+            IEnumerable<FireBrigade> all = LocalDatabase.GetAllFireBrigades();
             int maxId = 0;
             foreach (FireBrigade fb in all)
             {
@@ -142,7 +142,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a FireBrigade with a matching id</returns>
         public static FireBrigade GetFireBrigadeById(int id)
         {
-            List<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
+            IEnumerable<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
             foreach (FireBrigade fb in fireBrigades)
             {
                 if (fb.Id == id)

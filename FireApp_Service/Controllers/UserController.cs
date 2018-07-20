@@ -53,15 +53,13 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public int UpsertBulk([FromBody] User[] users)
         {
-            List<User> list = new List<User>();
-            list.AddRange(users);
             User user;
             Authentication.Token.CheckAccess(Request.Headers, out user);
             if (user != null)
             {
                 if (user.UserType == UserTypes.admin)
                 {                                      
-                    return DatabaseOperations.Users.UpsertUsers(list);
+                    return DatabaseOperations.Users.UpsertUsers(users);
                 }
                 else
                 {
@@ -258,7 +256,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<User> users;
                     users = DatabaseOperations.Users.GetAllUsers();
                     users = Filter.UsersFilter.UserFilter(users, user);
-                    return users.ToArray<User>();
+                    return users.ToArray();
                 }
                 else
                 {
@@ -289,7 +287,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<User> users;
                     users = DatabaseOperations.Users.GetUserByUserTypes(usertypes);
                     users = Filter.UsersFilter.UserFilter(users, user);
-                    return users.ToArray<User>();
+                    return users.ToArray();
                 }
                 else
                 {
@@ -346,7 +344,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Users.GetActiveUsers().ToArray<User>();
+                        return DatabaseOperations.Users.GetActiveUsers().ToArray();
                     }
                     else
                     {
@@ -380,7 +378,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
+                        return DatabaseOperations.Users.GetInactiveUsers().ToArray();
                     }
                     else
                     {

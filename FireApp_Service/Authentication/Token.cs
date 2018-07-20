@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using System.Net.Http.Headers;
+using MlkPwgen;
 
 namespace FireApp.Service.Authentication
 {
@@ -47,9 +48,8 @@ namespace FireApp.Service.Authentication
         /// <returns>returns a new random token</returns>
         public static string GenerateToken(int hash)
         {
-            Random random = new Random();
-            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return hash.ToString().Substring(random.Next(1, 5)) + new string(Enumerable.Repeat(chars, 50).Select(s => s[random.Next(s.Length)]).ToArray());
+            System.Random random = new System.Random();
+            return hash.ToString().Substring(random.Next(1, 5)) + PasswordGenerator.Generate(length: 50, allowed: Sets.Alphanumerics);
         }
 
         /// <summary>
@@ -61,14 +61,19 @@ namespace FireApp.Service.Authentication
         {
             if (token != null)
             {
-                List<User> users = DatabaseOperations.Users.GetAllUsers().ToList();
+                IEnumerable<User> users = DatabaseOperations.Users.GetAllUsers();
                 foreach (User u in users)
                 {
                     if (u != null && u.Token != null)
                     {
-                        if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
+                        // if the toke of the user and the given token are matching
+                        if (u.Token == token)
                         {
-                            return u;
+                            // if the token of the user is still valid
+                            if (DateTime.Now < u.TokenCreationDate.AddDays(365))
+                            {
+                                return u;
+                            }
                         }
                     }
                 }
@@ -84,7 +89,7 @@ namespace FireApp.Service.Authentication
         /// <returns>returns the token or null</returns>
         public static void GetTokenFromHeader(HttpRequestHeaders headers, out string token)
         {
-            IEnumerable<string> key = new List<string>();
+            IEnumerable<string> key;
             if (headers.TryGetValues("token", out key) != false)
             {
                 headers.TryGetValues("token", out key);

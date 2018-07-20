@@ -71,7 +71,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireAlarmSystem> fas;
                     fas = DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems();
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
-                    return fas.ToArray<FireAlarmSystem>();
+                    return fas.ToArray();
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireAlarmSystem> fas;
                     fas = DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user);
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
-                    return fas.ToArray<FireAlarmSystem>();
+                    return fas.ToArray();
                 }
                 else
                 {
@@ -186,7 +186,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireAlarmSystem> fas;
                     fas = new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id) };
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
-                    return fas.ToArray<FireAlarmSystem>();
+                    return fas.ToArray();
                 }
                 else
                 {

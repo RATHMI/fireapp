@@ -73,7 +73,7 @@ namespace FireApp.Service.Filter
 
                         if (date1 < DateTime.MaxValue && date2 < DateTime.MaxValue)
                         {
-                            events = DateFilter(events, date1, date2).ToList<FireEvent>();
+                            events = DateFilter(events, date1, date2);
                         }
                     }
                     catch (Exception ex)
@@ -112,7 +112,7 @@ namespace FireApp.Service.Filter
                                     case "Test": eventTypes.Add(EventTypes.test); break;
                                 }
                             }
-                            events = EventTypeFilter(events, eventTypes.ToArray<EventTypes>()).ToList<FireEvent>();
+                            events = EventTypeFilter(events, eventTypes.ToArray<EventTypes>());
                         }
                     }
                 }
@@ -127,7 +127,7 @@ namespace FireApp.Service.Filter
                         sourceId = Convert.ToInt32(key.First<string>().Trim('"'));
                         if (sourceId != -1)
                         {
-                            events = fireAlarmSystemFilter(events, sourceId).ToList<FireEvent>();
+                            events = fireAlarmSystemFilter(events, sourceId);
                         }
                     }
                     catch (Exception ex)

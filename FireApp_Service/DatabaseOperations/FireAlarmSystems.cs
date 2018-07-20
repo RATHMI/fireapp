@@ -52,7 +52,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if id is not used by other FireAlarmSystem</returns>
         public static int CheckId(int id)
         {
-            List<FireAlarmSystem> all = LocalDatabase.GetAllFireAlarmSystems();
+            IEnumerable<FireAlarmSystem> all = LocalDatabase.GetAllFireAlarmSystems();
             int maxId = 0;
             foreach (FireAlarmSystem fas in all)
             {
@@ -83,16 +83,16 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
         public static IEnumerable<FireAlarmSystem> GetActiveFireAlarmSystems(User user)
         {
-            List<FireEvent> events; //todo: comment
-            events = (List<FireEvent>)ActiveEvents.GetAllActiveFireEvents();
-            events =  Filter.FireEventsFilter.UserFilter(events, user).ToList<FireEvent>();
+            IEnumerable<FireEvent> events; //todo: comment
+            events = ActiveEvents.GetAllActiveFireEvents();
+            events = Filter.FireEventsFilter.UserFilter(events, user);
             HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
             FireAlarmSystem fas;
 
             foreach(FireEvent fe in events)
             {
                 try { 
-                    fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(fe.Id.SourceId);
+                    fas = GetFireAlarmSystemById(fe.Id.SourceId);
                     results.Add(fas);
                 }
                 catch (Exception)
@@ -101,7 +101,7 @@ namespace FireApp.Service.DatabaseOperations
                 }
             }
 
-            return (IEnumerable<FireAlarmSystem>)results;
+            return results;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
         public static FireAlarmSystem GetFireAlarmSystemById(int id)
         {
-            List<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
+            IEnumerable<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
             foreach (FireAlarmSystem fas in fireAlarmSystems)
             {
                 if (fas.Id == id)

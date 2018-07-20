@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MlkPwgen</name>
+    </assembly>
+    <members>
+        <member name="T:MlkPwgen.CryptoServiceRandom">
+            <summary>
+            Implementation of <see cref="T:MlkPwgen.Random"/> that wraps <see cref="T:System.Security.Cryptography.RandomNumberGenerator"/>
+            </summary>
+        </member>
+        <member name="T:MlkPwgen.PasswordGenerator">
+            <summary>
+            Random password generator
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.PasswordGenerator.Generate(System.Int32,System.String)">
+            <param name="length"></param>
+            <param name="allowed">The set of characters the password will be randomly made of</param>
+        </member>
+        <member name="M:MlkPwgen.PasswordGenerator.Generate(System.Int32,System.Collections.Generic.HashSet{System.Char})">
+            <param name="length"></param>
+            <param name="allowed">The set of characters the password will be randomly made of</param>
+        </member>
+        <member name="M:MlkPwgen.PasswordGenerator.Generate(System.Int32,System.Collections.Generic.HashSet{System.Char},MlkPwgen.Random)">
+            <param name="length"></param>
+            <param name="allowed">The set of characters the password will be randomly made of</param>
+            <param name="random"></param>
+        </member>
+        <member name="M:MlkPwgen.PasswordGenerator.GenerateComplex(System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Func{System.String,System.Boolean})">
+            <param name="length"></param>
+            <param name="requiredSets">The sets characters that the password must contain</param>
+            <param name="predicate">An arbitrary function that the password must match</param>
+        </member>
+        <member name="M:MlkPwgen.PasswordGenerator.GenerateComplex(System.Int32,System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.HashSet{System.Char}},System.Func{System.String,System.Boolean})">
+            <param name="length"></param>
+            <param name="requiredSets">The sets characters that the password must contain</param>
+            <param name="predicate">An arbitrary function that the password must match</param>
+        </member>
+        <member name="M:MlkPwgen.PasswordGenerator.GenerateComplex(System.Int32,System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.HashSet{System.Char}},System.Func{System.String,System.Boolean},MlkPwgen.Random)">
+            <param name="length"></param>
+            <param name="requiredSets">The sets characters that the password must contain</param>
+            <param name="predicate">An arbitrary function that the password must match</param>
+            <param name="random"></param>
+        </member>
+        <member name="T:MlkPwgen.PronounceableGenerator">
+            <summary>
+            Random pronounceable password generator
+            </summary>
+        </member>
+        <member name="T:MlkPwgen.Random">
+            <summary>
+            Exposes a source of randomness
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.GetNum">
+            <summary>
+            Returns a random number between 0 and <c>uint.MaxValue</c> inclusive
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.GetNum(System.UInt32)">
+            <summary>
+            Returns a random number between 0 and <paramref name="maxInclusive"/> inclusive
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.GetNum(System.Int32)">
+            <summary>
+            Returns a random number between 0 and <paramref name="maxInclusive"/> inclusive
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.GetNumStream(System.Int32)">
+            <summary>
+            Returns an infinite stream of random numbers between 0 and <paramref name="maxInclusive"/> inclusive
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.Choose``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns one item from <paramref name="items"/> chosen randomly
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.Choose``1(System.Collections.Generic.ISet{``0})">
+            <summary>
+            Returns one item from <paramref name="set"/> chosen randomly
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.GetChoiceStream``1(System.Collections.Generic.ISet{``0})">
+            <summary>
+            Returns an infinite stream of randomly chosen items from <paramref name="set"/>
+            </summary>
+        </member>
+        <member name="M:MlkPwgen.Random.Shuffle``1(System.Collections.Generic.IReadOnlyList{``0})">
+            <summary>
+            Returns <paramref name="items"/> in a random order
+            </summary>
+        </member>
+        <member name="T:MlkPwgen.Sets">
+            <summary>
+            Common character sets
+            </summary>
+        </member>
+    </members>
+</doc>

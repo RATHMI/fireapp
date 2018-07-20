@@ -143,7 +143,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<ServiceGroup> sg;
                     sg = DatabaseOperations.ServiceGroups.GetAllServiceGroups();
                     sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
-                    return sg.ToArray<ServiceGroup>();
+                    return sg.ToArray();
                 }
                 else
                 {

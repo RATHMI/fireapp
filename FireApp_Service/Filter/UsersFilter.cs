@@ -24,7 +24,7 @@ namespace FireApp.Service.Filter
             {
                 if (user.UserType == UserTypes.admin)
                 {
-                    results = adminFilter(users).ToList<User>();
+                    results = adminFilter(users).ToList();
                 }
                 else
                 {

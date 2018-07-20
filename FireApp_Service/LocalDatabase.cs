@@ -37,12 +37,12 @@ namespace FireApp.Service
         /// </summary>
         public static void InitializeDatabase()
         {
-            List<FireEvent> events = (DatabaseOperations.DbQueries.QueryFireEvents()).ToList<FireEvent>();
-            List<FireEvent> active = (DatabaseOperations.DbQueries.QueryActiveFireEvents()).ToList<FireEvent>();
-            List<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.DbQueries.QueryFireAlarmSystems()).ToList<FireAlarmSystem>();
-            List<FireBrigade> fireBrigades = (DatabaseOperations.DbQueries.QueryFireBrigades()).ToList<FireBrigade>();
-            List<ServiceGroup> serviceGroups = (DatabaseOperations.DbQueries.QueryServiceGroups()).ToList<ServiceGroup>();
-            List<User> users = (DatabaseOperations.DbQueries.QueryUsers()).ToList<User>();
+            IEnumerable<FireEvent> events = (DatabaseOperations.DbQueries.QueryFireEvents());
+            IEnumerable<FireEvent> active = (DatabaseOperations.DbQueries.QueryActiveFireEvents());
+            IEnumerable<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.DbQueries.QueryFireAlarmSystems());
+            IEnumerable<FireBrigade> fireBrigades = (DatabaseOperations.DbQueries.QueryFireBrigades());
+            IEnumerable<ServiceGroup> serviceGroups = (DatabaseOperations.DbQueries.QueryServiceGroups());
+            IEnumerable<User> users = (DatabaseOperations.DbQueries.QueryUsers());
 
             if (events != null)     // trying to insert null into the cache creates a server error
             {
@@ -104,9 +104,9 @@ namespace FireApp.Service
         /// 
         /// </summary>
         /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
-        public static List<FireEvent> GetAllFireEvents()
+        public static IEnumerable<FireEvent> GetAllFireEvents()
         {
-            List<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
+            IEnumerable<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
             if(rv == null)
             {
                 rv = new List<FireEvent>();
@@ -122,7 +122,7 @@ namespace FireApp.Service
         {
             if (fe != null)
             {
-                List<FireEvent> allFireEvents = GetAllFireEvents();
+                List<FireEvent> allFireEvents = GetAllFireEvents().ToList();
                 FireEvent old = null;
 
                 foreach (FireEvent f in allFireEvents)
@@ -159,7 +159,7 @@ namespace FireApp.Service
         {
             if (fe != null)
             {
-                List<FireEvent> activeFireEvents = GetActiveFireEvents();
+                List<FireEvent> activeFireEvents = GetActiveFireEvents().ToList();
                 FireEvent old = null;
 
                 foreach (FireEvent f in activeFireEvents)
@@ -190,9 +190,9 @@ namespace FireApp.Service
         /// 
         /// </summary>
         /// <returns>returns a list of all active FireEvents from the cache</returns>
-        public static List<FireEvent> GetActiveFireEvents()
+        public static IEnumerable<FireEvent> GetActiveFireEvents()
         {
-            List<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
+            IEnumerable<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
             if (rv == null)
             {
                 rv = new List<FireEvent>();
@@ -206,7 +206,7 @@ namespace FireApp.Service
         /// <param name="fe">The active FireEvent that should be deleted from the cache</param>
         public static void DeleteActiveFireEvent(FireEvent fe)
         {
-            List<FireEvent> activeFireEvents = GetActiveFireEvents();
+            IEnumerable<FireEvent> activeFireEvents = GetActiveFireEvents();
             FireEvent old = null;
 
             foreach (FireEvent f in activeFireEvents)
@@ -220,7 +220,7 @@ namespace FireApp.Service
 
             if (old != null)
             {
-                activeFireEvents.Remove(fe);
+                activeFireEvents.ToList().Remove(fe);
                 GlobalCachingProvider.Instance.RemoveItem(activeFireEventsString);
                 if (activeFireEvents != null)   // Server crashes if you try to insert null
                 {
@@ -315,9 +315,9 @@ namespace FireApp.Service
         /// 
         /// </summary>
         /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
-        public static List<FireBrigade> GetAllFireBrigades()
+        public static IEnumerable<FireBrigade> GetAllFireBrigades()
         {
-            List<FireBrigade> rv = (List<FireBrigade>)GlobalCachingProvider.Instance.GetItem(fireBrigadesString, false);
+            IEnumerable<FireBrigade> rv = (List<FireBrigade>)GlobalCachingProvider.Instance.GetItem(fireBrigadesString, false);
             if (rv == null)
             {
                 rv = new List<FireBrigade>();
@@ -333,7 +333,7 @@ namespace FireApp.Service
         {
             if (fireBrigade != null)
             {
-                List<FireBrigade> allFireBrigades = GetAllFireBrigades();
+                List<FireBrigade> allFireBrigades = GetAllFireBrigades().ToList();
                 FireBrigade old = null;
 
                 foreach (FireBrigade fb in allFireBrigades)
@@ -366,7 +366,7 @@ namespace FireApp.Service
         /// <param name="id">id of the FireBrigade you want to delete</param>
         public static void DeleteFireBrigade(int id)
         {
-            List<FireBrigade> allFireBrigades = GetAllFireBrigades();
+            List<FireBrigade> allFireBrigades = GetAllFireBrigades().ToList();
             FireBrigade old = null;
 
             foreach (FireBrigade fb in allFireBrigades)
@@ -395,9 +395,9 @@ namespace FireApp.Service
         /// 
         /// </summary>
         /// <returns>returns a List of all ServiceGroups that are stored in the cache</returns>
-        public static List<ServiceGroup> GetAllServiceGroups()
+        public static IEnumerable<ServiceGroup> GetAllServiceGroups()
         {
-            List<ServiceGroup> rv = (List<ServiceGroup>)GlobalCachingProvider.Instance.GetItem(serviceGroupsString, false);
+            IEnumerable<ServiceGroup> rv = (List<ServiceGroup>)GlobalCachingProvider.Instance.GetItem(serviceGroupsString, false);
             if (rv == null)
             {
                 rv = new List<ServiceGroup>();
@@ -413,7 +413,7 @@ namespace FireApp.Service
         {
             if (serviceGroup != null)
             {
-                List<ServiceGroup> allServiceGroups = GetAllServiceGroups();
+                List<ServiceGroup> allServiceGroups = GetAllServiceGroups().ToList();
                 ServiceGroup old = null;
 
                 foreach (ServiceGroup sg in allServiceGroups)
@@ -446,7 +446,7 @@ namespace FireApp.Service
         /// <param name="id">id of the ServiceGroup you want to delete</param>
         public static void DeleteServiceGroup(int id)
         {
-            List<ServiceGroup> allServiceGroups = GetAllServiceGroups();
+            List<ServiceGroup> allServiceGroups = GetAllServiceGroups().ToList();
             ServiceGroup old = null;
 
             foreach (ServiceGroup sg in allServiceGroups)
@@ -476,9 +476,9 @@ namespace FireApp.Service
         /// 
         /// </summary>
         /// <returns>returns a List of all Users that are stored in the cache</returns>
-        public static List<User> GetAllUsers()
+        public static IEnumerable<User> GetAllUsers()
         {
-            List<User> rv = (List<User>)GlobalCachingProvider.Instance.GetItem(userString, false);
+            IEnumerable<User> rv = (List<User>)GlobalCachingProvider.Instance.GetItem(userString, false);
             if (rv == null)
             {
                 rv = new List<User>();
@@ -494,7 +494,7 @@ namespace FireApp.Service
         {
             if (user != null)
             {
-                List<User> allUsers = GetAllUsers();
+                List<User> allUsers = GetAllUsers().ToList();
                 User old = null;
 
                 foreach (User u in allUsers)
@@ -527,7 +527,7 @@ namespace FireApp.Service
         /// <param name="username">id of the User you want to delete</param>
         public static void DeleteUser(string userName)
         {
-            List<User> allUsers = GetAllUsers();
+            List<User> allUsers = GetAllUsers().ToList();
             User old = null;
 
             foreach (User u in allUsers)

@@ -114,7 +114,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if id is not used by other ServiceGroup</returns>
         public static int CheckId(int id)
         {
-            List<ServiceGroup> all = LocalDatabase.GetAllServiceGroups();
+            IEnumerable<ServiceGroup> all = LocalDatabase.GetAllServiceGroups();
             int max = 0;
             foreach (ServiceGroup sg in all)
             {
@@ -146,7 +146,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a ServiceGroup with a matching id</returns>
         public static ServiceGroup GetServiceGroupById(int id)
         {
-            List<ServiceGroup> serviceGroups = LocalDatabase.GetAllServiceGroups();
+            IEnumerable<ServiceGroup> serviceGroups = LocalDatabase.GetAllServiceGroups();
             foreach (ServiceGroup sg in serviceGroups)
             {
                 if (sg.Id == id)

@@ -152,7 +152,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireBrigade> fb;
                     fb = DatabaseOperations.FireBrigades.GetAllFireBrigades();
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
-                    return fb.ToArray<FireBrigade>();
+                    return fb.ToArray();
                 }
                 else
                 {
@@ -183,7 +183,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireBrigade> fb;
                     fb = new List<FireBrigade> { DatabaseOperations.FireBrigades.GetFireBrigadeById(id) };
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
-                    return fb.ToArray<FireBrigade>();
+                    return fb.ToArray();
                 }
                 else
                 {

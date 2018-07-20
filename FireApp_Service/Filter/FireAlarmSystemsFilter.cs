@@ -95,7 +95,7 @@ namespace FireApp.Service.Filter
                         results.Add(copy);
                     }
                 }
-                return (IEnumerable<FireAlarmSystem>)results;
+                return results;
             }
             return null;
         }
@@ -121,7 +121,7 @@ namespace FireApp.Service.Filter
                         results.Add(copy);
                     }
                 }
-                return (IEnumerable<FireAlarmSystem>)results;
+                return results;
             }
             return null;
         }

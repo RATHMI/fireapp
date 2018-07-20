@@ -47,7 +47,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if id is not used by other FireEvent</returns>
         public static bool CheckId(FireEventId id)
         {
-            List<FireEvent> all = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> all = LocalDatabase.GetAllFireEvents();
             foreach(FireEvent fe in all)
             {
                 if(fe.Id.SourceId == id.SourceId && fe.Id.EventId == id.EventId)
@@ -67,7 +67,7 @@ namespace FireApp.Service.DatabaseOperations
         /// (all Fireevents from a distinct fire alarm system)</returns>
         public static IEnumerable<FireEvent> GetFireEventsBySourceId(int sourceId)
         {
-            List<FireEvent> events = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -91,7 +91,7 @@ namespace FireApp.Service.DatabaseOperations
         /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
         public static IEnumerable<FireEvent> GetFireEventById(int sourceId, int eventId)
         {
-            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = GetFireEventsBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
             foreach(FireEvent fe in events)
             {
@@ -115,7 +115,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireEvents with matching sourceId and targetId</returns>
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
-            List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = (GetFireEventsBySourceId(sourceId));
             List<FireEvent> results = new List<FireEvent>();
             foreach(FireEvent fe in events)
             {
@@ -137,7 +137,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireEvents with matching sourceId and eventType</returns>
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = (GetFireEventsBySourceId(sourceId));
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -157,7 +157,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireEvents with matching eventType</returns>
         public static IEnumerable<FireEvent> GetFireEventsByEventType(EventTypes eventType)
         {
-            List<FireEvent> events = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
             List<FireEvent> results = new List<FireEvent>();
             foreach(FireEvent fe in events)
             {
@@ -181,7 +181,7 @@ namespace FireApp.Service.DatabaseOperations
         /// startTime and endTime</returns>
         public static IEnumerable<FireEvent> GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
-            List<FireEvent> events = (GetFireEventsBySourceId(sourceId)).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = (GetFireEventsBySourceId(sourceId));
             List<FireEvent> result = new List<FireEvent>();
 
             foreach (FireEvent fe in events)
@@ -204,7 +204,7 @@ namespace FireApp.Service.DatabaseOperations
         /// startTime and endTime</returns>
         public static IEnumerable<FireEvent> GetFireEventsByTimespan(long startTime, long endTime)
         {
-            List<FireEvent> events = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
             List<FireEvent> result = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -220,7 +220,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
         public static IEnumerable<FireEvent> GetFireEventsByDate(int sourceId, int year, int month, int day)
         {
-            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = GetFireEventsBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
 
             foreach (FireEvent fe in events)
@@ -237,7 +237,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns all FireEvents from the given sourceId in the given year and month</returns>
         public static IEnumerable<FireEvent> GetFireEventsByDate(int sourceId, int year, int month)
         {
-            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = GetFireEventsBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
 
             foreach (FireEvent fe in events)
@@ -254,7 +254,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns all FireEvents from the given sourceId in the given year</returns>
         public static IEnumerable<FireEvent> GetFireEventsByDate(int sourceId, int year)
         {
-            List<FireEvent> events = GetFireEventsBySourceId(sourceId).ToList<FireEvent>();
+            IEnumerable<FireEvent> events = GetFireEventsBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
 
             foreach (FireEvent fe in events)

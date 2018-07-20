@@ -86,7 +86,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if id is not used by other User</returns>
         public static bool CheckId(string id)
         {
-            List<User> all = LocalDatabase.GetAllUsers();
+            IEnumerable<User> all = LocalDatabase.GetAllUsers();
             foreach (User user in all)
             {
                 if (user.Id == id)
@@ -132,7 +132,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a User with a matching username</returns>
         public static User GetUserById(string userName)
         {
-            List<User> users = LocalDatabase.GetAllUsers();
+            IEnumerable<User> users = LocalDatabase.GetAllUsers();
             User result = null;
             foreach (User u in users)
             {
@@ -153,7 +153,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<User> GetActiveUsers()
         {
             List<User> results = new List<User>();
-            foreach(User user in GetAllUsers().ToList<User>())
+            foreach(User user in GetAllUsers())
             {
                 if (DateTime.Now < user.TokenCreationDate.AddDays(365))
                 {
@@ -171,7 +171,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<User> GetInactiveUsers()
         {
             List<User> results = new List<User>();
-            foreach (User user in GetAllUsers().ToList<User>())
+            foreach (User user in GetAllUsers())
             {
                 if (DateTime.Now >= user.TokenCreationDate.AddDays(365))
                 {

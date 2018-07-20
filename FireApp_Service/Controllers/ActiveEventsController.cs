@@ -27,7 +27,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetAllActiveFireEvents();
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace FireApp.Service.Controllers
                 {
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId);
-                    return Filter.FireEventsFilter.UserFilter(events, user).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(events, user).ToArray();
                 }
                 else
                 {
@@ -153,7 +153,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -180,7 +180,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -207,7 +207,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
@@ -234,7 +234,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
                     events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
-                    return events.ToArray<FireEvent>();
+                    return events.ToArray();
                 }
                 else
                 {
