@@ -41,6 +41,11 @@ namespace FireApp.Domain
         }
         public DateTime TokenCreationDate { get; set; }
 
+        public string GetUserDescription()
+        {
+            return this.Id + "(" + this.FirstName + ", " + this.LastName + ")";
+        }
+
         /// <summary>
         /// creates a deep clone to avoid changes in the original User when changing the clone
         /// </summary>

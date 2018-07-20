@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", u);
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), u);
                         return DatabaseOperations.Users.UpsertUser(u);
                     }
                 }
@@ -50,7 +50,7 @@ namespace FireApp.Service.Controllers
         /// <returns>returns the number of upserted Users.
         /// -1 : invalid or no token
         /// -2 : user is not an admin</returns>
-        [HttpPost, Route("upload")]
+        [HttpPost, Route("uploadbulk")]
         public int UpsertBulk([FromBody] User[] users)
         {
             User user;
@@ -58,7 +58,8 @@ namespace FireApp.Service.Controllers
             if (user != null)
             {
                 if (user.UserType == UserTypes.admin)
-                {                                      
+                {
+                    Logging.Logger.Log("upsert", user.GetUserDescription(), user);
                     return DatabaseOperations.Users.UpsertUsers(users);
                 }
                 else
@@ -227,7 +228,8 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("delete", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.Users.GetUserById(userName));
+                        User old = DatabaseOperations.Users.GetUserById(userName);
+                        Logging.Logger.Log("delete", user.GetUserDescription(), old);
                         return DatabaseOperations.Users.DeleteUser(userName);
                     }
                 }

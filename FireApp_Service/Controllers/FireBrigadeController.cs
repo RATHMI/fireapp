@@ -28,7 +28,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fb);
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), fb);
                         return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
                     }
                 }
@@ -40,6 +40,8 @@ namespace FireApp.Service.Controllers
                 return false;
             }                     
         }
+
+        //todo: uploadbulk
 
         /// <summary>
         /// 
@@ -112,7 +114,8 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.FireBrigades.GetFireBrigadeById(id));
+                        FireBrigade old = DatabaseOperations.FireBrigades.GetFireBrigadeById(id);
+                        Logging.Logger.Log("delete", user.GetUserDescription(), old);
                         return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
                     }
                 }

@@ -31,7 +31,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fe);
+                    Logging.Logger.Log("upsert", user.GetUserDescription(), fe);
                 }
             }
             catch(Exception ex)

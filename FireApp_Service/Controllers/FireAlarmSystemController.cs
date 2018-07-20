@@ -28,7 +28,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fas);
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), fas);
                         return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
                     }
                 }
@@ -41,6 +41,7 @@ namespace FireApp.Service.Controllers
             }            
         }
 
+        //todo: uploadbulk
 
         //todo: implement method "FromCSV" with option insert or update to prevent unwanted updates
 
