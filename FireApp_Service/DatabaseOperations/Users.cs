@@ -13,33 +13,40 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
-        public static bool Upsert(User user) //todo: comment
+        public static bool Upsert(User user)
         {
             if (user != null)
             {
                 if (user.Token == null)
                 {
-                    User old = DatabaseOperations.Users.GetById(user.Id);
+                    // try to find existing user
+                    User old = GetById(user.Id);
                     if (old == null)
                     {
+                        // if there is no existing user you have to generate a new token 
+                        // to guarantee a safe authentication 
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
                     }
                     else
                     {
+                        // if there is an existing user copy the token so the user does not have to log in again
                         user.Token = old.Token;
                     }                    
                 }
                 if(user.Password == null)
                 {
-                    User old = DatabaseOperations.Users.GetById(user.Id);
+                    // try to find existing user
+                    User old = GetById(user.Id);
                     if(old == null)
                     {
+                        // User should not be upserted if there is no password
                         return false;
                     }
                     user.Password = old.Password;
                 }
-                LocalDatabase.UpsertUser(user);
 
+                // save User in database
+                LocalDatabase.UpsertUser(user);
                 return DatabaseOperations.DbUpserts.UpsertUser(user);
             }
             return false;
@@ -103,7 +110,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list with all Users</returns>
         public static IEnumerable<User> GetAll()
         {
-            return (IEnumerable<User>)LocalDatabase.GetAllUsers();
+            return LocalDatabase.GetAllUsers();
         }
 
         /// <summary>
@@ -122,7 +129,7 @@ namespace FireApp.Service.DatabaseOperations
                 }
             }
 
-            return (IEnumerable<User>)results;
+            return results;
         }
 
         /// <summary>
@@ -133,17 +140,15 @@ namespace FireApp.Service.DatabaseOperations
         public static User GetById(string userName)
         {
             IEnumerable<User> users = LocalDatabase.GetAllUsers();
-            User result = null;
             foreach (User u in users)
             {
                 if (u.Id == userName)
                 {
-                    result = u;
-                    break;
+                    return u;
                 }
             }
 
-            return result;
+            return null;
         }
 
         /// <summary>
