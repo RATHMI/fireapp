@@ -386,6 +386,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
+                    // only return Users if User is an admin
                     if (user.UserType == UserTypes.admin)
                     {
                         return DatabaseOperations.Users.GetInactiveUsers().ToArray();

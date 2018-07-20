@@ -74,7 +74,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list with all FireAlarmSystems</returns>
         public static IEnumerable<FireAlarmSystem> GetAll()
         {
-            return (IEnumerable<FireAlarmSystem>)LocalDatabase.GetAllFireAlarmSystems().OrderBy(x => x.Company);
+            return LocalDatabase.GetAllFireAlarmSystems().OrderBy(x => x.Company);
         }
 
         /// <summary>
@@ -83,20 +83,29 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
         public static IEnumerable<FireAlarmSystem> GetActiveFireAlarmSystems(User user)
         {
-            IEnumerable<FireEvent> events; //todo: comment
-            events = ActiveEvents.GetAll();
+            IEnumerable<FireEvent> events;
+
+            // get all active FireEvents from database
+            events = ActiveEvents.GetAll(); 
+
+            // filter the FireEvents according to the user
             events = Filter.FireEventsFilter.UserFilter(events, user);
+
+            // HashSet not other type of list because there could be several FireEvents with the same sourceId
             HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
             FireAlarmSystem fas;
 
             foreach(FireEvent fe in events)
             {
                 try { 
+                    // get FireAlarmSystem with matching sourceId and add to results
                     fas = GetById(fe.Id.SourceId);
                     results.Add(fas);
                 }
                 catch (Exception)
-                {                    
+                {        
+                    // if there is no FireAlarmSystem with a matching sourceId.
+                    // e.g. if there are FireEvents but no FireAlarmSystem in the database.          
                     continue;
                 }
             }
