@@ -44,7 +44,7 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(.serviceGroupFilter(fireAlarmSystems, authorizedObject));
+                        results.AddRange(serviceGroupFilter(fireAlarmSystems, authorizedObject));
                     }
                 }
             }

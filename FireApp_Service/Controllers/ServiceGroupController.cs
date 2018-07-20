@@ -21,13 +21,13 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UpsertServiceGroup(ServiceGroup sg)
         {
-            try { 
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+            try {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", sg);
                         return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
                     }
@@ -51,10 +51,11 @@ namespace FireApp.Service.Controllers
             HttpResponseMessage result;
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
                         byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(DatabaseOperations.ServiceGroups.GetAllServiceGroups());
@@ -107,12 +108,12 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("delete", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.ServiceGroups.GetServiceGroupById(id));
                         return DatabaseOperations.ServiceGroups.DeleteServiceGroup(id);
                     }
@@ -135,10 +136,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetAllServiceGroups(), user.First<User>()).ToArray<ServiceGroup>();
+                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetAllServiceGroups(), user).ToArray<ServiceGroup>();
                 }
                 else
                 {
@@ -173,10 +175,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetServiceGroupById(id), user.First<User>()).ToArray<ServiceGroup>();
+                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetServiceGroupById(id), user).ToArray<ServiceGroup>();
                 }
                 else
                 {

@@ -22,13 +22,13 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UpsertUser([FromBody] User u)
         {
-            try { 
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+            try {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", u);
                         return DatabaseOperations.Users.UpsertUser(u);
                     }
@@ -54,10 +54,11 @@ namespace FireApp.Service.Controllers
         {
             List<User> list = new List<User>();
             list.AddRange(users);
-            IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+            User user;
+            Authentication.Token.CheckAccess(Request.Headers, out user);
             if (user != null)
             {
-                if (user.First<User>().UserType == UserTypes.admin)
+                if (user.UserType == UserTypes.admin)
                 {                                      
                     return DatabaseOperations.Users.UpsertUsers(list);
                 }
@@ -83,10 +84,11 @@ namespace FireApp.Service.Controllers
             HttpResponseMessage result;
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.First<User>().UserType == UserTypes.admin) // only allow admin to get csv file
+                    if (user.UserType == UserTypes.admin) // only allow admin to get csv file
                     {
                         var stream = new MemoryStream();
 
@@ -138,10 +140,11 @@ namespace FireApp.Service.Controllers
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
                         List<User> users = FileOperations.UserFiles.GetUsersFromCSV(bytes).ToList<User>();
                         int upsertedUsers = DatabaseOperations.Users.UpsertUsers(users);
@@ -201,16 +204,9 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("getuser")]
         public User[] GetUser()
         {
-            string token = Authentication.Token.GetTokenFromHeader(Request.Headers);
-            IEnumerable<User> users = Authentication.Token.VerifyToken(token);
-            if(users != null)
-            {
-                return Filter.UsersFilter.UserFilter(users, users.First<User>()).ToArray<User>();
-            }
-            else
-            {
-                return null;
-            }
+            User user;
+            Authentication.Token.CheckAccess(Request.Headers, out user);
+            return new User[] { user };
         }
 
         /// <summary>
@@ -223,12 +219,12 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("delete", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.Users.GetUserById(userName));
                         return DatabaseOperations.Users.DeleteUser(userName);
                     }
@@ -251,10 +247,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetAllUsers(), user.First<User>()).ToArray<User>();
+                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetAllUsers(), user).ToArray<User>();
                 }
                 else
                 {
@@ -277,10 +274,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetUserByUserTypes(usertypes), user.First<User>()).ToArray<User>();
+                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetUserByUserTypes(usertypes), user).ToArray<User>();
                 }
                 else
                 {
@@ -304,7 +302,8 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
                     return DatabaseOperations.Users.GetUserById(userName).ToArray<User>();
@@ -330,10 +329,18 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return DatabaseOperations.Users.GetActiveUsers().ToArray<User>();
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        return DatabaseOperations.Users.GetActiveUsers().ToArray<User>();
+                    }
+                    else
+                    {
+                        throw new UnauthorizedAccessException();
+                    }         
                 }
                 else
                 {
@@ -356,10 +363,18 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        return DatabaseOperations.Users.GetInactiveUsers().ToArray<User>();
+                    }
+                    else
+                    {
+                        throw new UnauthorizedAccessException();
+                    }
                 }
                 else
                 {

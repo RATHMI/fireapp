@@ -21,13 +21,13 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool CreateFireBrigade([FromBody] FireBrigade fb)
         {
-            try { 
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+            try {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fb);
                         return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
                     }
@@ -51,10 +51,11 @@ namespace FireApp.Service.Controllers
             HttpResponseMessage result;
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
                         byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(DatabaseOperations.FireBrigades.GetAllFireBrigades());
@@ -107,12 +108,12 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", DatabaseOperations.FireBrigades.GetFireBrigadeById(id));
                         return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
                     }
@@ -145,10 +146,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetAllFireBrigades(), user.First<User>()).ToArray<FireBrigade>();
+                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetAllFireBrigades(), user).ToArray<FireBrigade>();
                 }
                 else
                 {
@@ -172,10 +174,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetFireBrigadeById(id), user.First<User>()).ToArray<FireBrigade>();
+                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetFireBrigadeById(id), user).ToArray<FireBrigade>();
                 }
                 else
                 {

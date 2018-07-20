@@ -84,44 +84,42 @@ namespace FireApp.Service.Authentication
         /// </summary>
         /// <param name="headers">The headers of a HttpRequest</param>
         /// <returns>returns the token or null</returns>
-        public static string GetTokenFromHeader(HttpRequestHeaders headers)
+        public static void GetTokenFromHeader(HttpRequestHeaders headers, out string token)
         {
             IEnumerable<string> key = new List<string>();
             if (headers.TryGetValues("token", out key) != false)
             {
                 headers.TryGetValues("token", out key);
-                return key.First<string>().Trim(new char[] { '"' });
+                token = key.First<string>().Trim(new char[] { '"' });
             }
             else
             {
-                return null;
+                token = null;
             }
-
+            return;
         }
 
         /// <summary>
         /// This method extracts a token from the HttpRequestHeaders and fetches the
-        /// User. If the token is valid and the UserType of the User is contained in userTypes
-        /// it returns the user.
+        /// User. If the token is valid it returns the user.
         /// </summary>
         /// <param name="headers">The headers of a HttpRequest</param>
-        /// <param name="userTypes"></param>
-        /// <returns>returns a User if the token an userType are valid</returns>
-        public static IEnumerable<User> CheckAccess(HttpRequestHeaders headers, UserTypes[] userTypes)
+        /// <returns>returns a User if the token is valid</returns>
+        public static void CheckAccess(HttpRequestHeaders headers, out User user)
         {
-            User user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(headers)).First<User>();
-            if (user != null)
+            string token;
+            Authentication.Token.GetTokenFromHeader(headers, out token);
+            IEnumerable<User> users = Authentication.Token.VerifyToken(token);
+            if (users.Count() > 0)
             {
-                if (userTypes.Contains(user.UserType))
-                {
-                    return (IEnumerable<User>)user;
-                }
-                else
-                {
-                    return ((IEnumerable<User>)new User("", "", "", "", "", UserTypes.unauthorized));
-                }
+                user = users.First<User>();
             }
-            return null;
+            else
+            {
+                user = null;
+            }
+
+            return;
         }
     }
 }

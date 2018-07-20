@@ -21,13 +21,13 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("upload")]
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
-            try { 
-                IEnumerable<User> users = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (users != null)
+            try {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    if (users.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
-                        User user = users.First<User>();
                         Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", fas);
                         return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
                     }
@@ -64,10 +64,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems(), user.First<User>()).ToArray<FireAlarmSystem>();
+                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems(), user).ToArray<FireAlarmSystem>();
                 }
                 else
                 {
@@ -91,10 +92,11 @@ namespace FireApp.Service.Controllers
             HttpResponseMessage result;
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.First<User>().UserType == UserTypes.admin)
+                    if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
                         byte[] file = FileOperations.FireAlarmSystemFiles.ExportToCSV(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems());
@@ -143,10 +145,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
-                if (user != null && user.Count() > 0)
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user.First<User>())), user.First<User>()).ToArray<FireAlarmSystem>();
+                    return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user)), user).ToArray<FireAlarmSystem>();
                 }
                 else
                 {
@@ -171,10 +174,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id), user.First<User>()).ToArray<FireAlarmSystem>();
+                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id), user).ToArray<FireAlarmSystem>();
                 }
                 else
                 {

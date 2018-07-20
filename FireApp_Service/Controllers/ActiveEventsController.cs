@@ -20,10 +20,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetAllActiveFireEvents(), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetAllActiveFireEvents(), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -47,10 +48,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -74,10 +76,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -102,10 +105,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -131,10 +135,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -154,10 +159,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -177,10 +183,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month), user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -200,10 +207,11 @@ namespace FireApp.Service.Controllers
         {
             try
             {
-                IEnumerable<User> user = Authentication.Token.VerifyToken(Authentication.Token.GetTokenFromHeader(Request.Headers));
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year), user.First<User>()).ToArray<FireEvent>();
+                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year), user).ToArray<FireEvent>();
                 }
                 else
                 {
