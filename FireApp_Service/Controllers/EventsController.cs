@@ -115,12 +115,13 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("all")]
         public FireEvent[] All()
         {
-            User user;
-            Authentication.Token.CheckAccess(Request.Headers, out user);
-            if (user != null)
-            {
-                try
+
+            try { 
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
+                
                     // get all FireEvents
                     List<FireEvent> events = DatabaseOperations.Events.GetAllFireEvents().ToList<FireEvent>();
 
@@ -132,16 +133,16 @@ namespace FireApp.Service.Controllers
 
                     return events.ToArray<FireEvent>();
                 }
-                catch(Exception ex)
+                else
                 {
-                    Console.WriteLine(ex.Message);
-                    return new FireEvent[0];
-                }      
+                    return null;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return null;
-            }
+                Console.WriteLine(ex.Message);
+                return new FireEvent[0];
+            }                  
         }
 
         /// <summary>
@@ -172,7 +173,7 @@ namespace FireApp.Service.Controllers
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);               
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -202,7 +203,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -233,7 +234,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }      
 
@@ -263,7 +264,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -291,7 +292,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -323,7 +324,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -353,7 +354,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -380,7 +381,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -407,7 +408,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -434,7 +435,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireEvent[0];
             }
         }
 
@@ -460,7 +461,7 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
-                        return new Int32[12];
+                        throw new UnauthorizedAccessException();
                     }
                 }
                 else
@@ -471,7 +472,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new Int32[12];
             }
         }
     }

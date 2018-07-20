@@ -83,17 +83,20 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
         public static IEnumerable<FireAlarmSystem> GetActiveFireAlarmSystems(User user)
         {
-            List<FireEvent> events = Filter.FireEventsFilter
+            List<FireEvent> events = Filter.FireEventsFilter   //todo: comment
                 .UserFilter((List<FireEvent>)DatabaseOperations.ActiveEvents
                 .GetAllActiveFireEvents(), user).ToList<FireEvent>();
             HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
-            IEnumerable<FireAlarmSystem> fas;
+            FireAlarmSystem fas;
             foreach(FireEvent fe in events)
             {
-                fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(fe.Id.SourceId);
-                if (fas != null && fas.Count() > 0)
-                {
-                    results.Add(fas.First<FireAlarmSystem>());
+                try { 
+                    fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(fe.Id.SourceId);
+                    results.Add(fas);
+                }
+                catch (Exception)
+                {                    
+                    continue;
                 }
             }
 
@@ -105,20 +108,18 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
-        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemById(int id)
+        public static FireAlarmSystem GetFireAlarmSystemById(int id)
         {
             List<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
-            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
             foreach (FireAlarmSystem fas in fireAlarmSystems)
             {
                 if (fas.Id == id)
                 {
-                    results.Add(fas);
-                    break;
+                    return fas;
                 }
             }
 
-            return results;
+            throw new KeyNotFoundException();
         }
 
         /// <summary>
@@ -129,10 +130,17 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if the FireBrigade was added</returns>
         public static bool AddFireBrigade(int id, int firebrigade)
         {
-            FireAlarmSystem fas = GetFireAlarmSystemById(id).First<FireAlarmSystem>();
-            FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade).First<FireBrigade>();
-            fas.FireBrigades.Add(firebrigade);
-            return UpsertFireAlarmSystem(fas);  
+            try
+            {
+                FireAlarmSystem fas = GetFireAlarmSystemById(id);
+                FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade);
+                fas.FireBrigades.Add(fb.Id);
+                return UpsertFireAlarmSystem(fas);
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         /// <summary>
@@ -143,10 +151,16 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if the ServiceGroup was added</returns>
         public static bool AddServiceGroup(int id, int serviceGroup)
         {
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id).First<FireAlarmSystem>();
-            ServiceGroup sg = DatabaseOperations.ServiceGroups.GetServiceGroupById(serviceGroup).First<ServiceGroup>();
-            fas.ServiceGroups.Add(serviceGroup);
-            return UpsertFireAlarmSystem(fas);
+            try { 
+                FireAlarmSystem fas = GetFireAlarmSystemById(id);
+                ServiceGroup sg = ServiceGroups.GetServiceGroupById(serviceGroup);
+                fas.ServiceGroups.Add(sg.Id);
+                return UpsertFireAlarmSystem(fas);
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 }

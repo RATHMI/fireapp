@@ -32,14 +32,15 @@ namespace FireApp.Service.Controllers
                         Logging.Logger.Log("upsert", user.Id + "(" + user.FirstName + ", " + user.LastName + ")", u);
                         return DatabaseOperations.Users.UpsertUser(u);
                     }
-                }       
+                }
+                return false;   
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);               
                 return false;
             }
-            return false;
+            
         }
 
         /// <summary>
@@ -229,13 +230,13 @@ namespace FireApp.Service.Controllers
                         return DatabaseOperations.Users.DeleteUser(userName);
                     }
                 }
+                return false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
-            }
-            return false;            
+            }                        
         }
 
         /// <summary>
@@ -261,7 +262,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new User[0];
             }           
         }
 
@@ -288,7 +289,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new User[0];
             }                      
         }
 
@@ -306,7 +307,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return DatabaseOperations.Users.GetUserById(userName).ToArray<User>();
+                    return new User[] { DatabaseOperations.Users.GetUserById(userName) };
                 }
                 else
                 {
@@ -316,7 +317,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new User[0];
             }           
         }
 
@@ -350,7 +351,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new User[0];
             }       
         }
 
@@ -384,7 +385,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new User[0];
             }
         }      
 

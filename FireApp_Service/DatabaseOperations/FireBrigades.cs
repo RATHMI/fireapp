@@ -140,20 +140,18 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the FireBrigade you are looking for</param>
         /// <returns>returns a FireBrigade with a matching id</returns>
-        public static IEnumerable<FireBrigade> GetFireBrigadeById(int id)
+        public static FireBrigade GetFireBrigadeById(int id)
         {
             List<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
-            List<FireBrigade> results = new List<FireBrigade>();
             foreach (FireBrigade fb in fireBrigades)
             {
                 if (fb.Id == id)
                 {
-                    results.Add(fb);
-                    break;
+                    return fb;
                 }
             }
 
-            return results;
+            throw new KeyNotFoundException();
         }
     }
 }

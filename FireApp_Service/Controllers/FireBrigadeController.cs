@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         /// <param name="fb"></param>
         /// <returns>returns true if the insert was successful</returns>
         [HttpPost, Route("upload")]
-        public bool CreateFireBrigade([FromBody] FireBrigade fb)
+        public bool UploadFireBrigade([FromBody] FireBrigade fb)
         {
             try {
                 User user;
@@ -32,13 +32,13 @@ namespace FireApp.Service.Controllers
                         return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
                     }
                 }
+                return false;
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);               
                 return false;
-            }
-            return false;          
+            }                     
         }
 
         /// <summary>
@@ -118,12 +118,13 @@ namespace FireApp.Service.Controllers
                         return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
                     }
                 }
+                return false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
-            return false;           
+                return false;
+            }                       
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireBrigade[0];
             }
         }
 
@@ -178,7 +179,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetFireBrigadeById(id), user).ToArray<FireBrigade>();
+                    return Filter.FireBrigadesFilter.UserFilter(new List<FireBrigade> { DatabaseOperations.FireBrigades.GetFireBrigadeById(id) }, user).ToArray<FireBrigade>();
                 }
                 else
                 {
@@ -188,7 +189,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireBrigade[0];
             }
         }
     }

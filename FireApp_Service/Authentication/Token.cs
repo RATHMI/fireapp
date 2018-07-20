@@ -22,7 +22,7 @@ namespace FireApp.Service.Authentication
         {
             try
             {
-                User user = DatabaseOperations.Users.GetUserById(login.Username).First<User>();
+                User user = DatabaseOperations.Users.GetUserById(login.Username);
                 if (user != null)
                 {
                     if (user.Password == login.Password)
@@ -57,20 +57,18 @@ namespace FireApp.Service.Authentication
         /// </summary>
         /// <param name="token">the token you want to verify</param>
         /// <returns>returns the User that is assoziated with the token or null</returns>
-        public static IEnumerable<User> VerifyToken(string token)
+        public static User VerifyToken(string token)
         {
             if (token != null)
             {
-                List<User> users = DatabaseOperations.Users.GetAllUsers().ToList<User>();
+                List<User> users = DatabaseOperations.Users.GetAllUsers().ToList();
                 foreach (User u in users)
                 {
                     if (u != null && u.Token != null)
                     {
                         if (u.Token == token && DateTime.Now < u.TokenCreationDate.AddDays(365))
                         {
-                            List<User> user = new List<User>();
-                            user.Add(u);
-                            return (IEnumerable<User>)(user);
+                            return u;
                         }
                     }
                 }
@@ -109,16 +107,7 @@ namespace FireApp.Service.Authentication
         {
             string token;
             Authentication.Token.GetTokenFromHeader(headers, out token);
-            IEnumerable<User> users = Authentication.Token.VerifyToken(token);
-            if (users.Count() > 0)
-            {
-                user = users.First<User>();
-            }
-            else
-            {
-                user = null;
-            }
-
+            user = Authentication.Token.VerifyToken(token);
             return;
         }
     }

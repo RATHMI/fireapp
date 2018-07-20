@@ -19,24 +19,24 @@ namespace FireApp.Service.DatabaseOperations
             {
                 if (user.Token == null)
                 {
-                    IEnumerable<User> old = DatabaseOperations.Users.GetUserById(user.Id);
+                    User old = DatabaseOperations.Users.GetUserById(user.Id);
                     if (old == null)
                     {
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
                     }
                     else
                     {
-                        user.Token = old.First<User>().Token;
+                        user.Token = old.Token;
                     }                    
                 }
                 if(user.Password == null)
                 {
-                    IEnumerable<User> old = DatabaseOperations.Users.GetUserById(user.Id);
+                    User old = DatabaseOperations.Users.GetUserById(user.Id);
                     if(old == null)
                     {
                         return false;
                     }
-                    user.Password = old.First<User>().Password;
+                    user.Password = old.Password;
                 }
                 LocalDatabase.UpsertUser(user);
 
@@ -130,20 +130,20 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="username">The username of the User you are looking for</param>
         /// <returns>returns a User with a matching username</returns>
-        public static IEnumerable<User> GetUserById(string userName)
+        public static User GetUserById(string userName)
         {
             List<User> users = LocalDatabase.GetAllUsers();
-            List<User> results = new List<User>();
+            User result = null;
             foreach (User u in users)
             {
                 if (u.Id == userName)
                 {
-                    results.Add(u);
+                    result = u;
                     break;
                 }
             }
 
-            return results;
+            return result;
         }
 
         /// <summary>

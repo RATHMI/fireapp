@@ -32,13 +32,13 @@ namespace FireApp.Service.Controllers
                         return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
                     }
                 }
+                return false;
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);               
                 return false;
-            }
-            return false;          
+            }                      
         }
 
         /// <summary>
@@ -118,13 +118,13 @@ namespace FireApp.Service.Controllers
                         return DatabaseOperations.ServiceGroups.DeleteServiceGroup(id);
                     }
                 }
+                return false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
-            }
-            return false;          
+            }                      
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new ServiceGroup[0];
             }
         }
 
@@ -179,7 +179,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetServiceGroupById(id), user).ToArray<ServiceGroup>();
+                    return Filter.ServiceGroupsFilter.UserFilter(new List<ServiceGroup> { DatabaseOperations.ServiceGroups.GetServiceGroupById(id) }, user).ToArray();
                 }
                 else
                 {
@@ -189,7 +189,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new ServiceGroup[0];
             }
         }
     }

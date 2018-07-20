@@ -32,13 +32,13 @@ namespace FireApp.Service.Controllers
                         return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
                     }
                 }
+                return false;
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);               
                 return false;
-            }
-            return false;
+            }            
         }
 
 
@@ -78,7 +78,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireAlarmSystem[0];
             }
         }
 
@@ -159,7 +159,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireAlarmSystem[0];
             }
                 
         }
@@ -178,7 +178,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id), user).ToArray<FireAlarmSystem>();
+                    return Filter.FireAlarmSystemsFilter.UserFilter(new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id) }, user).ToArray<FireAlarmSystem>();
                 }
                 else
                 {
@@ -188,7 +188,7 @@ namespace FireApp.Service.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return null;
+                return new FireAlarmSystem[0];
             }
         }
     }

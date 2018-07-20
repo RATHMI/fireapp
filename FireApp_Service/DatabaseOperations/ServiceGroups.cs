@@ -144,20 +144,18 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the ServiceGroup you are looking for</param>
         /// <returns>returns a ServiceGroup with a matching id</returns>
-        public static IEnumerable<ServiceGroup> GetServiceGroupById(int id)
+        public static ServiceGroup GetServiceGroupById(int id)
         {
             List<ServiceGroup> serviceGroups = LocalDatabase.GetAllServiceGroups();
-            List<ServiceGroup> results = new List<ServiceGroup>();
             foreach (ServiceGroup sg in serviceGroups)
             {
                 if (sg.Id == id)
                 {
-                    results.Add(sg);
-                    break;
+                    return sg;
                 }
             }
 
-            return results;
+            throw new KeyNotFoundException();
         }
     }
 }
