@@ -23,13 +23,13 @@ namespace FireApp.Service.Authentication
         {
             try
             {
-                User user = DatabaseOperations.Users.GetUserById(login.Username);
+                User user = DatabaseOperations.Users.GetById(login.Username);
                 if (user != null)
                 {
                     if (user.Password == login.Password)
                     {
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
-                        DatabaseOperations.Users.UpsertUser(user);
+                        DatabaseOperations.Users.Upsert(user);
                         return user.Token;
                     }
                 }
@@ -61,7 +61,7 @@ namespace FireApp.Service.Authentication
         {
             if (token != null)
             {
-                IEnumerable<User> users = DatabaseOperations.Users.GetAllUsers();
+                IEnumerable<User> users = DatabaseOperations.Users.GetAll();
                 foreach (User u in users)
                 {
                     if (u != null && u.Token != null)

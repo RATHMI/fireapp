@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), fb);
-                        return DatabaseOperations.FireBrigades.UpsertFireBrigade(fb);
+                        return DatabaseOperations.FireBrigades.Upsert(fb);
                     }
                 }
                 return false;
@@ -41,7 +41,44 @@ namespace FireApp.Service.Controllers
             }                     
         }
 
-        //todo: uploadbulk
+        /// <summary>
+        /// inserts an array of FireBrigades into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="fb">The FireBrigades you want to insert</param>
+        /// <returns>returns the number of upserted FireBrigades.
+        /// -1 : invalid or no token
+        /// -2 : user is not an admin
+        /// -3 : an error occurred</returns>
+        [HttpPost, Route("uploadbulk")]
+        public int UpsertBulk([FromBody] FireBrigade[] fb)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
+                        return DatabaseOperations.FireBrigades.BulkUpsert(fb);
+                    }
+                    else
+                    {
+                        return -2;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -3;
+            }
+        }
 
         /// <summary>
         /// 
@@ -60,7 +97,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(DatabaseOperations.FireBrigades.GetAllFireBrigades());
+                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(DatabaseOperations.FireBrigades.GetAll());
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;
@@ -114,9 +151,9 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        FireBrigade old = DatabaseOperations.FireBrigades.GetFireBrigadeById(id);
+                        FireBrigade old = DatabaseOperations.FireBrigades.GetById(id);
                         Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.FireBrigades.DeleteFireBrigade(id);
+                        return DatabaseOperations.FireBrigades.Delete(id);
                     }
                 }
                 return false;
@@ -153,7 +190,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireBrigade> fb;
-                    fb = DatabaseOperations.FireBrigades.GetAllFireBrigades();
+                    fb = DatabaseOperations.FireBrigades.GetAll();
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
                     return fb.ToArray();
                 }
@@ -184,7 +221,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireBrigade> fb;
-                    fb = new List<FireBrigade> { DatabaseOperations.FireBrigades.GetFireBrigadeById(id) };
+                    fb = new List<FireBrigade> { DatabaseOperations.FireBrigades.GetById(id) };
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
                     return fb.ToArray();
                 }

@@ -13,13 +13,13 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
-        public static bool UpsertUser(User user)
+        public static bool Upsert(User user) //todo: comment
         {
             if (user != null)
             {
                 if (user.Token == null)
                 {
-                    User old = DatabaseOperations.Users.GetUserById(user.Id);
+                    User old = DatabaseOperations.Users.GetById(user.Id);
                     if (old == null)
                     {
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
@@ -31,7 +31,7 @@ namespace FireApp.Service.DatabaseOperations
                 }
                 if(user.Password == null)
                 {
-                    User old = DatabaseOperations.Users.GetUserById(user.Id);
+                    User old = DatabaseOperations.Users.GetById(user.Id);
                     if(old == null)
                     {
                         return false;
@@ -50,14 +50,14 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="users">a list of Users you want to upsert</param>
         /// <returns>returns the number of Users that were successfully upserted</returns>
-        public static int UpsertUsers(IEnumerable<User> users)
+        public static int BulkUpsert(IEnumerable<User> users)
         {
             int upserted = 0;
             if (users != null)
             {
                 foreach (User user in users)
                 {
-                    UpsertUser(user);
+                    Upsert(user);
                     upserted++;
                 }
             }
@@ -69,7 +69,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="userName">Id of the User you want to delete</param>
         /// <returns>returns true if User was deleted</returns>
-        public static bool DeleteUser(string userName)
+        public static bool Delete(string userName)
         {
             if(userName != null)
             {
@@ -101,7 +101,7 @@ namespace FireApp.Service.DatabaseOperations
         /// 
         /// </summary>
         /// <returns>returns a list with all Users</returns>
-        public static IEnumerable<User> GetAllUsers()
+        public static IEnumerable<User> GetAll()
         {
             return (IEnumerable<User>)LocalDatabase.GetAllUsers();
         }
@@ -111,10 +111,10 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="usertypes">an array of usertypes</param>
         /// <returns>returns a list of all users with matching usertypes</returns>
-        public static IEnumerable<User> GetUserByUserTypes(UserTypes[] usertypes)
+        public static IEnumerable<User> GetByUserTypes(UserTypes[] usertypes)
         {
             List<User> results = new List<User>();
-            foreach(User user in GetAllUsers())
+            foreach(User user in GetAll())
             {
                 if (usertypes.Contains(user.UserType))
                 {
@@ -130,7 +130,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="username">The username of the User you are looking for</param>
         /// <returns>returns a User with a matching username</returns>
-        public static User GetUserById(string userName)
+        public static User GetById(string userName)
         {
             IEnumerable<User> users = LocalDatabase.GetAllUsers();
             User result = null;
@@ -153,7 +153,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<User> GetActiveUsers()
         {
             List<User> results = new List<User>();
-            foreach(User user in GetAllUsers())
+            foreach(User user in GetAll())
             {
                 if (DateTime.Now < user.TokenCreationDate.AddDays(365))
                 {
@@ -171,7 +171,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<User> GetInactiveUsers()
         {
             List<User> results = new List<User>();
-            foreach (User user in GetAllUsers())
+            foreach (User user in GetAll())
             {
                 if (DateTime.Now >= user.TokenCreationDate.AddDays(365))
                 {

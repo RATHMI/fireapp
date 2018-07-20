@@ -13,7 +13,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fe">The FireEvent you want to create a target of</param>
         /// <returns>returns true if Target was inserted or deleted</returns>
-        public static bool UpsertActiveFireEvent(FireEvent fe)
+        public static bool Upsert(FireEvent fe)
         {
             if (fe.EventType == EventTypes.prealarm ||
                 fe.EventType == EventTypes.alarm ||
@@ -44,7 +44,7 @@ namespace FireApp.Service.DatabaseOperations
         /// 
         /// </summary>
         /// <returns>returns a list of all active FireEvents</returns>
-        public static IEnumerable<FireEvent> GetAllActiveFireEvents()
+        public static IEnumerable<FireEvent> GetAll()
         {
             return (IEnumerable<FireEvent>)LocalDatabase.GetActiveFireEvents();
         }
@@ -55,7 +55,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="sourceId">the sourceId of the active FireEvent you are looking for</param>
         /// <param name="targetId">the targetId of the active FireEvent you are looking for</param>
         /// <returns>returns a FireEvent with a matching sourceId and targetId</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventById(int sourceId, string targetId)
+        public static IEnumerable<FireEvent> GetByTarget(int sourceId, string targetId)
         {
             IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
             List<FireEvent> result = new List<FireEvent>();
@@ -77,7 +77,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents of the given 
         /// TargetState</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsByEventType(EventTypes eventType)
+        public static IEnumerable<FireEvent> GetByEventType(EventTypes eventType)
         {
             IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
             List<FireEvent> result = new List<FireEvent>();
@@ -97,7 +97,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
         /// <returns>a list of active FireEvents with a matching sourceId</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsBySourceId(int sourceId)
+        public static IEnumerable<FireEvent> GetBySourceId(int sourceId)
         {
             IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
             List<FireEvent> results = new List<FireEvent>();
@@ -119,9 +119,9 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
         /// EventType</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
+        public static IEnumerable<FireEvent> GetBySourceIdEventType(int sourceId, EventTypes eventType)
         {
-            IEnumerable<FireEvent> events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId);
+            IEnumerable<FireEvent> events = DatabaseOperations.ActiveEvents.GetBySourceId(sourceId);
             List<FireEvent> result = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -201,9 +201,9 @@ namespace FireApp.Service.DatabaseOperations
         //}
 
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)
+        public static IEnumerable<FireEvent> GetBySourceIdDate(int sourceId, int year, int month, int day)
         {
-            IEnumerable<FireEvent> events = GetActiveFireEventsBySourceId(sourceId);
+            IEnumerable<FireEvent> events = GetBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -216,9 +216,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month)
+        public static IEnumerable<FireEvent> GetBySourceIdDate(int sourceId, int year, int month)
         {
-            IEnumerable<FireEvent> events = GetActiveFireEventsBySourceId(sourceId);
+            IEnumerable<FireEvent> events = GetBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -231,9 +231,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
-        public static IEnumerable<FireEvent> GetActiveFireEventsBySourceIdDate(int sourceId, int year)
+        public static IEnumerable<FireEvent> GetBySourceIdDate(int sourceId, int year)
         {
-            IEnumerable<FireEvent> events = GetActiveFireEventsBySourceId(sourceId);
+            IEnumerable<FireEvent> events = GetBySourceId(sourceId);
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {

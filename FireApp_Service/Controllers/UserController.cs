@@ -30,7 +30,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), u);
-                        return DatabaseOperations.Users.UpsertUser(u);
+                        return DatabaseOperations.Users.Upsert(u);
                     }
                 }
                 return false;   
@@ -44,35 +44,43 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// inserts a User into the database or updates it if it already exists
+        /// inserts an array of Users into the database or updates it if it already exists
         /// </summary>
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns the number of upserted Users.
         /// -1 : invalid or no token
-        /// -2 : user is not an admin</returns>
+        /// -2 : user is not an admin
+        /// -3 : an error occured</returns>
         [HttpPost, Route("uploadbulk")]
         public int UpsertBulk([FromBody] User[] users)
         {
-            User user;
-            Authentication.Token.CheckAccess(Request.Headers, out user);
-            if (user != null)
+            try
             {
-                if (user.UserType == UserTypes.admin)
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                    return DatabaseOperations.Users.UpsertUsers(users);
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
+                        return DatabaseOperations.Users.BulkUpsert(users);
+                    }
+                    else
+                    {
+                        return -2;
+                    }
                 }
                 else
                 {
-                    return -2;
+                    return -1;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return -1;
+                Console.WriteLine(ex.Message);
+                return -3;
             }
-            
-        }
+}
 
         /// <summary>
         /// 
@@ -94,7 +102,7 @@ namespace FireApp.Service.Controllers
 
                         // convert all users to a byte array
                         IEnumerable<User> users;
-                        users = DatabaseOperations.Users.GetAllUsers();
+                        users = DatabaseOperations.Users.GetAll();
                         byte[] file = FileOperations.UserFiles.ExportToCSV(users);
                         stream.Write(file, 0, file.Length);
 
@@ -150,7 +158,7 @@ namespace FireApp.Service.Controllers
                     {
                         IEnumerable<User> users;
                         users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
-                        int upsertedUsers = DatabaseOperations.Users.UpsertUsers(users);
+                        int upsertedUsers = DatabaseOperations.Users.BulkUpsert(users);
 
                         // sets the content of the response to the number of upserted users
                         result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upsertedUsers)));
@@ -228,9 +236,9 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        User old = DatabaseOperations.Users.GetUserById(userName);
+                        User old = DatabaseOperations.Users.GetById(userName);
                         Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.Users.DeleteUser(userName);
+                        return DatabaseOperations.Users.Delete(userName);
                     }
                 }
                 return false;
@@ -256,7 +264,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<User> users;
-                    users = DatabaseOperations.Users.GetAllUsers();
+                    users = DatabaseOperations.Users.GetAll();
                     users = Filter.UsersFilter.UserFilter(users, user);
                     return users.ToArray();
                 }
@@ -287,7 +295,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<User> users;
-                    users = DatabaseOperations.Users.GetUserByUserTypes(usertypes);
+                    users = DatabaseOperations.Users.GetByUserTypes(usertypes);
                     users = Filter.UsersFilter.UserFilter(users, user);
                     return users.ToArray();
                 }
@@ -317,7 +325,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return new User[] { DatabaseOperations.Users.GetUserById(userName) };
+                    return new User[] { DatabaseOperations.Users.GetById(userName) };
                 }
                 else
                 {

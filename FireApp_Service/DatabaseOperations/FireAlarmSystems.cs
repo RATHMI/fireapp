@@ -13,7 +13,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to insert</param>
         /// <returns>returns true if FireAlarmSystem was inserted</returns>
-        public static bool UpsertFireAlarmSystem(FireAlarmSystem fas)
+        public static bool Upsert(FireAlarmSystem fas)
         {
             if (fas != null)
             {
@@ -30,14 +30,14 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fireAlarmSystems">The list of FireAlarmSystems you want to insert</param>
         /// <returns>returns the number of upserted FireAlarmSystems</returns>
-        public static int UpsertFireAlarmSystems(IEnumerable<FireAlarmSystem> fireAlarmSystems)
+        public static int BulkUpsert(IEnumerable<FireAlarmSystem> fireAlarmSystems)
         {
             int upserted = 0;
             if (fireAlarmSystems != null)
             {
                 foreach (FireAlarmSystem fas in fireAlarmSystems)
                 {
-                    UpsertFireAlarmSystem(fas);
+                    Upsert(fas);
                     upserted++;
                 }
             }
@@ -72,7 +72,7 @@ namespace FireApp.Service.DatabaseOperations
         /// 
         /// </summary>
         /// <returns>returns a list with all FireAlarmSystems</returns>
-        public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
+        public static IEnumerable<FireAlarmSystem> GetAll()
         {
             return (IEnumerable<FireAlarmSystem>)LocalDatabase.GetAllFireAlarmSystems().OrderBy(x => x.Company);
         }
@@ -84,7 +84,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<FireAlarmSystem> GetActiveFireAlarmSystems(User user)
         {
             IEnumerable<FireEvent> events; //todo: comment
-            events = ActiveEvents.GetAllActiveFireEvents();
+            events = ActiveEvents.GetAll();
             events = Filter.FireEventsFilter.UserFilter(events, user);
             HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
             FireAlarmSystem fas;
@@ -92,7 +92,7 @@ namespace FireApp.Service.DatabaseOperations
             foreach(FireEvent fe in events)
             {
                 try { 
-                    fas = GetFireAlarmSystemById(fe.Id.SourceId);
+                    fas = GetById(fe.Id.SourceId);
                     results.Add(fas);
                 }
                 catch (Exception)
@@ -109,7 +109,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
-        public static FireAlarmSystem GetFireAlarmSystemById(int id)
+        public static FireAlarmSystem GetById(int id)
         {
             IEnumerable<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
             foreach (FireAlarmSystem fas in fireAlarmSystems)
@@ -133,10 +133,10 @@ namespace FireApp.Service.DatabaseOperations
         {
             try
             {
-                FireAlarmSystem fas = GetFireAlarmSystemById(id);
-                FireBrigade fb = DatabaseOperations.FireBrigades.GetFireBrigadeById(firebrigade);
+                FireAlarmSystem fas = GetById(id);
+                FireBrigade fb = DatabaseOperations.FireBrigades.GetById(firebrigade);
                 fas.FireBrigades.Add(fb.Id);
-                return UpsertFireAlarmSystem(fas);
+                return Upsert(fas);
             }
             catch (Exception)
             {
@@ -153,10 +153,10 @@ namespace FireApp.Service.DatabaseOperations
         public static bool AddServiceGroup(int id, int serviceGroup)
         {
             try { 
-                FireAlarmSystem fas = GetFireAlarmSystemById(id);
-                ServiceGroup sg = ServiceGroups.GetServiceGroupById(serviceGroup);
+                FireAlarmSystem fas = GetById(id);
+                ServiceGroup sg = ServiceGroups.GetById(serviceGroup);
                 fas.ServiceGroups.Add(sg.Id);
-                return UpsertFireAlarmSystem(fas);
+                return Upsert(fas);
             }
             catch (Exception)
             {

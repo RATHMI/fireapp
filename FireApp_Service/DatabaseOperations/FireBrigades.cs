@@ -13,7 +13,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fb"></param>
         /// <returns>returns true if the insert was successful</returns>
-        public static bool UpsertFireBrigade(FireBrigade fb)
+        public static bool Upsert(FireBrigade fb)
         {
             if (fb != null)
             {
@@ -30,14 +30,14 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fireBrigades">The list of FireBrigades you want to insert</param>
         /// <returns>returns the number of upserted FireBrigades</returns>
-        public static int UpsertFireBrigades(IEnumerable<FireBrigade> fireBrigades)
+        public static int BulkUpsert(IEnumerable<FireBrigade> fireBrigades)
         {
             int upserted = 0;
             if (fireBrigades != null)
             {
                 foreach (FireBrigade fb in fireBrigades)
                 {
-                    UpsertFireBrigade(fb);           
+                    Upsert(fb);           
                     upserted++;
                 }
             }
@@ -51,7 +51,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">the id of the FireBrigade you want to delete</param>
         /// <returns>returns true if FireBrigade was deleted from DB</returns>
-        public static bool DeleteFireBrigade(int id)
+        public static bool Delete(int id)
         {
             bool rv = DatabaseOperations.DbDeletes.DeleteFireBrigade(id);
             if (rv != true)
@@ -60,22 +60,22 @@ namespace FireApp.Service.DatabaseOperations
                 LocalDatabase.DeleteFireBrigade(id);
 
                 // delete from authorizedObjectIds of users local
-                foreach (User u in DatabaseOperations.Users.GetAllUsers())
+                foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.firebrigade && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
-                        DatabaseOperations.Users.UpsertUser(u);
+                        DatabaseOperations.Users.Upsert(u);
                     }
                 }
 
                 // delete from List of ServiceGroups of FireAlarmSystems local
-                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems())
+                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.FireBrigades.Contains(id))
                     {
                         fas.FireBrigades.Remove(id);
-                        DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
+                        DatabaseOperations.FireAlarmSystems.Upsert(fas);
                     }
                 }
 
@@ -130,7 +130,7 @@ namespace FireApp.Service.DatabaseOperations
         /// 
         /// </summary>
         /// <returns>returns a list with all FireBrigades</returns>
-        public static IEnumerable<FireBrigade> GetAllFireBrigades()
+        public static IEnumerable<FireBrigade> GetAll()
         {
             return (IEnumerable<FireBrigade>)LocalDatabase.GetAllFireBrigades().OrderBy(x => x.Name);
         }
@@ -140,7 +140,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the FireBrigade you are looking for</param>
         /// <returns>returns a FireBrigade with a matching id</returns>
-        public static FireBrigade GetFireBrigadeById(int id)
+        public static FireBrigade GetById(int id)
         {
             IEnumerable<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
             foreach (FireBrigade fb in fireBrigades)

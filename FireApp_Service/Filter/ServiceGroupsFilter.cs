@@ -55,7 +55,7 @@ namespace FireApp.Service.Filter
         private static IEnumerable<ServiceGroup> fireAlarmSystemFilter(IEnumerable<ServiceGroup> serviceGroups, int id)
         {
             List<ServiceGroup> results = new List<ServiceGroup>();
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id);
+            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
             if (serviceGroups != null)
             {
                 foreach (ServiceGroup sg in serviceGroups)

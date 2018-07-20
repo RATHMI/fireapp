@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), fas);
-                        return DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
+                        return DatabaseOperations.FireAlarmSystems.Upsert(fas);
                     }
                 }
                 return false;
@@ -41,7 +41,44 @@ namespace FireApp.Service.Controllers
             }            
         }
 
-        //todo: uploadbulk
+        /// <summary>
+        /// inserts an array of FireAlarmSystems into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="fas">The FireAlarmSystems you want to insert</param>
+        /// <returns>returns the number of upserted FireAlarmSystems.
+        /// -1 : invalid or no token
+        /// -2 : user is not an admin
+        /// -3 : an error occurred</returns>
+        [HttpPost, Route("uploadbulk")]
+        public int UpsertBulk([FromBody] FireAlarmSystem[] fas)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
+                        return DatabaseOperations.FireAlarmSystems.BulkUpsert(fas);
+                    }
+                    else
+                    {
+                        return -2;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -3;
+            }
+        }
 
         //todo: implement method "FromCSV" with option insert or update to prevent unwanted updates
 
@@ -70,7 +107,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireAlarmSystem> fas;
-                    fas = DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems();
+                    fas = DatabaseOperations.FireAlarmSystems.GetAll();
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
                     return fas.ToArray();
                 }
@@ -103,7 +140,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems();
+                        IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireAlarmSystems.GetAll();
                         byte[] file = FileOperations.FireAlarmSystemFiles.ExportToCSV(fas);
                         stream.Write(file, 0, file.Length);
 
@@ -185,7 +222,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireAlarmSystem> fas;
-                    fas = new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id) };
+                    fas = new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetById(id) };
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
                     return fas.ToArray();
                 }

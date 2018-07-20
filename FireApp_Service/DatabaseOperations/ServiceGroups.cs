@@ -13,7 +13,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="sg">The ServiceGroup you want to insert</param>
         /// <returns>returns true if ServiceGroup was inserted</returns>
-        public static bool UpsertServiceGroup(ServiceGroup sg)
+        public static bool Upsert(ServiceGroup sg)
         {
             if (sg != null)
             {
@@ -31,14 +31,14 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="serviceGroups">The list of ServiceGroups you want to insert</param>
         /// <returns>returns the number of upserted ServiceGroups</returns>
-        public static int UpsertServiceGroups(IEnumerable<ServiceGroup> serviceGroups)
+        public static int BulkUpsert(IEnumerable<ServiceGroup> serviceGroups)
         {
             int upserted = 0;
             if (serviceGroups != null)
             {
                 foreach (ServiceGroup sg in serviceGroups)
                 {
-                    UpsertServiceGroup(sg);           
+                    Upsert(sg);           
                     upserted++;
                 }
             }
@@ -52,7 +52,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">the id of the ServiceGroup you want to delete</param>
         /// <returns>returns true if ServiceGroup was deleted from DB</returns>
-        public static bool DeleteServiceGroup(int id)
+        public static bool Delete(int id)
         {
             bool rv = false;
 
@@ -64,22 +64,22 @@ namespace FireApp.Service.DatabaseOperations
                 LocalDatabase.DeleteServiceGroup(id);
 
                 // delete from authorizedObjectIds of users local
-                foreach (User u in DatabaseOperations.Users.GetAllUsers())
+                foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
-                        DatabaseOperations.Users.UpsertUser(u);
+                        DatabaseOperations.Users.Upsert(u);
                     }
                 }
 
                 // delete from List of ServiceGroups of FireAlarmSystems local
-                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems())
+                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.ServiceGroups.Contains(id))
                     {
                         fas.ServiceGroups.Remove(id);
-                        DatabaseOperations.FireAlarmSystems.UpsertFireAlarmSystem(fas);
+                        DatabaseOperations.FireAlarmSystems.Upsert(fas);
                     }
                 }
 
@@ -134,7 +134,7 @@ namespace FireApp.Service.DatabaseOperations
         /// 
         /// </summary>
         /// <returns>returns a list with all ServiceGroups</returns>
-        public static IEnumerable<ServiceGroup> GetAllServiceGroups()
+        public static IEnumerable<ServiceGroup> GetAll()
         {
             return (IEnumerable<ServiceGroup>)LocalDatabase.GetAllServiceGroups();
         }
@@ -144,7 +144,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the ServiceGroup you are looking for</param>
         /// <returns>returns a ServiceGroup with a matching id</returns>
-        public static ServiceGroup GetServiceGroupById(int id)
+        public static ServiceGroup GetById(int id)
         {
             IEnumerable<ServiceGroup> serviceGroups = LocalDatabase.GetAllServiceGroups();
             foreach (ServiceGroup sg in serviceGroups)

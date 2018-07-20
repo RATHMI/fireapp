@@ -25,7 +25,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetAllActiveFireEvents();
+                    events = DatabaseOperations.ActiveEvents.GetAll();
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
@@ -56,7 +56,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType);
+                    events = DatabaseOperations.ActiveEvents.GetByEventType(eventType);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
@@ -87,7 +87,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId);
+                    events = DatabaseOperations.ActiveEvents.GetBySourceId(sourceId);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
@@ -119,7 +119,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId);
+                    events = DatabaseOperations.ActiveEvents.GetByTarget(sourceId, targetId);
                     return Filter.FireEventsFilter.UserFilter(events, user).ToArray();
                 }
                 else
@@ -151,7 +151,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType);
+                    events = DatabaseOperations.ActiveEvents.GetBySourceIdEventType(sourceId, eventType);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
@@ -178,7 +178,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day);
+                    events = DatabaseOperations.ActiveEvents.GetBySourceIdDate(sourceId, year, month, day);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
@@ -205,7 +205,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month);
+                    events = DatabaseOperations.ActiveEvents.GetBySourceIdDate(sourceId, year, month);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
@@ -232,7 +232,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
-                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year);
+                    events = DatabaseOperations.ActiveEvents.GetBySourceIdDate(sourceId, year);
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }

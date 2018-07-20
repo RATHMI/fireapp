@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), sg);
-                        return DatabaseOperations.ServiceGroups.UpsertServiceGroup(sg);
+                        return DatabaseOperations.ServiceGroups.Upsert(sg);
                     }
                 }
                 return false;
@@ -41,7 +41,44 @@ namespace FireApp.Service.Controllers
             }                      
         }
 
-        //todo: uploadbulk
+        /// <summary>
+        /// inserts an array of ServiceGroups into the database or updates it if it already exists
+        /// </summary>
+        /// <param name="sg">The ServiceGroups you want to insert</param>
+        /// <returns>returns the number of upserted ServiceGroups.
+        /// -1 : invalid or no token
+        /// -2 : user is not an admin
+        /// -3 : an error occurred</returns>
+        [HttpPost, Route("uploadbulk")]
+        public int UpsertBulk([FromBody] ServiceGroup[] sg)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
+                        return DatabaseOperations.ServiceGroups.BulkUpsert(sg);
+                    }
+                    else
+                    {
+                        return -2;
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -3;
+            }
+        }
 
         /// <summary>
         /// 
@@ -61,7 +98,7 @@ namespace FireApp.Service.Controllers
                     {
                         var stream = new MemoryStream();
                         IEnumerable<ServiceGroup> sg;
-                        sg = DatabaseOperations.ServiceGroups.GetAllServiceGroups();
+                        sg = DatabaseOperations.ServiceGroups.GetAll();
                         byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(sg);
                         stream.Write(file, 0, file.Length);
 
@@ -116,9 +153,9 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        ServiceGroup old = DatabaseOperations.ServiceGroups.GetServiceGroupById(id);
+                        ServiceGroup old = DatabaseOperations.ServiceGroups.GetById(id);
                         Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.ServiceGroups.DeleteServiceGroup(id);
+                        return DatabaseOperations.ServiceGroups.Delete(id);
                     }
                 }
                 return false;
@@ -144,7 +181,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<ServiceGroup> sg;
-                    sg = DatabaseOperations.ServiceGroups.GetAllServiceGroups();
+                    sg = DatabaseOperations.ServiceGroups.GetAll();
                     sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
                     return sg.ToArray();
                 }
@@ -186,7 +223,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<ServiceGroup> sg;
-                    sg = new List<ServiceGroup> { DatabaseOperations.ServiceGroups.GetServiceGroupById(id) };
+                    sg = new List<ServiceGroup> { DatabaseOperations.ServiceGroups.GetById(id) };
                     sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
                     return sg.ToArray();
                 }
