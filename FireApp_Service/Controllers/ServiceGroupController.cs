@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 
 namespace FireApp.Service.Controllers
 {
-    [RoutePrefix("service")]
+    [RoutePrefix("service")]//todo: comment
     public class ServiceGroupController : ApiController
     {
         /// <summary>
@@ -18,7 +18,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="sg">The ServiceGroup you want to insert</param>
         /// <returns>returns true if ServiceGroup was inserted</returns>
-        [HttpPost, Route("upload")]
+        [HttpPost, Route("upload")]//todo: comment
         public bool UpsertServiceGroup(ServiceGroup sg)
         {
             try {
@@ -45,7 +45,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a csv file with all ServiceGroups</returns>
-        [HttpGet, Route("getcsv")]
+        [HttpGet, Route("getcsv")]//todo: comment
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -58,14 +58,14 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(DatabaseOperations.ServiceGroups.GetAllServiceGroups());
+                        IEnumerable<ServiceGroup> sg;
+                        sg = DatabaseOperations.ServiceGroups.GetAllServiceGroups();
+                        byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(sg);
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;
-                        result = new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new ByteArrayContent(stream.ToArray())
-                        };
+                        result = new HttpResponseMessage(HttpStatusCode.OK);
+                        result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
                             {
@@ -103,7 +103,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">the id of the ServiceGroup you want to delete</param>
         /// <returns>returns true if ServiceGroup was deleted from DB</returns>
-        [HttpGet, Route("delete/{id}")]
+        [HttpGet, Route("delete/{id}")]//todo: comment
         public bool DeleteServiceGroup(int id)
         {
             try
@@ -131,7 +131,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list with all ServiceGroups</returns>
-        [HttpGet, Route("all")]
+        [HttpGet, Route("all")]//todo: comment
         public ServiceGroup[] GetAllServiceGroups()
         {
             try
@@ -140,7 +140,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.ServiceGroupsFilter.UserFilter(DatabaseOperations.ServiceGroups.GetAllServiceGroups(), user).ToArray<ServiceGroup>();
+                    IEnumerable<ServiceGroup> sg;
+                    sg = DatabaseOperations.ServiceGroups.GetAllServiceGroups();
+                    sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
+                    return sg.ToArray<ServiceGroup>();
                 }
                 else
                 {
@@ -170,7 +173,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The id of the ServiceGroup you are looking for</param>
         /// <returns>returns a ServiceGroup with a matching id</returns>
-        [HttpGet, Route("id/{id}")]
+        [HttpGet, Route("id/{id}")]//todo: comment
         public ServiceGroup[] GetServiceGroupById(int id)
         {
             try
@@ -179,7 +182,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.ServiceGroupsFilter.UserFilter(new List<ServiceGroup> { DatabaseOperations.ServiceGroups.GetServiceGroupById(id) }, user).ToArray();
+                    IEnumerable<ServiceGroup> sg;
+                    sg = new List<ServiceGroup> { DatabaseOperations.ServiceGroups.GetServiceGroupById(id) };
+                    sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
+                    return sg.ToArray();
                 }
                 else
                 {

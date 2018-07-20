@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
-        [HttpPost, Route("upload")]
+        [HttpPost, Route("upload")]//todo: comment
         public bool UpsertUser([FromBody] User u)
         {
             try {
@@ -79,7 +79,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a csv file with all ServiceGroups</returns>
-        [HttpGet, Route("getcsv")]
+        [HttpGet, Route("getcsv")]//todo: comment
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -94,7 +94,9 @@ namespace FireApp.Service.Controllers
                         var stream = new MemoryStream();
 
                         // convert all users to a byte array
-                        byte[] file = FileOperations.UserFiles.ExportToCSV(DatabaseOperations.Users.GetAllUsers());
+                        IEnumerable<User> users;
+                        users = DatabaseOperations.Users.GetAllUsers();
+                        byte[] file = FileOperations.UserFiles.ExportToCSV(users);
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;    // set position of stream to start
@@ -135,7 +137,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="bytes">an array of bytes that represents a csv file</param>
         /// <returns>the number of successfully upserted Users</returns>
-        [HttpPost, Route("uploadcsv")]
+        [HttpPost, Route("uploadcsv")]//todo: comment
         public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -147,7 +149,8 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        List<User> users = FileOperations.UserFiles.GetUsersFromCSV(bytes).ToList<User>();
+                        IEnumerable<User> users;
+                        users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
                         int upsertedUsers = DatabaseOperations.Users.UpsertUsers(users);
 
                         // sets the content of the response to the number of upserted users
@@ -215,7 +218,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="userName">Id of the User you want to delete</param>
         /// <returns>returns true if User was deleted</returns>
-        [HttpGet, Route("delete/{username}")]
+        [HttpGet, Route("delete/{username}")]//todo: comment
         public bool DeleteUser(string userName)
         {
             try
@@ -243,7 +246,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list with all Users</returns>
-        [HttpGet, Route("all")]
+        [HttpGet, Route("all")]//todo: comment
         public User[] GetAllUsers()
         {
             try
@@ -252,7 +255,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetAllUsers(), user).ToArray<User>();
+                    IEnumerable<User> users;
+                    users = DatabaseOperations.Users.GetAllUsers();
+                    users = Filter.UsersFilter.UserFilter(users, user);
+                    return users.ToArray<User>();
                 }
                 else
                 {
@@ -271,6 +277,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="usertypes">an array of usertypes</param>
         /// <returns>returns a list of all users with matching usertypes</returns>
+        [HttpGet, Route("usertype")]//todo: comment
         public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
         {
             try
@@ -279,7 +286,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.UsersFilter.UserFilter(DatabaseOperations.Users.GetUserByUserTypes(usertypes), user).ToArray<User>();
+                    IEnumerable<User> users;
+                    users = DatabaseOperations.Users.GetUserByUserTypes(usertypes);
+                    users = Filter.UsersFilter.UserFilter(users, user);
+                    return users.ToArray<User>();
                 }
                 else
                 {
@@ -298,7 +308,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="username">The username of the User you are looking for</param>
         /// <returns>returns a User with a matching username</returns>
-        [HttpGet, Route("id/{username}")]
+        [HttpGet, Route("id/{username}")]//todo: comment
         public User[] GetUserById(string userName)
         {
             try
@@ -325,7 +335,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a List of Users with a valid token</returns>
-        [HttpGet, Route("active")]
+        [HttpGet, Route("active")]//todo: comment
         public User[] GetActiveUsers()
         {
             try
@@ -359,7 +369,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a List of Users with an invalid token</returns>
-        [HttpGet, Route("inactive")]
+        [HttpGet, Route("inactive")]//todo: comment
         public User[] GetInactiveUsers()
         {
             try

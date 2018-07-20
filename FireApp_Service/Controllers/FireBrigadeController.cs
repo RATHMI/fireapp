@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 
 namespace FireApp.Service.Controllers
 {
-    [RoutePrefix("fb")]
+    [RoutePrefix("fb")] //todo: comment
     public class FireBrigadeController : ApiController
     {
         /// <summary>
@@ -18,7 +18,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="fb"></param>
         /// <returns>returns true if the insert was successful</returns>
-        [HttpPost, Route("upload")]
+        [HttpPost, Route("upload")]//todo: comment
         public bool UploadFireBrigade([FromBody] FireBrigade fb)
         {
             try {
@@ -45,7 +45,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a csv file with all FireBrigades</returns>
-        [HttpGet, Route("getcsv")]
+        [HttpGet, Route("getcsv")]//todo: comment
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -62,10 +62,8 @@ namespace FireApp.Service.Controllers
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;
-                        result = new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new ByteArrayContent(stream.ToArray())
-                        };
+                        result = new HttpResponseMessage(HttpStatusCode.OK);
+                        result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
                             {
@@ -103,7 +101,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">the id of the FireBrigade you want to delete</param>
         /// <returns>returns true if FireBrigade was deleted from DB</returns>
-        [HttpGet, Route("delete/{id}")]
+        [HttpGet, Route("delete/{id}")]//todo: comment
         public bool DeleteFireBrigade(int id)
         {
             try
@@ -132,7 +130,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">the id you want to check</param>
         /// <returns>returns true if id is not used by other FireBrigade or else a new id</returns>
-        [HttpPost, Route("checkid/{id}")]
+        [HttpPost, Route("checkid/{id}")]//todo: comment
         public static int CheckId(int id)
         {
             return DatabaseOperations.FireBrigades.CheckId(id);
@@ -142,7 +140,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list of all FireBrigades</returns>
-        [HttpGet, Route("all")]
+        [HttpGet, Route("all")]//todo: comment
         public FireBrigade[] All()
         {
             try
@@ -151,7 +149,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireBrigadesFilter.UserFilter(DatabaseOperations.FireBrigades.GetAllFireBrigades(), user).ToArray<FireBrigade>();
+                    IEnumerable<FireBrigade> fb;
+                    fb = DatabaseOperations.FireBrigades.GetAllFireBrigades();
+                    fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
+                    return fb.ToArray<FireBrigade>();
                 }
                 else
                 {
@@ -170,7 +171,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The id of the FireBrigade you are looking for</param>
         /// <returns>returns a FireBrigade with a matching id</returns>
-        [HttpGet, Route("id/{id}")]
+        [HttpGet, Route("id/{id}")]//todo: comment
         public FireBrigade[] GetFireBrigadeById(int id)
         {
             try
@@ -179,7 +180,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireBrigadesFilter.UserFilter(new List<FireBrigade> { DatabaseOperations.FireBrigades.GetFireBrigadeById(id) }, user).ToArray<FireBrigade>();
+                    IEnumerable<FireBrigade> fb;
+                    fb = new List<FireBrigade> { DatabaseOperations.FireBrigades.GetFireBrigadeById(id) };
+                    fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
+                    return fb.ToArray<FireBrigade>();
                 }
                 else
                 {

@@ -18,7 +18,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to insert</param>
         /// <returns>returns true if the insert was successful</returns>
-        [HttpPost, Route("upload")]
+        [HttpPost, Route("upload")]//todo: comment
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
             try {
@@ -59,7 +59,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list of all FireAlarmSystems</returns>
-        [HttpGet, Route("all")]
+        [HttpGet, Route("all")]//todo: comment
         public FireAlarmSystem[] All()
         {
             try
@@ -68,7 +68,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems(), user).ToArray<FireAlarmSystem>();
+                    IEnumerable<FireAlarmSystem> fas;
+                    fas = DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems();
+                    fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
+                    return fas.ToArray<FireAlarmSystem>();
                 }
                 else
                 {
@@ -86,7 +89,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a csv file with all FireAlarmSystems</returns>
-        [HttpGet, Route("getcsv")]
+        [HttpGet, Route("getcsv")]//todo: comment
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -99,14 +102,13 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.FireAlarmSystemFiles.ExportToCSV(DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems());
+                        IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireAlarmSystems.GetAllFireAlarmSystems();
+                        byte[] file = FileOperations.FireAlarmSystemFiles.ExportToCSV(fas);
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;
-                        result = new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new ByteArrayContent(stream.ToArray())
-                        };
+                        result = new HttpResponseMessage(HttpStatusCode.OK);
+                        result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
                             {
@@ -140,7 +142,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
-        [HttpGet, Route("active")]
+        [HttpGet, Route("active")]//todo: comment
         public FireAlarmSystem[] GetActiveFireAlarmSystems()
         {
             try
@@ -149,7 +151,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter((DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user)), user).ToArray<FireAlarmSystem>();
+                    IEnumerable<FireAlarmSystem> fas;
+                    fas = DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user);
+                    fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
+                    return fas.ToArray<FireAlarmSystem>();
                 }
                 else
                 {
@@ -169,7 +174,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
         /// <returns>returns a FireAlarmSystem with a matching id</returns>
-        [HttpGet, Route("id/{id}")]
+        [HttpGet, Route("id/{id}")]//todo: comment
         public FireAlarmSystem[] GetFireAlarmSystemById(int id)
         {
             try
@@ -178,7 +183,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireAlarmSystemsFilter.UserFilter(new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id) }, user).ToArray<FireAlarmSystem>();
+                    IEnumerable<FireAlarmSystem> fas;
+                    fas = new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetFireAlarmSystemById(id) };
+                    fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
+                    return fas.ToArray<FireAlarmSystem>();
                 }
                 else
                 {

@@ -83,11 +83,12 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
         public static IEnumerable<FireAlarmSystem> GetActiveFireAlarmSystems(User user)
         {
-            List<FireEvent> events = Filter.FireEventsFilter   //todo: comment
-                .UserFilter((List<FireEvent>)DatabaseOperations.ActiveEvents
-                .GetAllActiveFireEvents(), user).ToList<FireEvent>();
+            List<FireEvent> events; //todo: comment
+            events = (List<FireEvent>)ActiveEvents.GetAllActiveFireEvents();
+            events =  Filter.FireEventsFilter.UserFilter(events, user).ToList<FireEvent>();
             HashSet<FireAlarmSystem> results = new HashSet<FireAlarmSystem>();
             FireAlarmSystem fas;
+
             foreach(FireEvent fe in events)
             {
                 try { 

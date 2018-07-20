@@ -15,7 +15,7 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <returns>returns a list of all active FireEvents</returns>
-        [HttpGet, Route("all")]
+        [HttpGet, Route("all")] //todo: comment
         public FireEvent[] Active()
         {
             try
@@ -24,7 +24,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetAllActiveFireEvents(), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetAllActiveFireEvents();
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
@@ -43,7 +46,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents of the given EventType</returns>
-        [HttpGet, Route("type/{eventType}")]
+        [HttpGet, Route("type/{eventType}")] //todo: comment
         public FireEvent[] Active(EventTypes eventType)
         {
             try
@@ -52,7 +55,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsByEventType(eventType);
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
@@ -71,7 +77,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
         /// <returns>a list of active FireEvents with a matching sourceId</returns>
-        [HttpGet, Route("source/{sourceId}")]   
+        [HttpGet, Route("source/{sourceId}")]   //todo: comment
         public FireEvent[] GetActiveFireEventsBySourceId(int sourceId)
         {
             try
@@ -80,7 +86,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceId(sourceId);
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
@@ -100,7 +109,7 @@ namespace FireApp.Service.Controllers
         /// <param name="sourceId">the sourceId of the active FireEvent you are looking for</param>
         /// <param name="targetId">the targetId of the active FireEvent you are looking for</param>
         /// <returns>returns a FireEvent with a matching sourceId and targetId</returns>
-        [HttpGet, Route("id/{sourceId}/{targetId}")]
+        [HttpGet, Route("id/{sourceId}/{targetId}")] //todo: comment
         public FireEvent[] GetActiveFireEventById(int sourceId, string targetId)
         {
             try
@@ -109,7 +118,9 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventById(sourceId, targetId);
+                    return Filter.FireEventsFilter.UserFilter(events, user).ToArray<FireEvent>();
                 }
                 else
                 {
@@ -130,7 +141,7 @@ namespace FireApp.Service.Controllers
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
         /// EventType</returns>
-        [HttpGet, Route("type/{sourceId}/{eventType}")]
+        [HttpGet, Route("type/{sourceId}/{eventType}")]//todo: comment
         public FireEvent[] GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             try
@@ -139,7 +150,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdEventType(sourceId, eventType);
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
@@ -154,7 +168,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
-        [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]
+        [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]//todo: comment
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)
         {
             try
@@ -163,7 +177,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month, day);
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
@@ -178,7 +195,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
-        [HttpGet, Route("date/{sourceId}/{year}/{month}")]
+        [HttpGet, Route("date/{sourceId}/{year}/{month}")]//todo: comment
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month)
         {
             try
@@ -187,7 +204,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year, month);
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
@@ -202,7 +222,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
-        [HttpGet, Route("date/{sourceId}/{year}")]
+        [HttpGet, Route("date/{sourceId}/{year}")]//todo: comment
         public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year)
         {
             try
@@ -211,7 +231,10 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return Filter.FireEventsFilter.UserFilter(DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year), user).ToArray<FireEvent>();
+                    IEnumerable<FireEvent> events;
+                    events = DatabaseOperations.ActiveEvents.GetActiveFireEventsBySourceIdDate(sourceId, year);
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray<FireEvent>();
                 }
                 else
                 {
