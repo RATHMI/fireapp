@@ -7,14 +7,14 @@ using FireApp.Domain;
 namespace FireApp.Service.DatabaseOperations
 {
     /// <summary>
-    /// This class is for querying objects from the LiteDB
+    /// This class is for querying objects from the LiteDB.
     /// </summary>
     public static class DbQueries
     {
         /// <summary>
-        /// 
+        /// Queries all FireEvents from the LiteDB.
         /// </summary>
-        /// <returns>returns all FireEvents from database</returns>
+        /// <returns>Returns all FireEvents from database.</returns>
         public static IEnumerable<FireEvent> QueryFireEvents()
         {
             using (var db = AppData.FireEventDB())
@@ -25,9 +25,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Queries all active FireEvents from the LiteDB.
         /// </summary>
-        /// <returns>returns all active FireEvents from database</returns>
+        /// <returns>Returns all active FireEvents from the database.</returns>
         public static IEnumerable<FireEvent> QueryActiveFireEvents()
         {
             using (var db = AppData.ActiveFireEventDB())
@@ -38,9 +38,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Queries all FireAlarmSystems from the LiteDB.
         /// </summary>
-        /// <returns>returns a list with all FireAlarmSystems from database</returns>
+        /// <returns>Returns a list with all FireAlarmSystems from database.</returns>
         public static IEnumerable<FireAlarmSystem> QueryFireAlarmSystems()
         {
             using (var db = AppData.FireAlarmSystemDB())
@@ -51,9 +51,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Queries all FireBrigades from the LiteDB.
         /// </summary>
-        /// <returns>returns a list with all FireBrigades from database</returns>
+        /// <returns>Returns a list with all FireBrigades from database.</returns>
         public static IEnumerable<FireBrigade> QueryFireBrigades()
         {
             using (var db = AppData.FireBrigadeDB())
@@ -64,9 +64,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Queries all ServiceGroups from the LiteDB.
         /// </summary>
-        /// <returns>returns a list with all ServiceGroups from database</returns>
+        /// <returns>Returns a list with all ServiceGroups from database.</returns>
         public static IEnumerable<ServiceGroup> QueryServiceGroups()
         {
             using (var db = AppData.ServiceGroupDB())
@@ -77,9 +77,9 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Queries all Users from the LiteDB.
         /// </summary>
-        /// <returns>returns a list with all Users from database</returns>
+        /// <returns>Returns a list with all Users from database.</returns>
         public static IEnumerable<User> QueryUsers()
         {
             using (var db = AppData.UserDB())

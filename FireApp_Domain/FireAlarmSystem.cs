@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FireApp.Domain
 {
     /// <summary>
-    /// represents a fire alarm system
+    /// This class represents a fire alarm system.
     /// </summary>
     public class FireAlarmSystem : ICloneable
     {

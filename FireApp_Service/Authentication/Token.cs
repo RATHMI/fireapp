@@ -9,30 +9,39 @@ using MlkPwgen;
 namespace FireApp.Service.Authentication
 {
     /// <summary>
-    /// This class is for authentication via tokens
+    /// This class is for authentication via tokens.
     /// </summary>
     public static class Token
     {
         /// <summary>
         /// This method generates a new token and 
-        /// saves it in the User object with the matching UserLogin. 
+        /// saves it in the User with the matching UserLogin. 
         /// </summary>
-        /// <param name="login">the login data of a user</param>
-        /// <returns>returns the token if the login worked or null if not</returns>
+        /// <param name="login">The login data of a user.</param>
+        /// <returns>Returns the token if the login worked or null if not.</returns>
         public static string RefreshToken(UserLogin login)
         {
             try
             {
+                // Get User with matching username.
                 User user = DatabaseOperations.Users.GetById(login.Username);
+
+                // If User was found.
                 if (user != null)
                 {
+                    // If password is right
                     if (user.Password == login.Password)
                     {
+                        // Generate a new token.
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+
+                        // Save the changes in the database
                         DatabaseOperations.Users.Upsert(user);
                         return user.Token;
                     }
                 }
+
+                // If username or password were wrong.
                 return null;
             }
             catch (Exception)
@@ -42,10 +51,10 @@ namespace FireApp.Service.Authentication
         }
 
         /// <summary>
-        /// This method generates a random token
+        /// This method generates a new random token.
         /// </summary>
-        /// <param name="hash">an Integer that is used for the first part of the token</param>
-        /// <returns>returns a new random token</returns>
+        /// <param name="hash">An Integer that is used for the first part of the token.</param>
+        /// <returns>Returns a new random token.</returns>
         public static string GenerateToken(int hash)
         {
             System.Random random = new System.Random();
@@ -53,10 +62,10 @@ namespace FireApp.Service.Authentication
         }
 
         /// <summary>
-        /// This method checks if there is a User with this token and if the token is still valid
+        /// This method checks if there is a User with this token and if the token is still valid.
         /// </summary>
-        /// <param name="token">the token you want to verify</param>
-        /// <returns>returns the User that is assoziated with the token or null</returns>
+        /// <param name="token">The token you want to verify.</param>
+        /// <returns>Returns the User that is assoziated with the token or null.</returns>
         public static User VerifyToken(string token)
         {
             if (token != null)
@@ -83,17 +92,19 @@ namespace FireApp.Service.Authentication
         }
 
         /// <summary>
-        /// This method extracts a token from the HttpRequestHeaders
+        /// This method extracts a token from the HttpRequestHeaders.
         /// </summary>
-        /// <param name="headers">The headers of a HttpRequest</param>
-        /// <returns>returns the token or null</returns>
+        /// <param name="headers">The headers of a HttpRequest.</param>
+        /// <returns>Returns the token or null.</returns>
         public static void GetTokenFromHeader(HttpRequestHeaders headers, out string token)
         {
             IEnumerable<string> key;
+
+            // If the headers contain the key "token".
             if (headers.TryGetValues("token", out key) != false)
             {
                 headers.TryGetValues("token", out key);
-                token = key.First<string>().Trim(new char[] { '"' });
+                token = key.First<string>().Trim('"');
             }
             else
             {
@@ -104,10 +115,10 @@ namespace FireApp.Service.Authentication
 
         /// <summary>
         /// This method extracts a token from the HttpRequestHeaders and fetches the
-        /// User. If the token is valid it returns the user.
+        /// User. If the token is valid it returns the User.
         /// </summary>
-        /// <param name="headers">The headers of a HttpRequest</param>
-        /// <returns>returns a User if the token is valid</returns>
+        /// <param name="headers">The headers of a HttpRequest.</param>
+        /// <returns>Returns a User if the token is valid.</returns>
         public static void CheckAccess(HttpRequestHeaders headers, out User user)
         {
             string token;
