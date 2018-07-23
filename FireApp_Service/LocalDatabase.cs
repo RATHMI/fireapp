@@ -253,7 +253,7 @@ namespace FireApp.Service
         {
             if (fireAlarmSystem != null)
             {
-                List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems();
+                List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems().ToList();
                 FireAlarmSystem old = null;
 
                 foreach (FireAlarmSystem fas in allFireAlarmSystems)
@@ -286,7 +286,7 @@ namespace FireApp.Service
         /// <param name="id">id of the FireAlarmSystem you want to delete</param>
         public static void DeleteFireAlarmSystem(int id)
         {
-            List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems();
+            List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems().ToList();
             FireAlarmSystem old = null;
 
             foreach (FireAlarmSystem fas in allFireAlarmSystems)
