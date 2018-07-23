@@ -17,34 +17,35 @@ namespace FireApp.Domain {
             this.EventType = eventType;
         }
 
-        // a composite primary key consisting of sourceId and eventId
+        // A composite primary key consisting of sourceId and eventId.
         public FireEventId Id { get; set; } 
 
-        // Time when the FireEvent accored
+        // Time when the FireEvent accored.
         public DateTime TimeStamp { get; set; } 
 
-        // name of the Fire detector (e.g. MG 13/5)
+        // Name of the Fire detector (e.g. MG 13/5).
         public string TargetId { get; set; } 
 
-        // Description of the Location/Fire Detector (e.g. Melder Büro)
+        // Description of the Location/Fire Detector (e.g. Melder Büro).
         public string TargetDescription { get; set; } 
 
-        // type of the event that ocurred
+        // Type of the event that ocurred.
         public EventTypes EventType { get; set; } 
 
         /// <summary>
-        /// makes it easier to log the data
+        /// Makes it easier to write the object.
         /// </summary>
-        /// <returns>returns a string that describes the FireEvent</returns>
+        /// <returns>Returns a string that describes the FireEvent.</returns>
         public override string ToString()
         {
             return $"{this.Id.SourceId.ToString()};{this.Id.EventId.ToString()};{this.TargetId.ToString()};{this.TargetDescription};{this.TimeStamp.ToString()};{this.EventType.ToString()}";
         }
 
         /// <summary>
-        /// makes it easier to access the data
+        /// Makes it easier to write the object.
+        /// The description is shorter.
         /// </summary>
-        /// <returns>returns a string that describes the FireEvent</returns>
+        /// <returns>Returns a string that describes the FireEvent.</returns>
         public string ToShortString()
         {
             StringBuilder sb = new StringBuilder();
@@ -72,18 +73,18 @@ namespace FireApp.Domain {
         }
 
         /// <summary>
-        /// 
+        /// Use the return value as headers of a CSV file.
         /// </summary>
-        /// <returns>returns a string with the names of the CSV values</returns>
+        /// <returns>Returns a string with the names of the CSV values.</returns>
         public static string GetCsvHeader()
         {
             return "source ID;event ID;timestamp;target ID; target description;event type";
         }
 
         /// <summary>
-        /// Turns this FireEvent into a CSV line
+        /// Turns this FireEvent into a CSV line.
         /// </summary>
-        /// <returns>returns a CSV line with the values of the FireEvent</returns>
+        /// <returns>Returns a CSV line with the values of this FireEvent.</returns>
         public string ToCsv()
         {
             StringBuilder sb = new StringBuilder();
@@ -103,9 +104,8 @@ namespace FireApp.Domain {
         }
     }
 
-
     /// <summary>
-    /// This class is needed because liteDB can not create a composite key itself
+    /// This class is needed because liteDB can not create a composite key itself.
     /// </summary>
     public class FireEventId {
         public FireEventId(){}
@@ -115,15 +115,15 @@ namespace FireApp.Domain {
             this.EventId = eventId;
         }
 
-        // Id of the FireAlarmSystem
+        // Id of the FireAlarmSystem.
         public int SourceId { get; set; }
 
-        // this id distinguishes this FireEvent from FireEvents of the same FireAlarmSystem
+        // This id distinguishes this FireEvent from FireEvents of the same FireAlarmSystem.
         public int EventId { get; set; } 
     }
 
     /// <summary>
-    /// makes it easier to determine the type of a FireEvent
+    /// Makes it easier to determine the type of a FireEvent.
     /// </summary>
     public enum EventTypes {
         alarm = 1,

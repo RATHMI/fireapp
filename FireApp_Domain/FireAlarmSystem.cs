@@ -46,42 +46,42 @@ namespace FireApp.Domain
             ServiceGroups = new HashSet<int>();
         }
 
-        // identifier of the FireAlarmSystem
+        // Identifier of the FireAlarmSystem.
         public int Id { get; set; }                         
 
-        // name of the company that owns the FireAlarmSystem
+        // Name of the company that owns the FireAlarmSystem.
         public string Company { get; set; }
 
-        // short description of the FireAlarmSystem
+        // Short description of the FireAlarmSystem.
         public string Description { get; set; }
 
-        // country where the FireAlarmSystem is installed
+        // Country where the FireAlarmSystem is installed.
         public string Country { get; set; }
 
-        // city where the FireAlarmSystem is installed
+        // City where the FireAlarmSystem is installed.
         public string City { get; set; }
 
-        // postal code of the city where the FireAlarmSystem is installed
-        // not an integer becaus it may contain characters (e.g. A-4020)
+        // Postal code of the city where the FireAlarmSystem is installed.
+        // Not an integer becaus it may contain characters (e.g. A-4020).
         public string PostalCode { get; set; }
 
-        // address of the building where the FireAlarmSystem is installed
+        // Address of the building where the FireAlarmSystem is installed.
         public string Address { get; set; }
 
-        // list of the identifiers of the FireBrigades 
-        // that should have access to certain information
+        // List of the identifiers of the FireBrigades
+        // that should have access to certain information.
         public HashSet<int> FireBrigades { get; set; }
 
-        // list of the identifiers of the ServiceGroups 
-        // that should have access to certain information
+        // List of the identifiers of the ServiceGroups 
+        // that should have access to certain information.
         public HashSet<int> ServiceGroups { get; set; }
 
         /// <summary>
-        /// checks if the id of a FireBrigade is in the list 
-        /// of FireBrigades of this FireAlarmSystem
+        /// Checks if the id of a FireBrigade is in the list 
+        /// of FireBrigades of this FireAlarmSystem.
         /// </summary>
-        /// <param name="id">the id of the FireBrigade you want to check</param>
-        /// <returns>returns true if the list of FireBrigades contains the id</returns>
+        /// <param name="id">The id of the FireBrigade you want to check.</param>
+        /// <returns>Returns true if the list of FireBrigades contains the id.</returns>
         public bool CheckFireBrigade(int id)
         {
             bool found = false;
@@ -100,11 +100,11 @@ namespace FireApp.Domain
         }
 
         /// <summary>
-        /// checks if the id of a ServiceGroup is in the list 
-        /// of ServiceGroups of this FireAlarmSystem
+        /// Checks if the id of a ServiceGroup is in the list 
+        /// of ServiceGroups of this FireAlarmSystem.
         /// </summary>
-        /// <param name="id">the id of the ServiceGroup you want to check</param>
-        /// <returns>returns true if the list of ServiceGroups contains the id</returns>
+        /// <param name="id">The id of the ServiceGroup you want to check.</param>
+        /// <returns>Returns true if the list of ServiceGroups contains the id.</returns>
         public bool CheckServiceGroup(int id) {
             bool found = false;
             if (this.ServiceGroups != null)
@@ -121,6 +121,10 @@ namespace FireApp.Domain
             return found;
         }
 
+        /// <summary>
+        /// Creates a deep clone to avoid changes in the original when changing the clone.
+        /// </summary>
+        /// <returns>Returns a deep clone of this object.</returns>
         public object Clone()
         {
             FireAlarmSystem fas =
@@ -147,18 +151,18 @@ namespace FireApp.Domain
         }
 
         /// <summary>
-        /// 
+        /// Use the return value as headers of a CSV file.
         /// </summary>
-        /// <returns>returns a string with the names of the CSV values</returns>
+        /// <returns>Returns a string with the names of the CSV values.</returns>
         public static string GetCsvHeader()
         {
             return "id;company;description;country;city;postal code;address;fire brigades; service groups";
         }
 
         /// <summary>
-        /// Turns this FireAlarmSystem into a CSV line
+        /// Turns this FireAlarmSystem into a CSV line.
         /// </summary>
-        /// <returns>returns a CSV line with the values of the FireAlarmSystem</returns>
+        /// <returns>Returns a CSV line with the values of the FireAlarmSystem.</returns>
         public string ToCsv()
         {
             StringBuilder sb = new StringBuilder();
@@ -184,11 +188,11 @@ namespace FireApp.Domain
         } 
 
         /// <summary>
-        /// This method turns a line of a CSV-File into a new FireAlarmSystem
+        /// This method turns a line of a CSV-File into a new FireAlarmSystem.
         /// </summary>
-        /// <param name="csv">a line of a CSV-File you want to convert</param>
-        /// <returns>returns a new FireAlarmSystem or null if an error occures</returns>
-        public static FireAlarmSystem GetFireAlarmSystemFromCsv(string csv)
+        /// <param name="csv">A line of a CSV-File you want to convert.</param>
+        /// <returns>Returns a new FireAlarmSystem or null if an error occures.</returns>
+        public static FireAlarmSystem GetFireAlarmSystemFromCsv(string csv) // todo: comment
         {
             string[] values;
 

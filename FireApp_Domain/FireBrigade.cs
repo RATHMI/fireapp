@@ -21,18 +21,18 @@ namespace FireApp.Domain
         public string Name { get; set; }
 
         /// <summary>
-        /// 
+        /// Use the return value as headers of a CSV file.
         /// </summary>
-        /// <returns>returns a string with the names of the CSV values</returns>
+        /// <returns>Returns a string with the names of the CSV values.</returns>
         public static string GetCsvHeader()
         {
             return "id;name";
         }
 
         /// <summary>
-        /// Turns this FireBrigade into a CSV line
+        /// Turns this FireBrigade into a CSV line.
         /// </summary>
-        /// <returns>returns a CSV line with the values of the FireBrigade</returns>
+        /// <returns>Returns a CSV line with the values of this FireBrigade.</returns>
         public string ToCsv()
         {
             StringBuilder sb = new StringBuilder();
@@ -44,10 +44,10 @@ namespace FireApp.Domain
         }
 
         /// <summary>
-        /// This method turns a line of a CSV-File into a new FireBrigade
+        /// This method turns a line of a CSV-File into a new FireBrigade.
         /// </summary>
-        /// <param name="csv">a line of a CSV-File you want to convert</param>
-        /// <returns>returns a new FireBrigade or null if an error occures</returns>
+        /// <param name="csv">A line of a CSV-File you want to convert.</param>
+        /// <returns>Returns a new FireBrigade or null if an error occures.</returns>
         public static FireBrigade GetFireBrigadeFromCsv(string csv)
         {
             string[] values;

@@ -27,8 +27,8 @@ namespace FireApp.Domain
 
         public UserTypes UserType { get; set; }
 
-        // this property is a set, because User can be part of 
-        // several institutions of the same type (fire brigade, service group, ...) 
+        // This property is a set, because a User can be part of 
+        // several institutions of the same type (fire brigade, service group, ...).
         public HashSet<int> AuthorizedObjectIds { get; set; }
 
         public string FirstName { get; set; }
@@ -41,15 +41,19 @@ namespace FireApp.Domain
         }
         public DateTime TokenCreationDate { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Returns a short description of the User.</returns>
         public string GetUserDescription()
         {
             return this.Id + "(" + this.FirstName + ", " + this.LastName + ")";
         }
 
         /// <summary>
-        /// creates a deep clone to avoid changes in the original User when changing the clone
+        /// Creates a deep clone to avoid changes in the original when changing the clone.
         /// </summary>
-        /// <returns>returns a deep clone of this User</returns>
+        /// <returns>Returns a deep clone of this User.</returns>
         public object Clone()
         {
             User user = new User();
@@ -71,18 +75,18 @@ namespace FireApp.Domain
         }
 
         /// <summary>
-        /// 
+        /// Use the return value as headers of a CSV file.
         /// </summary>
-        /// <returns>returns a string with the names of the CSV values</returns>
+        /// <returns>Returns a string with the names of the CSV values.</returns>
         public static string GetCsvHeader()
         {
             return "username;password;user type;authorized object IDs;first name;last name;email;last login";
         }
 
         /// <summary>
-        /// Turns this User into a CSV line
+        /// Turns this User into a CSV line.
         /// </summary>
-        /// <returns>returns a CSV line with the values of the User</returns>
+        /// <returns>Returns a CSV line with the values of this User.</returns>
         public string ToCsv()
         {
             StringBuilder sb = new StringBuilder();
@@ -105,11 +109,11 @@ namespace FireApp.Domain
         }
 
         /// <summary>
-        /// This method turns a line of a CSV-File into a new User
+        /// This method turns a line of a CSV-File into a new User.
         /// </summary>
-        /// <param name="csv">a line of a CSV-File you want to convert</param>
-        /// <returns>returns a new User or null if an error occures</returns>
-        public static User GetUserFromCsv(string csv)
+        /// <param name="csv">A line of a CSV-File you want to convert.</param>
+        /// <returns>Returns a new User or null if an error occures.</returns>
+        public static User GetUserFromCsv(string csv) // todo: comment
         {
             string[] values;
 
@@ -153,5 +157,8 @@ namespace FireApp.Domain
         }
     }
 
+    /// <summary>
+    /// Helps to distinguish the different types of users.
+    /// </summary>
     public enum UserTypes {unauthorized = -1, admin = 0, firealarmsystem = 1, firebrigade = 2, servicemember = 3 }
 }
