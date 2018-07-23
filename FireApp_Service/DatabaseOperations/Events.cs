@@ -118,31 +118,9 @@ namespace FireApp.Service.DatabaseOperations
         {
             IEnumerable<FireEvent> events = (GetBySourceId(sourceId));
             List<FireEvent> results = new List<FireEvent>();
-            foreach(FireEvent fe in events)
-            {
-                if(fe.TargetId == targetId)
-                {
-                    results.Add(fe);
-                }
-            }
-
-            return results;           
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
-        /// <param name="eventType">The EventType of the FireEvent</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId and eventType</returns>
-        public static IEnumerable<FireEvent> GetBySourceIdEventType(int sourceId, EventTypes eventType)
-        {
-            IEnumerable<FireEvent> events = (GetBySourceId(sourceId));
-            List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
-                if (fe.EventType == eventType)
+                if (fe.TargetId == targetId)
                 {
                     results.Add(fe);
                 }
@@ -160,107 +138,9 @@ namespace FireApp.Service.DatabaseOperations
         {
             IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
             List<FireEvent> results = new List<FireEvent>();
-            foreach(FireEvent fe in events)
-            {
-                if(fe.EventType == eventType)
-                {
-                    results.Add(fe);
-                }
-            }
-
-            return results;            
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
-        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
-        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
-        /// <returns>returns a list of all FireEvents with a matching sourceId and and a Timestamp between 
-        /// startTime and endTime</returns>
-        public static IEnumerable<FireEvent> GetBySourceIdTimespan(int sourceId, long startTime, long endTime)
-        {
-            IEnumerable<FireEvent> events = (GetBySourceId(sourceId));
-            List<FireEvent> result = new List<FireEvent>();
-
             foreach (FireEvent fe in events)
             {
-                if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
-                {
-                    result.Add(fe);
-                }
-            }
-
-            return result;           
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
-        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
-        /// <returns>returns a list of all FireEvents with a Timestamp between 
-        /// startTime and endTime</returns>
-        public static IEnumerable<FireEvent> GetByTimespan(long startTime, long endTime)
-        {
-            IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
-            List<FireEvent> result = new List<FireEvent>();
-            foreach (FireEvent fe in events)
-            {
-                if (fe.TimeStamp >= new DateTime(startTime) && fe.TimeStamp <= new DateTime(endTime))
-                {
-                    result.Add(fe);
-                }
-            }
-
-            return result;
-        }
-
-        /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
-        public static IEnumerable<FireEvent> GetByDate(int sourceId, int year, int month, int day)
-        {
-            IEnumerable<FireEvent> events = GetBySourceId(sourceId);
-            List<FireEvent> results = new List<FireEvent>();
-
-            foreach (FireEvent fe in events)
-            {
-                if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month && fe.TimeStamp.Day == day)
-                {
-                    results.Add(fe);
-                }
-            }
-
-            return results;
-        }
-
-        /// <returns>returns all FireEvents from the given sourceId in the given year and month</returns>
-        public static IEnumerable<FireEvent> GetByDate(int sourceId, int year, int month)
-        {
-            IEnumerable<FireEvent> events = GetBySourceId(sourceId);
-            List<FireEvent> results = new List<FireEvent>();
-
-            foreach (FireEvent fe in events)
-            {
-                if (fe.TimeStamp.Year == year && fe.TimeStamp.Month == month)
-                {
-                    results.Add(fe);
-                }
-            }
-
-            return results;
-        }
-
-        /// <returns>returns all FireEvents from the given sourceId in the given year</returns>
-        public static IEnumerable<FireEvent> GetByDate(int sourceId, int year)
-        {
-            IEnumerable<FireEvent> events = GetBySourceId(sourceId);
-            List<FireEvent> results = new List<FireEvent>();
-
-            foreach (FireEvent fe in events)
-            {
-                if (fe.TimeStamp.Year == year)
+                if (fe.EventType == eventType)
                 {
                     results.Add(fe);
                 }

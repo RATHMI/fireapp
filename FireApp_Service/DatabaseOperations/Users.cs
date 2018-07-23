@@ -194,5 +194,7 @@ namespace FireApp.Service.DatabaseOperations
 
             return results;
         }
+
+        // todo: get users by authorized object id
     }
 }

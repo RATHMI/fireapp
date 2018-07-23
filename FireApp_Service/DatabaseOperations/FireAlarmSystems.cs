@@ -169,47 +169,6 @@ namespace FireApp.Service.DatabaseOperations
                 return results;
             }
 
-        }
-
-        /// <summary>
-        /// Adds a FireBrigade to the list of FireBrigades of a FireAlarmSystem
-        /// </summary>
-        /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="firebrigade">identifier of the firebrigade</param>
-        /// <returns>returns true if the FireBrigade was added</returns>
-        public static bool AddFireBrigade(int id, int firebrigade)
-        {
-            try
-            {
-                FireAlarmSystem fas = GetById(id);
-                FireBrigade fb = DatabaseOperations.FireBrigades.GetById(firebrigade);
-                fas.FireBrigades.Add(fb.Id);
-                return Upsert(fas);
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException();
-            }
-        }
-
-        /// <summary>
-        /// Adds a ServiceGroup to the list of ServiceGroups of a FireAlarmSystem
-        /// </summary>
-        /// <param name="id">identifier of the FireAlarmSystem</param>
-        /// <param name="serviceGroup">identifier of the ServiceGroup</param>
-        /// <returns>returns true if the ServiceGroup was added</returns>
-        public static bool AddServiceGroup(int id, int serviceGroup)
-        {
-            try { 
-                FireAlarmSystem fas = GetById(id);
-                ServiceGroup sg = ServiceGroups.GetById(serviceGroup);
-                fas.ServiceGroups.Add(sg.Id);
-                return Upsert(fas);
-            }
-            catch (Exception)
-            {
-                throw new InvalidOperationException();
-            }
-        }
+        }       
     }
 }
