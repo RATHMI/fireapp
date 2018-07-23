@@ -7,6 +7,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireApp_Service", "FireApp_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireApp_Domain", "FireApp_Domain\FireApp_Domain.csproj", "{1024446B-7F5D-4982-A8AD-6768DB546F4A}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "FireApp_ClientWebsite", "..\FireApp_ClientWebsite\", "{92F6992C-20B1-46E2-B9A2-3F531746E280}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_64513"
+		Debug.AspNetCompiler.PhysicalPath = "..\FireApp_ClientWebsite\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64513\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_64513"
+		Release.AspNetCompiler.PhysicalPath = "..\FireApp_ClientWebsite\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64513\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "64513"
+		SlnRelativePath = "..\FireApp_ClientWebsite\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +43,10 @@ Global
 		{1024446B-7F5D-4982-A8AD-6768DB546F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1024446B-7F5D-4982-A8AD-6768DB546F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1024446B-7F5D-4982-A8AD-6768DB546F4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F6992C-20B1-46E2-B9A2-3F531746E280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F6992C-20B1-46E2-B9A2-3F531746E280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F6992C-20B1-46E2-B9A2-3F531746E280}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F6992C-20B1-46E2-B9A2-3F531746E280}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

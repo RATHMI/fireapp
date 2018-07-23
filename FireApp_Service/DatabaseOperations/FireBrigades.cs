@@ -8,6 +8,7 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class FireBrigades
     {
+
         /// <summary>
         /// inserts a FireBrigade into the database or updates it if it already exists
         /// </summary>

@@ -8,6 +8,7 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class ActiveEvents
     {
+
         /// <summary>
         /// 
         /// </summary>

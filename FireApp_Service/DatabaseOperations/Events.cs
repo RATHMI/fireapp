@@ -10,7 +10,8 @@ using System.Net;
 namespace FireApp.Service.DatabaseOperations
 {
     public static class Events
-    {
+    {       
+
         /// <summary>
         /// 
         /// </summary>

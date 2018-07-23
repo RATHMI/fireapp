@@ -8,6 +8,7 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class ServiceGroups
     {
+
         /// <summary>
         /// inserts a ServiceGroup into the database or updates it if it already exists
         /// </summary>

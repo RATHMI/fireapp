@@ -1,0 +1,3 @@
+﻿Make sure to implement the same methods in all classes
+	could use Interface if you use singletons instead of static classes
+ 

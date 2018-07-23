@@ -19,10 +19,10 @@ namespace FireApp.Service.Controllers
     public class EventsController : ApiController
     {
         /// <summary>
-        /// inserts a FireEvent into the database or updates it if it already exists
+        /// Inserts a FireEvent into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="fe">FireEvent that should be inserted into the Database</param>
-        /// <returns>returns true if new object was inserted</returns>
+        /// <param name="fe">FireEvent that should be inserted into the Database.</param>
+        /// <returns>Returns true if new object was inserted.</returns>
         [HttpPost, Route("upload")]     //todo: access only for admin, actual fire alarm system
         public bool UploadFireEvent([FromBody] FireEvent fe)
         {
@@ -39,13 +39,16 @@ namespace FireApp.Service.Controllers
                 Console.WriteLine(ex.Message);               
                 return false;
             }
+
+            // Allow upsert without authentication, because there is no authentication concept for real
+            // fire alarm systems yet.
             return DatabaseOperations.Events.Upsert(fe);
         }
 
         /// <summary>
-        /// 
+        /// Allows the admin to export all FireEvents to a CSV file.
         /// </summary>
-        /// <returns>returns a csv file with all FireEvents</returns>
+        /// <returns>Returns a csv file with all FireEvents.</returns>
         [HttpGet, Route("getcsv")]  //todo: comment
         public HttpResponseMessage GetCsv()
         {
@@ -96,11 +99,11 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Checks if an id is already used by another FireEvent
+        /// Checks if an id is already used by another FireEvent.
         /// </summary>
-        /// <param name="sourceId">the sourceId you want to check</param>
-        /// <param name="eventId">the eventId you want to check</param>
-        /// <returns>returns true if id is not used by other FireEvent</returns>
+        /// <param name="sourceId">The sourceId you want to check.</param>
+        /// <param name="eventId">The eventId you want to check</param>
+        /// <returns>Returns true if id is not used by other FireEvent.</returns>
         [HttpPost, Route("checkid/{sourceId}/{eventId}")]     
         public bool CheckId(int sourceId, int eventId)
         {
@@ -108,11 +111,13 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireEvents that the user is allowed to see.
+        /// If you want to filter the result use the headers of your request
+        /// (see Filter.FireEventsFilter.HeadersFilter).
         /// </summary>
-        /// <returns>returns all FireEvents that this user is allowed to see</returns>
-        [HttpGet, Route("all")]
-        public FireEvent[] All()
+        /// <returns>Returns all FireEvents that this user is allowed to see.</returns>
+        [HttpGet, Route("all")] // todo: comment
+        public FireEvent[] GetAll()
         {
 
             try { 
@@ -121,13 +126,13 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
 
-                    // get all FireEvents
+                    // Get all FireEvents.
                     IEnumerable<FireEvent> events = DatabaseOperations.Events.GetAll();
 
-                    // filter FireEvents according to the UserType and AuthorizedObjectIds
+                    // Filter FireEvents according to the UserType and AuthorizedObjectIds.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
 
-                    // filter FireEvents according to the headers the client sent
+                    // Filter FireEvents according to the headers the client sent.
                     events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);                    
 
                     return events.ToArray();
@@ -145,14 +150,14 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Finds a distinct FireEvent.
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
+        /// the FireEvent.</param>
         /// <param name="eventId">The ongoing number of the FireEvents of one
-        /// FireAlarmSystem</param>
-        /// <returns>returns a distinct FireEvent with a matching sourceId and eventId 
-        /// (a FireEvent from a distinct fireAlarmSystem with the matching eventId)</returns>
+        /// FireAlarmSystem.</param>
+        /// <returns>Returns a distinct FireEvent with a matching sourceId and eventId 
+        /// (a FireEvent from a distinct FireAlarmSystem with the matching eventId).</returns>
         [HttpGet, Route("id/{sourceId}/{eventId}")] //todo: comment
         public FireEvent[] GetFireEventById(int sourceId, int eventId)
         {
@@ -163,12 +168,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a matching sourceId and eventId
                     events = DatabaseOperations.Events.GetById(sourceId, eventId);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -183,9 +193,9 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
+        /// the FireEvent.</param>
         /// <returns>returns a list of all Fireevents with a matching sourceId 
-        /// (all Fireevents from a distinct fire alarm system)</returns>
+        /// (all Fireevents from a distinct fire alarm system).</returns>
         [HttpGet, Route("source/{sourceId}")]//todo: comment
         public FireEvent[] GetFireEventsBySourceId(int sourceId)
         {
@@ -196,12 +206,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a matching sourceId.
                     events = DatabaseOperations.Events.GetBySourceId(sourceId);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -216,10 +231,10 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
+        /// the FireEvent.</param>
         /// <param name="targetId">The id of the fire detector that sent the 
-        /// FireEvent</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId and targetId</returns>
+        /// FireEvent.</param>
+        /// <returns>Returns a list of all FireEvents with matching sourceId and targetId.</returns>
         [HttpGet, Route("target/{sourceId}/{targetId}")]//todo: comment
         public FireEvent[] GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
@@ -230,12 +245,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a matching sourceId and targetId.
                     events = DatabaseOperations.Events.GetByTarget(sourceId, targetId);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -244,15 +264,15 @@ namespace FireApp.Service.Controllers
                 Console.WriteLine(ex.Message);
                 return new FireEvent[0];
             }
-        }      
+        }
 
         /// <summary>
-        /// 
+        /// To get FireEvents with a matching EventType from one specific FireAlarmSystem.
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
-        /// <param name="eventType">The EventType of the FireEvent</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId and eventType</returns>
+        /// the FireEvent.</param>
+        /// <param name="eventType">The EventType of the FireEvent.</param>
+        /// <returns>Returns a list of all FireEvents with matching sourceId and eventType.</returns>
         [HttpGet, Route("type/{sourceId}/{eventType}")]//todo: comment
         public FireEvent[] GetFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
         {
@@ -263,12 +283,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a matching sourceId and eventType.
                     events = DatabaseOperations.Events.GetBySourceIdEventType(sourceId, eventType);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -280,11 +305,13 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// To get FireEvents with a matching EventType.
+        /// For Users with more than one authorized object the SourceId of the FireEvents 
+        /// can be different (from different FireAlarmSystems).
         /// </summary>
-        /// <param name="eventType">The EventType of the FireEvents</param>
-        /// <returns>returns a list of all FireEvents with matching eventType</returns>
-        [HttpGet, Route("type/{eventType}")]//todo: comment
+        /// <param name="eventType">The EventType of the FireEvents.</param>
+        /// <returns>Returns a list of all FireEvents with matching eventType.</returns>
+        [HttpGet, Route("type/{eventType}")]
         public FireEvent[] GetFireEventsByEventType(EventTypes eventType)
         {
             try
@@ -294,12 +321,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a matching eventType.
                     events = DatabaseOperations.Events.GetByEventType(eventType);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -314,11 +346,11 @@ namespace FireApp.Service.Controllers
         /// 
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
-        /// the FireEvent</param>
-        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
-        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
-        /// <returns>returns a list of all FireEvents with matching sourceId and and a Timestamp between 
-        /// startTime and endTime</returns>
+        /// the FireEvent.</param>
+        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents.</param>
+        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents.</param>
+        /// <returns>Returns a list of all FireEvents with matching sourceId and and a Timestamp between 
+        /// startTime and endTime.</returns>
         [HttpGet, Route("time/{sourceId}/{startTime}/{endTime}")]//todo: comment
         public FireEvent[] GetFireEventsBySourceIdTimespan(int sourceId, long startTime, long endTime)
         {
@@ -329,12 +361,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a matching sourceId and a timestamp between startTime and endTime.
                     events = DatabaseOperations.Events.GetBySourceIdTimespan(sourceId, startTime, endTime);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -346,12 +383,12 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// For Users with more than one authorized object.
         /// </summary>
-        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents</param>
-        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents</param>
-        /// <returns>returns a list of all FireEvents with a Timestamp between 
-        /// startTime and endTime</returns>
+        /// <param name="startTime">The minimal value of the TimeStamp of the FireEvents.</param>
+        /// <param name="endTime">The maximal value of the TimeStamp of the FireEvents.</param>
+        /// <returns>Returns a list of all FireEvents with a Timestamp between 
+        /// startTime and endTime.</returns>
         [HttpGet, Route("time/{startTime}/{endTime}")]//todo: comment
         public FireEvent[] GetFireEventsByTimespan(long startTime, long endTime)
         {
@@ -362,12 +399,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all FireEvents with a timestamp between startTime and endTime.
                     events = DatabaseOperations.Events.GetByTimespan(startTime, endTime);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -381,7 +423,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns all FireEvents from the given sourceId at the given date</returns>
+        /// <returns>Returns all FireEvents from the given sourceId at the given date.</returns>
         [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]//todo: comment
         public FireEvent[] GetFireEventsByDate(int sourceId, int year, int month, int day)
         {

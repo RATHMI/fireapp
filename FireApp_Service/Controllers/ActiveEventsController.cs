@@ -11,13 +11,13 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("active")]
     public class ActiveEventsController : ApiController
     {
-        //todo: use same filters as for normal FireEvents
+        //todo: use same filters as for normal FireEvents?
         /// <summary>
         /// 
         /// </summary>
         /// <returns>returns a list of all active FireEvents</returns>
         [HttpGet, Route("all")] //todo: comment
-        public FireEvent[] Active()
+        public FireEvent[] GetAll()
         {
             try
             {
@@ -26,8 +26,16 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents.
                     events = DatabaseOperations.ActiveEvents.GetAll();
+
+                    // Filter FireEvents according to the UserType and AuthorizedObjectIds.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
+
+                    // Filter FireEvents according to the headers the client sent.
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);
+
                     return events.ToArray();
                 }
                 else
@@ -48,7 +56,7 @@ namespace FireApp.Service.Controllers
         /// <param name="eventType">The EventType of the active FireEvents</param>
         /// <returns>returns a list of all active FireEvents of the given EventType</returns>
         [HttpGet, Route("type/{eventType}")] //todo: comment
-        public FireEvent[] Active(EventTypes eventType)
+        public FireEvent[] GetByEventType(EventTypes eventType)
         {
             try
             {
@@ -79,7 +87,7 @@ namespace FireApp.Service.Controllers
         /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
         /// <returns>a list of active FireEvents with a matching sourceId</returns>
         [HttpGet, Route("source/{sourceId}")]   //todo: comment
-        public FireEvent[] GetActiveFireEventsBySourceId(int sourceId)
+        public FireEvent[] GetBySourceId(int sourceId)
         {
             try
             {
@@ -111,7 +119,7 @@ namespace FireApp.Service.Controllers
         /// <param name="targetId">the targetId of the active FireEvent you are looking for</param>
         /// <returns>returns a FireEvent with a matching sourceId and targetId</returns>
         [HttpGet, Route("id/{sourceId}/{targetId}")] //todo: comment
-        public FireEvent[] GetActiveFireEventById(int sourceId, string targetId)
+        public FireEvent[] GetById(int sourceId, string targetId)
         {
             try
             {
@@ -143,7 +151,7 @@ namespace FireApp.Service.Controllers
         /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
         /// EventType</returns>
         [HttpGet, Route("type/{sourceId}/{eventType}")]//todo: comment
-        public FireEvent[] GetActiveFireEventsBySourceIdEventType(int sourceId, EventTypes eventType)
+        public FireEvent[] GetBySourceIdEventType(int sourceId, EventTypes eventType)
         {
             try
             {
@@ -170,7 +178,7 @@ namespace FireApp.Service.Controllers
 
         /// <returns>returns all active FireEvents from the given sourceId at the given date</returns>
         [HttpGet, Route("date/{sourceId}/{year}/{month}/{day}")]//todo: comment
-        public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month, int day)
+        public FireEvent[] GetBySourceIdDate(int sourceId, int year, int month, int day)
         {
             try
             {
@@ -197,7 +205,7 @@ namespace FireApp.Service.Controllers
 
         /// <returns>returns all active FireEvents from the given sourceId in the given month and year</returns>
         [HttpGet, Route("date/{sourceId}/{year}/{month}")]//todo: comment
-        public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year, int month)
+        public FireEvent[] GetBySourceIdDate(int sourceId, int year, int month)
         {
             try
             {
@@ -224,7 +232,7 @@ namespace FireApp.Service.Controllers
 
         /// <returns>returns all active FireEvents from the given sourceId in the given year</returns>
         [HttpGet, Route("date/{sourceId}/{year}")]//todo: comment
-        public FireEvent[] GetActiveFireEventsBySourceIdDate(int sourceId, int year)
+        public FireEvent[] GetBySourceIdDate(int sourceId, int year)
         {
             try
             {

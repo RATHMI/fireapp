@@ -8,6 +8,7 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class Users
     {
+
         /// <summary>
         /// inserts a User into the database or updates it if it already exists
         /// </summary>
@@ -15,41 +16,48 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>returns true if User was inserted</returns>
         public static bool Upsert(User user)
         {
-            if (user != null)
+            try
             {
-                if (user.Token == null)
+                if (user != null)
                 {
-                    // try to find existing user
-                    User old = GetById(user.Id);
-                    if (old == null)
+                    if (user.Token == null)
                     {
-                        // if there is no existing user you have to generate a new token 
-                        // to guarantee a safe authentication 
-                        user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                        // try to find existing user
+                        User old = GetById(user.Id);
+                        if (old == null)
+                        {
+                            // if there is no existing user you have to generate a new token 
+                            // to guarantee a safe authentication 
+                            user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                        }
+                        else
+                        {
+                            // if there is an existing user copy the token so the user does not have to log in again
+                            user.Token = old.Token;
+                        }
                     }
-                    else
+                    if (user.Password == null)
                     {
-                        // if there is an existing user copy the token so the user does not have to log in again
-                        user.Token = old.Token;
-                    }                    
-                }
-                if(user.Password == null)
-                {
-                    // try to find existing user
-                    User old = GetById(user.Id);
-                    if(old == null)
-                    {
-                        // User should not be upserted if there is no password
-                        return false;
+                        // try to find existing user
+                        User old = GetById(user.Id);
+                        if (old == null)
+                        {
+                            // User should not be upserted if there is no password
+                            return false;
+                        }
+                        user.Password = old.Password;
                     }
-                    user.Password = old.Password;
-                }
 
-                // save User in database
-                LocalDatabase.UpsertUser(user);
-                return DatabaseOperations.DbUpserts.UpsertUser(user);
+                    // save User in database
+                    LocalDatabase.UpsertUser(user);
+                    return DatabaseOperations.DbUpserts.UpsertUser(user);
+                }
+                return false;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
             }
-            return false;
         }
 
         /// <summary>

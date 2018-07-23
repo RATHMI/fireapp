@@ -8,6 +8,7 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class FireAlarmSystems
     {
+
         /// <summary>
         /// inserts a FireAlarmSystem into the database or updates it if it already exists
         /// </summary>
