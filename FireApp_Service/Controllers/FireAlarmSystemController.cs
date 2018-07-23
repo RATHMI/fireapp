@@ -207,6 +207,10 @@ namespace FireApp.Service.Controllers
                 
         }
 
+        /// <summary>
+        /// Returns a list of souceIds from FireEvents where there is no FireAlarmSystem with a matching Id
+        /// </summary>
+        /// <returns>returns a list of IDs</returns>
         [HttpGet, Route("unregistered")]
         public int[] GetUnregistered()
         {

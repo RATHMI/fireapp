@@ -235,7 +235,7 @@ namespace FireApp.Service
         /// 
         /// </summary>
         /// <returns>returns a List of all FireAlarmSystems that are stored in the cache</returns>
-        public static List<FireAlarmSystem> GetAllFireAlarmSystems()
+        public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
         {
             IEnumerable<FireAlarmSystem> rv = (IEnumerable<FireAlarmSystem>)GlobalCachingProvider.Instance.GetItem(fireAlarmSystemsString, false);
             if (rv == null)
