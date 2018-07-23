@@ -133,6 +133,44 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Returns a list of souceIds from FireEvents where there is no FireAlarmSystem with a matching Id
+        /// </summary>
+        /// <returns>returns a list of IDs</returns>
+        public static IEnumerable<int> GetUnregistered()
+        {
+            List<FireAlarmSystem> fireAlarmSystems = FireAlarmSystems.GetAll().OrderBy(x => x.Id).ToList();
+            List<FireEvent> events = Events.GetAll().OrderBy(x => x.Id.SourceId).ToList();
+
+            // Use a HashSet to prevent redundant entries
+            HashSet<int> results = new HashSet<int>();
+
+            try
+            {
+                // remove all FireEvents from the list where there is a FireAlarmSystem with a matching id
+                foreach (FireAlarmSystem fas in fireAlarmSystems)
+                {
+                    events.RemoveAll(x => x.Id.SourceId == fas.Id);
+                }
+
+                // "events" now contains all FireEvents with no matching FireAlarmSystem
+
+                // add the sourceId of all remaining FireEvents to "results"
+                foreach(FireEvent fe in events)
+                {
+                    results.Add(fe.Id.SourceId);
+                }
+
+                return results;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return results;
+            }
+
+        }
+
+        /// <summary>
         /// Adds a FireBrigade to the list of FireBrigades of a FireAlarmSystem
         /// </summary>
         /// <param name="id">identifier of the FireAlarmSystem</param>

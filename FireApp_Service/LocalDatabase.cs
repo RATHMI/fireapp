@@ -106,7 +106,7 @@ namespace FireApp.Service
         /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
         public static IEnumerable<FireEvent> GetAllFireEvents()
         {
-            IEnumerable<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
+            IEnumerable<FireEvent> rv = (IEnumerable<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
             if(rv == null)
             {
                 rv = new List<FireEvent>();
@@ -192,7 +192,7 @@ namespace FireApp.Service
         /// <returns>returns a list of all active FireEvents from the cache</returns>
         public static IEnumerable<FireEvent> GetActiveFireEvents()
         {
-            IEnumerable<FireEvent> rv = (List<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
+            IEnumerable<FireEvent> rv = (IEnumerable<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
             if (rv == null)
             {
                 rv = new List<FireEvent>();
@@ -237,7 +237,7 @@ namespace FireApp.Service
         /// <returns>returns a List of all FireAlarmSystems that are stored in the cache</returns>
         public static List<FireAlarmSystem> GetAllFireAlarmSystems()
         {
-            List<FireAlarmSystem> rv = (List<FireAlarmSystem>)GlobalCachingProvider.Instance.GetItem(fireAlarmSystemsString, false);
+            IEnumerable<FireAlarmSystem> rv = (IEnumerable<FireAlarmSystem>)GlobalCachingProvider.Instance.GetItem(fireAlarmSystemsString, false);
             if (rv == null)
             {
                 rv = new List<FireAlarmSystem>();
@@ -317,7 +317,7 @@ namespace FireApp.Service
         /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
         public static IEnumerable<FireBrigade> GetAllFireBrigades()
         {
-            IEnumerable<FireBrigade> rv = (List<FireBrigade>)GlobalCachingProvider.Instance.GetItem(fireBrigadesString, false);
+            IEnumerable<FireBrigade> rv = (IEnumerable<FireBrigade>)GlobalCachingProvider.Instance.GetItem(fireBrigadesString, false);
             if (rv == null)
             {
                 rv = new List<FireBrigade>();
@@ -397,7 +397,7 @@ namespace FireApp.Service
         /// <returns>returns a List of all ServiceGroups that are stored in the cache</returns>
         public static IEnumerable<ServiceGroup> GetAllServiceGroups()
         {
-            IEnumerable<ServiceGroup> rv = (List<ServiceGroup>)GlobalCachingProvider.Instance.GetItem(serviceGroupsString, false);
+            IEnumerable<ServiceGroup> rv = (IEnumerable<ServiceGroup>)GlobalCachingProvider.Instance.GetItem(serviceGroupsString, false);
             if (rv == null)
             {
                 rv = new List<ServiceGroup>();
@@ -478,7 +478,7 @@ namespace FireApp.Service
         /// <returns>returns a List of all Users that are stored in the cache</returns>
         public static IEnumerable<User> GetAllUsers()
         {
-            IEnumerable<User> rv = (List<User>)GlobalCachingProvider.Instance.GetItem(userString, false);
+            IEnumerable<User> rv = (IEnumerable<User>)GlobalCachingProvider.Instance.GetItem(userString, false);
             if (rv == null)
             {
                 rv = new List<User>();

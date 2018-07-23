@@ -11,6 +11,7 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("active")]
     public class ActiveEventsController : ApiController
     {
+        //todo: use same filters as for normal FireEvents
         /// <summary>
         /// 
         /// </summary>

@@ -207,6 +207,33 @@ namespace FireApp.Service.Controllers
                 
         }
 
+        [HttpGet, Route("unregistered")]
+        public int[] GetUnregistered()
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        return DatabaseOperations.FireAlarmSystems.GetUnregistered().ToArray();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+                return new int[0];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new int[0];
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

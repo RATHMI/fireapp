@@ -80,7 +80,7 @@ namespace FireApp.Service.Controllers
                 Console.WriteLine(ex.Message);
                 return -3;
             }
-}
+        }
 
         /// <summary>
         /// 
@@ -139,6 +139,7 @@ namespace FireApp.Service.Controllers
             }
         }
 
+        //todo: test upload
         /// <summary>
         /// Retrieves Users from CSV and upserts them
         /// </summary>
