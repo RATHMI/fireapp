@@ -37,7 +37,7 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(serviceGroupFilter(serviceGroup, authorizedObject));
+                        results.Add(serviceGroupFilter(serviceGroup, authorizedObject));
                     }
                 }
             }
@@ -79,7 +79,7 @@ namespace FireApp.Service.Filter
         /// <param name="serviceGroups">a list of ServiceGroups you want to filter</param>
         /// <param name="id">the id of the ServiceGroup</param>
         /// <returns>returns a filtered list of ServiceGroups</returns>
-        private static IEnumerable<ServiceGroup> serviceGroupFilter(IEnumerable<ServiceGroup> serviceGroups, int id)
+        private static ServiceGroup serviceGroupFilter(IEnumerable<ServiceGroup> serviceGroups, int id)
         {
             if (serviceGroups != null)
             {
@@ -87,11 +87,11 @@ namespace FireApp.Service.Filter
                 {
                     if (sg.Id == id)
                     {
-                        return ((IEnumerable<ServiceGroup>)sg);
+                        return sg;
                     }
                 }
             }
-            return ((IEnumerable<ServiceGroup>)new List<ServiceGroup>());
+            return null;
         }
     }
 }

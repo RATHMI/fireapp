@@ -14,10 +14,10 @@ namespace FireApp.Service.Controllers
     public class FireAlarmSystemController : ApiController
     {
         /// <summary>
-        /// inserts a FireAlarmSystem into the database or updates it if it already exists
+        /// Inserts a FireAlarmSystem into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="fas">The FireAlarmSystem you want to insert</param>
-        /// <returns>returns true if the insert was successful</returns>
+        /// <param name="fas">The FireAlarmSystem you want to upsert.</param>
+        /// <returns>Returns true if the FireAlarmSystem was inserted.</returns>
         [HttpPost, Route("upload")]//todo: comment
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
@@ -42,13 +42,13 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// inserts an array of FireAlarmSystems into the database or updates it if it already exists
+        /// Inserts an array of FireAlarmSystems into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="fas">The FireAlarmSystems you want to insert</param>
-        /// <returns>returns the number of upserted FireAlarmSystems.
-        /// -1 : invalid or no token
-        /// -2 : user is not an admin
-        /// -3 : an error occurred</returns>
+        /// <param name="fas">The FireAlarmSystems you want to upsert<./param>
+        /// <returns>Returns the number of upserted FireAlarmSystems.
+        /// -1 : invalid or no token.
+        /// -2 : user is not an admin.
+        /// -3 : an error occurred.</returns>
         [HttpPost, Route("uploadbulk")]
         public int UpsertBulk([FromBody] FireAlarmSystem[] fas)
         {
@@ -65,11 +65,13 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         return -2;
                     }
                 }
                 else
                 {
+                    // User is not logged in.
                     return -1;
                 }
             }
@@ -83,10 +85,10 @@ namespace FireApp.Service.Controllers
         //todo: implement method "FromCSV" with option insert or update to prevent unwanted updates
 
         /// <summary>
-        /// Checks if an id is already used by another FireAlarmSystem
+        /// Checks if an id is already used by another FireAlarmSystem.
         /// </summary>
-        /// <param name="id">the id you want to check</param>
-        /// <returns>returns id if id is not used by other FireAlarmSystem or else a new id</returns>
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns id if id is not used by other FireAlarmSystem or else an unused id.</returns>
         [HttpPost, Route("checkid/{id}")]
         public int CheckId(int id)
         {
@@ -96,7 +98,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a list of all FireAlarmSystems</returns>
+        /// <returns>Returns a list of all FireAlarmSystems.</returns>
         [HttpGet, Route("all")]//todo: comment
         public FireAlarmSystem[] All()
         {
@@ -107,12 +109,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireAlarmSystem> fas;
+
+                    // Get all FireAlarmSystems.
                     fas = DatabaseOperations.FireAlarmSystems.GetAll();
+
+                    // Filter the FireAlarmSystems according to the User.
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
                     return fas.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -124,9 +131,9 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Allows the admin to export all FireAlarmSystems to a CSV file.
         /// </summary>
-        /// <returns>returns a csv file with all FireAlarmSystems</returns>
+        /// <returns>Returns a CSV file with all FireAlarmSystems.</returns>
         [HttpGet, Route("getcsv")]//todo: comment
         public HttpResponseMessage GetCsv()
         {
@@ -140,12 +147,21 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
+
+                        // Get all FireAlarmSystems.
                         IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireAlarmSystems.GetAll();
+
+                        // Convert FireAlarmSystems into a CSV file.
                         byte[] file = FileOperations.FireAlarmSystemFiles.ExportToCSV(fas);
+
+                        // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
 
+                        // Set position of stream to 0 to avoid problems with the index.
                         stream.Position = 0;
                         result = new HttpResponseMessage(HttpStatusCode.OK);
+
+                        // Add the CSV file to the content of the response.
                         result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
@@ -162,6 +178,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }
@@ -179,7 +196,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a list of all FireAlarmSystems with active FireEvents</returns>
+        /// <returns>Returns a list of all FireAlarmSystems with active FireEvents.</returns>
         [HttpGet, Route("active")]//todo: comment
         public FireAlarmSystem[] GetActiveFireAlarmSystems()
         {
@@ -190,7 +207,9 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireAlarmSystem> fas;
+
                     fas = DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user);
+
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
                     return fas.ToArray();
                 }

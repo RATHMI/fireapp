@@ -37,7 +37,7 @@ namespace FireApp.Service.Filter
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(fireBrigadeFilter(fireBrigades, authorizedObject));
+                        results.Add(fireBrigadeFilter(fireBrigades, authorizedObject));
                     }
                 }
             }
@@ -78,7 +78,7 @@ namespace FireApp.Service.Filter
         /// <param name="fireBrigades">a list of FireAlarmSystems you want to filter</param>
         /// <param name="id">the id of the FireBrigade</param>
         /// <returns>returns a filtered list of FireBrigades</returns>
-        private static IEnumerable<FireBrigade> fireBrigadeFilter(IEnumerable<FireBrigade> fireBrigades, int id)
+        private static FireBrigade fireBrigadeFilter(IEnumerable<FireBrigade> fireBrigades, int id)
         {
             if (fireBrigades != null)
             {
@@ -86,11 +86,11 @@ namespace FireApp.Service.Filter
                 {
                     if (fb.Id == id)
                     {
-                        return ((IEnumerable<FireBrigade>)fb);
+                        return fb;
                     }
                 }
             }
-            return ((IEnumerable<FireBrigade>)new List<FireBrigade>());
+            return null;
         } 
     }
 }

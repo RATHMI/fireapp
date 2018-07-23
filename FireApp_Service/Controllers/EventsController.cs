@@ -48,7 +48,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// Allows the admin to export all FireEvents to a CSV file.
         /// </summary>
-        /// <returns>Returns a csv file with all FireEvents.</returns>
+        /// <returns>Returns a CSV file with all FireEvents.</returns>
         [HttpGet, Route("getcsv")]  //todo: comment
         public HttpResponseMessage GetCsv()
         {
@@ -84,6 +84,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }
@@ -139,6 +140,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }

@@ -11,12 +11,13 @@ namespace FireApp.Service.Controllers
     [RoutePrefix("active")]
     public class ActiveEventsController : ApiController
     {
-        //todo: use same filters as for normal FireEvents?
         /// <summary>
-        /// 
+        /// Returns all active FireEvents that the user is allowed to see.
+        /// If you want to filter the result use the headers of your request
+        /// (see Filter.FireEventsFilter.HeadersFilter).
         /// </summary>
-        /// <returns>returns a list of all active FireEvents</returns>
-        [HttpGet, Route("all")] //todo: comment
+        /// <returns>Returns all active FireEvents that this user is allowed to see.</returns>
+        [HttpGet, Route("all")]
         public FireEvent[] GetAll()
         {
             try
@@ -30,7 +31,7 @@ namespace FireApp.Service.Controllers
                     // Get all active FireEvents.
                     events = DatabaseOperations.ActiveEvents.GetAll();
 
-                    // Filter FireEvents according to the UserType and AuthorizedObjectIds.
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
 
                     // Filter FireEvents according to the headers the client sent.
@@ -40,6 +41,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -53,8 +55,8 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="eventType">The EventType of the active FireEvents</param>
-        /// <returns>returns a list of all active FireEvents of the given EventType</returns>
+        /// <param name="eventType">The EventType of the active FireEvents.</param>
+        /// <returns>Returns a list of all active FireEvents of the given EventType.</returns>
         [HttpGet, Route("type/{eventType}")] //todo: comment
         public FireEvent[] GetByEventType(EventTypes eventType)
         {
@@ -65,12 +67,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching eventType.
                     events = DatabaseOperations.ActiveEvents.GetByEventType(eventType);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -84,8 +91,8 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
-        /// <returns>a list of active FireEvents with a matching sourceId</returns>
+        /// <param name="sourceId">The sourceId of the active FireEvents you want to look for.</param>
+        /// <returns>Returns a list of active FireEvents with a matching sourceId.</returns>
         [HttpGet, Route("source/{sourceId}")]   //todo: comment
         public FireEvent[] GetBySourceId(int sourceId)
         {
@@ -96,12 +103,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching sourceId.
                     events = DatabaseOperations.ActiveEvents.GetBySourceId(sourceId);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -113,11 +125,11 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// returns a distinct activeFireEvent
+        /// Returns a distinct active FireEvent.
         /// </summary>
-        /// <param name="sourceId">the sourceId of the active FireEvent you are looking for</param>
-        /// <param name="targetId">the targetId of the active FireEvent you are looking for</param>
-        /// <returns>returns a FireEvent with a matching sourceId and targetId</returns>
+        /// <param name="sourceId">The sourceId of the active FireEvent you are looking for.</param>
+        /// <param name="targetId">The targetId of the active FireEvent you are looking for.</param>
+        /// <returns>Returns a FireEvent with a matching sourceId and targetId.</returns>
         [HttpGet, Route("id/{sourceId}/{targetId}")] //todo: comment
         public FireEvent[] GetById(int sourceId, string targetId)
         {
@@ -128,11 +140,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching sourceId and targetId.
                     events = DatabaseOperations.ActiveEvents.GetByTarget(sourceId, targetId);
-                    return Filter.FireEventsFilter.UserFilter(events, user).ToArray();
+
+                    // Filter the FireEvents according to the User.
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -146,10 +164,10 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sourceId">the sourceId of the active FireEvents you want to look for</param>
-        /// <param name="eventType">The EventType of the active FireEvents</param>
-        /// <returns>returns a list of all active FireEvents with a matching sourceId an of the given 
-        /// EventType</returns>
+        /// <param name="sourceId">The sourceId of the active FireEvents you want to look for.</param>
+        /// <param name="eventType">The EventType of the active FireEvents.</param>
+        /// <returns>Returns a list of all active FireEvents with a matching sourceId an of the given 
+        /// EventType.</returns>
         [HttpGet, Route("type/{sourceId}/{eventType}")]//todo: comment
         public FireEvent[] GetBySourceIdEventType(int sourceId, EventTypes eventType)
         {
@@ -160,12 +178,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching sourceId and eventType.
                     events = DatabaseOperations.ActiveEvents.GetBySourceIdEventType(sourceId, eventType);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -187,12 +210,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching sourceId and a timestamp with a matching date
                     events = DatabaseOperations.ActiveEvents.GetBySourceIdDate(sourceId, year, month, day);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -214,12 +242,18 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching sourceId and a timestamp 
+                    // with a matching year and month.
                     events = DatabaseOperations.ActiveEvents.GetBySourceIdDate(sourceId, year, month);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -241,12 +275,18 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents with a matching sourceId and a timestamp 
+                    // with a matching year.
                     events = DatabaseOperations.ActiveEvents.GetBySourceIdDate(sourceId, year);
+
+                    // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
                     return events.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
