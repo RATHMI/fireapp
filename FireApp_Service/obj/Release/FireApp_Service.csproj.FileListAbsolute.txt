@@ -79,3 +79,5 @@ C:\proj\fireapp\FireApp_Service\bin\System.Web.Http.WebHost.xml
 C:\proj\fireapp\FireApp_Service\obj\Release\FireApp_Service.csprojResolveAssemblyReference.cache
 C:\proj\fireapp\FireApp_Service\obj\Release\FireApp.Service.dll
 C:\proj\fireapp\FireApp_Service\obj\Release\FireApp.Service.pdb
+C:\proj\fireapp\FireApp_Service\bin\MlkPwgen.dll
+C:\proj\fireapp\FireApp_Service\bin\MlkPwgen.xml

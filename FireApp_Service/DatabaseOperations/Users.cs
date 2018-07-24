@@ -19,10 +19,20 @@ namespace FireApp.Service.DatabaseOperations
             {
                 if (user != null)
                 {
+                    // Try to find an existing User.
+                    User old = GetById(user.Id);
+                    if(user.Email == null)
+                    {
+                        return false;
+                    }
+
+                    if (old == null)
+                    {
+                        Email.EmailSender.WelcomeEmail(user);
+                    }
+
                     if (user.Token == null)
                     {
-                        // Try to find an existing User.
-                        User old = GetById(user.Id);
                         if (old == null)
                         {
                             // If there is no existing User you have to generate a new token
@@ -35,10 +45,9 @@ namespace FireApp.Service.DatabaseOperations
                             user.Token = old.Token;
                         }
                     }
-                    if (user.Password == null)
+
+                    if (user.Password == null || user.Email == null)
                     {
-                        // Try to find existing User.
-                        User old = GetById(user.Id);
                         if (old == null)
                         {
                             // The User should not be upserted if there is no password.
@@ -50,7 +59,7 @@ namespace FireApp.Service.DatabaseOperations
                     {
                         // Encrypt password.
                         user.Password = Encryption.Encrypt.EncryptString(user.Password);
-                    }
+                    }                    
 
                     // Save the User in the database.
                     LocalDatabase.UpsertUser(user);
