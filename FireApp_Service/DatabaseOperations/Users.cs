@@ -28,7 +28,7 @@ namespace FireApp.Service.DatabaseOperations
 
                     if (old == null)
                     {
-                        Email.EmailSender.WelcomeEmail(user);
+                        Email.Email.WelcomeEmail(user);
                     }
 
                     if (user.Token == null)
@@ -154,6 +154,23 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
+        /// Returns the first admin that is found in the database.
+        /// </summary>
+        /// <returns>Returns a User with Usertype admin.</returns>
+        public static User GetFirstAdmin()
+        {
+            IEnumerable<User> admins = GetByUserTypes(new UserTypes[] { UserTypes.admin });
+            if(admins.Count() > 0)
+            {
+                return admins.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Returns the User with a matching Username.
         /// </summary>
         /// <param name="username">The Username of the User you are looking for.</param>
@@ -207,5 +224,6 @@ namespace FireApp.Service.DatabaseOperations
 
             return results;
         }
-    }
+
+     }
 }

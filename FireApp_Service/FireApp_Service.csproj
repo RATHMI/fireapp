@@ -173,6 +173,7 @@
     <Compile Include="Cache\CachingProviderBase.cs" />
     <Compile Include="Cache\GlobalCachingProvider.cs" />
     <Compile Include="Cache\IGlobalCachingProvider.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\FireAlarmSystemController.cs" />
     <Compile Include="Controllers\FireEventController.cs" />
     <Compile Include="Controllers\FireBrigadeController.cs" />

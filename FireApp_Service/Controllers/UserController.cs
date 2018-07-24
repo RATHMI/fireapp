@@ -20,7 +20,7 @@ namespace FireApp.Service.Controllers
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
         [HttpPost, Route("upload")]//todo: comment
-        public bool UpsertUserre([FromBody] User u)
+        public bool UpsertUser([FromBody] User u)
         {
             try {
                 User user;
@@ -387,7 +387,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    // only return Users if User is an admin
+                    // Only return Users if User is an admin.
                     if (user.UserType == UserTypes.admin)
                     {
                         return DatabaseOperations.Users.GetInactiveUsers().ToArray();
@@ -407,7 +407,153 @@ namespace FireApp.Service.Controllers
                 Console.WriteLine(ex.Message);
                 return new User[0];
             }
-        }      
+        }
 
+
+        [HttpGet, Route("authobjects/{username}/{type}")]//todo: comment
+        public object[] GetAuthorizedObjects(string username, string type) 
+        {
+            try
+            {
+                List<object> results = new List<object>();
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    // Only return Users if User is an admin.
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        // Find the user with a matching username.
+                        user = DatabaseOperations.Users.GetById(username);
+                        if(user != null)
+                        {
+                            if (type == "groups")
+                            {
+                                if (user.UserType == UserTypes.firealarmsystem)
+                                {
+                                    foreach (int id in user.AuthorizedObjectIds)
+                                    {
+                                        try
+                                        {
+                                            results.Add(DatabaseOperations.FireAlarmSystems.GetById(id));
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                if (user.UserType == UserTypes.firebrigade)
+                                {
+                                    foreach (int id in user.AuthorizedObjectIds)
+                                    {
+                                        try
+                                        {
+                                            results.Add(DatabaseOperations.FireBrigades.GetById(id));
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                if (user.UserType == UserTypes.servicemember)
+                                {
+                                    foreach (int id in user.AuthorizedObjectIds)
+                                    {
+                                        try
+                                        {
+                                            results.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if(type == "fas")
+                                {
+                                    List<object> authorizedObjects = new List<object>();
+                                    if (user.UserType == UserTypes.firebrigade)
+                                    {
+                                        foreach (int id in user.AuthorizedObjectIds)
+                                        {
+                                            try
+                                            {
+                                                authorizedObjects.Add(DatabaseOperations.FireBrigades.GetById(id));
+                                            }
+                                            catch (Exception)
+                                            {
+                                                continue;
+                                            }
+                                        }
+
+                                        foreach(FireBrigade fb in authorizedObjects)
+                                        {
+                                            foreach(FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+                                            {
+                                                if (fas.FireBrigades.Contains(fb.Id))
+                                                {
+                                                    results.Add(fas);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (user.UserType == UserTypes.servicemember)
+                                    {
+                                        foreach (int id in user.AuthorizedObjectIds)
+                                        {
+                                            try
+                                            {
+                                                authorizedObjects.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                                            }
+                                            catch (Exception)
+                                            {
+                                                continue;
+                                            }
+                                        }
+
+                                        foreach (ServiceGroup sg in authorizedObjects)
+                                        {
+                                            foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+                                            {
+                                                if (fas.FireBrigades.Contains(sg.Id))
+                                                {
+                                                    results.Add(fas);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new KeyNotFoundException();
+                        }
+                    }
+                    else
+                    {
+                        throw new UnauthorizedAccessException();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+                return results.ToArray();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new object[0];
+            }
+        }
     }
 }
