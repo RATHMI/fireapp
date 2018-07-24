@@ -30,7 +30,7 @@ namespace FireApp.Service.Authentication
                 if (user != null)
                 {
                     // If password is right
-                    if (user.Password == login.Password)
+                    if (Encryption.Encrypt.DecryptString(user.Password) == login.Password)
                     {
                         // Generate a new token.
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
@@ -79,7 +79,7 @@ namespace FireApp.Service.Authentication
                         if (u.Token == token)
                         {
                             // if the token of the user is still valid
-                            if (DateTime.Now < u.TokenCreationDate.AddDays(365))
+                            if (DateTime.Now < u.TokenCreationDate.AddDays(u.TokenValidDays))
                             {
                                 return u;
                             }

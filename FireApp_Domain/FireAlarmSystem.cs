@@ -208,11 +208,13 @@ namespace FireApp.Domain
                     string city = values[4];
                     string postalCode = values[5];
                     string address = values[6];
+
                     HashSet<int> fireBrigades = new HashSet<int>();
                     foreach(string s in values[7].Split(','))
                     {
                         fireBrigades.Add(Convert.ToInt32(s));
                     }
+
                     HashSet<int> serviceGroups = new HashSet<int>();
                     foreach (string s in values[8].Split(','))
                     {

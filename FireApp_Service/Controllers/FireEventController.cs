@@ -16,7 +16,7 @@ using System.Text;
 namespace FireApp.Service.Controllers
 {
     [RoutePrefix("events")]
-    public class EventsController : ApiController
+    public class FireEventController : ApiController
     {
         /// <summary>
         /// Inserts a FireEvent into the database or updates it if it already exists.
@@ -152,6 +152,47 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
+        /// Returns all active FireEvents that the user is allowed to see.
+        /// If you want to filter the result use the headers of your request
+        /// (see Filter.FireEventsFilter.HeadersFilter).
+        /// </summary>
+        /// <returns>Returns all active FireEvents that this user is allowed to see.</returns>
+        [HttpGet, Route("active")]
+        public FireEvent[] GetActive()
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    IEnumerable<FireEvent> events;
+
+                    // Get all active FireEvents.
+                    events = DatabaseOperations.ActiveEvents.GetAll();
+
+                    // Filter the FireEvents according to the User.
+                    events = Filter.FireEventsFilter.UserFilter(events, user);
+
+                    // Filter FireEvents according to the headers the client sent.
+                    events = Filter.FireEventsFilter.HeadersFilter(events, Request.Headers);
+
+                    return events.ToArray();
+                }
+                else
+                {
+                    // Notify user that the login was not successful.
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new FireEvent[0];
+            }
+        }
+
+        /// <summary>
         /// Finds a distinct FireEvent.
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
@@ -169,13 +210,17 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    IEnumerable<FireEvent> events;
+                    List<FireEvent> events = new List<FireEvent>();
 
                     // Get all FireEvents with a matching sourceId and eventId
-                    events = DatabaseOperations.Events.GetById(sourceId, eventId);
+                    FireEvent fe = DatabaseOperations.Events.GetById(sourceId, eventId);
+                    if (fe != null)
+                    {
+                        events.Add(fe);
+                    }
 
                     // Filter the FireEvents according to the User.
-                    events = Filter.FireEventsFilter.UserFilter(events, user);
+                    events = Filter.FireEventsFilter.UserFilter(events, user).ToList();
                     return events.ToArray();
                 }
                 else

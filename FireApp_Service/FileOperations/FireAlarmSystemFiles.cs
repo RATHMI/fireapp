@@ -21,11 +21,16 @@ namespace FireApp.Service.FileOperations
         {
             string csv = System.Text.Encoding.Default.GetString(bytes);
             List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+            FireAlarmSystem fas;
             try
             {
                 foreach (string s in csv.Split('\n'))
                 {
-                    results.Add(FireAlarmSystem.GetFireAlarmSystemFromCsv(s));
+                    fas = FireAlarmSystem.GetFireAlarmSystemFromCsv(s);
+                    if (fas != null)
+                    {
+                        results.Add(fas);
+                    }
                 }
             }
             catch (Exception ex)

@@ -8,12 +8,11 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class FireBrigades
     {
-
         /// <summary>
-        /// inserts a FireBrigade into the database or updates it if it already exists
+        /// Inserts a FireBrigade into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="fb"></param>
-        /// <returns>returns true if the insert was successful</returns>
+        /// <param name="fb">The FireBrigade you want to upsert.</param>
+        /// <returns>Returns true if the insert was successful.</returns>
         public static bool Upsert(FireBrigade fb)
         {
             if (fb != null)
@@ -27,10 +26,10 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// upserts a list of FireBrigades into the database
+        /// Upserts a list of FireBrigades into the database.
         /// </summary>
-        /// <param name="fireBrigades">The list of FireBrigades you want to insert</param>
-        /// <returns>returns the number of upserted FireBrigades</returns>
+        /// <param name="fireBrigades">The list of FireBrigades you want to upsert.</param>
+        /// <returns>Returns the number of upserted FireBrigades.</returns>
         public static int BulkUpsert(IEnumerable<FireBrigade> fireBrigades)
         {
             int upserted = 0;
@@ -47,20 +46,20 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// Deletes the FireBrigade from the Database and Cache
-        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// Deletes the FireBrigade from the Database and Cache.
+        /// The assoziations with the Users and FireAlarmSystems are also deleted.
         /// </summary>
-        /// <param name="id">the id of the FireBrigade you want to delete</param>
-        /// <returns>returns true if FireBrigade was deleted from DB</returns>
+        /// <param name="id">The id of the FireBrigade you want to delete.</param>
+        /// <returns>Returns true if FireBrigade was deleted from DB.</returns>
         public static bool Delete(int id)
         {
             bool rv = DatabaseOperations.DbDeletes.DeleteFireBrigade(id);
             if (rv != true)
             {
-                // delete local
+                // Delete from cache.
                 LocalDatabase.DeleteFireBrigade(id);
 
-                // delete from authorizedObjectIds of users local
+                // Delete from authorizedObjectIds of Users in the cache.
                 foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.firebrigade && u.AuthorizedObjectIds.Contains(id))
@@ -70,7 +69,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // delete from List of ServiceGroups of FireAlarmSystems local
+                // Delete from List of ServiceGroups of FireAlarmSystems in the cache.
                 foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.FireBrigades.Contains(id))
@@ -80,7 +79,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // delete from authorizedObjectIds of users in DB
+                // Delete from authorizedObjectIds of Users in the database.
                 foreach (User u in DatabaseOperations.DbQueries.QueryUsers())
                 {
                     if (u.UserType == UserTypes.firebrigade && u.AuthorizedObjectIds.Contains(id))
@@ -90,7 +89,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // delete from List of ServiceGroups of FireAlarmSystems in DB
+                // Delete from List of ServiceGroups of FireAlarmSystems in the database.
                 foreach (FireAlarmSystem fas in DatabaseOperations.DbQueries.QueryFireAlarmSystems())
                 {
                     if (fas.FireBrigades.Contains(id))
@@ -105,42 +104,54 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// Checks if an id is already used by another FireBrigade
+        /// Checks if an id is already used by another FireBrigade.
         /// </summary>
-        /// <param name="id">the id you want to check</param>
-        /// <returns>returns true if id is not used by other FireBrigade</returns>
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns true if the id is not used by another FireBrigade.</returns>
         public static int CheckId(int id)
         {
             IEnumerable<FireBrigade> all = LocalDatabase.GetAllFireBrigades();
+            // The highest Id of all FireBrigades.
             int maxId = 0;
+            int rv = id;
+
             foreach (FireBrigade fb in all)
             {
                 if (maxId < fb.Id)
                 {
                     maxId = fb.Id;
                 }
+
                 if (fb.Id == id)
                 {
-                    return maxId + 1;
+                    rv = -1;
                 }
             }
-            return id;
+
+            // If the id is already used by another FireBrigade
+            // return a new id.
+            if (rv == -1)
+            {
+                rv = maxId + 1;
+            }
+
+            return rv;
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireBrigades.
         /// </summary>
-        /// <returns>returns a list with all FireBrigades</returns>
+        /// <returns>Returns a list with all FireBrigades.</returns>
         public static IEnumerable<FireBrigade> GetAll()
         {
-            return (IEnumerable<FireBrigade>)LocalDatabase.GetAllFireBrigades().OrderBy(x => x.Name);
+            return LocalDatabase.GetAllFireBrigades().OrderBy(x => x.Name);
         }
 
         /// <summary>
-        /// 
+        /// Returns the FireBrigade with a matching id.
         /// </summary>
-        /// <param name="id">The id of the FireBrigade you are looking for</param>
-        /// <returns>returns a FireBrigade with a matching id</returns>
+        /// <param name="id">The id of the FireBrigade you are looking for.</param>
+        /// <returns>Returns a FireBrigade with a matching id.</returns>
         public static FireBrigade GetById(int id)
         {
             IEnumerable<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();

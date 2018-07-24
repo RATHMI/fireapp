@@ -8,12 +8,11 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class Users
     {
-
         /// <summary>
-        /// inserts a User into the database or updates it if it already exists
+        /// Inserts a User into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="user">The User you want to insert</param>
-        /// <returns>returns true if User was inserted</returns>
+        /// <param name="user">The User you want to upsert.</param>
+        /// <returns>Returns true if the User was inserted.</returns>
         public static bool Upsert(User user)
         {
             try
@@ -22,33 +21,38 @@ namespace FireApp.Service.DatabaseOperations
                 {
                     if (user.Token == null)
                     {
-                        // try to find existing user
+                        // Try to find an existing User.
                         User old = GetById(user.Id);
                         if (old == null)
                         {
-                            // if there is no existing user you have to generate a new token 
-                            // to guarantee a safe authentication 
+                            // If there is no existing User you have to generate a new token
+                            // to guarantee a safe authentication.
                             user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
                         }
                         else
                         {
-                            // if there is an existing user copy the token so the user does not have to log in again
+                            // If there is an existing user, copy the token so the User does not have to login again.
                             user.Token = old.Token;
                         }
                     }
                     if (user.Password == null)
                     {
-                        // try to find existing user
+                        // Try to find existing User.
                         User old = GetById(user.Id);
                         if (old == null)
                         {
-                            // User should not be upserted if there is no password
+                            // The User should not be upserted if there is no password.
                             return false;
                         }
                         user.Password = old.Password;
                     }
+                    else
+                    {
+                        // Encrypt password.
+                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
+                    }
 
-                    // save User in database
+                    // Save the User in the database.
                     LocalDatabase.UpsertUser(user);
                     return DatabaseOperations.DbUpserts.UpsertUser(user);
                 }
@@ -61,10 +65,10 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// inserts a list of Users into the database or updates them if they already exists
+        /// Inserts a list of Users into the database or updates them if they already exist.
         /// </summary>
-        /// <param name="users">a list of Users you want to upsert</param>
-        /// <returns>returns the number of Users that were successfully upserted</returns>
+        /// <param name="users">A list of Users you want to upsert.</param>
+        /// <returns>Returns the number of Users that were successfully upserted.</returns>
         public static int BulkUpsert(IEnumerable<User> users)
         {
             int upserted = 0;
@@ -80,10 +84,10 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Deletes a User from all databases.
         /// </summary>
-        /// <param name="userName">Id of the User you want to delete</param>
-        /// <returns>returns true if User was deleted</returns>
+        /// <param name="userName">The Id of the User you want to delete.</param>
+        /// <returns>Returns true if the User was deleted.</returns>
         public static bool Delete(string userName)
         {
             if(userName != null)
@@ -95,10 +99,10 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// Checks if an id is already used by another User
+        /// Checks if an id is already used by another User.
         /// </summary>
-        /// <param name="id">the id you want to check</param>
-        /// <returns>returns true if id is not used by other User</returns>
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns true if the id is not used by another User.</returns>
         public static bool CheckId(string id)
         {
             IEnumerable<User> all = LocalDatabase.GetAllUsers();
@@ -113,19 +117,19 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Returns all Users.
         /// </summary>
-        /// <returns>returns a list with all Users</returns>
+        /// <returns>Returns a list of all Users.</returns>
         public static IEnumerable<User> GetAll()
         {
             return LocalDatabase.GetAllUsers();
         }
 
         /// <summary>
-        /// returns all Users that have a UserType that is matching with a UserType from usertypes
+        /// Returns all Users that have a UserType that is matching with a UserType from "usertypes".
         /// </summary>
-        /// <param name="usertypes">an array of usertypes</param>
-        /// <returns>returns a list of all users with matching usertypes</returns>
+        /// <param name="usertypes">An array of UserTypes.</param>
+        /// <returns>Returns a list of all users with matching UserTypes.</returns>
         public static IEnumerable<User> GetByUserTypes(UserTypes[] usertypes)
         {
             List<User> results = new List<User>();
@@ -141,13 +145,13 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Returns the User with a matching Username.
         /// </summary>
-        /// <param name="username">The username of the User you are looking for</param>
-        /// <returns>returns a User with a matching username</returns>
+        /// <param name="username">The Username of the User you are looking for.</param>
+        /// <returns>Returns a User with a matching Username.</returns>
         public static User GetById(string userName)
         {
-            IEnumerable<User> users = LocalDatabase.GetAllUsers();
+            IEnumerable<User> users = GetAll();
             foreach (User u in users)
             {
                 if (u.Id == userName)
@@ -160,15 +164,15 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Returns all active Users.
         /// </summary>
-        /// <returns>returns a List of Users with a valid token</returns>
+        /// <returns>Returns a List of Users with a valid token.</returns>
         public static IEnumerable<User> GetActiveUsers()
         {
             List<User> results = new List<User>();
             foreach(User user in GetAll())
             {
-                if (DateTime.Now < user.TokenCreationDate.AddDays(365))
+                if (DateTime.Now < user.TokenCreationDate.AddDays(user.TokenValidDays))
                 {
                     results.Add(user);
                 }
@@ -178,15 +182,15 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
+        /// Returns all inactive Users.
         /// </summary>
-        /// <returns>returns a List of Users with an invalid token</returns>
+        /// <returns>Returns a List of Users with an invalid token.</returns>
         public static IEnumerable<User> GetInactiveUsers()
         {
             List<User> results = new List<User>();
             foreach (User user in GetAll())
             {
-                if (DateTime.Now >= user.TokenCreationDate.AddDays(365))
+                if (DateTime.Now >= user.TokenCreationDate.AddDays(user.TokenValidDays))
                 {
                     results.Add(user);
                 }
@@ -194,7 +198,5 @@ namespace FireApp.Service.DatabaseOperations
 
             return results;
         }
-
-        // todo: get users by authorized object id
     }
 }

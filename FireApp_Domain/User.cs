@@ -24,8 +24,22 @@ namespace FireApp.Domain
         private string token;
         public string Id { get; set; }
         public string Password { get; set; }
+        private UserTypes userType;
 
-        public UserTypes UserType { get; set; }
+        public UserTypes UserType {
+            get { return userType; }
+            set {
+                userType = value;
+                switch (value)
+                {
+                    case UserTypes.admin: TokenValidDays = 1; break;
+                    case UserTypes.firealarmsystem: TokenValidDays = 365; break;
+                    case UserTypes.firebrigade: TokenValidDays = 365; break;
+                    case UserTypes.servicemember: TokenValidDays = 365; break;
+                    default: TokenValidDays = 0; break;
+                }
+            }
+        }
 
         // This property is a set, because a User can be part of 
         // several institutions of the same type (fire brigade, service group, ...).
@@ -40,6 +54,18 @@ namespace FireApp.Domain
             set { this.token = value; TokenCreationDate = DateTime.Now; }
         }
         public DateTime TokenCreationDate { get; set; }
+        public int TokenValidDays { get; set; }
+
+        public static string EncryptPassword(string password)
+        {
+            int sum = 0;
+            for(int i = 0; i < password.Length; i++)
+            {
+                sum += (int)password[i];
+            }
+
+            return sum.ToString();
+        }
 
         /// <summary>
         /// 

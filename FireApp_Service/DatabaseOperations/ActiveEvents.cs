@@ -8,7 +8,6 @@ namespace FireApp.Service.DatabaseOperations
 {
     public static class ActiveEvents
     {
-
         /// <summary>
         /// Upserts a FireEvents into the databases.
         /// </summary>
@@ -77,27 +76,7 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="eventType">The EventType of the active FireEvents.</param>
-        /// <returns>Returns a list of all active FireEvents of the given EventType.</returns>
-        public static IEnumerable<FireEvent> GetByEventType(EventTypes eventType)
-        {
-            IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
-            List<FireEvent> result = new List<FireEvent>();
-            foreach (FireEvent fe in events)
-            {
-                if (fe.EventType == eventType)
-                {
-                    result.Add(fe);
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 
+        /// Returns all FireEvents from one FireAlarmSystem.
         /// </summary>
         /// <param name="sourceId">The sourceId of the active FireEvents you want to look for.</param>
         /// <returns>Returns a list of active FireEvents with a matching sourceId.</returns>

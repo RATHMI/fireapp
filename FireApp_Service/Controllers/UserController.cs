@@ -20,7 +20,7 @@ namespace FireApp.Service.Controllers
         /// <param name="user">The User you want to insert</param>
         /// <returns>returns true if User was inserted</returns>
         [HttpPost, Route("upload")]//todo: comment
-        public bool UpsertUser([FromBody] User u)
+        public bool UpsertUserre([FromBody] User u)
         {
             try {
                 User user;
@@ -286,7 +286,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="usertypes">an array of usertypes</param>
         /// <returns>returns a list of all users with matching usertypes</returns>
-        [HttpGet, Route("usertype")]//todo: comment
+        [HttpPost, Route("usertype")]//todo: comment
         public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
         {
             try

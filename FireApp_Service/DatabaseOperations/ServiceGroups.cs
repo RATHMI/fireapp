@@ -10,10 +10,10 @@ namespace FireApp.Service.DatabaseOperations
     {
 
         /// <summary>
-        /// inserts a ServiceGroup into the database or updates it if it already exists
+        /// Inserts a ServiceGroup into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="sg">The ServiceGroup you want to insert</param>
-        /// <returns>returns true if ServiceGroup was inserted</returns>
+        /// <param name="sg">The ServiceGroup you want to insert.</param>
+        /// <returns>Returns true if the ServiceGroup was inserted.</returns>
         public static bool Upsert(ServiceGroup sg)
         {
             if (sg != null)
@@ -28,10 +28,10 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// upserts a list of ServiceGroup into the database
+        /// Upserts a list of ServiceGroup into the database.
         /// </summary>
-        /// <param name="serviceGroups">The list of ServiceGroups you want to insert</param>
-        /// <returns>returns the number of upserted ServiceGroups</returns>
+        /// <param name="serviceGroups">The list of ServiceGroups you want to upsert.</param>
+        /// <returns>Returns the number of upserted ServiceGroups.</returns>
         public static int BulkUpsert(IEnumerable<ServiceGroup> serviceGroups)
         {
             int upserted = 0;
@@ -48,23 +48,23 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// Deletes the ServiceGroup from the Database and Cache
-        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// Deletes the ServiceGroup from the database and cache.
+        /// The assoziations with the Users and FireAlarmSystems are also deleted.
         /// </summary>
-        /// <param name="id">the id of the ServiceGroup you want to delete</param>
-        /// <returns>returns true if ServiceGroup was deleted from DB</returns>
+        /// <param name="id">The id of the ServiceGroup you want to delete.</param>
+        /// <returns>Returns true if the ServiceGroup was deleted from the DB.</returns>
         public static bool Delete(int id)
         {
             bool rv = false;
 
-            // delete from DB
+            // Delete from database.
             rv = DatabaseOperations.DbDeletes.DeleteServiceGroup(id);
             if (rv != true)
             {
-                // delete local
+                // Delete from cache.
                 LocalDatabase.DeleteServiceGroup(id);
 
-                // delete from authorizedObjectIds of users local
+                // Delete from authorizedObjectIds of Users from cache.
                 foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
@@ -74,7 +74,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // delete from List of ServiceGroups of FireAlarmSystems local
+                // Delete from List of ServiceGroups of FireAlarmSystems from cache.
                 foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.ServiceGroups.Contains(id))
@@ -84,7 +84,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // delete from authorizedObjectIds of users in DB
+                // Delete from authorizedObjectIds of Users in database.
                 foreach (User u in DatabaseOperations.DbQueries.QueryUsers())
                 {
                     if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
@@ -94,7 +94,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // delete from List of ServiceGroups of FireAlarmSystems in DB
+                // Delete from List of ServiceGroups of FireAlarmSystems in database.
                 foreach (FireAlarmSystem fas in DatabaseOperations.DbQueries.QueryFireAlarmSystems())
                 {
                     if (fas.ServiceGroups.Contains(id))
@@ -109,42 +109,54 @@ namespace FireApp.Service.DatabaseOperations
         }
 
         /// <summary>
-        /// Checks if an id is already used by another ServiceGroup
+        /// Checks if an id is already used by another ServiceGroup.
         /// </summary>
-        /// <param name="id">the id you want to check</param>
-        /// <returns>returns true if id is not used by other ServiceGroup</returns>
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns true if the id is not used by another ServiceGroup.</returns>
         public static int CheckId(int id)
         {
             IEnumerable<ServiceGroup> all = LocalDatabase.GetAllServiceGroups();
-            int max = 0;
+            // The highest Id of all ServiceGroups.
+            int maxId = 0;
+            int rv = id;
+
             foreach (ServiceGroup sg in all)
             {
-                if(max < sg.Id)
+                if (maxId < sg.Id)
                 {
-                    max = sg.Id;
+                    maxId = sg.Id;
                 }
+
                 if (sg.Id == id)
                 {
-                    return max + 1;
+                    rv = -1;
                 }
             }
-            return id;
+
+            // If the id is already used by another ServiceGroup
+            // return a new id.
+            if (rv == -1)
+            {
+                rv = maxId + 1;
+            }
+
+            return rv;
         }
 
         /// <summary>
-        /// 
+        /// Returns all ServiceGroups.
         /// </summary>
-        /// <returns>returns a list with all ServiceGroups</returns>
+        /// <returns>Returns a list of all ServiceGroups.</returns>
         public static IEnumerable<ServiceGroup> GetAll()
         {
-            return (IEnumerable<ServiceGroup>)LocalDatabase.GetAllServiceGroups();
+            return LocalDatabase.GetAllServiceGroups();
         }
 
         /// <summary>
-        /// 
+        /// Returns the ServiceGroup with a matching id.
         /// </summary>
-        /// <param name="id">The id of the ServiceGroup you are looking for</param>
-        /// <returns>returns a ServiceGroup with a matching id</returns>
+        /// <param name="id">The id of the ServiceGroup you are looking for.</param>
+        /// <returns>Returns a ServiceGroup with a matching id.</returns>
         public static ServiceGroup GetById(int id)
         {
             IEnumerable<ServiceGroup> serviceGroups = LocalDatabase.GetAllServiceGroups();

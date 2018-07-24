@@ -173,9 +173,8 @@
     <Compile Include="Cache\CachingProviderBase.cs" />
     <Compile Include="Cache\GlobalCachingProvider.cs" />
     <Compile Include="Cache\IGlobalCachingProvider.cs" />
-    <Compile Include="Controllers\ActiveEventsController.cs" />
     <Compile Include="Controllers\FireAlarmSystemController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
+    <Compile Include="Controllers\FireEventController.cs" />
     <Compile Include="Controllers\FireBrigadeController.cs" />
     <Compile Include="Controllers\ServiceGroupController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -185,6 +184,7 @@
     <Compile Include="DatabaseOperations\Events.cs" />
     <Compile Include="DatabaseOperations\FireAlarmSystems.cs" />
     <Compile Include="DatabaseOperations\FireBrigades.cs" />
+    <Compile Include="Encryption\Encrypt.cs" />
     <Compile Include="FileOperations\FireAlarmSystemFiles.cs" />
     <Compile Include="FileOperations\FireBrigadeFiles.cs" />
     <Compile Include="FileOperations\FireEventFiles.cs" />
@@ -198,7 +198,7 @@
     <Compile Include="DatabaseOperations\Users.cs" />
     <Compile Include="Filter\ServiceGroupsFilter.cs" />
     <Compile Include="Filter\UsersFilter.cs" />
-    <Compile Include="LocalDatabase.cs" />
+    <Compile Include="Cache\LocalDatabase.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
