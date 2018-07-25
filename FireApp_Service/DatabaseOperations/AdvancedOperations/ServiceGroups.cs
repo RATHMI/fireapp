@@ -13,7 +13,7 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to get the ServiceGroups of.</param>
         /// <returns>Returns all ServiceGroups that are assoziated with this FireAlarmSystem.</returns>
-        public static IEnumerable<ServiceGroup> GetByFireAlarmSystem(FireAlarmSystem fas) // todo: comment
+        public static IEnumerable<ServiceGroup> GetByFireAlarmSystem(FireAlarmSystem fas)
         {
             List<ServiceGroup> results = new List<ServiceGroup>();
 
@@ -47,12 +47,15 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
         /// </summary>
         /// <param name="servicegroup">The ServiceGroup you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns all FireAlarmSystems that are associated with this ServiceGroup.</returns>
-        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int servicegroup) // todo: comment
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int servicegroup)
         {
             List<FireAlarmSystem> results = new List<FireAlarmSystem>();
 
+            // Find all FireAlarmSystems where the id of the FireAlarmSystem is contained
+            // in the list of FireAlarmSystems.
             foreach (FireAlarmSystem fas in BasicOperations.FireAlarmSystems.GetAll())
             {
+                // If the FireAlarmSystem contains the id of the ServiceGroup.
                 if (fas.ServiceGroups.Contains(servicegroup))
                 {
                     results.Add(fas);

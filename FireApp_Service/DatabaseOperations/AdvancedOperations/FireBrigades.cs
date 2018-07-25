@@ -47,12 +47,15 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
         /// </summary>
         /// <param name="firebrigade">The FireBrigade you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns all FireAlarmSystems that are associated with this FireBrigade.</returns>
-        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int firebrigade) // todo: comment
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int firebrigade)
         {
             List<FireAlarmSystem> results = new List<FireAlarmSystem>();
 
+            // Find all FireAlarmSystems where the id of the FireBrigade is contained
+            // in the list of FireBrigades.
             foreach (FireAlarmSystem fas in BasicOperations.FireAlarmSystems.GetAll())
             {
+                // If the FireAlarmSystem contains the id of the ServiceGroup.
                 if (fas.FireBrigades.Contains(firebrigade))
                 {
                     results.Add(fas);
