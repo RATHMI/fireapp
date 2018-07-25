@@ -15,8 +15,7 @@
     <AssemblyName>FireApp.Service</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44365</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
@@ -180,12 +179,18 @@
     <Compile Include="Controllers\FireBrigadeController.cs" />
     <Compile Include="Controllers\ServiceGroupController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DatabaseOperations\ActiveEvents.cs" />
+    <Compile Include="DatabaseOperations\AdvancedOperations\ActiveEvents.cs" />
+    <Compile Include="DatabaseOperations\BasicOperations\ActiveEvents.cs" />
+    <Compile Include="DatabaseOperations\BasicOperations\FireAlarmSystems.cs" />
+    <Compile Include="DatabaseOperations\BasicOperations\FireBrigades.cs" />
+    <Compile Include="DatabaseOperations\BasicOperations\FireEvents.cs" />
+    <Compile Include="DatabaseOperations\BasicOperations\ServiceGroups.cs" />
+    <Compile Include="DatabaseOperations\BasicOperations\Users.cs" />
     <Compile Include="DatabaseOperations\LiteDB\DbDeletes.cs" />
     <Compile Include="DatabaseOperations\LiteDB\DbUpserts.cs" />
-    <Compile Include="DatabaseOperations\Events.cs" />
-    <Compile Include="DatabaseOperations\FireAlarmSystems.cs" />
-    <Compile Include="DatabaseOperations\FireBrigades.cs" />
+    <Compile Include="DatabaseOperations\AdvancedOperations\FireEvents.cs" />
+    <Compile Include="DatabaseOperations\AdvancedOperations\FireAlarmSystems.cs" />
+    <Compile Include="DatabaseOperations\AdvancedOperations\FireBrigades.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Encryption\Encrypt.cs" />
     <Compile Include="FileOperations\FireAlarmSystemFiles.cs" />
@@ -197,8 +202,8 @@
     <Compile Include="Filter\FireBrigadesFilter.cs" />
     <Compile Include="Filter\FireEventsFilter.cs" />
     <Compile Include="DatabaseOperations\LiteDB\DbQueries.cs" />
-    <Compile Include="DatabaseOperations\ServiceGroups.cs" />
-    <Compile Include="DatabaseOperations\Users.cs" />
+    <Compile Include="DatabaseOperations\AdvancedOperations\ServiceGroups.cs" />
+    <Compile Include="DatabaseOperations\AdvancedOperations\Users.cs" />
     <Compile Include="Filter\ServiceGroupsFilter.cs" />
     <Compile Include="Filter\UsersFilter.cs" />
     <Compile Include="Cache\LocalDatabase.cs" />

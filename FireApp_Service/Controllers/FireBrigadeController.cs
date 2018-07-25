@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), fb);
-                        return DatabaseOperations.FireBrigades.Upsert(fb);
+                        return DatabaseOperations.BasicOperations.FireBrigades.Upsert(fb);
                     }
                 }
                 return false;
@@ -61,7 +61,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.FireBrigades.BulkUpsert(fb);
+                        return DatabaseOperations.BasicOperations.FireBrigades.BulkUpsert(fb);
                     }
                     else
                     {
@@ -97,7 +97,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(DatabaseOperations.FireBrigades.GetAll());
+                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(DatabaseOperations.BasicOperations.FireBrigades.GetAll());
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;
@@ -151,9 +151,9 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        FireBrigade old = DatabaseOperations.FireBrigades.GetById(id);
+                        FireBrigade old = DatabaseOperations.BasicOperations.FireBrigades.GetById(id);
                         Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.FireBrigades.Delete(id);
+                        return DatabaseOperations.BasicOperations.FireBrigades.Delete(id);
                     }
                 }
                 return false;
@@ -173,7 +173,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("checkid/{id}")]//todo: comment
         public static int CheckId(int id)
         {
-            return DatabaseOperations.FireBrigades.CheckId(id);
+            return DatabaseOperations.BasicOperations.FireBrigades.CheckId(id);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireBrigade> fb;
-                    fb = DatabaseOperations.FireBrigades.GetAll();
+                    fb = DatabaseOperations.BasicOperations.FireBrigades.GetAll();
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
                     return fb.ToArray();
                 }
@@ -221,7 +221,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireBrigade> fb;
-                    fb = new List<FireBrigade> { DatabaseOperations.FireBrigades.GetById(id) };
+                    fb = new List<FireBrigade> { DatabaseOperations.BasicOperations.FireBrigades.GetById(id) };
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
                     return fb.ToArray();
                 }

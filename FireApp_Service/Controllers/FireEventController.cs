@@ -42,7 +42,7 @@ namespace FireApp.Service.Controllers
 
             // Allow upsert without authentication, because there is no authentication concept for real
             // fire alarm systems yet.
-            return DatabaseOperations.Events.Upsert(fe);
+            return DatabaseOperations.BasicOperations.FireEvents.Upsert(fe);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.FireEventsFiles.ExportToCSV(DatabaseOperations.Events.GetAll());
+                        byte[] file = FileOperations.FireEventsFiles.ExportToCSV(DatabaseOperations.BasicOperations.FireEvents.GetAll());
                         stream.Write(file, 0, file.Length);
 
                         stream.Position = 0;
@@ -108,7 +108,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("checkid/{sourceId}/{eventId}")]     
         public bool CheckId(int sourceId, int eventId)
         {
-            return DatabaseOperations.Events.CheckId(new FireEventId(sourceId, eventId));
+            return DatabaseOperations.BasicOperations.FireEvents.CheckId(new FireEventId(sourceId, eventId));
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace FireApp.Service.Controllers
                 {
 
                     // Get all FireEvents.
-                    IEnumerable<FireEvent> events = DatabaseOperations.Events.GetAll();
+                    IEnumerable<FireEvent> events = DatabaseOperations.BasicOperations.FireEvents.GetAll();
 
                     // Filter FireEvents according to the UserType and AuthorizedObjectIds.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
@@ -169,7 +169,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
 
                     // Get all active FireEvents.
-                    events = DatabaseOperations.ActiveEvents.GetAll();
+                    events = DatabaseOperations.BasicOperations.ActiveEvents.GetAll();
 
                     // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
@@ -213,7 +213,7 @@ namespace FireApp.Service.Controllers
                     List<FireEvent> events = new List<FireEvent>();
 
                     // Get all FireEvents with a matching sourceId and eventId
-                    FireEvent fe = DatabaseOperations.Events.GetById(sourceId, eventId);
+                    FireEvent fe = DatabaseOperations.BasicOperations.FireEvents.GetById(sourceId, eventId);
                     if (fe != null)
                     {
                         events.Add(fe);
@@ -255,7 +255,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
 
                     // Get all FireEvents with a matching sourceId.
-                    events = DatabaseOperations.Events.GetBySourceId(sourceId);
+                    events = DatabaseOperations.BasicOperations.FireEvents.GetBySourceId(sourceId);
 
                     // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
@@ -294,7 +294,7 @@ namespace FireApp.Service.Controllers
                     IEnumerable<FireEvent> events;
 
                     // Get all FireEvents with a matching sourceId and targetId.
-                    events = DatabaseOperations.Events.GetByTarget(sourceId, targetId);
+                    events = DatabaseOperations.AdvancedOperations.FireEvents.GetByTarget(sourceId, targetId);
 
                     // Filter the FireEvents according to the User.
                     events = Filter.FireEventsFilter.UserFilter(events, user);
@@ -331,7 +331,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Events.CountByEventTypePerYear(eventType, year);
+                        return DatabaseOperations.AdvancedOperations.FireEvents.CountByEventTypePerYear(eventType, year);
                     }
                     else
                     {

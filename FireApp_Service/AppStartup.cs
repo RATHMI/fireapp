@@ -35,41 +35,41 @@ namespace FireApp.Service {
             #region debugging
             #if DEBUG
             User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("admin2", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("admin3", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
 
             user = new User("fb1", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
             user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("sm1", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("fas1", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(0);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
 
             user = new User("fb2", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
             user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("sm2", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("fas2", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(1);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             
             user = new User("fb3", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
             user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             user = new User("sm3", "test", "test", "test", "test@siemens.at", UserTypes.servicemember);
             user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.Users.Upsert(user);    
+            DatabaseOperations.BasicOperations.Users.Upsert(user);    
             user = new User("fas3", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(2);
-            DatabaseOperations.Users.Upsert(user);
+            DatabaseOperations.BasicOperations.Users.Upsert(user);
             #endif
             #endregion
         }

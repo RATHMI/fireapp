@@ -25,7 +25,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    User admin = DatabaseOperations.Users.GetFirstAdmin();
+                    User admin = DatabaseOperations.AdvancedOperations.Users.GetFirstAdmin();
                     if (admin != null) {
                         Email.Email.HelpEmail(user, admin.Email, message);
                         return true;

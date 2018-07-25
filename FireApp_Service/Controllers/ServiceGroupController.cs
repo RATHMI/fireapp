@@ -29,7 +29,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), sg);
-                        return DatabaseOperations.ServiceGroups.Upsert(sg);
+                        return DatabaseOperations.BasicOperations.ServiceGroups.Upsert(sg);
                     }
                 }
                 return false;
@@ -61,7 +61,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.ServiceGroups.BulkUpsert(sg);
+                        return DatabaseOperations.BasicOperations.ServiceGroups.BulkUpsert(sg);
                     }
                     else
                     {
@@ -98,7 +98,7 @@ namespace FireApp.Service.Controllers
                     {
                         var stream = new MemoryStream();
                         IEnumerable<ServiceGroup> sg;
-                        sg = DatabaseOperations.ServiceGroups.GetAll();
+                        sg = DatabaseOperations.BasicOperations.ServiceGroups.GetAll();
                         byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(sg);
                         stream.Write(file, 0, file.Length);
 
@@ -153,9 +153,9 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        ServiceGroup old = DatabaseOperations.ServiceGroups.GetById(id);
+                        ServiceGroup old = DatabaseOperations.BasicOperations.ServiceGroups.GetById(id);
                         Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.ServiceGroups.Delete(id);
+                        return DatabaseOperations.BasicOperations.ServiceGroups.Delete(id);
                     }
                 }
                 return false;
@@ -181,7 +181,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<ServiceGroup> sg;
-                    sg = DatabaseOperations.ServiceGroups.GetAll();
+                    sg = DatabaseOperations.BasicOperations.ServiceGroups.GetAll();
                     sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
                     return sg.ToArray();
                 }
@@ -205,7 +205,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("checkid/{id}")]
         public static int CheckId(int id)
         {
-            return DatabaseOperations.ServiceGroups.CheckId(id);
+            return DatabaseOperations.BasicOperations.ServiceGroups.CheckId(id);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<ServiceGroup> sg;
-                    sg = new List<ServiceGroup> { DatabaseOperations.ServiceGroups.GetById(id) };
+                    sg = new List<ServiceGroup> { DatabaseOperations.BasicOperations.ServiceGroups.GetById(id) };
                     sg = Filter.ServiceGroupsFilter.UserFilter(sg, user);
                     return sg.ToArray();
                 }

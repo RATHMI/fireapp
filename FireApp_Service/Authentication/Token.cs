@@ -24,7 +24,7 @@ namespace FireApp.Service.Authentication
             try
             {
                 // Get User with matching username.
-                User user = DatabaseOperations.Users.GetById(login.Username);
+                User user = DatabaseOperations.BasicOperations.Users.GetById(login.Username);
 
                 // If User was found.
                 if (user != null)
@@ -39,7 +39,7 @@ namespace FireApp.Service.Authentication
                         user.Token = Authentication.Token.GenerateToken();
 
                         // Save the changes in the database
-                        DatabaseOperations.Users.Upsert(user);
+                        DatabaseOperations.BasicOperations.Users.Upsert(user);
                         return user.Token;
                     }
                 }
@@ -60,7 +60,7 @@ namespace FireApp.Service.Authentication
         /// <returns>Returns a new random token.</returns>
         public static string GenerateToken()
         {
-            IEnumerable<User> users = DatabaseOperations.Users.GetAll();
+            IEnumerable<User> users = DatabaseOperations.BasicOperations.Users.GetAll();
             string token = "";
 
             while (token == "")
@@ -87,7 +87,7 @@ namespace FireApp.Service.Authentication
         {
             if (token != null)
             {
-                IEnumerable<User> users = DatabaseOperations.Users.GetAll();
+                IEnumerable<User> users = DatabaseOperations.BasicOperations.Users.GetAll();
                 foreach (User u in users)
                 {
                     if (u != null && u.Token != null)

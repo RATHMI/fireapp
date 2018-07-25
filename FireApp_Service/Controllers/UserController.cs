@@ -30,7 +30,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), u);
-                        return DatabaseOperations.Users.Upsert(u);
+                        return DatabaseOperations.BasicOperations.Users.Upsert(u);
                     }
                 }
                 return false;   
@@ -63,7 +63,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.Users.BulkUpsert(users);
+                        return DatabaseOperations.BasicOperations.Users.BulkUpsert(users);
                     }
                     else
                     {
@@ -102,7 +102,7 @@ namespace FireApp.Service.Controllers
 
                         // convert all users to a byte array
                         IEnumerable<User> users;
-                        users = DatabaseOperations.Users.GetAll();
+                        users = DatabaseOperations.BasicOperations.Users.GetAll();
                         byte[] file = FileOperations.UserFiles.ExportToCSV(users);
                         stream.Write(file, 0, file.Length);
 
@@ -159,7 +159,7 @@ namespace FireApp.Service.Controllers
                     {
                         IEnumerable<User> users;
                         users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
-                        int upsertedUsers = DatabaseOperations.Users.BulkUpsert(users);
+                        int upsertedUsers = DatabaseOperations.BasicOperations.Users.BulkUpsert(users);
 
                         // sets the content of the response to the number of upserted users
                         result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upsertedUsers)));
@@ -194,7 +194,7 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("checkid/{id}")]
         public bool CheckId(string id)
         {
-            return DatabaseOperations.Users.CheckId(id);
+            return DatabaseOperations.BasicOperations.Users.CheckId(id);
         }
 
         /// <summary>
@@ -237,9 +237,9 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        User old = DatabaseOperations.Users.GetById(userName);
+                        User old = DatabaseOperations.BasicOperations.Users.GetById(userName);
                         Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.Users.Delete(userName);
+                        return DatabaseOperations.BasicOperations.Users.Delete(userName);
                     }
                 }
                 return false;
@@ -265,7 +265,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<User> users;
-                    users = DatabaseOperations.Users.GetAll();
+                    users = DatabaseOperations.BasicOperations.Users.GetAll();
                     users = Filter.UsersFilter.UserFilter(users, user);
                     return users.ToArray();
                 }
@@ -296,7 +296,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<User> users;
-                    users = DatabaseOperations.Users.GetByUserType(usertypes);
+                    users = DatabaseOperations.AdvancedOperations.Users.GetByUserType(usertypes);
                     users = Filter.UsersFilter.UserFilter(users, user);
                     return users.ToArray();
                 }
@@ -326,7 +326,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return new User[] { DatabaseOperations.Users.GetById(userName) };
+                    return new User[] { DatabaseOperations.BasicOperations.Users.GetById(userName) };
                 }
                 else
                 {
@@ -355,7 +355,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Users.GetActiveUsers().ToArray();
+                        return DatabaseOperations.AdvancedOperations.Users.GetActiveUsers().ToArray();
                     }
                     else
                     {
@@ -390,7 +390,7 @@ namespace FireApp.Service.Controllers
                     // Only return Users if User is an admin.
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Users.GetInactiveUsers().ToArray();
+                        return DatabaseOperations.AdvancedOperations.Users.GetInactiveUsers().ToArray();
                     }
                     else
                     {
@@ -424,18 +424,18 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         // Find the user with a matching username.
-                        user = DatabaseOperations.Users.GetById(username);
+                        user = DatabaseOperations.BasicOperations.Users.GetById(username);
                         if(user != null)
                         {
                             if (type == "groups")
                             {
-                                results.AddRange(DatabaseOperations.Users.GetAuthorizedObjects(user));
+                                results.AddRange(DatabaseOperations.AdvancedOperations.Users.GetAuthorizedObjects(user));
                             }
                             else
                             {
                                 if(type == "fas")
                                 {
-                                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetByUser(user));
+                                    results.AddRange(DatabaseOperations.AdvancedOperations.FireAlarmSystems.GetByUser(user));
                                 }
                             }
                         }
