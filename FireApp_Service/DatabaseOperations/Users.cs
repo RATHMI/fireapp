@@ -28,10 +28,7 @@ namespace FireApp.Service.DatabaseOperations
 
                     if (old == null)
                     {
-                        Email.Email.WelcomeEmail(user);
-
-                        // Encrypt password.
-                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
+                        Email.Email.WelcomeEmail(user);                       
                     }
 
                     if (user.Token == null)
@@ -49,6 +46,13 @@ namespace FireApp.Service.DatabaseOperations
                         }
                     }
 
+                    if(user.Password != null)
+                    {
+                        // Encrypt password.
+                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
+                    }
+
+
                     if (user.Password == null || user.Email == null)
                     {
                         if (old == null)
@@ -57,7 +61,10 @@ namespace FireApp.Service.DatabaseOperations
                             return false;
                         }
                         user.Password = old.Password;
+                        user.Email = old.Email;
                     }                 
+
+                    
 
                     // Save the User in the database.
                     LocalDatabase.UpsertUser(user);

@@ -29,8 +29,11 @@ namespace FireApp.Service.Authentication
                 // If User was found.
                 if (user != null)
                 {
-                    // If password is right
-                    if (Encryption.Encrypt.DecryptString(user.Password) == login.Password)
+                    // Decrypt password for comparison and to avoid encrypting, encrypted password
+                    user.Password = Encryption.Encrypt.DecryptString(user.Password);
+
+                    // If password is right.
+                    if (user.Password == login.Password)
                     {
                         // Generate a new token.
                         user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
