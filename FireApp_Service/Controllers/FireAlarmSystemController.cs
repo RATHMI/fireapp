@@ -288,7 +288,13 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: return members of FAS as objects
+        /// <summary>
+        /// Returns FireBrigades or ServiceGroups or both 
+        /// that are associated with this FireAlarmSystem.
+        /// </summary>
+        /// <param name="id">The id of the FireAlarmSystem.</param>
+        /// <param name="type">The type of member (fb, sg) you want.</param>
+        /// <returns>Returns members associated with this FireAlarmSystem.</returns>
         [HttpGet, Route("members/{id}/{type}")]
         public object[] GetMembers(int id, string type) //todo: comment
         {
@@ -322,7 +328,12 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: return Users of FAS as objects
+        /// <summary>
+        /// Returns the Users that are associated with this FireAlarmSystem.
+        /// </summary>
+        /// <param name="id">The id of the FireAlarmSystem</param>
+        /// <param name="type">The type of User (fb, sg, fas).</param>
+        /// <returns>Returns Users of this FireAlarmSystem of the given type.</returns>
         [HttpGet, Route("users/{id}/{type}")]
         public User[] GetUsers(int id, string type) //todo: comment
         {

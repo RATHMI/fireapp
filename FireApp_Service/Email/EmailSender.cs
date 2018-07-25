@@ -25,7 +25,7 @@ namespace FireApp.Service.Email
 
             // todo: use real email
             // client.Send("fro.diplomarbeit@gmail.com", recipients, subject, message);
-            client.Send("fro.diplomarbeit@gmail.com", "ollmann.ph@gmail.com", subject, message);
+            client.Send("fro.diplomarbeit@gmail.com", "40146720140051@litec.ac.at", "Schöne Ferien!", "Schöne Ferien Neini!\n\nWünschen dir deine Kameraden aus Gmunden ;)");
         }
 
         /// <summary>

@@ -171,6 +171,11 @@ namespace FireApp.Service.DatabaseOperations
             throw new KeyNotFoundException();
         }
 
+        /// <summary>
+        /// Returns all ServiceGroups that are in the list of ServiceGroups of the FireAlarmSystem.
+        /// </summary>
+        /// <param name="fas">The FireAlarmSystem you want to get the ServiceGroups of.</param>
+        /// <returns>Returns all ServiceGroups that are assoziated with this FireAlarmSystem.</returns>
         public static IEnumerable<ServiceGroup> GetByFireAlarmSystem(FireAlarmSystem fas) // todo: comment
         {
             List<ServiceGroup> results = new List<ServiceGroup>();
@@ -190,9 +195,29 @@ namespace FireApp.Service.DatabaseOperations
             }
         }
 
-        public static IEnumerable<User> GetUsers(int servicegroup) //todo: comment
+        /// <summary>
+        /// Returns all Users that are associated with this ServiceGroup.
+        /// </summary>
+        /// <param name="servicegroup">The ServiceGroup you want to get the Users of.</param>
+        /// <returns>Returns all Users whose AuthorizedObjectIds contains "servicegroup".</returns>
+        public static IEnumerable<User> GetUsers(int servicegroup)
         {
-            return DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.firebrigade);
+            return DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember);
+        }
+
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int servicegroup) // todo: comment
+        {
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+
+            foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+            {
+                if (fas.ServiceGroups.Contains(servicegroup))
+                {
+                    results.Add(fas);
+                }
+            }
+
+            return results;
         }
     }
 }

@@ -189,5 +189,20 @@ namespace FireApp.Service.DatabaseOperations
         {
             return DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade);
         }
+
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int firebrigade) // todo: comment
+        {
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+
+            foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+            {
+                if (fas.FireBrigades.Contains(firebrigade))
+                {
+                    results.Add(fas);
+                }
+            }
+
+            return results;
+        }
     }
 }

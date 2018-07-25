@@ -155,6 +155,11 @@ namespace FireApp.Service.DatabaseOperations
             return results;
         }
 
+        /// <summary>
+        /// Returns all Users that have a UserType that is matching with usertype.
+        /// </summary>
+        /// <param name="usertype">The UserType you want to filter.</param>
+        /// <returns>Returns all Users with a UserType matching "usertype".</returns>
         public static IEnumerable<User> GetByUserType(UserTypes usertype) // todo: comment
         {
             List<User> results = new List<User>();

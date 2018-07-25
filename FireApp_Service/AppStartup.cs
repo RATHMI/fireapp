@@ -33,7 +33,12 @@ namespace FireApp.Service {
 
             //debug: use only in debugging
             #region debugging
+            #if DEBUG
             User user = new User("admin", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
+            DatabaseOperations.Users.Upsert(user);
+            user = new User("admin2", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
+            DatabaseOperations.Users.Upsert(user);
+            user = new User("admin3", "admin", "admin", "admin", "admin@siemens.at", UserTypes.admin);
             DatabaseOperations.Users.Upsert(user);
 
             user = new User("fb1", "test", "test", "test", "test@siemens.at", UserTypes.firebrigade);
@@ -65,6 +70,7 @@ namespace FireApp.Service {
             user = new User("fas3", "test", "test", "test", "test@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(2);
             DatabaseOperations.Users.Upsert(user);
+            #endif
             #endregion
         }
     }

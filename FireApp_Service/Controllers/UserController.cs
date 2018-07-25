@@ -341,9 +341,9 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all active Users.
         /// </summary>
-        /// <returns>returns a List of Users with a valid token</returns>
+        /// <returns>Returns a List of Users with a valid token.</returns>
         [HttpGet, Route("active")]//todo: comment
         public User[] GetActiveUsers()
         {
@@ -375,9 +375,9 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all inactive Users.
         /// </summary>
-        /// <returns>returns a List of Users with an invalid token</returns>
+        /// <returns>Returns a List of Users with an invalid token.</returns>
         [HttpGet, Route("inactive")]//todo: comment
         public User[] GetInactiveUsers()
         {
