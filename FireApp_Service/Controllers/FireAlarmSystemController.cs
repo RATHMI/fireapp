@@ -287,5 +287,80 @@ namespace FireApp.Service.Controllers
                 return new FireAlarmSystem[0];
             }
         }
+
+        //todo: return members of FAS as objects
+        [HttpGet, Route("members/{id}/{type}")]
+        public object[] GetMembers(int id, string type) //todo: comment
+        {
+            IEnumerable<object> results = new object[0];
+
+            try
+            {
+                FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
+
+                if (type == "fb")
+                {
+                    results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade));
+                }
+                else
+                {
+                    if (type == "sg")
+                    {
+                        results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup));
+                    }
+                    else
+                    {
+                        results = DatabaseOperations.FireAlarmSystems.GetMembers(fas);
+                    }
+                }
+
+                return results.ToArray();
+            }
+            catch (Exception)
+            {
+                return new object[0];
+            }
+        }
+
+        //todo: return Users of FAS as objects
+        [HttpGet, Route("users/{id}/{type}")]
+        public User[] GetUsers(int id, string type) //todo: comment
+        {
+            List<User> results = new List<User>();
+
+            try
+            {
+                FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
+
+                if (type == "fb")
+                {
+                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firebrigade));
+                }
+                else
+                {
+                    if (type == "sg")
+                    {
+                        results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.servicemember));
+                    }
+                    else
+                    {
+                        if (type == "fas")
+                        {
+                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem));
+                        }
+                        else
+                        {
+                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas));
+                        }
+                    }
+                }
+
+                return results.ToArray();
+            }
+            catch (Exception)
+            {
+                return new User[0];
+            }
+        }
     }
 }

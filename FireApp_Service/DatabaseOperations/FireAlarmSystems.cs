@@ -242,6 +242,103 @@ namespace FireApp.Service.DatabaseOperations
                 }
             }
 
+            if(user.UserType == UserTypes.firealarmsystem)
+            {
+                foreach(int id in user.AuthorizedObjectIds)
+                {
+                    try
+                    {
+                        results.Add(GetById(id));
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public static IEnumerable<object> GetMembers(FireAlarmSystem fas)//todo: comment
+        {
+            List<object> results = new List<object>();
+      
+            results.AddRange(DatabaseOperations.FireBrigades.GetByFireAlarmSystem(fas));
+            results.AddRange(DatabaseOperations.ServiceGroups.GetByFireAlarmSystem(fas));
+
+            return results;
+        }
+
+        public static IEnumerable<object> GetMembers(FireAlarmSystem fas, Type type)//todo: comment
+        {
+            List<object> results = new List<object>();
+           
+            if(type == typeof(FireBrigade))
+            {
+                results.AddRange(DatabaseOperations.FireBrigades.GetByFireAlarmSystem(fas));
+            }
+            else
+            {
+                if(type == typeof(ServiceGroup))
+                {
+                    results.AddRange(DatabaseOperations.ServiceGroups.GetByFireAlarmSystem(fas));
+                }
+            }          
+
+            return results;
+        }
+
+        public static IEnumerable<User> GetUsers(FireAlarmSystem fas)//todo: comment
+        {
+            List<User> results = new List<User>();
+
+            foreach(int firebrigade in fas.FireBrigades)
+            {
+                results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
+            }
+
+            foreach (int servicegroup in fas.ServiceGroups)
+            {
+                results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
+            }
+
+            results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
+
+            return results;
+        }
+
+        public static IEnumerable<User> GetUsers(FireAlarmSystem fas, UserTypes type)//todo: comment
+        {
+            List<User> results = new List<User>();
+
+            if (type == UserTypes.firebrigade)
+            {
+                foreach (int firebrigade in fas.FireBrigades)
+                {
+                    results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
+                }
+            }else
+            {
+                if (type == UserTypes.servicemember)
+                {
+                    foreach (int servicegroup in fas.ServiceGroups)
+                    {
+                        results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
+                    }
+                }
+                else
+                {
+                    if(type == UserTypes.firealarmsystem)
+                    {
+                        results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
+                    }
+                }
+            }
+            
+
+            
+
             return results;
         }
     }

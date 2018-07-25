@@ -296,7 +296,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<User> users;
-                    users = DatabaseOperations.Users.GetByUserTypes(usertypes);
+                    users = DatabaseOperations.Users.GetByUserType(usertypes);
                     users = Filter.UsersFilter.UserFilter(users, user);
                     return users.ToArray();
                 }
@@ -409,7 +409,6 @@ namespace FireApp.Service.Controllers
             }
         }
 
-
         [HttpGet, Route("authobjects/{username}/{type}")]//todo: comment
         public object[] GetAuthorizedObjects(string username, string type) 
         {
@@ -417,6 +416,7 @@ namespace FireApp.Service.Controllers
             {
                 List<object> results = new List<object>();
                 User user;
+
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {

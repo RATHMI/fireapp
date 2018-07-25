@@ -137,12 +137,23 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="usertypes">An array of UserTypes.</param>
         /// <returns>Returns a list of all users with matching UserTypes.</returns>
-        public static IEnumerable<User> GetByUserTypes(UserTypes[] usertypes)
+        public static IEnumerable<User> GetByUserType(UserTypes[] usertypes)
         {
             List<User> results = new List<User>();
-            foreach(User user in GetAll())
+            foreach(UserTypes type in usertypes)
             {
-                if (usertypes.Contains(user.UserType))
+                results.AddRange(GetByUserType(type));
+            }
+
+            return results;
+        }
+
+        public static IEnumerable<User> GetByUserType(UserTypes usertype) // todo: comment
+        {
+            List<User> results = new List<User>();
+            foreach (User user in GetAll())
+            {
+                if (usertype == user.UserType)
                 {
                     results.Add(user);
                 }
@@ -157,7 +168,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a User with Usertype admin.</returns>
         public static User GetFirstAdmin()
         {
-            IEnumerable<User> admins = GetByUserTypes(new UserTypes[] { UserTypes.admin });
+            IEnumerable<User> admins = GetByUserType(UserTypes.admin);
             if(admins.Count() > 0)
             {
                 return admins.First();
@@ -223,11 +234,17 @@ namespace FireApp.Service.DatabaseOperations
             return results;
         }
 
+        /// <summary>
+        /// Finds all authorized objects of the User depending on the UserType.
+        /// </summary>
+        /// <param name="user">The User you want the authorized objects from.</param>
+        /// <returns>Returns a list of all authorized objects.</returns>
         public static IEnumerable<object> GetAuthorizedObjects(User user) //todo: comment
         {
             List<object> results = new List<object>();
             if (user != null)
             {
+                // If the UserType is firealarmsystem.
                 if (user.UserType == UserTypes.firealarmsystem)
                 {
                     foreach (int id in user.AuthorizedObjectIds)
@@ -243,6 +260,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
+                // If the UserType is firebrigade.
                 if (user.UserType == UserTypes.firebrigade)
                 {
                     foreach (int id in user.AuthorizedObjectIds)
@@ -258,6 +276,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
+                // If the UserType is servicemember
                 if (user.UserType == UserTypes.servicemember)
                 {
                     foreach (int id in user.AuthorizedObjectIds)
@@ -272,6 +291,28 @@ namespace FireApp.Service.DatabaseOperations
                         }
                     }
                 }          
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Returns all Users that contain the "id" in their AuthorizedObjectIds.
+        /// </summary>
+        /// <param name="id">The id of the authorized object.</param>
+        /// <param name="type">The UserType of the User.</param>
+        /// <returns>Returns a list of all Users where their AuthorizedObjectIds contain "id"</returns>
+        public static IEnumerable<User> GetByAuthorizedObject(int id, UserTypes type) //todo: comment
+        {
+            IEnumerable<User> users = GetByUserType(type);
+            List<User> results = new List<User>();
+
+            foreach(User user in users)
+            {
+                if (user.AuthorizedObjectIds.Contains(id))
+                {
+                    results.Add(user);
+                }
             }
 
             return results;

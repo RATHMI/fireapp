@@ -170,5 +170,29 @@ namespace FireApp.Service.DatabaseOperations
 
             throw new KeyNotFoundException();
         }
+
+        public static IEnumerable<ServiceGroup> GetByFireAlarmSystem(FireAlarmSystem fas) // todo: comment
+        {
+            List<ServiceGroup> results = new List<ServiceGroup>();
+
+            try
+            {
+                foreach (int id in fas.FireBrigades)
+                {
+                    results.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                }
+
+                return results;
+            }
+            catch (Exception)
+            {
+                return new List<ServiceGroup>();
+            }
+        }
+
+        public static IEnumerable<User> GetUsers(int servicegroup) //todo: comment
+        {
+            return DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.firebrigade);
+        }
     }
 }
