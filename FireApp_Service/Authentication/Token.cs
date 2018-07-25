@@ -36,7 +36,7 @@ namespace FireApp.Service.Authentication
                     if (user.Password == login.Password)
                     {
                         // Generate a new token.
-                        user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                        user.Token = Authentication.Token.GenerateToken();
 
                         // Save the changes in the database
                         DatabaseOperations.Users.Upsert(user);
@@ -58,10 +58,24 @@ namespace FireApp.Service.Authentication
         /// </summary>
         /// <param name="hash">An Integer that is used for the first part of the token.</param>
         /// <returns>Returns a new random token.</returns>
-        public static string GenerateToken(int hash)
+        public static string GenerateToken()
         {
-            System.Random random = new System.Random();
-            return hash.ToString().Substring(random.Next(1, 5)) + PasswordGenerator.Generate(length: 50, allowed: Sets.Alphanumerics);
+            IEnumerable<User> users = DatabaseOperations.Users.GetAll();
+            string token = "";
+
+            while (token == "")
+            {
+                token = PasswordGenerator.Generate(length: 50, allowed: Sets.Alphanumerics);
+                foreach (User user in users)
+                {
+                    if (user.Token == token)
+                    {
+                        token = "";
+                    }
+                }
+            }
+
+            return token;
         }
 
         /// <summary>

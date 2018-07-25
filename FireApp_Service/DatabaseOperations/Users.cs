@@ -37,7 +37,7 @@ namespace FireApp.Service.DatabaseOperations
                         {
                             // If there is no existing User you have to generate a new token
                             // to guarantee a safe authentication.
-                            user.Token = Authentication.Token.GenerateToken(user.Id.GetHashCode());
+                            user.Token = Authentication.Token.GenerateToken();
                         }
                         else
                         {

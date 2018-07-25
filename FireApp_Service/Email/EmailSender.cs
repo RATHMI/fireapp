@@ -25,7 +25,7 @@ namespace FireApp.Service.Email
 
             // todo: use real email
             // client.Send("fro.diplomarbeit@gmail.com", recipients, subject, message);
-            client.Send("ollmann.ph@gmail.com", "fro.diplomarbeit@gmail.com", subject, message);
+            client.Send("fro.diplomarbeit@gmail.com", "ollmann.ph@gmail.com", subject, message);
         }
 
         /// <summary>
