@@ -429,107 +429,13 @@ namespace FireApp.Service.Controllers
                         {
                             if (type == "groups")
                             {
-                                if (user.UserType == UserTypes.firealarmsystem)
-                                {
-                                    foreach (int id in user.AuthorizedObjectIds)
-                                    {
-                                        try
-                                        {
-                                            results.Add(DatabaseOperations.FireAlarmSystems.GetById(id));
-                                        }
-                                        catch (Exception)
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                }
-
-                                if (user.UserType == UserTypes.firebrigade)
-                                {
-                                    foreach (int id in user.AuthorizedObjectIds)
-                                    {
-                                        try
-                                        {
-                                            results.Add(DatabaseOperations.FireBrigades.GetById(id));
-                                        }
-                                        catch (Exception)
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                }
-
-                                if (user.UserType == UserTypes.servicemember)
-                                {
-                                    foreach (int id in user.AuthorizedObjectIds)
-                                    {
-                                        try
-                                        {
-                                            results.Add(DatabaseOperations.ServiceGroups.GetById(id));
-                                        }
-                                        catch (Exception)
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                }
+                                results.AddRange(DatabaseOperations.Users.GetAuthorizedObjects(user));
                             }
                             else
                             {
                                 if(type == "fas")
                                 {
-                                    List<object> authorizedObjects = new List<object>();
-                                    if (user.UserType == UserTypes.firebrigade)
-                                    {
-                                        foreach (int id in user.AuthorizedObjectIds)
-                                        {
-                                            try
-                                            {
-                                                authorizedObjects.Add(DatabaseOperations.FireBrigades.GetById(id));
-                                            }
-                                            catch (Exception)
-                                            {
-                                                continue;
-                                            }
-                                        }
-
-                                        foreach(FireBrigade fb in authorizedObjects)
-                                        {
-                                            foreach(FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
-                                            {
-                                                if (fas.FireBrigades.Contains(fb.Id))
-                                                {
-                                                    results.Add(fas);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    if (user.UserType == UserTypes.servicemember)
-                                    {
-                                        foreach (int id in user.AuthorizedObjectIds)
-                                        {
-                                            try
-                                            {
-                                                authorizedObjects.Add(DatabaseOperations.ServiceGroups.GetById(id));
-                                            }
-                                            catch (Exception)
-                                            {
-                                                continue;
-                                            }
-                                        }
-
-                                        foreach (ServiceGroup sg in authorizedObjects)
-                                        {
-                                            foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
-                                            {
-                                                if (fas.FireBrigades.Contains(sg.Id))
-                                                {
-                                                    results.Add(fas);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetByUser(user));
                                 }
                             }
                         }

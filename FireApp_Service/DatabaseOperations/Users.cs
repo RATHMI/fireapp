@@ -29,6 +29,9 @@ namespace FireApp.Service.DatabaseOperations
                     if (old == null)
                     {
                         Email.Email.WelcomeEmail(user);
+
+                        // Encrypt password.
+                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
                     }
 
                     if (user.Token == null)
@@ -54,12 +57,7 @@ namespace FireApp.Service.DatabaseOperations
                             return false;
                         }
                         user.Password = old.Password;
-                    }
-                    else
-                    {
-                        // Encrypt password.
-                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
-                    }                    
+                    }                 
 
                     // Save the User in the database.
                     LocalDatabase.UpsertUser(user);
@@ -225,5 +223,59 @@ namespace FireApp.Service.DatabaseOperations
             return results;
         }
 
-     }
+        public static IEnumerable<object> GetAuthorizedObjects(User user) //todo: comment
+        {
+            List<object> results = new List<object>();
+            if (user != null)
+            {
+                if (user.UserType == UserTypes.firealarmsystem)
+                {
+                    foreach (int id in user.AuthorizedObjectIds)
+                    {
+                        try
+                        {
+                            results.Add(DatabaseOperations.FireAlarmSystems.GetById(id));
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+                if (user.UserType == UserTypes.firebrigade)
+                {
+                    foreach (int id in user.AuthorizedObjectIds)
+                    {
+                        try
+                        {
+                            results.Add(DatabaseOperations.FireBrigades.GetById(id));
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+                if (user.UserType == UserTypes.servicemember)
+                {
+                    foreach (int id in user.AuthorizedObjectIds)
+                    {
+                        try
+                        {
+                            results.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+                }          
+            }
+
+            return results;
+        }
+        
+    }
 }

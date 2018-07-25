@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Net.Http.Formatting;
 using Newtonsoft.Json.Serialization;
 using FireApp.Domain;
+using System.Threading;
 
 [assembly: OwinStartup(typeof(FireApp.Service.AppStartup))]
 namespace FireApp.Service {

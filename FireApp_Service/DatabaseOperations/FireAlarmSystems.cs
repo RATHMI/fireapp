@@ -185,6 +185,64 @@ namespace FireApp.Service.DatabaseOperations
 
         }
 
-        // todo: get users by authorized object id?
+        public static IEnumerable<FireAlarmSystem> GetByUser(User user) //todo: comment
+        {
+            List<object> authorizedObjects = new List<object>();
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+
+            if (user.UserType == UserTypes.firebrigade)
+            {
+                foreach (int id in user.AuthorizedObjectIds)
+                {
+                    try
+                    {
+                        authorizedObjects.Add(DatabaseOperations.FireBrigades.GetById(id));
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+
+                foreach (FireBrigade fb in authorizedObjects)
+                {
+                    foreach (FireAlarmSystem fas in GetAll())
+                    {
+                        if (fas.FireBrigades.Contains(fb.Id))
+                        {
+                            results.Add(fas);
+                        }
+                    }
+                }
+            }
+
+            if (user.UserType == UserTypes.servicemember)
+            {
+                foreach (int id in user.AuthorizedObjectIds)
+                {
+                    try
+                    {
+                        authorizedObjects.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+
+                foreach (ServiceGroup sg in authorizedObjects)
+                {
+                    foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+                    {
+                        if (fas.FireBrigades.Contains(sg.Id))
+                        {
+                            results.Add(fas);
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
     }
 }
