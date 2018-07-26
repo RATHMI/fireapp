@@ -236,5 +236,28 @@ namespace FireApp.Service.Controllers
                 return new FireBrigade[0];
             }
         }
+
+        [HttpGet, Route("users/{id}")] // todo: comment
+        public User[] GetUsers(int id)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        return DatabaseOperations.FireBrigades.GetUsers(id).ToArray();
+                    }
+                }
+                throw new NullReferenceException();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new User[0];
+            }
+        }
     }
 }
