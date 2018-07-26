@@ -18,7 +18,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to upsert.</param>
         /// <returns>Returns true if the FireAlarmSystem was inserted.</returns>
-        [HttpPost, Route("upload")]//todo: comment
+        [HttpPost, Route("upload")]
         public bool UploadFireAlarmSystem([FromBody] FireAlarmSystem fas)
         {
             try {
@@ -31,8 +31,17 @@ namespace FireApp.Service.Controllers
                         Logging.Logger.Log("upsert", user.GetUserDescription(), fas);
                         return DatabaseOperations.FireAlarmSystems.Upsert(fas);
                     }
+                    else
+                    {
+                        // User is not an admin.
+                        throw new InvalidOperationException();
+                    }
                 }
-                return false;
+                else
+                {
+                    // Token is invalid.
+                    throw new InvalidOperationException();
+                }
             }
             catch(Exception ex)
             {
@@ -96,10 +105,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireAlarmSystems.
         /// </summary>
-        /// <returns>Returns a list of all FireAlarmSystems.</returns>
-        [HttpGet, Route("all")]//todo: comment
+        /// <returns>Returns an array of all FireAlarmSystems.</returns>
+        [HttpGet, Route("all")]
         public FireAlarmSystem[] All()
         {
             try
@@ -134,7 +143,7 @@ namespace FireApp.Service.Controllers
         /// Allows the admin to export all FireAlarmSystems to a CSV file.
         /// </summary>
         /// <returns>Returns a CSV file with all FireAlarmSystems.</returns>
-        [HttpGet, Route("getcsv")]//todo: comment
+        [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -172,6 +181,7 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // The User is not an admin.
                         result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         result.Content = null;
                     }
@@ -196,7 +206,7 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>Returns a list of all FireAlarmSystems with active FireEvents.</returns>
+        /// <returns>Returns an array of all FireAlarmSystems with active FireEvents.</returns>
         [HttpGet, Route("active")]//todo: comment
         public FireAlarmSystem[] GetActiveFireAlarmSystems()
         {

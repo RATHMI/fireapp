@@ -100,9 +100,11 @@ namespace FireApp.Service.DatabaseOperations
             IEnumerable<FireEvent> events;
 
             // Get all active FireEvents from the database.
-            events = ActiveEvents.GetAll(); 
+            events = ActiveEvents.GetAll();
 
             // Filter the FireEvents according to the User.
+            // If you do not filter the FireEvents the User will get some FireAlarmSystems 
+            // but may not see the active FireEvents because of the UserType.
             events = Filter.FireEventsFilter.UserFilter(events, user);
 
             // HashSet not other type of list because there could be several FireEvents with the same sourceId.

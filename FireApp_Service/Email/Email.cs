@@ -25,15 +25,14 @@ namespace FireApp.Service.Email
 
             // todo: use real email
             // client.Send("fro.diplomarbeit@gmail.com", recipients, subject, message);
-            //client.Send("fro.diplomarbeit@gmail.com", "fro.diplomarbeit@gmail.com", "Schöne Ferien!", "Schöne Ferien Neini!\n\nWünschen dir deine Kameraden aus Gmunden ;)");
-            client.Send("fro.diplomarbeit@gmail.com", "fro.diplomarbeit@gmail.com", "Schöne Ferien!", message);
+            client.Send("fro.diplomarbeit@gmail.com", "flo.neuni@gmail.com", "Schöne Ferien!", "Schöne Ferien Neini!\n\nWünschen dir deine Kameraden aus Gmunden ;)");
         }
 
         /// <summary>
         /// Sends a welcome email to the user.
         /// </summary>
         /// <param name="u">The User you want to send the email to.</param>
-        public static void WelcomeEmail(User u) // todo: comment, improve
+        public static void WelcomeEmail(User u) // todo: improve
         {
             string message = "Welcome " + u.FirstName + " " + u.LastName + "!\n\n";
             message += "A new FireApp-account has been created for you.\n";
@@ -61,7 +60,11 @@ namespace FireApp.Service.Email
             Send(adminEmail, "User question", message);
         }
 
-        public static void ResetEmail(User u)
+        /// <summary>
+        /// Sends an email to the User with the User's username and new password.
+        /// </summary>
+        /// <param name="u">The User you want to send the email to.</param>
+        public static void ResetEmail(User u)// todo: improve
         {
             string message = "Welcome " + u.FirstName + " " + u.LastName + "!\n\n";
             message += "You forgot your password so we generated you a new one.\n";

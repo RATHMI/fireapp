@@ -192,7 +192,7 @@ namespace FireApp.Domain
         /// </summary>
         /// <param name="csv">A line of a CSV-File you want to convert.</param>
         /// <returns>Returns a new FireAlarmSystem or null if an error occures.</returns>
-        public static FireAlarmSystem GetFireAlarmSystemFromCsv(string csv) // todo: comment
+        public static FireAlarmSystem GetFireAlarmSystemFromCsv(string csv)
         {
             string[] values;
 
@@ -221,16 +221,15 @@ namespace FireApp.Domain
                         serviceGroups.Add(Convert.ToInt32(s));
                     }
 
-                    FireAlarmSystem fas = new FireAlarmSystem
-                        (
+                    FireAlarmSystem fas = new FireAlarmSystem(
                             id,
                             company,
                             description,
                             country,
                             city,
                             postalCode,
-                            address
-                        );
+                            address);
+
                     fas.FireBrigades = fireBrigades;
                     fas.ServiceGroups = serviceGroups;
 

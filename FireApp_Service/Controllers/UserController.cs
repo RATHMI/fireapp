@@ -410,7 +410,15 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("authobjects/{username}/{type}")]//todo: comment
+        /// <summary>
+        /// If the type is "groups" it returns the authorized objects of the User.
+        /// If the type is "fas" it returns the FireAlarmSystems that are directly 
+        /// or indirectly associated with the User.
+        /// </summary>
+        /// <param name="username">The username of the User you want to get the objects from.</param>
+        /// <param name="type">The type of objects you want.</param>
+        /// <returns>Returns FireBrigades or ServiceGroups or FireAlarmSystems.</returns>
+        [HttpGet, Route("authobjects/{username}/{type}")]
         public object[] GetAuthorizedObjects(string username, string type) 
         {
             try
@@ -467,7 +475,6 @@ namespace FireApp.Service.Controllers
         [HttpPost, Route("resetpassword")]
         public bool ResetPassword([FromBody] string email) // todo: comment
         {
-            // todo: implement method
             User user = DatabaseOperations.Users.GetByEmail(email);
             if(user != null)
             {

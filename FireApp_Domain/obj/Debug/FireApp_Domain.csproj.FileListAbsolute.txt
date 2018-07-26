@@ -21,3 +21,5 @@ C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.pdb
 C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp_Domain.csprojResolveAssemblyReference.cache
 C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.dll
 C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.pdb
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.dll.CodeAnalysisLog.xml
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.dll.lastcodeanalysissucceeded

@@ -139,7 +139,7 @@ namespace FireApp.Domain
         /// </summary>
         /// <param name="csv">A line of a CSV-File you want to convert.</param>
         /// <returns>Returns a new User or null if an error occures.</returns>
-        public static User GetUserFromCsv(string csv) // todo: comment
+        public static User GetUserFromCsv(string csv)
         {
             string[] values;
 
@@ -151,6 +151,7 @@ namespace FireApp.Domain
                     User sg = new User(values[0], values[1], values[4], values[5], values[6], UserTypes.unauthorized);
                     string[] date = (values[7].Split(' '))[0].Split('.');
                     string[] time = (values[7].Split(' '))[1].Split(':');
+
                     sg.TokenCreationDate = new DateTime(
                         Convert.ToInt32(date[0]), 
                         Convert.ToInt32(date[1]), 
@@ -159,6 +160,8 @@ namespace FireApp.Domain
                         Convert.ToInt32(time[1]), 
                         Convert.ToInt32(time[2]));
 
+
+                    // Turn the UserType into the enum.
                     switch (values[2])
                     {
                         case "0": sg.UserType = UserTypes.admin; break;
