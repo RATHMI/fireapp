@@ -8,6 +8,7 @@ using FireApp.Domain;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
+using MlkPwgen;
 
 namespace FireApp.Service.Controllers
 {
@@ -463,13 +464,19 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("reset/{username}")]
-        public static bool ResetPassword(string username)
+        [HttpPost, Route("resetpassword")]
+        public bool ResetPassword([FromBody] string email) // todo: comment
         {
             // todo: implement method
-            User user = DatabaseOperations.Users.GetById(username);
+            User user = DatabaseOperations.Users.GetByEmail(email);
             if(user != null)
             {
+                // todo: Check if upsert does not use the old password.
+                user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics + Sets.Symbols);
+                DatabaseOperations.Users.Upsert(user);
+                Email.Email.ResetEmail(user);
+                user = DatabaseOperations.Users.GetByEmail(email);
+
                 return true;
             }
             else
@@ -478,5 +485,29 @@ namespace FireApp.Service.Controllers
             }
         }
 
+        [HttpPost, Route("changepassword")]
+        public bool ChangePassword([FromBody] string password) // todo: comment
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    user.Password = password;
+                    DatabaseOperations.Users.Upsert(user);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
     }
 }

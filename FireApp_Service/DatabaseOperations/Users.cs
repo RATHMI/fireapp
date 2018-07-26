@@ -37,7 +37,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
 
                     // Make sure the email address is unique.
-                    if (GetByEmail(user.Email) != null && GetByEmail(user.Email) != old)
+                    if (GetByEmail(user.Email) != null && GetByEmail(user.Email).Id != old.Id)
                     {
                         return false;
                     }
@@ -367,6 +367,6 @@ namespace FireApp.Service.DatabaseOperations
 
             return results;
         }
-        
+
     }
 }

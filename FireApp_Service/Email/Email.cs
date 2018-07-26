@@ -25,7 +25,8 @@ namespace FireApp.Service.Email
 
             // todo: use real email
             // client.Send("fro.diplomarbeit@gmail.com", recipients, subject, message);
-            client.Send("fro.diplomarbeit@gmail.com", "40146720140051@litec.ac.at", "Schöne Ferien!", "Schöne Ferien Neini!\n\nWünschen dir deine Kameraden aus Gmunden ;)");
+            //client.Send("fro.diplomarbeit@gmail.com", "fro.diplomarbeit@gmail.com", "Schöne Ferien!", "Schöne Ferien Neini!\n\nWünschen dir deine Kameraden aus Gmunden ;)");
+            client.Send("fro.diplomarbeit@gmail.com", "fro.diplomarbeit@gmail.com", "Schöne Ferien!", message);
         }
 
         /// <summary>
@@ -60,6 +61,16 @@ namespace FireApp.Service.Email
             Send(adminEmail, "User question", message);
         }
 
-        //public static void ResetEmail()
+        public static void ResetEmail(User u)
+        {
+            string message = "Welcome " + u.FirstName + " " + u.LastName + "!\n\n";
+            message += "You forgot your password so we generated you a new one.\n";
+            message += "username: " + u.Id;
+            message += "\npassword: " + Encryption.Encrypt.DecryptString(u.Password);
+            message += "\n\nPlease follow this link to change your password: http://example.org/";
+            message += "\nWith best regards,\nyour FireApp service team";
+
+            Send(u.Email, "password reset", message);
+        }
     }
 }
