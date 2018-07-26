@@ -204,10 +204,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireAlarmSystems where there is an active FireEvent(that the User can see) with a matching sourceId.
         /// </summary>
         /// <returns>Returns an array of all FireAlarmSystems with active FireEvents.</returns>
-        [HttpGet, Route("active")]//todo: comment
+        [HttpGet, Route("active")]
         public FireAlarmSystem[] GetActiveFireAlarmSystems()
         {
             try
@@ -218,13 +218,16 @@ namespace FireApp.Service.Controllers
                 {
                     IEnumerable<FireAlarmSystem> fas;
 
+                    // Get all FireAlarmSystems with active FireEvents that the User can see.
                     fas = DatabaseOperations.FireAlarmSystems.GetActiveFireAlarmSystems(user);
 
+                    // Filter the FireAlarmSystems according to the User.
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
                     return fas.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -237,9 +240,9 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Returns a list of souceIds from FireEvents where there is no FireAlarmSystem with a matching Id
+        /// Returns a list of souceIds from FireEvents where there is no FireAlarmSystem with a matching Id.
         /// </summary>
-        /// <returns>returns a list of IDs</returns>
+        /// <returns>Returns a list of IDs.</returns>
         [HttpGet, Route("unregistered")]
         public int[] GetUnregistered()
         {
@@ -268,11 +271,11 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns the FireAlarmSystem with a matching id.
         /// </summary>
-        /// <param name="id">The id of the FireAlarmSystem you are looking for</param>
-        /// <returns>returns a FireAlarmSystem with a matching id</returns>
-        [HttpGet, Route("id/{id}")]//todo: comment
+        /// <param name="id">The id of the FireAlarmSystem you are looking for.</param>
+        /// <returns>Returns the FireAlarmSystem with a matching id.</returns>
+        [HttpGet, Route("id/{id}")]
         public FireAlarmSystem[] GetFireAlarmSystemById(int id)
         {
             try
@@ -282,7 +285,11 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireAlarmSystem> fas;
+
+                    // Get the FireAlarmSystem.
                     fas = new List<FireAlarmSystem> { DatabaseOperations.FireAlarmSystems.GetById(id) };
+
+                    // Make sure the Users only sees what they are allowed to see.
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
                     return fas.ToArray();
                 }
@@ -340,11 +347,13 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // The User is not an admin.
                         throw new Exception();
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }                
             }
