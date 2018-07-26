@@ -438,6 +438,8 @@ namespace FireApp.Service.Controllers
                                     results.AddRange(DatabaseOperations.FireAlarmSystems.GetByUser(user));
                                 }
                             }
+
+                            return results.ToArray();
                         }
                         else
                         {
@@ -452,8 +454,7 @@ namespace FireApp.Service.Controllers
                 else
                 {
                     return null;
-                }
-                return results.ToArray();
+                }                
             }
             catch (Exception ex)
             {

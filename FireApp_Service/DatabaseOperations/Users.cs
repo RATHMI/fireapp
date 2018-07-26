@@ -317,7 +317,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="id">The id of the authorized object.</param>
         /// <param name="type">The UserType of the User.</param>
         /// <returns>Returns a list of all Users where their AuthorizedObjectIds contain "id"</returns>
-        public static IEnumerable<User> GetByAuthorizedObject(int id, UserTypes type) //todo: comment
+        public static IEnumerable<User> GetByAuthorizedObject(int id, UserTypes type)
         {
             // Get all Users with a UserType matching "type".
             IEnumerable<User> users = GetByUserType(type);
