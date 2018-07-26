@@ -59,5 +59,7 @@ namespace FireApp.Service.Email
 
             Send(adminEmail, "User question", message);
         }
+
+        //public static void ResetEmail()
     }
 }

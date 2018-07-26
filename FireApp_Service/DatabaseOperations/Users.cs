@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FireApp.Domain;
+using MlkPwgen;
 
 namespace FireApp.Service.DatabaseOperations
 {
@@ -21,14 +22,24 @@ namespace FireApp.Service.DatabaseOperations
                 {
                     // Try to find an existing User.
                     User old = GetById(user.Id);
+
                     if(user.Email == null)
                     {
-                        return false;
+                        if(old != null && (old.Email != null && old.Email != ""))
+                        {
+                            user.Email = old.Email;
+                        }
+                        else
+                        {
+                            // User should not be upserted without an email address.
+                            return false;
+                        }
                     }
 
-                    if (old == null)
+                    // Make sure the email address is unique.
+                    if (GetByEmail(user.Email) != null && GetByEmail(user.Email) != old)
                     {
-                        Email.Email.WelcomeEmail(user);                       
+                        return false;
                     }
 
                     if (user.Token == null)
@@ -46,25 +57,27 @@ namespace FireApp.Service.DatabaseOperations
                         }
                     }
 
-                    if(user.Password != null)
-                    {
-                        // Encrypt password.
-                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
-                    }
-
-
-                    if (user.Password == null || user.Email == null)
+                    if(user.Password == null || user.Password == "")
                     {
                         if (old == null)
                         {
-                            // The User should not be upserted if there is no password.
-                            return false;
+                            // Generate a new password.
+                            user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics + Sets.Symbols);
                         }
-                        user.Password = old.Password;
-                        user.Email = old.Email;
-                    }                 
+                        else
+                        {
+                            // Decrypt the old password to avoid encrypting the password twice.
+                            user.Password = Encryption.Encrypt.DecryptString(old.Password);
+                        }                                               
+                    }
 
-                    
+                    if (old == null)
+                    {
+                        Email.Email.WelcomeEmail(user);
+                    }
+
+                    // Encrypt password.
+                    user.Password = Encryption.Encrypt.EncryptString(user.Password);
 
                     // Save the User in the database.
                     LocalDatabase.UpsertUser(user);
@@ -202,6 +215,25 @@ namespace FireApp.Service.DatabaseOperations
             foreach (User u in users)
             {
                 if (u.Id == userName)
+                {
+                    return u;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the User with a matching email address.
+        /// </summary>
+        /// <param name="email">The email address of the User.</param>
+        /// <returns>Returns the User with a matching email address.</returns>
+        public static User GetByEmail(string email)
+        {
+            IEnumerable<User> users = GetAll();
+            foreach (User u in users)
+            {
+                if (u.Email == email)
                 {
                     return u;
                 }

@@ -462,5 +462,21 @@ namespace FireApp.Service.Controllers
                 return new object[0];
             }
         }
+
+        [HttpGet, Route("reset/{username}")]
+        public static bool ResetPassword(string username)
+        {
+            // todo: implement method
+            User user = DatabaseOperations.Users.GetById(username);
+            if(user != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
