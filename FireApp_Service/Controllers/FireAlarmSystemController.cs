@@ -302,30 +302,46 @@ namespace FireApp.Service.Controllers
 
             try
             {
-                FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
-
-                if (type == "fb")
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
                 {
-                    results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade));
-                }
-                else
-                {
-                    if (type == "sg")
+                    if (user.UserType == UserTypes.admin)
                     {
-                        results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup));
+                        FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
+
+                        if (type == "fb")
+                        {
+                            results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade));
+                        }
+                        else
+                        {
+                            if (type == "sg")
+                            {
+                                results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup));
+                            }
+                            else
+                            {
+                                results = DatabaseOperations.FireAlarmSystems.GetMembers(fas);
+                            }
+                        }
+
+                        return results.ToArray();
                     }
                     else
                     {
-                        results = DatabaseOperations.FireAlarmSystems.GetMembers(fas);
+                        throw new Exception();
                     }
                 }
-
-                return results.ToArray();
+                else
+                {
+                    return null;
+                }                
             }
             catch (Exception)
             {
                 return new object[0];
-            }
+            }               
         }
 
         /// <summary>
@@ -341,32 +357,48 @@ namespace FireApp.Service.Controllers
 
             try
             {
-                FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
 
-                if (type == "fb")
-                {
-                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firebrigade));
-                }
-                else
-                {
-                    if (type == "sg")
-                    {
-                        results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.servicemember));
-                    }
-                    else
-                    {
-                        if (type == "fas")
+                        if (type == "fb")
                         {
-                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem));
+                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firebrigade));
                         }
                         else
                         {
-                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas));
+                            if (type == "sg")
+                            {
+                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.servicemember));
+                            }
+                            else
+                            {
+                                if (type == "fas")
+                                {
+                                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem));
+                                }
+                                else
+                                {
+                                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas));
+                                }
+                            }
                         }
+
+                        return results.ToArray();
+                    }
+                    else
+                    {
+                        throw new Exception();
                     }
                 }
-
-                return results.ToArray();
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception)
             {

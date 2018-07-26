@@ -252,8 +252,15 @@ namespace FireApp.Service.Controllers
                     {
                         return DatabaseOperations.ServiceGroups.GetUsers(id).ToArray();
                     }
+                    else
+                    {
+                        throw new Exception();
+                    }
                 }
-                throw new NullReferenceException();
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
