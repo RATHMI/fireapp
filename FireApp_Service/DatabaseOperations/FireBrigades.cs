@@ -1,12 +1,12 @@
-﻿using FireApp.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations.BasicOperations
+namespace FireApp.Service.DatabaseOperations
 {
-    public class FireBrigades
+    public static class FireBrigades
     {
         /// <summary>
         /// Inserts a FireBrigade into the database or updates it if it already exists.
@@ -19,8 +19,7 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
             {
                 LocalDatabase.UpsertFireBrigade(fb);
                 return DatabaseOperations.DbUpserts.UpsertFireBrigade(fb);
-            }
-            else
+            }else
             {
                 return false;
             }
@@ -38,7 +37,7 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
             {
                 foreach (FireBrigade fb in fireBrigades)
                 {
-                    Upsert(fb);
+                    Upsert(fb);           
                     upserted++;
                 }
             }
@@ -61,22 +60,22 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
                 LocalDatabase.DeleteFireBrigade(id);
 
                 // Delete from authorizedObjectIds of Users in the cache.
-                foreach (User u in Users.GetAll())
+                foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.firebrigade && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
-                        Users.Upsert(u);
+                        DatabaseOperations.Users.Upsert(u);
                     }
                 }
 
                 // Delete from List of ServiceGroups of FireAlarmSystems in the cache.
-                foreach (FireAlarmSystem fas in FireAlarmSystems.GetAll())
+                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.FireBrigades.Contains(id))
                     {
                         fas.FireBrigades.Remove(id);
-                        FireAlarmSystems.Upsert(fas);
+                        DatabaseOperations.FireAlarmSystems.Upsert(fas);
                     }
                 }
 
@@ -165,6 +164,45 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
             }
 
             throw new KeyNotFoundException();
+        }
+
+        public static IEnumerable<FireBrigade> GetByFireAlarmSystem(FireAlarmSystem fas) // todo: comment
+        {
+            List<FireBrigade> results = new List<FireBrigade>();
+
+            try
+            {
+                foreach(int id in fas.FireBrigades)
+                {
+                    results.Add(GetById(id));
+                }
+
+                return results;
+            }
+            catch (Exception)
+            {
+                return new List<FireBrigade>();
+            }
+        }
+
+        public static IEnumerable<User> GetUsers(int firebrigade) //todo: comment
+        {
+            return DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade);
+        }
+
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int firebrigade) // todo: comment
+        {
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+
+            foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+            {
+                if (fas.FireBrigades.Contains(firebrigade))
+                {
+                    results.Add(fas);
+                }
+            }
+
+            return results;
         }
     }
 }

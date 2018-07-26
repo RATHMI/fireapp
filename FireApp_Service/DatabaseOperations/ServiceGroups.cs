@@ -1,13 +1,14 @@
-﻿using FireApp.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations.BasicOperations
+namespace FireApp.Service.DatabaseOperations
 {
-    public class ServiceGroups
+    public static class ServiceGroups
     {
+
         /// <summary>
         /// Inserts a ServiceGroup into the database or updates it if it already exists.
         /// </summary>
@@ -38,7 +39,7 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
             {
                 foreach (ServiceGroup sg in serviceGroups)
                 {
-                    Upsert(sg);
+                    Upsert(sg);           
                     upserted++;
                 }
             }
@@ -64,22 +65,22 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
                 LocalDatabase.DeleteServiceGroup(id);
 
                 // Delete from authorizedObjectIds of Users from cache.
-                foreach (User u in Users.GetAll())
+                foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
-                        Users.Upsert(u);
+                        DatabaseOperations.Users.Upsert(u);
                     }
                 }
 
                 // Delete from List of ServiceGroups of FireAlarmSystems from cache.
-                foreach (FireAlarmSystem fas in FireAlarmSystems.GetAll())
+                foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.ServiceGroups.Contains(id))
                     {
                         fas.ServiceGroups.Remove(id);
-                        FireAlarmSystems.Upsert(fas);
+                        DatabaseOperations.FireAlarmSystems.Upsert(fas);
                     }
                 }
 
@@ -168,6 +169,55 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
             }
 
             throw new KeyNotFoundException();
+        }
+
+        /// <summary>
+        /// Returns all ServiceGroups that are in the list of ServiceGroups of the FireAlarmSystem.
+        /// </summary>
+        /// <param name="fas">The FireAlarmSystem you want to get the ServiceGroups of.</param>
+        /// <returns>Returns all ServiceGroups that are assoziated with this FireAlarmSystem.</returns>
+        public static IEnumerable<ServiceGroup> GetByFireAlarmSystem(FireAlarmSystem fas) // todo: comment
+        {
+            List<ServiceGroup> results = new List<ServiceGroup>();
+
+            try
+            {
+                foreach (int id in fas.FireBrigades)
+                {
+                    results.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                }
+
+                return results;
+            }
+            catch (Exception)
+            {
+                return new List<ServiceGroup>();
+            }
+        }
+
+        /// <summary>
+        /// Returns all Users that are associated with this ServiceGroup.
+        /// </summary>
+        /// <param name="servicegroup">The ServiceGroup you want to get the Users of.</param>
+        /// <returns>Returns all Users whose AuthorizedObjectIds contains "servicegroup".</returns>
+        public static IEnumerable<User> GetUsers(int servicegroup)
+        {
+            return DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember);
+        }
+
+        public static IEnumerable<FireAlarmSystem> GetFireAlarmSystems(int servicegroup) // todo: comment
+        {
+            List<FireAlarmSystem> results = new List<FireAlarmSystem>();
+
+            foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
+            {
+                if (fas.ServiceGroups.Contains(servicegroup))
+                {
+                    results.Add(fas);
+                }
+            }
+
+            return results;
         }
     }
 }

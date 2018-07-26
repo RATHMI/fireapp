@@ -1,12 +1,12 @@
-﻿using FireApp.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations.BasicOperations
+namespace FireApp.Service.DatabaseOperations
 {
-    public class ActiveEvents
+    public static class ActiveEvents
     {
         /// <summary>
         /// Upserts a FireEvents into the databases.
@@ -84,9 +84,9 @@ namespace FireApp.Service.DatabaseOperations.BasicOperations
         {
             IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
             List<FireEvent> results = new List<FireEvent>();
-            foreach (FireEvent fe in events)
+            foreach(FireEvent fe in events)
             {
-                if (fe.Id.SourceId == sourceId)
+                if(fe.Id.SourceId == sourceId)
                 {
                     results.Add(fe);
                 }

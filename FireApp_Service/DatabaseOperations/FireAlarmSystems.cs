@@ -4,10 +4,93 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations.AdvancedOperations
+namespace FireApp.Service.DatabaseOperations
 {
     public static class FireAlarmSystems
     {
+        /// <summary>
+        /// Inserts a FireAlarmSystem into the database or updates it if it already exists.
+        /// </summary>
+        /// <param name="fas">The FireAlarmSystem you want to upsert.</param>
+        /// <returns>Returns true if the FireAlarmSystem was inserted.</returns>
+        public static bool Upsert(FireAlarmSystem fas)
+        {
+            if (fas != null)
+            {
+                LocalDatabase.UpsertFireAlarmSystem(fas);
+                return DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Upserts a list of FireAlarmSystems into the database.
+        /// </summary>
+        /// <param name="fireAlarmSystems">The list of FireAlarmSystems you want to upsert.</param>
+        /// <returns>Returns the number of upserted FireAlarmSystems.</returns>
+        public static int BulkUpsert(IEnumerable<FireAlarmSystem> fireAlarmSystems)
+        {
+            int upserted = 0;
+            if (fireAlarmSystems != null)
+            {
+                foreach (FireAlarmSystem fas in fireAlarmSystems)
+                {
+                    Upsert(fas);
+                    upserted++;
+                }
+            }
+
+            return upserted;
+        }
+
+        /// <summary>
+        /// Checks if an id is already used by another FireAlarmSystem.
+        /// </summary>
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns true if id is not used by other FireAlarmSystem.</returns>
+        public static int CheckId(int id)
+        {
+            IEnumerable<FireAlarmSystem> all = LocalDatabase.GetAllFireAlarmSystems();
+
+            // The highest Id of all FireAlarmSystems.
+            int maxId = 0;
+            int rv = id;
+
+            foreach (FireAlarmSystem fas in all)
+            {
+                if (maxId < fas.Id)
+                {
+                    maxId = fas.Id;
+                }
+
+                if (fas.Id == id)
+                {
+                    rv = -1;
+                }
+            }
+
+            // If the id is already used by another FireAlarmSystem
+            // return a new id.
+            if(rv == -1)
+            {
+                rv = maxId + 1;
+            }
+
+            return rv;
+        }
+
+        /// <summary>
+        /// Returns all FireAlarmSystems. 
+        /// </summary>
+        /// <returns>Returns a list of all FireAlarmSystems.</returns>
+        public static IEnumerable<FireAlarmSystem> GetAll()
+        {
+            return LocalDatabase.GetAllFireAlarmSystems().OrderBy(x => x.Company);
+        }
+
         /// <summary>
         /// Returns all FireAlarmSystems with a sourceId matching the sourceId of an active FireEvent.
         /// </summary>
@@ -17,7 +100,7 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
             IEnumerable<FireEvent> events;
 
             // Get all active FireEvents from the database.
-            events = BasicOperations.ActiveEvents.GetAll(); 
+            events = ActiveEvents.GetAll(); 
 
             // Filter the FireEvents according to the User.
             events = Filter.FireEventsFilter.UserFilter(events, user);
@@ -30,7 +113,7 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
             {
                 try { 
                     // Get FireAlarmSystem with matching sourceId and add to results.
-                    fas = BasicOperations.FireAlarmSystems.GetById(fe.Id.SourceId);
+                    fas = GetById(fe.Id.SourceId);
                     results.Add(fas);
                 }
                 catch (Exception)
@@ -45,13 +128,33 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
         }
 
         /// <summary>
+        /// Returns the FireAlarmSystem with a matching id.
+        /// </summary>
+        /// <param name="id">The id of the FireAlarmSystem you are looking for.</param>
+        /// <returns>Returns a FireAlarmSystem with a matching id.</returns>
+        public static FireAlarmSystem GetById(int id)
+        {
+            IEnumerable<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
+            foreach (FireAlarmSystem fas in fireAlarmSystems)
+            {
+                if (fas.Id == id)
+                {
+                    return fas;
+                }
+            }
+
+            // If no FireAlarmSystem with a matching id was found.
+            throw new KeyNotFoundException();
+        }
+
+        /// <summary>
         /// Returns a list of souceIds from FireEvents where there is no FireAlarmSystem with a matching Id.
         /// </summary>
         /// <returns>Returns a list of IDs.</returns>
         public static IEnumerable<int> GetUnregistered()
         {
-            List<FireAlarmSystem> fireAlarmSystems = BasicOperations.FireAlarmSystems.GetAll().OrderBy(x => x.Id).ToList();
-            List<FireEvent> events = BasicOperations.FireEvents.GetAll().OrderBy(x => x.Id.SourceId).ToList();
+            List<FireAlarmSystem> fireAlarmSystems = FireAlarmSystems.GetAll().OrderBy(x => x.Id).ToList();
+            List<FireEvent> events = Events.GetAll().OrderBy(x => x.Id.SourceId).ToList();
 
             // Use a HashSet to prevent redundant entries.
             HashSet<int> results = new HashSet<int>();
@@ -90,14 +193,14 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
         public static IEnumerable<FireAlarmSystem> GetByUser(User user) //todo: comment
         {           
             List<FireAlarmSystem> results = new List<FireAlarmSystem>();
-            List<object> authorizedObjects = Users.GetAuthorizedObjects(user).ToList();
+            List<object> authorizedObjects = DatabaseOperations.Users.GetAuthorizedObjects(user).ToList();
 
 
             if (user.UserType == UserTypes.firebrigade)
             {                              
                 foreach (FireBrigade fb in authorizedObjects)
                 {
-                    results.AddRange(FireBrigades.GetFireAlarmSystems(fb.Id));
+                    results.AddRange(DatabaseOperations.FireBrigades.GetFireAlarmSystems(fb.Id));
                 }
             }
 
@@ -105,7 +208,7 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
             {                
                 foreach (ServiceGroup sg in authorizedObjects)
                 {
-                    results.AddRange(ServiceGroups.GetFireAlarmSystems(sg.Id));
+                    results.AddRange(DatabaseOperations.ServiceGroups.GetFireAlarmSystems(sg.Id));
                 }
             }
 
@@ -120,76 +223,54 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
             return results;
         }
 
-        /// <summary>
-        /// Returns a list of FireBrigades and ServiceGroups of this FireAlarmSystem.
-        /// </summary>
-        /// <param name="fas">The FireAlarmSystem with the Ids of the FireBrigades and ServiceGroups.</param>
-        /// <returns>Returns a list of FireBrigades and ServiceGroups of this FireAlarmSystem.</returns>
         public static IEnumerable<object> GetMembers(FireAlarmSystem fas)//todo: comment
         {
             List<object> results = new List<object>();
       
-            results.AddRange(FireBrigades.GetByFireAlarmSystem(fas));
-            results.AddRange(ServiceGroups.GetByFireAlarmSystem(fas));
+            results.AddRange(DatabaseOperations.FireBrigades.GetByFireAlarmSystem(fas));
+            results.AddRange(DatabaseOperations.ServiceGroups.GetByFireAlarmSystem(fas));
 
             return results;
         }
 
-        /// <summary>
-        /// Returns a list of FireBrigades or ServiceGroups of this FireAlarmSystem.
-        /// </summary>
-        /// <param name="fas">The FireAlarmSystem with the Ids of the FireBrigades and ServiceGroups.</param>
-        /// <param name="type">The type of member you want (FireBrigde or ServiceGroup).</param>
-        /// <returns>Returns a list of FireBrigades or ServiceGroups of this FireAlarmSystem.</returns>
         public static IEnumerable<object> GetMembers(FireAlarmSystem fas, Type type)//todo: comment
         {
             List<object> results = new List<object>();
            
             if(type == typeof(FireBrigade))
             {
-                results.AddRange(FireBrigades.GetByFireAlarmSystem(fas));
+                results.AddRange(DatabaseOperations.FireBrigades.GetByFireAlarmSystem(fas));
             }
             else
             {
                 if(type == typeof(ServiceGroup))
                 {
-                    results.AddRange(ServiceGroups.GetByFireAlarmSystem(fas));
+                    results.AddRange(DatabaseOperations.ServiceGroups.GetByFireAlarmSystem(fas));
                 }
             }          
 
             return results;
         }
 
-        /// <summary>
-        /// Returns all Users that are associated with this FireAlarmSystem.
-        /// </summary>
-        /// <param name="fas">The FireAlarmSystem you want to get the Users of.</param>
-        /// <returns>Returns all Users that are associated with this FireAlarmSystem.</returns>
         public static IEnumerable<User> GetUsers(FireAlarmSystem fas)//todo: comment
         {
             List<User> results = new List<User>();
 
             foreach(int firebrigade in fas.FireBrigades)
             {
-                results.AddRange(Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
+                results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
             }
 
             foreach (int servicegroup in fas.ServiceGroups)
             {
-                results.AddRange(Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
+                results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
             }
 
-            results.AddRange(Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
+            results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
 
             return results;
         }
 
-        /// <summary>
-        /// Returns all Users of the given UserType that are associated with this FireAlarmSystem.
-        /// </summary>
-        /// <param name="fas">The FireAlarmSystem you want to get the Users of.</param>
-        /// <param name="type">The UserType of Users.</param>
-        /// <returns>Returns all Users of the given UserType that are associated with this FireAlarmSystem.</returns>
         public static IEnumerable<User> GetUsers(FireAlarmSystem fas, UserTypes type)//todo: comment
         {
             List<User> results = new List<User>();
@@ -198,7 +279,7 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
             {
                 foreach (int firebrigade in fas.FireBrigades)
                 {
-                    results.AddRange(Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
+                    results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
                 }
             }else
             {
@@ -206,17 +287,20 @@ namespace FireApp.Service.DatabaseOperations.AdvancedOperations
                 {
                     foreach (int servicegroup in fas.ServiceGroups)
                     {
-                        results.AddRange(Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
+                        results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
                     }
                 }
                 else
                 {
                     if(type == UserTypes.firealarmsystem)
                     {
-                        results.AddRange(Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
+                        results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
                     }
                 }
             }
+            
+
+            
 
             return results;
         }
