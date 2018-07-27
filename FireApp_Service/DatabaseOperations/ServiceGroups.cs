@@ -14,12 +14,18 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="sg">The ServiceGroup you want to insert.</param>
         /// <returns>Returns true if the ServiceGroup was inserted.</returns>
-        public static bool Upsert(ServiceGroup sg)
+        public static bool Upsert(ServiceGroup sg, User user)
         {
             if (sg != null)
             {
-                LocalDatabase.UpsertServiceGroup(sg);
-                return DatabaseOperations.DbUpserts.UpsertServiceGroup(sg);
+                bool ok = DatabaseOperations.DbUpserts.UpsertServiceGroup(sg);
+                if (ok)
+                {
+                    Logging.Logger.Log("upsert", user.GetUserDescription(), sg);
+                    LocalDatabase.UpsertServiceGroup(sg);
+                }
+
+                return ok;
             }
             else
             {
@@ -32,15 +38,17 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="serviceGroups">The list of ServiceGroups you want to upsert.</param>
         /// <returns>Returns the number of upserted ServiceGroups.</returns>
-        public static int BulkUpsert(IEnumerable<ServiceGroup> serviceGroups)
+        public static int BulkUpsert(IEnumerable<ServiceGroup> serviceGroups, User user)
         {
             int upserted = 0;
             if (serviceGroups != null)
             {
                 foreach (ServiceGroup sg in serviceGroups)
                 {
-                    Upsert(sg);           
-                    upserted++;
+                    if (Upsert(sg, user) == true)
+                    {
+                        upserted++;
+                    }
                 }
             }
 
@@ -53,14 +61,16 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="id">The id of the ServiceGroup you want to delete.</param>
         /// <returns>Returns true if the ServiceGroup was deleted from the DB.</returns>
-        public static bool Delete(int id)
+        public static bool Delete(int id, User user)
         {
-            bool rv = false;
-
             // Delete from database.
-            rv = DatabaseOperations.DbDeletes.DeleteServiceGroup(id);
-            if (rv != true)
+            bool ok = DatabaseOperations.DbDeletes.DeleteServiceGroup(id);
+            if (ok)
             {
+                // Write log message.
+                ServiceGroup old = GetById(id);
+                Logging.Logger.Log("delete", user.GetUserDescription(), old);
+
                 // Delete from cache.
                 LocalDatabase.DeleteServiceGroup(id);
 
@@ -70,7 +80,7 @@ namespace FireApp.Service.DatabaseOperations
                     if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
-                        DatabaseOperations.Users.Upsert(u);
+                        DatabaseOperations.Users.Upsert(u, user);
                     }
                 }
 
@@ -80,7 +90,7 @@ namespace FireApp.Service.DatabaseOperations
                     if (fas.ServiceGroups.Contains(id))
                     {
                         fas.ServiceGroups.Remove(id);
-                        DatabaseOperations.FireAlarmSystems.Upsert(fas);
+                        DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
                     }
                 }
 
@@ -105,7 +115,7 @@ namespace FireApp.Service.DatabaseOperations
                 }
 
             }
-            return rv;
+            return ok;
         }
 
         /// <summary>
@@ -116,6 +126,7 @@ namespace FireApp.Service.DatabaseOperations
         public static int CheckId(int id)
         {
             IEnumerable<ServiceGroup> all = LocalDatabase.GetAllServiceGroups();
+
             // The highest Id of all ServiceGroups.
             int maxId = 0;
             int rv = id;

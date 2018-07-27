@@ -25,24 +25,24 @@ namespace FireApp.Service.Controllers
         /// <returns>Returns true if new object was inserted.</returns>
         [HttpPost, Route("upload")]     //todo: access only for admin, actual fire alarm system
         public bool UploadFireEvent([FromBody] FireEvent fe)
-        {
+        {           
             try {
                 User user;
                 Authentication.Token.CheckAccess(Request.Headers, out user);
-                if (user != null)
+                if (user == null)
                 {
-                    Logging.Logger.Log("upsert", user.GetUserDescription(), fe);
+                    user = new User("dummy", "dummy", "dummy", "dummy", "dummy", UserTypes.unauthorized);
                 }
+
+                // Allow upsert without authentication, because there is no authentication concept for real
+                // fire alarm systems yet.
+                return DatabaseOperations.Events.Upsert(fe, user);
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);               
                 return false;
-            }
-
-            // Allow upsert without authentication, because there is no authentication concept for real
-            // fire alarm systems yet.
-            return DatabaseOperations.Events.Upsert(fe);
+            }           
         }
 
         /// <summary>

@@ -30,8 +30,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), u);
-                        return DatabaseOperations.Users.Upsert(u);
+                        return DatabaseOperations.Users.Upsert(u, user);
                     }
                 }
                 return false;   
@@ -63,8 +62,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.Users.BulkUpsert(users);
+                        return DatabaseOperations.Users.BulkUpsert(users, user);
                     }
                     else
                     {
@@ -160,7 +158,7 @@ namespace FireApp.Service.Controllers
                     {
                         IEnumerable<User> users;
                         users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
-                        int upsertedUsers = DatabaseOperations.Users.BulkUpsert(users);
+                        int upsertedUsers = DatabaseOperations.Users.BulkUpsert(users, user);
 
                         // sets the content of the response to the number of upserted users
                         result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upsertedUsers)));
@@ -238,9 +236,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        User old = DatabaseOperations.Users.GetById(userName);
-                        Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.Users.Delete(userName);
+                        return DatabaseOperations.Users.Delete(userName, user);
                     }
                 }
                 return false;
@@ -480,7 +476,7 @@ namespace FireApp.Service.Controllers
             {
                 // todo: Check if upsert does not use the old password.
                 user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics + Sets.Symbols);
-                DatabaseOperations.Users.Upsert(user);
+                DatabaseOperations.Users.Upsert(user, user);
                 Email.Email.ResetEmail(user);
                 user = DatabaseOperations.Users.GetByEmail(email);
 
@@ -502,7 +498,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     user.Password = password;
-                    DatabaseOperations.Users.Upsert(user);
+                    DatabaseOperations.Users.Upsert(user, user);
                     return true;
                 }
                 else

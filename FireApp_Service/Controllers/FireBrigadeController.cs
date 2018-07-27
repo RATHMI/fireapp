@@ -7,6 +7,7 @@ using System.Web.Http;
 using FireApp.Domain;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace FireApp.Service.Controllers
 {
@@ -14,10 +15,10 @@ namespace FireApp.Service.Controllers
     public class FireBrigadeController : ApiController
     {
         /// <summary>
-        /// inserts a FireBrigade into the database or updates it if it already exists
+        /// Inserts a FireBrigade into the database or updates it if it already exists
         /// </summary>
-        /// <param name="fb"></param>
-        /// <returns>returns true if the insert was successful</returns>
+        /// <param name="fb">The FireBrigade you want to upsert.</param>
+        /// <returns>Returns true if the FireBrigade was inserted.</returns>
         [HttpPost, Route("upload")]//todo: comment
         public bool UploadFireBrigade([FromBody] FireBrigade fb)
         {
@@ -28,8 +29,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), fb);
-                        return DatabaseOperations.FireBrigades.Upsert(fb);
+                        return DatabaseOperations.FireBrigades.Upsert(fb, user);
                     }
                 }
                 return false;
@@ -42,13 +42,13 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// inserts an array of FireBrigades into the database or updates it if it already exists
+        /// Inserts an array of FireBrigades into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="fb">The FireBrigades you want to insert</param>
-        /// <returns>returns the number of upserted FireBrigades.
-        /// -1 : invalid or no token
-        /// -2 : user is not an admin
-        /// -3 : an error occurred</returns>
+        /// <param name="fb">The FireBrigades you want to insert.</param>
+        /// <returns>Returns the number of upserted FireBrigades.
+        /// -1 : invalid or no token.
+        /// -2 : user is not an admin.
+        /// -3 : an error occurred.</returns>
         [HttpPost, Route("uploadbulk")]
         public int UpsertBulk([FromBody] FireBrigade[] fb)
         {
@@ -59,17 +59,18 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     if (user.UserType == UserTypes.admin)
-                    {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.FireBrigades.BulkUpsert(fb);
+                    {                      
+                        return DatabaseOperations.FireBrigades.BulkUpsert(fb, user);
                     }
                     else
                     {
+                        // The User is not an admin.
                         return -2;
                     }
                 }
                 else
                 {
+                    // The User is not logged in.
                     return -1;
                 }
             }
@@ -81,10 +82,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireBrigades as CSV file.
         /// </summary>
-        /// <returns>returns a csv file with all FireBrigades</returns>
-        [HttpGet, Route("getcsv")]//todo: comment
+        /// <returns>Returns a CSV file with all FireBrigades.</returns>
+        [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -97,11 +98,21 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(DatabaseOperations.FireBrigades.GetAll());
+
+                        // Get all FireBrigades.
+                        IEnumerable<FireBrigade> fb = DatabaseOperations.FireBrigades.GetAll();
+
+                        // Convert FireBrigades into a CSV file.
+                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(fb);
+
+                        // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
 
+                        // Set position of stream to 0 to avoid problems with the index.
                         stream.Position = 0;
                         result = new HttpResponseMessage(HttpStatusCode.OK);
+
+                        // Add the CSV file to the content of the response.
                         result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
@@ -109,6 +120,55 @@ namespace FireApp.Service.Controllers
                                 FileName = "FireBrigades.csv"
                             };
                         result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+                    }
+                    else
+                    {
+                        // User is not an admin.
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    // User is not logged in.
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
+        }
+
+        //todo: implement method "FromCSV"
+        /// <summary>
+        /// Retrieves FireBrigades from CSV and upserts them.
+        /// </summary>
+        /// <param name="bytes">An array of bytes that represents a CSV file.</param>
+        /// <returns>The number of successfully upserted FireBrigades.</returns>
+        [HttpPost, Route("uploadcsv")]//todo: comment
+        public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        IEnumerable<FireBrigade> fb;
+                        fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(bytes);
+                        int upserted = DatabaseOperations.FireBrigades.BulkUpsert(fb, user);
+
+                        // sets the content of the response to the number of upserted users
+                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
                     }
                     else
                     {
@@ -132,15 +192,15 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: implement method "FromCSV"
+
 
         /// <summary>
-        /// Deletes the FireBrigade from the Database and Cache
-        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// Deletes the FireBrigade from the Database and Cache.
+        /// The assoziations with the users and FireAlarmSystems are also deleted.
         /// </summary>
-        /// <param name="id">the id of the FireBrigade you want to delete</param>
-        /// <returns>returns true if FireBrigade was deleted from DB</returns>
-        [HttpGet, Route("delete/{id}")]//todo: comment
+        /// <param name="id">The id of the FireBrigade you want to delete.</param>
+        /// <returns>Returns true if the FireBrigade was deleted from the DB.</returns>
+        [HttpGet, Route("delete/{id}")]
         public bool DeleteFireBrigade(int id)
         {
             try
@@ -151,12 +211,20 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        FireBrigade old = DatabaseOperations.FireBrigades.GetById(id);
-                        Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.FireBrigades.Delete(id);
+                        // Delete the FireBrigade from the database.
+                        return DatabaseOperations.FireBrigades.Delete(id, user);
+                    }
+                    else
+                    {
+                        // User is not an admin.
+                        throw new Exception();
                     }
                 }
-                return false;
+                else
+                {
+                    // Notify user that the login was not successful.
+                    throw new Exception();
+                }                
             }
             catch (Exception ex)
             {
@@ -166,21 +234,21 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Checks if an id is already used by another FireBrigade
+        /// Checks if an id is already used by another FireBrigade.
         /// </summary>
-        /// <param name="id">the id you want to check</param>
-        /// <returns>returns true if id is not used by other FireBrigade or else a new id</returns>
-        [HttpPost, Route("checkid/{id}")]//todo: comment
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns true if the id is not used by another FireBrigade or else a new id.</returns>
+        [HttpPost, Route("checkid/{id}")]
         public static int CheckId(int id)
         {
             return DatabaseOperations.FireBrigades.CheckId(id);
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireBrigades the User is allowed to see.
         /// </summary>
-        /// <returns>returns a list of all FireBrigades</returns>
-        [HttpGet, Route("all")]//todo: comment
+        /// <returns>Returns an array of all FireBrigades.</returns>
+        [HttpGet, Route("all")]
         public FireBrigade[] All()
         {
             try
@@ -190,12 +258,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireBrigade> fb;
+
+                    // Get all FireBrigades.
                     fb = DatabaseOperations.FireBrigades.GetAll();
+
+                    // Filter the FireBrigades according to the User.
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
                     return fb.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -207,11 +280,11 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns the FireBrigade with a matching id if the User is allowed to see it.
         /// </summary>
-        /// <param name="id">The id of the FireBrigade you are looking for</param>
-        /// <returns>returns a FireBrigade with a matching id</returns>
-        [HttpGet, Route("id/{id}")]//todo: comment
+        /// <param name="id">The id of the FireBrigade you are looking for.</param>
+        /// <returns>Returns a FireBrigade with a matching id.</returns>
+        [HttpGet, Route("id/{id}")]
         public FireBrigade[] GetFireBrigadeById(int id)
         {
             try
@@ -221,12 +294,17 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     IEnumerable<FireBrigade> fb;
+
+                    // Get the FireBrigade.
                     fb = new List<FireBrigade> { DatabaseOperations.FireBrigades.GetById(id) };
+
+                    // Only return FireBrigades the User is allowed to see.
                     fb = Filter.FireBrigadesFilter.UserFilter(fb, user);
                     return fb.ToArray();
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -237,7 +315,12 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("users/{id}")] // todo: comment
+        /// <summary>
+        /// Returns all Users that are associated with this FireBrigade.
+        /// </summary>
+        /// <param name="firebrigade">The FireBrigade you want to get the Users of.</param>
+        /// <returns>Returns all Users that are associated with this FireBrigade.</returns>
+        [HttpGet, Route("users/{id}")]
         public User[] GetUsers(int id)
         {
             try
@@ -248,15 +331,18 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
+                        // Return all Users of the FireBrigade.
                         return DatabaseOperations.FireBrigades.GetUsers(id).ToArray();
                     }
                     else
                     {
+                        // User is not an admin.
                         throw new Exception();
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }                
             }

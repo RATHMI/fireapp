@@ -26,7 +26,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fe">FireEvent that should be inserted into the Database.</param>
         /// <returns>Returns true if the FireEvent was inserted.</returns>
-        public static bool Upsert(FireEvent fe)
+        public static bool Upsert(FireEvent fe, User user)//todo: log
         {
             if (fe != null)
             {

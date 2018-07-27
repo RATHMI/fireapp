@@ -28,8 +28,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), fas);
-                        return DatabaseOperations.FireAlarmSystems.Upsert(fas);
+                        return DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
                     }
                     else
                     {
@@ -69,8 +68,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.FireAlarmSystems.BulkUpsert(fas);
+                        return DatabaseOperations.FireAlarmSystems.BulkUpsert(fas, user);
                     }
                     else
                     {
@@ -326,19 +324,22 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
-
+                        
+                        // Add all FireBrigades of the FireAlarmSystem to result.
                         if (type == "fb")
                         {
                             results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade));
                         }
                         else
                         {
+                            // Add all ServiceGroups of the FireAlarmSystem to result.
                             if (type == "sg")
                             {
                                 results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup));
                             }
                             else
                             {
+                                // Add all ServiceGroups and FireBrigades of the FireAlarmSystem to result.
                                 results = DatabaseOperations.FireAlarmSystems.GetMembers(fas);
                             }
                         }

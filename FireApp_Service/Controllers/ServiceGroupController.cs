@@ -28,8 +28,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), sg);
-                        return DatabaseOperations.ServiceGroups.Upsert(sg);
+                        return DatabaseOperations.ServiceGroups.Upsert(sg, user);
                     }
                 }
                 return false;
@@ -60,8 +59,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        Logging.Logger.Log("upsert", user.GetUserDescription(), user);
-                        return DatabaseOperations.ServiceGroups.BulkUpsert(sg);
+                        return DatabaseOperations.ServiceGroups.BulkUpsert(sg, user);
                     }
                     else
                     {
@@ -153,9 +151,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        ServiceGroup old = DatabaseOperations.ServiceGroups.GetById(id);
-                        Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                        return DatabaseOperations.ServiceGroups.Delete(id);
+                        return DatabaseOperations.ServiceGroups.Delete(id, user);
                     }
                 }
                 return false;

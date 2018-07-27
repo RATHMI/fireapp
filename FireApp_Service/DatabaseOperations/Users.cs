@@ -14,7 +14,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="user">The User you want to upsert.</param>
         /// <returns>Returns true if the User was inserted.</returns>
-        public static bool Upsert(User user)
+        public static bool Upsert(User user, User admin)
         {
             try
             {
@@ -80,8 +80,12 @@ namespace FireApp.Service.DatabaseOperations
                     user.Password = Encryption.Encrypt.EncryptString(user.Password);
 
                     // Save the User in the database.
-                    LocalDatabase.UpsertUser(user);
-                    return DatabaseOperations.DbUpserts.UpsertUser(user);
+                    var ok = DatabaseOperations.DbUpserts.UpsertUser(user);
+                    if (ok) {
+                        LocalDatabase.UpsertUser(user);
+                        Logging.Logger.Log("upsert", admin.GetUserDescription(), user);
+                    }
+                    return ok;
                 }
                 return false;
             }catch(Exception ex)
@@ -96,15 +100,17 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="users">A list of Users you want to upsert.</param>
         /// <returns>Returns the number of Users that were successfully upserted.</returns>
-        public static int BulkUpsert(IEnumerable<User> users)
+        public static int BulkUpsert(IEnumerable<User> users, User admin)
         {
             int upserted = 0;
             if (users != null)
             {
                 foreach (User user in users)
                 {
-                    Upsert(user);
-                    upserted++;
+                    if (Upsert(user, admin) == true)
+                    {
+                        upserted++;
+                    }
                 }
             }
             return upserted;
@@ -115,14 +121,24 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="userName">The Id of the User you want to delete.</param>
         /// <returns>Returns true if the User was deleted.</returns>
-        public static bool Delete(string userName)
+        public static bool Delete(string userName, User user)
         {
-            if(userName != null)
+            var ok = DatabaseOperations.DbDeletes.DeleteUser(userName);
+            if (ok)
             {
-                LocalDatabase.DeleteUser(userName);
-                return DatabaseOperations.DbDeletes.DeleteUser(userName);
+                try
+                {
+                    User old = GetById(userName);
+                    Logging.Logger.Log("delete", user.GetUserDescription(), old);
+                    LocalDatabase.DeleteUser(userName);
+                }
+                catch (Exception)
+                {
+                    // Could not be found in Cache.
+                }
             }
-            return false;
+
+            return ok;
         }
 
         /// <summary>

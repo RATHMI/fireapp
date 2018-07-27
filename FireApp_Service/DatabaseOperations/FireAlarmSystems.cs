@@ -13,7 +13,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to upsert.</param>
         /// <returns>Returns true if the FireAlarmSystem was inserted.</returns>
-        public static bool Upsert(FireAlarmSystem fas)
+        public static bool Upsert(FireAlarmSystem fas, User user)//todo: log
         {
             if (fas != null)
             {
@@ -31,14 +31,14 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fireAlarmSystems">The list of FireAlarmSystems you want to upsert.</param>
         /// <returns>Returns the number of upserted FireAlarmSystems.</returns>
-        public static int BulkUpsert(IEnumerable<FireAlarmSystem> fireAlarmSystems)
+        public static int BulkUpsert(IEnumerable<FireAlarmSystem> fireAlarmSystems, User user)
         {
             int upserted = 0;
             if (fireAlarmSystems != null)
             {
                 foreach (FireAlarmSystem fas in fireAlarmSystems)
                 {
-                    Upsert(fas);
+                    Upsert(fas, user);
                     upserted++;
                 }
             }

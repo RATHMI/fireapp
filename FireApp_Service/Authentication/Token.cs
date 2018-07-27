@@ -39,7 +39,7 @@ namespace FireApp.Service.Authentication
                         user.Token = Authentication.Token.GenerateToken();
 
                         // Save the changes in the database
-                        DatabaseOperations.Users.Upsert(user);
+                        DatabaseOperations.Users.Upsert(user, user);
                         return user.Token;
                     }
                 }
