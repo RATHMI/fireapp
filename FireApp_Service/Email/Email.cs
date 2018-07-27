@@ -69,7 +69,7 @@ namespace FireApp.Service.Email
             string message = "Welcome " + u.FirstName + " " + u.LastName + "!\n\n";
             message += "You forgot your password so we generated you a new one.\n";
             message += "username: " + u.Id;
-            message += "\npassword: " + Encryption.Encrypt.DecryptString(u.Password);
+            message += "\npassword: " + u.Password;
             message += "\n\nPlease follow this link to change your password: http://example.org/";
             message += "\nWith best regards,\nyour FireApp service team";
 

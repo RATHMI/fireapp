@@ -23,7 +23,8 @@ namespace FireApp.Service.DatabaseOperations
                 using (var db = AppData.ActiveFireEventDB())
                 {
                     var table = db.ActiveFireEventTable();
-                    return table.Upsert(fe);
+                    table.Upsert(fe);
+                    return true;
                 }
             }
             else
@@ -44,7 +45,8 @@ namespace FireApp.Service.DatabaseOperations
                 using (var db = AppData.FireEventDB())
                 {
                     var table = db.FireEventTable();
-                    return table.Upsert(fe);
+                    table.Upsert(fe);
+                    return true;
                 }
             }
             else
@@ -65,7 +67,8 @@ namespace FireApp.Service.DatabaseOperations
                 using (var db = AppData.FireAlarmSystemDB())
                 {
                     var table = db.FireAlarmSystemTable();
-                    return table.Upsert(fas);
+                    table.Upsert(fas);
+                    return true;
                 }
             }
             else
@@ -86,7 +89,8 @@ namespace FireApp.Service.DatabaseOperations
                 using (var db = AppData.FireBrigadeDB())
                 {
                     var table = db.FireBrigadeTable();
-                    return table.Upsert(fb);
+                    table.Upsert(fb);
+                    return true;
                 }
             }
             else
@@ -107,7 +111,8 @@ namespace FireApp.Service.DatabaseOperations
                 using (var db = AppData.ServiceGroupDB())
                 {
                     var table = db.ServiceGroupTable();
-                    return table.Upsert(sg);
+                    table.Upsert(sg);
+                    return true;
                 }
             }
             else
@@ -128,7 +133,8 @@ namespace FireApp.Service.DatabaseOperations
                 using (var db = AppData.UserDB())
                 {
                     var table = db.UserTable();
-                    return table.Upsert(user);
+                    table.Upsert(user);
+                    return true;
                 }
             }
             else

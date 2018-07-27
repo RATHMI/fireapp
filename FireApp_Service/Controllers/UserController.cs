@@ -473,11 +473,16 @@ namespace FireApp.Service.Controllers
             User user = DatabaseOperations.Users.GetByEmail(email);
             if(user != null)
             {
-                // todo: Check if upsert does not use the old password.
+                // Generate a new password.
                 user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics + Sets.Symbols);
+
+                // Upsert the User with the new password.
                 DatabaseOperations.Users.Upsert(user, user);
+
+                // Send the User an email with the new password.
+                user = (User)user.Clone();
+                user.Email = Encryption.Encrypt.DecryptString(user.Email);
                 Email.Email.ResetEmail(user);
-                user = DatabaseOperations.Users.GetByEmail(email);
 
                 return true;
             }

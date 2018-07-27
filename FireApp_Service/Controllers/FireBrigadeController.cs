@@ -164,6 +164,7 @@ namespace FireApp.Service.Controllers
                     {
                         // todo: comment
                         IEnumerable<FireBrigade> fb;
+                        byteArrayString = byteArrayString.Trim('"');
                         List<byte> bytes = new List<byte>();
                         foreach(string s in byteArrayString.Split(' '))
                         {
