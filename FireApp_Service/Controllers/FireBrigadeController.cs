@@ -151,7 +151,7 @@ namespace FireApp.Service.Controllers
         /// <param name="bytes">An array of bytes that represents a CSV file.</param>
         /// <returns>The number of successfully upserted FireBrigades.</returns>
         [HttpPost, Route("uploadcsv")]//todo: comment
-        public HttpResponseMessage UpsertCsv([FromBody] string csv)
+        public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             try
@@ -162,8 +162,15 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
+                        // todo: comment
                         IEnumerable<FireBrigade> fb;
-                        fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(csv);
+                        List<byte> bytes = new List<byte>();
+                        foreach(string s in byteArrayString.Split(' '))
+                        {
+                            bytes.Add(Convert.ToByte(s));
+                        }
+
+                        fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(bytes.ToArray());
                         int upserted = DatabaseOperations.FireBrigades.BulkUpsert(fb, user);
 
                         // sets the content of the response to the number of upserted users
