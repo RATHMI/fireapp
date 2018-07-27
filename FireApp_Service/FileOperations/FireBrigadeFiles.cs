@@ -17,9 +17,8 @@ namespace FireApp.Service.FileOperations
         /// </summary>
         /// <param name="bytes">the csv file as a byte array</param>
         /// <returns>returns a list of FireBrigades</returns>
-        public static IEnumerable<FireBrigade> GetFireBrigadesFromCSV(byte[] bytes)
+        public static IEnumerable<FireBrigade> GetFireBrigadesFromCSV(string csv)
         {
-            string csv = System.Text.Encoding.Default.GetString(bytes);
             List<FireBrigade> results = new List<FireBrigade>();
             try
             {

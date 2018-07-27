@@ -553,7 +553,10 @@
                                             <td>&emsp;../help</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the email was sent.<br>
+                                                Returns an exit code as integer.<br>
+                                                &emsp;1 : email was sent.<br />
+                                                &emsp;0 : User is not logged in<br />
+                                                &emsp;-1 : an error occured<br />
                                                 Transmit the text of the email as string via POST in the body of the request.
                                             </td>
                                         </tr>                                       
@@ -564,7 +567,7 @@
                         </div>
                         <row class="pull-left" class="col-sg-6">
                             <!--<p><span id="cnt_rows">0</span> Lines</p>-->
-                            <p>Last Update: 24 July 2018</p>
+                            <p>Last Update: 27 July 2018</p>
                         </row>
                         <row class="pull-right" class="col-sg-6">
                             <p>2018 &copy; Siemens Austria</p>

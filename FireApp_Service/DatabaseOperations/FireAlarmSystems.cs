@@ -13,12 +13,18 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to upsert.</param>
         /// <returns>Returns true if the FireAlarmSystem was inserted.</returns>
-        public static bool Upsert(FireAlarmSystem fas, User user)//todo: log
+        public static bool Upsert(FireAlarmSystem fas, User user)
         {
             if (fas != null)
             {
-                LocalDatabase.UpsertFireAlarmSystem(fas);
-                return DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
+                bool ok = DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
+                if (ok)
+                {
+                    Logging.Logger.Log("upsert", user.GetUserDescription(), fas);
+                    LocalDatabase.UpsertFireAlarmSystem(fas);
+                }
+
+                return ok;
             }
             else
             {
@@ -38,8 +44,10 @@ namespace FireApp.Service.DatabaseOperations
             {
                 foreach (FireAlarmSystem fas in fireAlarmSystems)
                 {
-                    Upsert(fas, user);
-                    upserted++;
+                    if (Upsert(fas, user) == true)
+                    {
+                        upserted++;
+                    }
                 }
             }
 

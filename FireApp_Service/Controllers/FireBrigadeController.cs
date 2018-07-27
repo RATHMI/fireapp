@@ -144,15 +144,14 @@ namespace FireApp.Service.Controllers
                 return result;
             }
         }
-
-        //todo: implement method "FromCSV"
+        
         /// <summary>
         /// Retrieves FireBrigades from CSV and upserts them.
         /// </summary>
         /// <param name="bytes">An array of bytes that represents a CSV file.</param>
         /// <returns>The number of successfully upserted FireBrigades.</returns>
         [HttpPost, Route("uploadcsv")]//todo: comment
-        public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
+        public HttpResponseMessage UpsertCsv([FromBody] string csv)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             try
@@ -164,7 +163,7 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         IEnumerable<FireBrigade> fb;
-                        fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(bytes);
+                        fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(csv);
                         int upserted = DatabaseOperations.FireBrigades.BulkUpsert(fb, user);
 
                         // sets the content of the response to the number of upserted users
@@ -191,8 +190,6 @@ namespace FireApp.Service.Controllers
                 return result;
             }
         }
-
-
 
         /// <summary>
         /// Deletes the FireBrigade from the Database and Cache.

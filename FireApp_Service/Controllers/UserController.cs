@@ -138,12 +138,11 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: test upload
         /// <summary>
-        /// Retrieves Users from CSV and upserts them
+        /// Retrieves Users from CSV and upserts them.
         /// </summary>
-        /// <param name="bytes">an array of bytes that represents a csv file</param>
-        /// <returns>the number of successfully upserted Users</returns>
+        /// <param name="bytes">An array of bytes that represents a CSV file.</param>
+        /// <returns>The number of successfully upserted Users.</returns>
         [HttpPost, Route("uploadcsv")]//todo: comment
         public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
         {
@@ -158,10 +157,10 @@ namespace FireApp.Service.Controllers
                     {
                         IEnumerable<User> users;
                         users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
-                        int upsertedUsers = DatabaseOperations.Users.BulkUpsert(users, user);
+                        int upserted = DatabaseOperations.Users.BulkUpsert(users, user);
 
                         // sets the content of the response to the number of upserted users
-                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upsertedUsers)));
+                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
                     }
                     else
                     {

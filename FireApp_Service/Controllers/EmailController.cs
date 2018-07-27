@@ -15,9 +15,13 @@ namespace FireApp.Service.Controllers
         /// Sends a email to the admin with a message of the user.
         /// </summary>
         /// <param name="message">The text the user entered.</param>
-        /// <returns>Returns true if the email was sent.</returns>
+        /// <returns>
+        /// Returns 1 if the email was sent.
+        /// 0 : User is not logged in.
+        /// -1 : an error occured.
+        /// </returns>
         [HttpPost, Route("help")]
-        public bool Help([FromBody] string message)
+        public Int32 Help([FromBody] string message)
         {
             try
             {
@@ -28,15 +32,15 @@ namespace FireApp.Service.Controllers
                     User admin = DatabaseOperations.Users.GetFirstAdmin();
                     if (admin != null) {
                         Email.Email.HelpEmail(user, admin.Email, message);
-                        return true;
+                        return 1;
                     }
                 }
-                return false;
+                return 0;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return -1;
             }
         }
     }

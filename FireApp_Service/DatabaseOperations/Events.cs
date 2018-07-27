@@ -26,14 +26,20 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fe">FireEvent that should be inserted into the Database.</param>
         /// <returns>Returns true if the FireEvent was inserted.</returns>
-        public static bool Upsert(FireEvent fe, User user)//todo: log
+        public static bool Upsert(FireEvent fe, User user)
         {
             if (fe != null)
             {
-                DatabaseOperations.ActiveEvents.Upsert(fe);
-                LocalDatabase.UpsertFireEvent(fe);
+                bool ok = DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
+                if (ok)
+                {
+                    Logging.Logger.Log("upsert", user.GetUserDescription(), fe);
 
-                return DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
+                    DatabaseOperations.ActiveEvents.Upsert(fe);
+                    LocalDatabase.UpsertFireEvent(fe);
+                }
+
+                return ok;
             }
             else
             {
