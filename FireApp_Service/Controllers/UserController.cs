@@ -474,8 +474,14 @@ namespace FireApp.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Generates a new password for the User with a matching email address and sends the new
+        /// login credentials via email to the User.
+        /// </summary>
+        /// <param name="email">The email address of the User who wants to reset the password.</param>
+        /// <returns>Returns true if the email was sent.</returns>
         [HttpPost, Route("resetpassword")]
-        public bool ResetPassword([FromBody] string email) // todo: comment
+        public bool ResetPassword([FromBody] string email)
         {
             User user = DatabaseOperations.Users.GetByEmail(email);
             if(user != null)
@@ -486,9 +492,12 @@ namespace FireApp.Service.Controllers
                 // Upsert the User with the new password.
                 DatabaseOperations.Users.Upsert(user, user);
 
-                // Send the User an email with the new password.
+                
+                // Get a clone of the User so the password is not changed when decypting it.
                 user = (User)user.Clone();
                 user.Email = Encryption.Encrypt.DecryptString(user.Email);
+
+                // Send the User an email with the new password.
                 Email.Email.ResetEmail(user);
 
                 return true;
@@ -499,8 +508,13 @@ namespace FireApp.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Sets the password of the logged in User to the given password.
+        /// </summary>
+        /// <param name="password">The new password of the User.</param>
+        /// <returns>Returns true if the password was set.</returns>
         [HttpPost, Route("changepassword")]
-        public bool ChangePassword([FromBody] string password) // todo: comment
+        public bool ChangePassword([FromBody] string password)
         {
             try
             {
@@ -508,6 +522,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
+                    // If the User is logged in change the password.
                     user.Password = password;
                     DatabaseOperations.Users.Upsert(user, user);
                     return true;

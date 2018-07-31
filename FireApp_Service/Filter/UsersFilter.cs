@@ -19,12 +19,15 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of Users</returns>
         public static IEnumerable<User> UserFilter(IEnumerable<User> users, User user)
         {
-            List<User> results = new List<User>();
+            HashSet<User> results = new HashSet<User>();
             if (users != null && user != null)
             {
                 if (user.UserType == UserTypes.admin)
                 {
-                    results = adminFilter(users).ToList();
+                    foreach(User u in adminFilter(users))
+                    {
+                        results.Add(u);
+                    }
                 }
                 else
                 {
@@ -35,7 +38,8 @@ namespace FireApp.Service.Filter
             return (IEnumerable<User>)results
                 .OrderBy(x => x.UserType)
                 .ThenBy(x => x.LastName)
-                .ThenBy(x => x.FirstName);
+                .ThenBy(x => x.FirstName)
+                .Distinct();
         }
 
         /// <summary>

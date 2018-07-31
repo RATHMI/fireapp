@@ -17,33 +17,39 @@ namespace FireApp.Service.Filter
         /// <param name="serviceGroups">The list of ServiceGroups you want to filter.</param>
         /// <param name="user">The user you want the ServiceGroups to filter for.</param>
         /// <returns>Returns a filtered list of ServiceGroups.</returns>
-        public static IEnumerable<ServiceGroup> UserFilter(IEnumerable<ServiceGroup> serviceGroup, User user) //todo: comment
+        public static IEnumerable<ServiceGroup> UserFilter(IEnumerable<ServiceGroup> serviceGroups, User user) //todo: comment
         {
-            List<ServiceGroup> results = new List<ServiceGroup>();
-            if (serviceGroup != null && user != null)
+            HashSet<ServiceGroup> results = new HashSet<ServiceGroup>();
+            if (serviceGroups != null && user != null)
             {
                 if (user.UserType == UserTypes.admin)
                 {
-                    results.AddRange(serviceGroup);
+                    foreach(ServiceGroup sg in serviceGroups)
+                    {
+                        results.Add(sg);
+                    }
                 }
                 if (user.UserType == UserTypes.firealarmsystem)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.AddRange(fireAlarmSystemFilter(serviceGroup, authorizedObject));
+                        foreach (ServiceGroup sg in fireAlarmSystemFilter(serviceGroups, authorizedObject))
+                        {
+                            results.Add(sg);
+                        }
                     }
                 }
                 if (user.UserType == UserTypes.servicemember)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
-                        results.Add(serviceGroupFilter(serviceGroup, authorizedObject));
+                        results.Add(serviceGroupFilter(serviceGroups, authorizedObject));
                     }
                 }
             }
 
             results.OrderBy(x => x.GroupName);
-            return results;
+            return results.Distinct();
         }
 
         /// <summary>

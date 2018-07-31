@@ -43,7 +43,7 @@ namespace FireApp.Service.Filter
             }
 
             results.OrderBy(x => x.Name);
-            return (IEnumerable<FireBrigade>)results;
+            return (IEnumerable<FireBrigade>)results.Distinct();
         }
 
         /// <summary>

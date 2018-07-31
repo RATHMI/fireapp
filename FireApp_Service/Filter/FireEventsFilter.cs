@@ -142,7 +142,7 @@ namespace FireApp.Service.Filter
             {
                 Console.WriteLine(ex.Message);
             }
-            return events;
+            return events.Distinct();
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> EventTypeFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
         {
-            return baseFilter(fireEvents, types);
+            return baseFilter(fireEvents, types).Distinct();
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace FireApp.Service.Filter
             {
                 throw new ArgumentNullException();
             }
-            return results;
+            return results.Distinct();
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace FireApp.Service.Filter
             }
 
             results.OrderBy(x => x.EventType);
-            return (IEnumerable<FireEvent>)results;
+            return (IEnumerable<FireEvent>)results.Distinct();
         }
 
         /// <summary>
