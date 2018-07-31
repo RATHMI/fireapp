@@ -7,6 +7,7 @@ using System.Web.Http;
 using FireApp.Domain;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace FireApp.Service.Controllers
 {
@@ -132,7 +133,59 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: implement method "FromCSV"
+        /// <summary>
+        /// Retrieves ServiceGroups from a CSV and upserts them.
+        /// </summary>
+        /// <param name="bytes">An array of bytes that represents a CSV file.</param>
+        /// <returns>The number of successfully upserted ServiceGroups.</returns>
+        [HttpPost, Route("uploadcsv")]//todo: comment
+        public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        // todo: comment
+                        IEnumerable<ServiceGroup> sg;
+                        byteArrayString = byteArrayString.Trim('"');
+                        List<byte> bytes = new List<byte>();
+                        foreach (string s in byteArrayString.Split(' '))
+                        {
+                            bytes.Add(Convert.ToByte(s));
+                        }
+
+                        sg = FileOperations.ServiceGroupFiles.GetServiceGroupsFromCSV(bytes.ToArray());
+                        int upserted = DatabaseOperations.ServiceGroups.BulkUpsert(sg, user);
+
+                        // sets the content of the response to the number of upserted users
+                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
+                    }
+                    else
+                    {
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
+        }
 
         /// <summary>
         /// Deletes the ServiceGroup from the Database and Cache
