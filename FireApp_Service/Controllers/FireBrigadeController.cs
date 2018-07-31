@@ -367,10 +367,10 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// Returns all FireAlarmSystems that are associated with this FireBrigade.
         /// </summary>
-        /// <param name="firebrigade">The FireBrigade you want to get the FireAlarmSystems of.</param>
+        /// <param name="id">The FireBrigade you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns all FireAlarmSystems that are associated with this FireBrigade.</returns>
-        [HttpGet, Route("getfas/{id}")] // todo: comment
-        public FireAlarmSystem[] GetFireAlarmSystems(int fireBrigade)
+        [HttpGet, Route("fas/{id}")] // todo: comment
+        public FireAlarmSystem[] GetFireAlarmSystems(int id)
         {
             try
             {
@@ -379,7 +379,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     // Get all FireAlarmsystems of the FireBrigade.
-                    IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireBrigades.GetFireAlarmSystems(fireBrigade);
+                    IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireBrigades.GetFireAlarmSystems(id);
 
                     // Only return FireAlarmSystems the User is allowed to see.
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);

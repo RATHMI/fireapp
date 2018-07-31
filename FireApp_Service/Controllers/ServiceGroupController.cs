@@ -346,8 +346,8 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="servicegroup">The ServiceGroup you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns all FireAlarmSystems that are associated with this ServiceGroup.</returns>
-        [HttpGet, Route("getfas/{id}")] // todo: comment
-        public FireAlarmSystem[] GetFireAlarmSystems(int serviceGroup)
+        [HttpGet, Route("fas/{id}")] // todo: comment
+        public FireAlarmSystem[] GetFireAlarmSystems(int id)
         {
             try
             {
@@ -356,7 +356,7 @@ namespace FireApp.Service.Controllers
                 if (user != null)
                 {
                     // Get all FireAlarmsystems of the ServiceGroup.
-                    IEnumerable<FireAlarmSystem> fas = DatabaseOperations.ServiceGroups.GetFireAlarmSystems(serviceGroup);
+                    IEnumerable<FireAlarmSystem> fas = DatabaseOperations.ServiceGroups.GetFireAlarmSystems(id);
 
                     // Only return FireAlarmSystems the User is allowed to see.
                     fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
