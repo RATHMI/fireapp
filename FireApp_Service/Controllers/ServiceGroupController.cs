@@ -162,7 +162,7 @@ namespace FireApp.Service.Controllers
                         sg = FileOperations.ServiceGroupFiles.GetServiceGroupsFromCSV(bytes.ToArray());
                         int upserted = DatabaseOperations.ServiceGroups.BulkUpsert(sg, user);
 
-                        // sets the content of the response to the number of upserted users
+                        // Sets the content of the response to the number of upserted ServiceGroups.
                         result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
                     }
                     else

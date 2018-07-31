@@ -146,7 +146,7 @@ namespace FireApp.Service.Controllers
         }
         
         /// <summary>
-        /// Retrieves FireBrigades from CSV and upserts them.
+        /// Retrieves FireBrigades from a CSV and upserts them.
         /// </summary>
         /// <param name="bytes">An array of bytes that represents a CSV file.</param>
         /// <returns>The number of successfully upserted FireBrigades.</returns>
@@ -174,7 +174,7 @@ namespace FireApp.Service.Controllers
                         fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(bytes.ToArray());
                         int upserted = DatabaseOperations.FireBrigades.BulkUpsert(fb, user);
 
-                        // sets the content of the response to the number of upserted users
+                        // Sets the content of the response to the number of upserted FireBrigades.
                         result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
                     }
                     else
@@ -356,6 +356,7 @@ namespace FireApp.Service.Controllers
                 Console.WriteLine(ex.Message);
                 return new User[0];
             }
-        }
+        }            
+
     }
 }

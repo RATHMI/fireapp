@@ -7,6 +7,7 @@ using System.Web.Http;
 using FireApp.Domain;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace FireApp.Service.Controllers
 {
@@ -89,7 +90,59 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        //todo: implement method "FromCSV" with option insert or update to prevent unwanted updates
+        /// <summary>
+        /// Retrieves FireAlarmSystems from a CSV and upserts them.
+        /// </summary>
+        /// <param name="bytes">An array of bytes that represents a CSV file.</param>
+        /// <returns>The number of successfully upserted FireAlarmSystems.</returns>
+        [HttpPost, Route("uploadcsv")]//todo: comment
+        public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        // todo: comment
+                        IEnumerable<FireAlarmSystem> fas;
+                        byteArrayString = byteArrayString.Trim('"');
+                        List<byte> bytes = new List<byte>();
+                        foreach (string s in byteArrayString.Split(' '))
+                        {
+                            bytes.Add(Convert.ToByte(s));
+                        }
+
+                        fas = FileOperations.FireAlarmSystemFiles.GetFireAlarmSystemsFromCSV(bytes.ToArray());
+                        int upserted = DatabaseOperations.FireAlarmSystems.BulkUpsert(fas, user);
+
+                        // Sets the content of the response to the number of upserted FireAlarmSystems.
+                        result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
+                    }
+                    else
+                    {
+                        result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        result.Content = null;
+                    }
+                }
+                else
+                {
+                    result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    result.Content = null;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return result;
+            }
+        }
 
         /// <summary>
         /// Checks if an id is already used by another FireAlarmSystem.
@@ -423,6 +476,73 @@ namespace FireApp.Service.Controllers
             catch (Exception)
             {
                 return new User[0];
+            }
+        }
+
+        [HttpGet, Route("changemember/{fas}/{type}/{id}")] // todo: comment
+        public Int32 ChangeMember(int fireAlarmSystem, string type, int member)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        if (type == null)
+                        {
+                            throw new ArgumentNullException();
+                        }
+                        else
+                        {
+                            // Get the FireAlarmSystem by the id.
+                            // The method throws an Exception if the FireAlarmSystem does not exist.
+                            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(fireAlarmSystem);            
+
+                            if (type == "fb")
+                            {
+                                // Get the FireBrigade by the id.
+                                // The method throws an Exception if the FireBrigade does not exist.
+                                DatabaseOperations.FireBrigades.GetById(member);
+
+                                fas.FireBrigades.Remove(member);
+                                return 1;
+                            }
+                            else
+                            {
+                                if (type == "sg")
+                                {
+                                    // Get the ServiceGroup by the id.
+                                    // The method throws an Exception if the ServiceGroup does not exist.
+                                    DatabaseOperations.ServiceGroups.GetById(member);
+
+                                    fas.ServiceGroups.Remove(member);
+                                    return 1;
+                                }
+                                else
+                                {
+                                    throw new ArgumentOutOfRangeException();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // User is not an admin.
+                        return -2;
+                    }
+                }
+                else
+                {
+                    // Notify user that the login was not successful.
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -3;
             }
         }
     }

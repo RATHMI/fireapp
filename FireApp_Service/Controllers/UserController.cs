@@ -139,7 +139,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Retrieves Users from CSV and upserts them.
+        /// Retrieves Users from a CSV and upserts them.
         /// </summary>
         /// <param name="bytes">An array of bytes that represents a CSV file.</param>
         /// <returns>The number of successfully upserted Users.</returns>
@@ -159,7 +159,7 @@ namespace FireApp.Service.Controllers
                         users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
                         int upserted = DatabaseOperations.Users.BulkUpsert(users, user);
 
-                        // sets the content of the response to the number of upserted users
+                        // Sets the content of the response to the number of upserted Users.
                         result.Content = new ByteArrayContent(Encoding.ASCII.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(upserted)));
                     }
                     else
@@ -514,6 +514,96 @@ namespace FireApp.Service.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return false;
+            }
+        }
+
+        [HttpGet, Route("changeauthobject/{username}/{authobj}/{operation}")] // todo: comment
+        public Int32 ChangeAuthorizedObject(string username, int authobj, string operation)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        if (username == null || operation == null)
+                        {
+                            throw new ArgumentNullException();
+                        }
+                        else
+                        {
+                            // Get the User by the username.
+                            User changedUser = DatabaseOperations.Users.GetById(username);
+                            if (changedUser == null)
+                            {
+                                throw new ArgumentOutOfRangeException();
+                            }
+
+                            // Get the authorized object by the id.
+                            // The method throws an Exception if the object does not exist.
+                            if(changedUser.UserType == UserTypes.firebrigade)
+                            {
+                                DatabaseOperations.FireBrigades.GetById(authobj);
+                            }
+                            else
+                            {
+                                if(changedUser.UserType == UserTypes.servicemember)
+                                {
+                                    DatabaseOperations.ServiceGroups.GetById(authobj);
+                                }
+                                else
+                                {
+                                    if (changedUser.UserType == UserTypes.firealarmsystem)
+                                    {
+                                        DatabaseOperations.FireAlarmSystems.GetById(authobj);
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidOperationException();
+                                    }
+                                }
+                            }
+                            
+
+                            if (operation == "add")
+                            {
+                                changedUser.AuthorizedObjectIds.Add(authobj);
+                                DatabaseOperations.Users.Upsert(changedUser, user);
+                                return 1;
+                            }
+                            else
+                            {
+                                if (operation == "delete")
+                                {
+                                    changedUser.AuthorizedObjectIds.Remove(authobj);
+                                    DatabaseOperations.Users.Upsert(changedUser, user);
+                                    return 1;
+                                }
+                                else
+                                {
+                                    throw new ArgumentOutOfRangeException();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // User is not an admin.
+                        return -2;
+                    }
+                }
+                else
+                {
+                    // Notify user that the login was not successful.
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -3;
             }
         }
     }
