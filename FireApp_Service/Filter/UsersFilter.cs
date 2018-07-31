@@ -90,7 +90,11 @@ namespace FireApp.Service.Filter
 
         private static IEnumerable<User> fireAlarmSystemFilter(IEnumerable<User> users)
         {
+            List<User> result = new List<User>();
 
+            // todo: implement method
+
+            return result;
         }
     }
 }
