@@ -364,8 +364,12 @@ namespace FireApp.Service.Controllers
             }
         }
 
- 
-        [HttpGet, Route("fas/{id}")] // todo: comment
+        /// <summary>
+        /// Returns all FireAlarmSystems that are associated with this FireBrigade.
+        /// </summary>
+        /// <param name="firebrigade">The FireBrigade you want to get the FireAlarmSystems of.</param>
+        /// <returns>Returns all FireAlarmSystems that are associated with this FireBrigade.</returns>
+        [HttpGet, Route("getfas/{id}")] // todo: comment
         public FireAlarmSystem[] GetFireAlarmSystems(int fireBrigade)
         {
             try

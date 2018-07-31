@@ -216,8 +216,17 @@ namespace FireApp.Service.Controllers
                     {
                         return DatabaseOperations.ServiceGroups.Delete(id, user);
                     }
+                    else
+                    {
+                        // User is not an admin.
+                        throw new InvalidOperationException();
+                    }
                 }
-                return false;
+                else
+                {
+                    // Notify user that the login was not successful.
+                    throw new NullReferenceException();
+                }
             }
             catch (Exception ex)
             {
@@ -268,10 +277,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns the ServiceGroup with a matching id.
         /// </summary>
-        /// <param name="id">The id of the ServiceGroup you are looking for</param>
-        /// <returns>returns a ServiceGroup with a matching id</returns>
+        /// <param name="id">The id of the ServiceGroup you are looking for.</param>
+        /// <returns>Returns a ServiceGroup with a matching id.</returns>
         [HttpGet, Route("id/{id}")]//todo: comment
         public ServiceGroup[] GetServiceGroupById(int id)
         {
@@ -298,6 +307,11 @@ namespace FireApp.Service.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns all Users that are associated with this ServiceGroup.
+        /// </summary>
+        /// <param name="id">The ServiceGroup you want to get the Users of.</param>
+        /// <returns>Returns all Users whose AuthorizedObjectIds contains id.</returns>
         [HttpGet, Route("users/{id}")] // todo: comment
         public User[] GetUsers(int id)
         {
@@ -327,7 +341,12 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("fas/{id}")] // todo: comment
+        /// <summary>
+        /// Returns all FireAlarmSystems that are associated with this ServiceGroup.
+        /// </summary>
+        /// <param name="servicegroup">The ServiceGroup you want to get the FireAlarmSystems of.</param>
+        /// <returns>Returns all FireAlarmSystems that are associated with this ServiceGroup.</returns>
+        [HttpGet, Route("getfas/{id}")] // todo: comment
         public FireAlarmSystem[] GetFireAlarmSystems(int serviceGroup)
         {
             try
