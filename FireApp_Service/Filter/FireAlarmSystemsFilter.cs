@@ -18,7 +18,7 @@ namespace FireApp.Service.Filter
         /// <param name="user">the user you want the FireAlarmSystems to filter for</param>
         /// <returns>returns a filtered list of FireAlarmSystems</returns>
         public static IEnumerable<FireAlarmSystem> UserFilter(IEnumerable<FireAlarmSystem> fireAlarmSystems, User user)
-        {
+        {   // todo: this filter is ok
             List<FireAlarmSystem> results = new List<FireAlarmSystem>();
             if (fireAlarmSystems != null && user != null)
             {

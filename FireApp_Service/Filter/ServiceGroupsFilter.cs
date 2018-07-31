@@ -18,7 +18,7 @@ namespace FireApp.Service.Filter
         /// <param name="user">The user you want the ServiceGroups to filter for.</param>
         /// <returns>Returns a filtered list of ServiceGroups.</returns>
         public static IEnumerable<ServiceGroup> UserFilter(IEnumerable<ServiceGroup> serviceGroups, User user) //todo: comment
-        {
+        { // todo: filter is ok
             HashSet<ServiceGroup> results = new HashSet<ServiceGroup>();
             if (serviceGroups != null && user != null)
             {

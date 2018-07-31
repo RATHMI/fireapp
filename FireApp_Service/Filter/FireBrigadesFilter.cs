@@ -18,7 +18,7 @@ namespace FireApp.Service.Filter
         /// <param name="user">the user you want the FireBrigade to filter for</param>
         /// <returns>returns a filtered list of FireBrigades</returns>
         public static IEnumerable<FireBrigade> UserFilter(IEnumerable<FireBrigade> fireBrigades, User user)
-        {
+        { // todo: filter is ok
             List<FireBrigade> results = new List<FireBrigade>();
             if (fireBrigades != null && user != null)
             {

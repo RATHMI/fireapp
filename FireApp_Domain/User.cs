@@ -101,6 +101,22 @@ namespace FireApp.Domain
         }
 
         /// <summary>
+        /// Returns a clone of this User with only the most nessesary data.
+        /// </summary>
+        /// <returns>Returns a clone of this User.</returns>
+        public User SaveClone()
+        {
+            User user = new User();
+            user.Id = this.Id;
+            user.FirstName = this.FirstName;
+            user.LastName = this.LastName;
+            user.Email = this.Email;
+            user.UserType = this.UserType;
+
+            return user;
+        }
+
+        /// <summary>
         /// Use the return value as headers of a CSV file.
         /// </summary>
         /// <returns>Returns a string with the names of the CSV values.</returns>

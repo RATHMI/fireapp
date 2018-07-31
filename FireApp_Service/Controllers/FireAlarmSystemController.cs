@@ -479,7 +479,7 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("changemember/{fas}/{type}/{member}/{operation}")] // todo: comment
+        [HttpGet, Route("changemember/{fireAlarmSystem}/{type}/{member}/{operation}")] // todo: comment
         public Int32 ChangeMember(int fireAlarmSystem, string type, int member, string operation)
         {
             try

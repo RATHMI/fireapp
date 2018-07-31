@@ -19,9 +19,18 @@ namespace FireApp.Service.Filter
         /// <returns>returns a filtered list of Users</returns>
         public static IEnumerable<User> UserFilter(IEnumerable<User> users, User user)
         {
-            HashSet<User> results = new HashSet<User>();
+            List<User> results = new List<User>();
             if (users != null && user != null)
             {
+
+                if (users.Contains(user))
+                {
+                    // If the User is contained in the result show more information about it.
+                    // Remove it from the list of Users so it is not redundant in the result.
+                    results.AddRange(adminFilter(new User[] { user }));
+                    ((List<User>)users).Remove(user);
+                }
+
                 if (user.UserType == UserTypes.admin)
                 {
                     foreach(User u in adminFilter(users))
@@ -29,13 +38,21 @@ namespace FireApp.Service.Filter
                         results.Add(u);
                     }
                 }
-                else
+                else // todo: extend filter
                 {
-                    results.Add(getClone(user));
+                    // If the User is a FireAlarmSystem show all Users that have an authorized object id 
+                    // matching one of its authorized object ids and all ServiceMembers of the FireAlarmSystems.
+
+                    // If the User is a ServiceMember show all Users of the same ServiceGroup and all Users of the 
+                    // FireAlarmSystems that are connected to its ServiceGroups.
+
+                    // If the User is a FireBrigade show all Users of the same FireBrigade
+
+                                       
                 }
             }
 
-            return (IEnumerable<User>)results
+            return results
                 .OrderBy(x => x.UserType)
                 .ThenBy(x => x.LastName)
                 .ThenBy(x => x.FirstName)
@@ -43,10 +60,10 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// returns a cloned list of users with censored password and token
+        /// Returns a cloned list of users with censored password and token.
         /// </summary>
-        /// <param name="users">a list of Users you want to filter</param>
-        /// <returns>returns the filtered list</returns>
+        /// <param name="users">A list of Users you want to filter.</param>
+        /// <returns>Returns the filtered list.</returns>
         private static IEnumerable<User> adminFilter(IEnumerable<User> users)
         {
             if (users != null)
@@ -54,7 +71,14 @@ namespace FireApp.Service.Filter
                 List<User> results = new List<User>();
                 foreach (User user in users)
                 {
-                    results.Add(getClone(user));
+                    if (user != null)
+                    {
+                        //Clone needs to be a deep clone to avoid changes in the original.
+                        User u = (User)user.Clone();
+                        u.Token = null;
+                        u.Password = null;
+                        results.Add(u);
+                    }          
                 }
 
                 return results;
@@ -65,25 +89,5 @@ namespace FireApp.Service.Filter
             }
         }       
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="user">the user you want to clone</param>
-        /// <returns>returns a censored clone of the user</returns>
-        private static User getClone(User user)
-        {
-            if (user != null)
-            {
-                //Clone needs to be a deep clone to avoid changes in the original
-                User u = (User)user.Clone();    
-                u.Token = null;
-                u.Password = null;
-                return u;
-            }
-            else
-            {
-                return null;
-            }
-        }
     }
 }
