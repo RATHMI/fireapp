@@ -576,12 +576,10 @@ namespace FireApp.Service.Controllers
             }
             catch (ArgumentOutOfRangeException)
             {
-                Console.WriteLine(ex.Message);
                 return -2;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 return -3;
             }
         }
