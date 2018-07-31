@@ -200,7 +200,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="user">The User you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns a list of FireAlarmSystems that are associated with a User.</returns>
-        public static IEnumerable<FireAlarmSystem> GetByUser(User user) //todo: comment
+        public static IEnumerable<FireAlarmSystem> GetByUser(User user)
         {           
             List<FireAlarmSystem> results = new List<FireAlarmSystem>();
             List<object> authorizedObjects = DatabaseOperations.Users.GetAuthorizedObjects(user).ToList();
@@ -238,7 +238,7 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fas">The FireAlarmSystem with the Ids of the FireBrigades and ServiceGroups.</param>
         /// <returns>Returns a list of FireBrigades and ServiceGroups of this FireAlarmSystem.</returns>
-        public static IEnumerable<object> GetMembers(FireAlarmSystem fas)//todo: comment
+        public static IEnumerable<object> GetMembers(FireAlarmSystem fas)
         {
             List<object> results = new List<object>();
       
@@ -254,7 +254,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="fas">The FireAlarmSystem with the Ids of the FireBrigades and ServiceGroups.</param>
         /// <param name="type">The type of member you want (FireBrigde or ServiceGroup).</param>
         /// <returns>Returns a list of FireBrigades or ServiceGroups of this FireAlarmSystem.</returns>
-        public static IEnumerable<object> GetMembers(FireAlarmSystem fas, Type type)//todo: comment
+        public static IEnumerable<object> GetMembers(FireAlarmSystem fas, Type type)
         {
             List<object> results = new List<object>();
            
@@ -278,20 +278,23 @@ namespace FireApp.Service.DatabaseOperations
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to get the Users of.</param>
         /// <returns>Returns all Users that are associated with this FireAlarmSystem.</returns>
-        public static IEnumerable<User> GetUsers(FireAlarmSystem fas)//todo: comment
+        public static IEnumerable<User> GetUsers(FireAlarmSystem fas)
         {
             List<User> results = new List<User>();
 
+            // Get all Users from the FireBrigades of the FireAlarmSystem.
             foreach(int firebrigade in fas.FireBrigades)
             {
                 results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
             }
 
+            // Get all Users from the ServiceGroups of the FireAlarmSystem.
             foreach (int servicegroup in fas.ServiceGroups)
             {
                 results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(servicegroup, UserTypes.servicemember));
             }
 
+            // Get all Users from the FireAlarmSystem itself.
             results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
 
             return results;
@@ -303,7 +306,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="fas">The FireAlarmSystem you want to get the Users of.</param>
         /// <param name="type">The UserType of Users.</param>
         /// <returns>Returns all Users of the given UserType that are associated with this FireAlarmSystem.</returns>
-        public static IEnumerable<User> GetUsers(FireAlarmSystem fas, UserTypes type)//todo: comment
+        public static IEnumerable<User> GetUsers(FireAlarmSystem fas, UserTypes type)
         {
             List<User> results = new List<User>();
 

@@ -364,7 +364,7 @@ namespace FireApp.Service.Controllers
         /// <param name="type">The type of member (fb, sg) you want.</param>
         /// <returns>Returns members associated with this FireAlarmSystem.</returns>
         [HttpGet, Route("members/{id}/{type}")]
-        public object[] GetMembers(int id, string type) //todo: comment
+        public object[] GetMembers(int id, string type)
         {
             IEnumerable<object> results = new object[0];
 
@@ -377,17 +377,17 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
-                        
-                        // Add all FireBrigades of the FireAlarmSystem to result.
+                                        
                         if (type == "fb")
                         {
+                            // Add all FireBrigades of the FireAlarmSystem to result.
                             results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade));
                         }
                         else
-                        {
-                            // Add all ServiceGroups of the FireAlarmSystem to result.
+                        {                           
                             if (type == "sg")
                             {
+                                // Add all ServiceGroups of the FireAlarmSystem to result.
                                 results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup));
                             }
                             else

@@ -52,12 +52,17 @@ namespace FireApp.Service.Filter
         /// <param name="serviceGroups">The list of ServiceGroups you want to filter.</param>
         /// <param name="id">The id of the FireAlarmSystem.</param>
         /// <returns>Returns a filtered list of ServiceGroups.</returns>
-        private static IEnumerable<ServiceGroup> fireAlarmSystemFilter(IEnumerable<ServiceGroup> serviceGroups, int id) //todo: comment
+        private static IEnumerable<ServiceGroup> fireAlarmSystemFilter(IEnumerable<ServiceGroup> serviceGroups, int fireAlarmSystem)
         {
             List<ServiceGroup> results = new List<ServiceGroup>();
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
+
+            // Get the FireAlarmSystem by its id.
+            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(fireAlarmSystem);
+
             if (serviceGroups != null)
             {
+                // Only add ServiceGroups to the result if the ServiceGroup is contained in the list
+                // of ServiceGroups of the FireAlarmSystem.
                 foreach (ServiceGroup sg in serviceGroups)
                 {
                     if (fas.ServiceGroups.Contains(sg.Id))

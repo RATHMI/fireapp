@@ -31,8 +31,17 @@ namespace FireApp.Service.Controllers
                     {
                         return DatabaseOperations.FireBrigades.Upsert(fb, user);
                     }
+                    else
+                    {
+                        // User is not an admin.
+                        throw new InvalidOperationException();
+                    }
                 }
-                return false;
+                else
+                {
+                    // Notify user that the login was not successful.
+                    throw new NullReferenceException();
+                }
             }
             catch(Exception ex)
             {
@@ -82,7 +91,7 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Returns all FireBrigades as CSV file.
+        /// Returns all FireBrigades as a CSV file.
         /// </summary>
         /// <returns>Returns a CSV file with all FireBrigades.</returns>
         [HttpGet, Route("getcsv")]
@@ -130,7 +139,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
-                    // User is not logged in.
+                    // Notify user that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }
@@ -334,16 +343,13 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin)
-                    {
-                        // Return all Users of the FireBrigade.
-                        return DatabaseOperations.FireBrigades.GetUsers(id).ToArray();
-                    }
-                    else
-                    {
-                        // User is not an admin.
-                        throw new Exception();
-                    }
+                    // Get all Users of the FireBrigade.
+                    IEnumerable<User> users = DatabaseOperations.FireBrigades.GetUsers(id);
+
+                    // Only return Users the User is allowed to see.
+                    users = Filter.UsersFilter.UserFilter(users, user);
+
+                    return users.ToArray();
                 }
                 else
                 {
@@ -356,7 +362,38 @@ namespace FireApp.Service.Controllers
                 Console.WriteLine(ex.Message);
                 return new User[0];
             }
-        }            
+        }
+
+ 
+        [HttpGet, Route("fas/{id}")] // todo: comment
+        public FireAlarmSystem[] GetFireAlarmSystems(int fireBrigade)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    // Get all FireAlarmsystems of the FireBrigade.
+                    IEnumerable<FireAlarmSystem> fas = DatabaseOperations.FireBrigades.GetFireAlarmSystems(fireBrigade);
+
+                    // Only return FireAlarmSystems the User is allowed to see.
+                    fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
+
+                    return fas.ToArray();
+                }
+                else
+                {
+                    // Notify user that the login was not successful.
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new FireAlarmSystem[0];
+            }
+        }
 
     }
 }

@@ -80,10 +80,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all ServiceGroups as a CSV file.
         /// </summary>
-        /// <returns>returns a csv file with all ServiceGroups</returns>
-        [HttpGet, Route("getcsv")]//todo: comment
+        /// <returns>Returns a CSV file with all ServiceGroups.</returns>
+        [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -96,13 +96,21 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        IEnumerable<ServiceGroup> sg;
-                        sg = DatabaseOperations.ServiceGroups.GetAll();
+
+                        // Get all ServiceGroups.
+                        IEnumerable<ServiceGroup> sg = DatabaseOperations.ServiceGroups.GetAll();
+
+                        // Convert ServiceGroups into a CSV file.
                         byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(sg);
+
+                        // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
 
+                        // Set position of stream to 0 to avoid problems with the index.
                         stream.Position = 0;
                         result = new HttpResponseMessage(HttpStatusCode.OK);
+
+                        // Add the CSV file to the content of the response.
                         result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
@@ -113,12 +121,14 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         result.Content = null;
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }
@@ -297,14 +307,13 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin)
-                    {
-                        return DatabaseOperations.ServiceGroups.GetUsers(id).ToArray();
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
+                    // Get all Users of the ServiceGroup.
+                    IEnumerable<User> users = DatabaseOperations.ServiceGroups.GetUsers(id);
+
+                    // Only return Users the User is allowed to see.
+                    users = Filter.UsersFilter.UserFilter(users, user);
+
+                    return users.ToArray();
                 }
                 else
                 {
@@ -315,6 +324,36 @@ namespace FireApp.Service.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return new User[0];
+            }
+        }
+
+        [HttpGet, Route("fas/{id}")] // todo: comment
+        public FireAlarmSystem[] GetFireAlarmSystems(int serviceGroup)
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    // Get all FireAlarmsystems of the ServiceGroup.
+                    IEnumerable<FireAlarmSystem> fas = DatabaseOperations.ServiceGroups.GetFireAlarmSystems(serviceGroup);
+
+                    // Only return FireAlarmSystems the User is allowed to see.
+                    fas = Filter.FireAlarmSystemsFilter.UserFilter(fas, user);
+
+                    return fas.ToArray();
+                }
+                else
+                {
+                    // Notify user that the login was not successful.
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new FireAlarmSystem[0];
             }
         }
     }

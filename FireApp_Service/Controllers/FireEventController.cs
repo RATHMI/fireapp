@@ -62,13 +62,22 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
-                        byte[] file = FileOperations.FireEventsFiles.ExportToCSV(DatabaseOperations.Events.GetAll());
+
+                        // Get all FireEvents.
+                        IEnumerable<FireEvent> events = DatabaseOperations.Events.GetAll();
+
+                        // Convert FireEvents into a CSV file.
+                        byte[] file = FileOperations.FireEventsFiles.ExportToCSV(events);
+
+                        // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
 
+                        // Set position of stream to 0 to avoid problems with the index.
                         stream.Position = 0;
                         result = new HttpResponseMessage(HttpStatusCode.OK);
-                        result.Content = new ByteArrayContent(stream.ToArray());
 
+                        // Add the CSV file to the content of the response.
+                        result.Content = new ByteArrayContent(stream.ToArray());
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
                             {
@@ -78,6 +87,7 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         result.Content = null;
                     }

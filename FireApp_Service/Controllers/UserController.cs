@@ -82,10 +82,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all Users as CSV file.
         /// </summary>
-        /// <returns>returns a csv file with all ServiceGroups</returns>
-        [HttpGet, Route("getcsv")]//todo: comment
+        /// <returns>Returns a CSV file with all Users.</returns>
+        [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -95,20 +95,25 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin) // only allow admin to get csv file
+                    if (user.UserType == UserTypes.admin)
                     {
                         var stream = new MemoryStream();
 
-                        // convert all users to a byte array
-                        IEnumerable<User> users;
-                        users = DatabaseOperations.Users.GetAll();
+                        // Get all Users.
+                        IEnumerable<User> users = DatabaseOperations.Users.GetAll();
+
+                        // Convert FireBrigades into a CSV file.
                         byte[] file = FileOperations.UserFiles.ExportToCSV(users);
+
+                        // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
 
-                        stream.Position = 0;    // set position of stream to start
+                        // Set position of stream to 0 to avoid problems with the index.
+                        stream.Position = 0;
                         result = new HttpResponseMessage(HttpStatusCode.OK);
-                        result.Content = new ByteArrayContent(stream.ToArray());
-                        
+
+                        // Add the CSV file to the content of the response.
+                        result.Content = new ByteArrayContent(stream.ToArray());                       
                         result.Content.Headers.ContentDisposition =
                             new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
                             {
@@ -118,12 +123,14 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         result.Content = null;
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }
