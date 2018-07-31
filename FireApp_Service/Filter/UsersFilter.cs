@@ -21,16 +21,7 @@ namespace FireApp.Service.Filter
         {
             List<User> results = new List<User>();
             if (users != null && user != null)
-            {
-
-                if (users.Contains(user))
-                {
-                    // If the User is contained in the result show more information about it.
-                    // Remove it from the list of Users so it is not redundant in the result.
-                    results.AddRange(adminFilter(new User[] { user }));
-                    ((List<User>)users).Remove(user);
-                }
-
+            {              
                 if (user.UserType == UserTypes.admin)
                 {
                     foreach(User u in adminFilter(users))
@@ -49,6 +40,14 @@ namespace FireApp.Service.Filter
                     // If the User is a FireBrigade show all Users of the same FireBrigade
 
                                        
+                }
+
+                if (results.Exists(x => x.Id == user.Id))
+                {
+                    // If the User is contained in the result show more information about it.
+                    // Remove it from the list of Users so it is not redundant in the result.
+                    results.Remove(results.Find(x => x.Id == user.Id));
+                    results.AddRange(adminFilter(new User[] { user }));                  
                 }
             }
 
@@ -89,5 +88,9 @@ namespace FireApp.Service.Filter
             }
         }       
 
+        private static IEnumerable<User> fireAlarmSystemFilter(IEnumerable<User> users)
+        {
+
+        }
     }
 }
