@@ -202,6 +202,14 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert FireAlarmSystems from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td>&emsp;../unregistered</td>
                                             <td>int[]</td>
                                             <td>
@@ -234,11 +242,31 @@
                                             <td>
                                                 Returns an array of Users of the given type from a FireAlarmSystem.<br>
                                                 Id : the id of the FireAlarmSystem.<br>
-                                                Type : The type of User you want.<br>
+                                                Type : the type of User you want.<br>
                                                 &emsp;"fb" for Users from FireBrigades.<br>
                                                 &emsp;"sg" for Users from ServiceGroups.<br>
                                                 &emsp;"fas" for Users from the FireAlarmSystem itself.<br>
                                                 &emsp;everything else returns all types of Users.<br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../changemember/{fas}/{type}/{member}/{operation}</td>
+                                            <td>Int32</td>
+                                            <td>
+                                                Returns an error code.<br>
+                                                &emsp;1 : the operation was successful.<br>
+                                                &emsp;0 : the User is not logged in.<br>
+                                                &emsp;-1 : the User is not an admin.<br>
+                                                &emsp;-2 : a parameter was null or invalid.<br>
+                                                &emsp;-3 : an error occured.<br>
+                                                Fas : the id of the FireAlarmSystem.<br>
+                                                Type : the type of member you want to change.<br>
+                                                &emsp;"fb" for FireBrigades.<br>
+                                                &emsp;"sg" for ServiceGroups.<br>
+                                                Member : the id of the member you want to change.<br>
+                                                Operation : the type of operation you want to perform.<br>
+                                                &emsp;"add" to add the member.<br>
+                                                &emsp;"delete" to delete the member.<br>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -304,6 +332,14 @@
                                             <td>HttpResponseMessage</td>
                                             <td>
                                                 Returns all FireAlarmSystems as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert FireBrigades from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
@@ -385,6 +421,14 @@
                                             <td>HttpResponseMessage</td>
                                             <td>
                                                 Returns all ServiceGroups as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert ServiceGroups from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
@@ -531,6 +575,26 @@
                                                 &emsp;"fas" returns all FireAlarmSystems that are associated with this User.
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>&emsp;../changeauthobject/{username}/{authobj}/{operation}</td>
+                                            <td>Int32</td>
+                                            <td>
+                                                Adds or removes an authorized object of a User.<br>
+                                                Returns an error code.<br>
+                                                &emsp;1 : the operation was successful.<br>
+                                                &emsp;0 : the User is not logged in.<br>
+                                                &emsp;-1 : the User is not an admin.<br>
+                                                &emsp;-2 : the User can not have authorized objects.<br>
+                                                &emsp;-3 : one of the parameters was null.<br>
+                                                &emsp;-4 : the operation does not exist.<br>
+                                                &emsp;-5 : an error occured.<br>
+                                                Username : the username of the User.<br>
+                                                Authobj : the id of the authorized object.<br>
+                                                Operation : the type of operation you want to perform.<br>
+                                                &emsp;"add" adds the id to the authorized objects of the User.<br>
+                                                &emsp;"delete" deletes the id from the authorized objects of the User.
+                                            </td>
+                                        </tr>
                                     </tbody>
                                     <!-- End of content -->
                                 </table>
@@ -567,7 +631,7 @@
                         </div>
                         <row class="pull-left" class="col-sg-6">
                             <!--<p><span id="cnt_rows">0</span> Lines</p>-->
-                            <p>Last Update: 27 July 2018</p>
+                            <p>Last Update: 31 July 2018</p>
                         </row>
                         <row class="pull-right" class="col-sg-6">
                             <p>2018 &copy; Siemens Austria</p>

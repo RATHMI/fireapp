@@ -591,7 +591,7 @@ namespace FireApp.Service.Controllers
                     else
                     {
                         // User is not an admin.
-                        return -2;
+                        return -1;
                     }
                 }
                 else
@@ -600,10 +600,22 @@ namespace FireApp.Service.Controllers
                     return 0;
                 }
             }
+            catch (InvalidOperationException)
+            {
+                return -2;
+            }
+            catch (ArgumentNullException)
+            {
+                return -3;
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                return -4;
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return -3;
+                return -5;
             }
         }
     }

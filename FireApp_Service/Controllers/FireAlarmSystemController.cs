@@ -479,8 +479,8 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("changemember/{fas}/{type}/{id}")] // todo: comment
-        public Int32 ChangeMember(int fireAlarmSystem, string type, int member)
+        [HttpGet, Route("changemember/{fas}/{type}/{member}/{operation}")] // todo: comment
+        public Int32 ChangeMember(int fireAlarmSystem, string type, int member, string operation)
         {
             try
             {
@@ -490,7 +490,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        if (type == null)
+                        if (type == null || operation == null)
                         {
                             throw new ArgumentNullException();
                         }
@@ -506,8 +506,26 @@ namespace FireApp.Service.Controllers
                                 // The method throws an Exception if the FireBrigade does not exist.
                                 DatabaseOperations.FireBrigades.GetById(member);
 
-                                fas.FireBrigades.Remove(member);
-                                return 1;
+                                if(operation == "add")
+                                {
+                                    fas.FireBrigades.Add(member);
+                                    DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
+                                    return 1;
+                                }
+                                else
+                                {
+                                    if(operation == "delete")
+                                    {
+                                        fas.FireBrigades.Remove(member);
+                                        DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
+                                        return 1;
+                                    }
+                                    else
+                                    {
+                                        throw new ArgumentOutOfRangeException();
+                                    }
+                                }
+                                
                             }
                             else
                             {
@@ -517,8 +535,25 @@ namespace FireApp.Service.Controllers
                                     // The method throws an Exception if the ServiceGroup does not exist.
                                     DatabaseOperations.ServiceGroups.GetById(member);
 
-                                    fas.ServiceGroups.Remove(member);
-                                    return 1;
+                                    if (operation == "add")
+                                    {
+                                        fas.ServiceGroups.Add(member);
+                                        DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
+                                        return 1;
+                                    }
+                                    else
+                                    {
+                                        if (operation == "delete")
+                                        {
+                                            fas.ServiceGroups.Remove(member);
+                                            DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
+                                            return 1;
+                                        }
+                                        else
+                                        {
+                                            throw new ArgumentOutOfRangeException();
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -530,7 +565,7 @@ namespace FireApp.Service.Controllers
                     else
                     {
                         // User is not an admin.
-                        return -2;
+                        return -1;
                     }
                 }
                 else
@@ -538,6 +573,11 @@ namespace FireApp.Service.Controllers
                     // Notify user that the login was not successful.
                     return 0;
                 }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine(ex.Message);
+                return -2;
             }
             catch (Exception ex)
             {
