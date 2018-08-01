@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Protocols;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -11,7 +13,7 @@ namespace FireApp.Service.Logging
     /// </summary>
     public static class Logger
     {
-        private static string logPath = System.Environment.GetEnvironmentVariable("TEMP") + "\\FireAppLog.txt";
+        private static string logPath = ConfigurationManager.AppSettings["loggingPath"].ToFullPath();
 
         /// <summary>
         /// Writes a log message to the logPath

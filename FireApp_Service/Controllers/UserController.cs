@@ -16,10 +16,10 @@ namespace FireApp.Service.Controllers
     public class UserController : ApiController
     {
         /// <summary>
-        /// inserts a User into the database or updates it if it already exists
+        /// Inserts a User into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="user">The User you want to insert</param>
-        /// <returns>returns true if User was inserted</returns>
+        /// <param name="u">The User you want to upsert.</param>
+        /// <returns>Returns true if the User was inserted.</returns>
         [HttpPost, Route("upload")]//todo: comment
         public bool UpsertUser([FromBody] User u)
         {
@@ -27,7 +27,7 @@ namespace FireApp.Service.Controllers
                 User user;
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
-                {
+                {   // todo: allow to update the own user
                     if (user.UserType == UserTypes.admin)
                     {
                         return DatabaseOperations.Users.Upsert(u, user);
@@ -44,10 +44,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// inserts an array of Users into the database or updates it if it already exists
+        /// Inserts a list of Users into the database or updates them if they already exist.
         /// </summary>
-        /// <param name="user">The User you want to insert</param>
-        /// <returns>returns the number of upserted Users.
+        /// <param name="users">A list of Users you want to upsert.</param>
+        /// <returns>Returns the number of Users that were successfully upserted.</returns>
         /// -1 : invalid or no token
         /// -2 : user is not an admin
         /// -3 : an error occured</returns>
@@ -227,11 +227,11 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Deletes the User from the databases.
         /// </summary>
-        /// <param name="userName">Id of the User you want to delete</param>
-        /// <returns>returns true if User was deleted</returns>
-        [HttpGet, Route("delete/{username}")]//todo: comment
+        /// <param name="userName">Id of the User you want to delete.</param>
+        /// <returns>Returns true if User was deleted.</returns>
+        [HttpGet, Route("delete/{username}")]
         public bool DeleteUser(string userName)
         {
             try
@@ -285,10 +285,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// returns all Users that have a UserType that is matching with a UserType from usertypes
+        /// Returns all Users that have a UserType that is matching with a UserType from usertypes.
         /// </summary>
-        /// <param name="usertypes">an array of usertypes</param>
-        /// <returns>returns a list of all users with matching usertypes</returns>
+        /// <param name="usertypes">An array of usertypes.</param>
+        /// <returns>Returns a list of all Users with matching usertypes.</returns>
         [HttpPost, Route("usertype")]//todo: comment
         public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
         {
@@ -316,12 +316,12 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns a User with a matching username.
         /// </summary>
-        /// <param name="username">The username of the User you are looking for</param>
-        /// <returns>returns a User with a matching username</returns>
-        [HttpGet, Route("id/{username}")]//todo: comment
-        public User[] GetUserById(string userName)
+        /// <param name="username">The username of the User you are looking for.</param>
+        /// <returns>Returns a User with a matching username.</returns>
+        [HttpGet, Route("id/{username}")]
+        public User[] GetUserById(string username)
         {
             try
             {
@@ -329,7 +329,17 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    return new User[] { DatabaseOperations.Users.GetById(userName) };
+                    // Get the User by the username.
+                    user = DatabaseOperations.Users.GetById(username);
+                    if (user != null)
+                    {
+                        return Filter.UsersFilter.UserFilter(new User[] { user }, user).ToArray();
+                    }
+                    else
+                    {
+                        // The User does not exist.
+                        throw new ArgumentOutOfRangeException();
+                    }
                 }
                 else
                 {
@@ -347,7 +357,7 @@ namespace FireApp.Service.Controllers
         /// Returns all active Users.
         /// </summary>
         /// <returns>Returns a List of Users with a valid token.</returns>
-        [HttpGet, Route("active")]//todo: comment
+        [HttpGet, Route("active")]
         public User[] GetActiveUsers()
         {
             try
@@ -381,7 +391,7 @@ namespace FireApp.Service.Controllers
         /// Returns all inactive Users.
         /// </summary>
         /// <returns>Returns a List of Users with an invalid token.</returns>
-        [HttpGet, Route("inactive")]//todo: comment
+        [HttpGet, Route("inactive")]
         public User[] GetInactiveUsers()
         {
             try
@@ -390,7 +400,6 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    // Only return Users if User is an admin.
                     if (user.UserType == UserTypes.admin)
                     {
                         return DatabaseOperations.Users.GetInactiveUsers().ToArray();
@@ -522,7 +531,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    // If the User is logged in change the password.
+                    // If the User is logged in, change the password.
                     user.Password = password;
                     DatabaseOperations.Users.Upsert(user, user);
                     return true;
@@ -539,7 +548,23 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("changeauthobject/{username}/{authobj}/{operation}")] // todo: comment
+        /// <summary>
+        /// Adds or Removes an authorizedObjectId to or from the User's authorizedObjectIds.
+        /// </summary>
+        /// <param name="username">The username of the User you want to perform the operation on.</param>
+        /// <param name="authobj">The id of the authorized object.</param>
+        /// <param name="operation">Describes which operation you want to perform ("add" or "delete").</param>
+        /// <returns>
+        /// Returns an error code.
+        /// 1 : operation was successful.
+        /// 0 : User is not logged in.
+        /// -1 : User is not an admin.
+        /// -2 : the User can not have authorized objects.
+        /// -3 : one of the parameters was null.
+        /// -4 : the operation does not exist.
+        /// -5 : an error occured.
+        /// </returns>
+        [HttpGet, Route("changeauthobject/{username}/{authobj}/{operation}")]
         public Int32 ChangeAuthorizedObject(string username, int authobj, string operation)
         {
             try
@@ -560,6 +585,7 @@ namespace FireApp.Service.Controllers
                             User changedUser = DatabaseOperations.Users.GetById(username);
                             if (changedUser == null)
                             {
+                                // The User was not found.
                                 throw new ArgumentOutOfRangeException();
                             }
 
@@ -583,6 +609,7 @@ namespace FireApp.Service.Controllers
                                     }
                                     else
                                     {
+                                        // User has the wrong UserType.
                                         throw new InvalidOperationException();
                                     }
                                 }
@@ -591,6 +618,7 @@ namespace FireApp.Service.Controllers
 
                             if (operation == "add")
                             {
+                                // Add authorizedObjectId to the User's authorizedObjectIds.
                                 changedUser.AuthorizedObjectIds.Add(authobj);
                                 DatabaseOperations.Users.Upsert(changedUser, user);
                                 return 1;
@@ -599,12 +627,14 @@ namespace FireApp.Service.Controllers
                             {
                                 if (operation == "delete")
                                 {
+                                    // Remove authorizedObjectId to the User's authorizedObjectIds.
                                     changedUser.AuthorizedObjectIds.Remove(authobj);
                                     DatabaseOperations.Users.Upsert(changedUser, user);
                                     return 1;
                                 }
                                 else
                                 {
+                                    // The operation does not exist.
                                     throw new ArgumentOutOfRangeException();
                                 }
                             }
@@ -624,6 +654,7 @@ namespace FireApp.Service.Controllers
             }
             catch (InvalidOperationException)
             {
+                // User has the wrong UserType.
                 return -2;
             }
             catch (ArgumentNullException)
@@ -632,6 +663,7 @@ namespace FireApp.Service.Controllers
             }
             catch(ArgumentOutOfRangeException)
             {
+                // The operation does not exist or the User was not found.
                 return -4;
             }
             catch (Exception ex)

@@ -17,7 +17,6 @@ namespace FireApp.Service {
         public void Configuration(IAppBuilder app)
         {
             var config = new HttpConfiguration();
-            //config.Filters.Add(new AuthorizeAttribute());
             app.UseCors(CorsOptions.AllowAll);
 
             // Web API configuration and services
