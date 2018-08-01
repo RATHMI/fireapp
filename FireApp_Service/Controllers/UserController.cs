@@ -48,9 +48,9 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="users">A list of Users you want to upsert.</param>
         /// <returns>Returns the number of Users that were successfully upserted.</returns>
-        /// -1 : invalid or no token
-        /// -2 : user is not an admin
-        /// -3 : an error occured</returns>
+        /// -1 : invalid or no token.
+        /// -2 : user is not an admin.
+        /// -3 : an error occured.</returns>
         [HttpPost, Route("uploadbulk")]
         public int UpsertBulk([FromBody] User[] users)
         {
@@ -66,11 +66,13 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         return -2;
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return -1;
                 }
             }
@@ -206,8 +208,8 @@ namespace FireApp.Service.Controllers
         /// This method generates a new token and 
         /// saves it in the User object with the matching UserLogin. 
         /// </summary>
-        /// <param name="login">the login data of a user</param>
-        /// <returns>returns the token if the login worked or null if not</returns>
+        /// <param name="login">The login data of a User.</param>
+        /// <returns>Returns the token if the login worked or null if not.</returns>
         [HttpPost, Route("authenticate")]
         public string Authenticate([FromBody]UserLogin login)
         {
@@ -215,9 +217,9 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Checks if the token of the request is valid
+        /// Checks if the token of the request is valid.
         /// </summary>
-        /// <returns>returns the user if the token is valid</returns>
+        /// <returns>Returns the user if the token is valid.</returns>
         [HttpGet, Route("getuser")]
         public User[] GetUser()
         {
@@ -244,8 +246,15 @@ namespace FireApp.Service.Controllers
                     {
                         return DatabaseOperations.Users.Delete(userName, user);
                     }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
-                return false;
+                else
+                {
+                    throw new ArgumentNullException();
+                }
             }
             catch (Exception ex)
             {
@@ -255,10 +264,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all Users.
         /// </summary>
-        /// <returns>returns a list with all Users</returns>
-        [HttpGet, Route("all")]//todo: comment
+        /// <returns>Returns a list of all Users.</returns>
+        [HttpGet, Route("all")]
         public User[] GetAllUsers()
         {
             try
@@ -274,6 +283,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -305,6 +315,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -343,6 +354,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -375,11 +387,13 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         throw new UnauthorizedAccessException();
                     }         
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -412,11 +426,13 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         throw new UnauthorizedAccessException();
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -469,16 +485,19 @@ namespace FireApp.Service.Controllers
                         }
                         else
                         {
+                            // The User was not found.
                             throw new KeyNotFoundException();
                         }
                     }
                     else
                     {
+                        // User is not an admin.
                         throw new UnauthorizedAccessException();
                     }
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }                
             }
@@ -519,6 +538,7 @@ namespace FireApp.Service.Controllers
             }
             else
             {
+                // Notify user that the login was not successful.
                 return false;
             }
         }
@@ -544,6 +564,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return false;
                 }
             }

@@ -15,11 +15,11 @@ namespace FireApp.Service.Controllers
     public class ServiceGroupController : ApiController
     {
         /// <summary>
-        /// inserts a ServiceGroup into the database or updates it if it already exists
+        /// Inserts a ServiceGroup into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="sg">The ServiceGroup you want to insert</param>
-        /// <returns>returns true if ServiceGroup was inserted</returns>
-        [HttpPost, Route("upload")]//todo: comment
+        /// <param name="sg">The ServiceGroup you want to insert.</param>
+        /// <returns>Returns true if the ServiceGroup was inserted.</returns>
+        [HttpPost, Route("upload")]
         public bool UpsertServiceGroup(ServiceGroup sg)
         {
             try {
@@ -42,13 +42,13 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// inserts an array of ServiceGroups into the database or updates it if it already exists
+        /// Inserts an array of ServiceGroups into the database or updates it if it already exists.
         /// </summary>
-        /// <param name="sg">The ServiceGroups you want to insert</param>
-        /// <returns>returns the number of upserted ServiceGroups.
-        /// -1 : invalid or no token
-        /// -2 : user is not an admin
-        /// -3 : an error occurred</returns>
+        /// <param name="sg">The ServiceGroups you want to insert.</param>
+        /// <returns>Returns the number of upserted ServiceGroups.
+        /// -1 : invalid or no token.
+        /// -2 : user is not an admin.
+        /// -3 : an error occurred.</returns>
         [HttpPost, Route("uploadbulk")]
         public int UpsertBulk([FromBody] ServiceGroup[] sg)
         {
@@ -64,11 +64,13 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // User is not an admin.
                         return -2;
                     }
                 }
                 else
                 {
+                    // Notify the User that the login was not successful.
                     return -1;
                 }
             }
@@ -198,12 +200,12 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Deletes the ServiceGroup from the Database and Cache
-        /// The assoziations with the users and FireAlarmSystems are also deleted
+        /// Deletes the ServiceGroup from the Database and Cache.
+        /// The assoziations with the Users and FireAlarmSystems are also deleted.
         /// </summary>
-        /// <param name="id">the id of the ServiceGroup you want to delete</param>
-        /// <returns>returns true if ServiceGroup was deleted from DB</returns>
-        [HttpGet, Route("delete/{id}")]//todo: comment
+        /// <param name="id">The id of the ServiceGroup you want to delete.</param>
+        /// <returns>Returns true if ServiceGroup was deleted from the DB.</returns>
+        [HttpGet, Route("delete/{id}")]
         public bool DeleteServiceGroup(int id)
         {
             try
@@ -236,10 +238,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all ServiceGroups.
         /// </summary>
-        /// <returns>returns a list with all ServiceGroups</returns>
-        [HttpGet, Route("all")]//todo: comment
+        /// <returns>Returns a list of all ServiceGroups.</returns>
+        [HttpGet, Route("all")]
         public ServiceGroup[] GetAllServiceGroups()
         {
             try
@@ -255,6 +257,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -266,10 +269,10 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Checks if an id is already used by another ServiceGroup
+        /// Checks if an id is already used by another ServiceGroup.
         /// </summary>
-        /// <param name="id">the id you want to check</param>
-        /// <returns>returns true if id is not used by other ServiceGroup or else a new id</returns>
+        /// <param name="id">The id you want to check.</param>
+        /// <returns>Returns true if id is not used by other ServiceGroup or else a new id.</returns>
         [HttpPost, Route("checkid/{id}")]
         public static int CheckId(int id)
         {
@@ -281,7 +284,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The id of the ServiceGroup you are looking for.</param>
         /// <returns>Returns a ServiceGroup with a matching id.</returns>
-        [HttpGet, Route("id/{id}")]//todo: comment
+        [HttpGet, Route("id/{id}")]
         public ServiceGroup[] GetServiceGroupById(int id)
         {
             try
@@ -297,6 +300,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -312,7 +316,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The ServiceGroup you want to get the Users of.</param>
         /// <returns>Returns all Users whose AuthorizedObjectIds contains id.</returns>
-        [HttpGet, Route("users/{id}")] // todo: comment
+        [HttpGet, Route("users/{id}")]
         public User[] GetUsers(int id)
         {
             try
@@ -331,6 +335,7 @@ namespace FireApp.Service.Controllers
                 }
                 else
                 {
+                    // Notify user that the login was not successful.
                     return null;
                 }
             }
@@ -346,7 +351,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="servicegroup">The ServiceGroup you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns all FireAlarmSystems that are associated with this ServiceGroup.</returns>
-        [HttpGet, Route("fas/{id}")] // todo: comment
+        [HttpGet, Route("fas/{id}")]
         public FireAlarmSystem[] GetFireAlarmSystems(int id)
         {
             try

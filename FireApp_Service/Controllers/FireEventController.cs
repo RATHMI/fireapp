@@ -49,7 +49,7 @@ namespace FireApp.Service.Controllers
         /// Allows the admin to export all FireEvents to a CSV file.
         /// </summary>
         /// <returns>Returns a CSV file with all FireEvents.</returns>
-        [HttpGet, Route("getcsv")]  //todo: comment
+        [HttpGet, Route("getcsv")]
         public HttpResponseMessage GetCsv()
         {
             HttpResponseMessage result;
@@ -127,7 +127,7 @@ namespace FireApp.Service.Controllers
         /// (see Filter.FireEventsFilter.HeadersFilter).
         /// </summary>
         /// <returns>Returns all FireEvents that this user is allowed to see.</returns>
-        [HttpGet, Route("all")] // todo: comment
+        [HttpGet, Route("all")]
         public FireEvent[] GetAll()
         {
 
@@ -211,7 +211,7 @@ namespace FireApp.Service.Controllers
         /// FireAlarmSystem.</param>
         /// <returns>Returns a distinct FireEvent with a matching sourceId and eventId 
         /// (a FireEvent from a distinct FireAlarmSystem with the matching eventId).</returns>
-        [HttpGet, Route("id/{sourceId}/{eventId}")] //todo: comment
+        [HttpGet, Route("id/{sourceId}/{eventId}")]
         public FireEvent[] GetFireEventById(int sourceId, int eventId)
         {
             try
@@ -247,13 +247,13 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireEvents with a matching sourceId.
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
         /// the FireEvent.</param>
-        /// <returns>returns a list of all Fireevents with a matching sourceId 
+        /// <returns>Returns a list of all Fireevents with a matching sourceId 
         /// (all Fireevents from a distinct fire alarm system).</returns>
-        [HttpGet, Route("source/{sourceId}")]//todo: comment
+        [HttpGet, Route("source/{sourceId}")]
         public FireEvent[] GetFireEventsBySourceId(int sourceId)
         {
             try
@@ -285,14 +285,14 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns all FireEvents from a distinct target.
         /// </summary>
         /// <param name="sourceId">The sourceId of the FireAlarmSystem that sent 
         /// the FireEvent.</param>
         /// <param name="targetId">The id of the fire detector that sent the 
         /// FireEvent.</param>
         /// <returns>Returns a list of all FireEvents with matching sourceId and targetId.</returns>
-        [HttpGet, Route("target/{sourceId}/{targetId}")]//todo: comment
+        [HttpGet, Route("target/{sourceId}/{targetId}")]
         public FireEvent[] GetFireEventsBySourceIdTargetId(int sourceId, string targetId)
         {
             try
@@ -324,13 +324,14 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Finds all FireEvents with a matching EventType that occured in the given year.
+        /// Returns the number of FireEvents per month.
         /// </summary>
-        /// <param name="eventType">The EventType of the FireEvents</param>
-        /// <param name="year">The year of the FireEvents' TimeStamp</param>
-        /// <returns>returns an array with the number of FireEvents of the given EventType 
-        /// that occured in the given year. Each column represents one month</returns>
-        [HttpGet, Route("typeyear/{eventType}/{year}")]//todo: comment
+        /// <param name="eventType">The EventType of the FireEvents.</param>
+        /// <param name="year">The year of the FireEvents' TimeStamp.</param>
+        /// <returns>Returns an array with the number of FireEvents of the given EventType 
+        /// that occured in the given year. Each column represents one month.</returns>
+        [HttpGet, Route("typeyear/{eventType}/{year}")]
         public Int32[] CountFireEventsByEventTypePerYear(EventTypes eventType, int year)
         {
             try
