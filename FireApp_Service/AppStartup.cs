@@ -95,7 +95,16 @@ namespace FireApp.Service {
             user.AuthorizedObjectIds.Add(5);
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.Upsert(user, admin);
-            #endif
+
+            user = new User("unknown1", "test", "test", "test", "test10@siemens.at", UserTypes.firealarmsystem);
+            DatabaseOperations.Users.Upsert(user, admin);
+
+            user = new User("unknown2", "test", "test", "test", "test11@siemens.at", UserTypes.firebrigade);
+            DatabaseOperations.Users.Upsert(user, admin);
+
+            user = new User("unknown3", "test", "test", "test", "test12@siemens.at", UserTypes.servicemember);
+            DatabaseOperations.Users.Upsert(user, admin);
+#endif
             #endregion
         }
     }

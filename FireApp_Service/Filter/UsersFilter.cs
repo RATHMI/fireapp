@@ -31,7 +31,18 @@ namespace FireApp.Service.Filter
                     }
                 }
                 else
-                {                    
+                {
+                    foreach (User u in users)
+                    {
+                        if (u.AuthorizedObjectIds.Count == 0)
+                        {
+                            if (u.UserType == user.UserType)
+                            {
+                                results.Add(u.SafeClone());
+                            }
+                        }
+                    }
+
                     if (user.UserType == UserTypes.firealarmsystem)
                     {
                         results.AddRange(fireAlarmSystemFilter(users, user));
@@ -62,11 +73,11 @@ namespace FireApp.Service.Filter
             }
 
             results.RemoveAll(x => x == null);
-            return results
+            return new HashSet<User>(results
                 .OrderBy(x => x.UserType)
                 .ThenBy(x => x.LastName)
                 .ThenBy(x => x.FirstName)
-                .Distinct();
+                .ThenBy(x => x.Id));
         }
 
         /// <summary>
@@ -158,7 +169,7 @@ namespace FireApp.Service.Filter
         /// <returns>Returns the filtered list.</returns>
         private static IEnumerable<User> fireBrigadeFilter(IEnumerable<User> users, User user)
         {
-            HashSet<User> result = new HashSet<User>();
+            List<User> result = new List<User>();
 
             foreach (User u in users)
             {
@@ -172,7 +183,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            return result;
+            return result.Distinct();
         }
 
         /// <summary>

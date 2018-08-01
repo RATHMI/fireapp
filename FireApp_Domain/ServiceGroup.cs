@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
-    public class ServiceGroup
+    public class ServiceGroup : IEquatable<ServiceGroup>
     {
         private ServiceGroup() { }
 
@@ -66,6 +66,23 @@ namespace FireApp.Domain
                 }
             }
             return null;
+        }
+
+        public bool Equals(ServiceGroup other)
+        {
+            if (this.Id == other.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
         }
     }
 }

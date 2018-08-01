@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
-    public class User : ICloneable
+    public class User : ICloneable, IEquatable<User>
     {
         private User() { }
 
@@ -199,6 +199,23 @@ namespace FireApp.Domain
                 }
             }
             return null;
+        }
+
+        public bool Equals(User other)
+        {
+            if (this.Id == other.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
         }
     }
 

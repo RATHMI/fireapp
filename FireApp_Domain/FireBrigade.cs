@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
-    public class FireBrigade
+    public class FireBrigade : IEquatable<FireBrigade>
     {
         private FireBrigade() {}
 
@@ -67,5 +67,23 @@ namespace FireApp.Domain
             }
             return null;
         }
+
+        public bool Equals(FireBrigade other)
+        {
+            if (this.Id == other.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
+
     }
 }

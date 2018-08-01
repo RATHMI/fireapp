@@ -9,7 +9,7 @@ namespace FireApp.Domain
     /// <summary>
     /// This class represents a fire alarm system.
     /// </summary>
-    public class FireAlarmSystem : ICloneable
+    public class FireAlarmSystem : IEquatable<FireAlarmSystem>, ICloneable
     {
         private FireAlarmSystem() {}
 
@@ -245,6 +245,23 @@ namespace FireApp.Domain
             {
                 return null;
             }            
+        }
+
+        public bool Equals(FireAlarmSystem other)
+        {
+            if(this.Id == other.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
         }
     }
 }

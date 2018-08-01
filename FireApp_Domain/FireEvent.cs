@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FireApp.Domain {
-    public class FireEvent {
+    public class FireEvent : IEquatable<FireEvent>
+    {
         private FireEvent(){}
 
         public FireEvent(FireEventId id, DateTime time, string targetId, string targetDescription, EventTypes eventType)
@@ -102,12 +103,30 @@ namespace FireApp.Domain {
 
             return sb.ToString();
         }
+
+        public bool Equals(FireEvent other)
+        {
+            if (this.Id == other.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 
     /// <summary>
     /// This class is needed because liteDB can not create a composite key itself.
     /// </summary>
-    public class FireEventId {
+    public class FireEventId : IEquatable<FireEventId>
+    {
         public FireEventId(){}
         public FireEventId (int sourceId, int eventId)
         {
@@ -119,7 +138,19 @@ namespace FireApp.Domain {
         public int SourceId { get; set; }
 
         // This id distinguishes this FireEvent from FireEvents of the same FireAlarmSystem.
-        public int EventId { get; set; } 
+        public int EventId { get; set; }
+
+        public bool Equals(FireEventId other)
+        {
+            if (this.SourceId == other.SourceId && this.EventId == other.EventId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     /// <summary>
