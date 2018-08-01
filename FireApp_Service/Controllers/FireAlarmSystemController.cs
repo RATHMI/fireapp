@@ -366,7 +366,7 @@ namespace FireApp.Service.Controllers
         [HttpGet, Route("members/{id}/{type}")]
         public object[] GetMembers(int id, string type)
         {
-            IEnumerable<object> results = new object[0];
+            List<object> results = new List<object>();
 
             try
             {
@@ -374,28 +374,55 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin)
+                    
+                    if (user.UserType == UserTypes.admin || 
+                        (user.UserType == UserTypes.servicemember && user.AuthorizedObjectIds.Contains(id)))
                     {
                         FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
-                                        
                         if (type == "fb")
                         {
                             // Add all FireBrigades of the FireAlarmSystem to result.
-                            results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade));
+                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(FireBrigade)));
                         }
                         else
                         {                           
                             if (type == "sg")
                             {
                                 // Add all ServiceGroups of the FireAlarmSystem to result.
-                                results = DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup));
+                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetMembers(fas, typeof(ServiceGroup)));
                             }
                             else
                             {
                                 // Add all ServiceGroups and FireBrigades of the FireAlarmSystem to result.
-                                results = DatabaseOperations.FireAlarmSystems.GetMembers(fas);
+                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetMembers(fas));
                             }
                         }
+
+                        // Get all FireBrigades of the FireAlarmSystem.
+                        List<FireBrigade> fb = new List<FireBrigade>();
+                        List<ServiceGroup> sg = new List<ServiceGroup>();
+                        foreach (object o in results)
+                        {
+                            if (o is FireBrigade)
+                            {
+                                fb.Add(o as FireBrigade);
+                            }
+                            else
+                            {
+                                if(o is ServiceGroup)
+                                {
+                                    sg.Add(o as ServiceGroup);
+                                }
+                            }
+                        }
+
+                        fb = Filter.FireBrigadesFilter.UserFilter(fb, user).ToList();
+                        sg = Filter.ServiceGroupsFilter.UserFilter(sg, user).ToList();
+
+                        results.Clear();
+                        results.AddRange(fb);
+                        results.AddRange(sg);
+                        results.Distinct();
 
                         return results.ToArray();
                     }
@@ -434,39 +461,35 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin)
+                    FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
+
+                    if (type == "fb")
                     {
-                        FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
-
-                        if (type == "fb")
-                        {
-                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firebrigade));
-                        }
-                        else
-                        {
-                            if (type == "sg")
-                            {
-                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.servicemember));
-                            }
-                            else
-                            {
-                                if (type == "fas")
-                                {
-                                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem));
-                                }
-                                else
-                                {
-                                    results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas));
-                                }
-                            }
-                        }
-
-                        return results.ToArray();
+                        results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firebrigade));
                     }
                     else
                     {
-                        throw new Exception();
+                        if (type == "sg")
+                        {
+                            results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.servicemember));
+                        }
+                        else
+                        {
+                            if (type == "fas")
+                            {
+                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem));
+                            }
+                            else
+                            {
+                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas));
+                            }
+                        }
                     }
+
+                    results = Filter.UsersFilter.UserFilter(results, user).ToList();
+                    results.Distinct();
+
+                    return results.ToArray();
                 }
                 else
                 {
