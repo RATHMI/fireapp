@@ -1,6 +1,7 @@
 ﻿using FireApp.Domain;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,9 @@ namespace FireApp.Service.Email
 {
     public static class Email
     {
-        public static string templatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+        private static string templatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+        private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
+
 
         /// <summary>
         /// Sends an email from a service email account to the reciepients.
@@ -50,7 +53,8 @@ namespace FireApp.Service.Email
             string message = "A new FireApp-account has been created for you.<br />";
             message += "username: " + u.Id;
             message += "<br />password: " + u.Password;
-            message += "<br /><br />Please follow this link to change your password: http://example.org/";
+            message += "<br /><br />Please follow this link to change your password: ";
+            message += passwordResetPath;
             message += "<br /><br />With best regards, <br />your FireApp service team";
 
             string body = string.Empty;
@@ -101,7 +105,8 @@ namespace FireApp.Service.Email
             string message = "You forgot your password so we generated you a new one.<br />";
             message += "username: " + u.Id;
             message += "<br />password: " + u.Password;
-            message += "<br /><br />Please follow this link to change your password: http://example.org/";
+            message += "<br /><br />Please follow this link to change your password: ";
+            message += passwordResetPath;
             message += "<br /><br />With best regards,\nyour FireApp service team";
 
             string body = string.Empty;

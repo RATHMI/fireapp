@@ -33,14 +33,14 @@ namespace FireApp.Service {
             //debug: use only in debugging
             #region debugging
             #if DEBUG
-            User admin = new User("admin", "admin", "admin", "admin", "admin1@siemens.at", UserTypes.admin);
+            User admin = new User("admin", "admin", "Benjamin", "Blümchen", "admin1@siemens.at", UserTypes.admin);
             DatabaseOperations.Users.Upsert(admin, admin);
-            User user = new User("admin2", "admin", "admin", "admin", "admin2@siemens.at", UserTypes.admin);
+            User user = new User("admin2", "admin", "Max", "Mustermann", "admin2@siemens.at", UserTypes.admin);
             DatabaseOperations.Users.Upsert(user, admin);
-            user = new User("admin3", "admin", "admin", "admin", "admin3@siemens.at", UserTypes.admin);
+            user = new User("admin3", "admin", "John", "Doe", "admin3@siemens.at", UserTypes.admin);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fb1", "test", "test", "test", "test1@siemens.at", UserTypes.firebrigade);
+            user = new User("fb1", "test", "Mom's", "spaghetti", "test1@siemens.at", UserTypes.firebrigade);
             user.AuthorizedObjectIds.Add(0);
             user.AuthorizedObjectIds.Add(1);
             user.AuthorizedObjectIds.Add(3);
@@ -48,49 +48,49 @@ namespace FireApp.Service {
             user.AuthorizedObjectIds.Add(8);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("sm1", "test", "test", "test", "test2@siemens.at", UserTypes.servicemember);
+            user = new User("sm1", "test", "David", "Grasser", "test2@siemens.at", UserTypes.servicemember);
             user.AuthorizedObjectIds.Add(2);
             user.AuthorizedObjectIds.Add(9);
             user.AuthorizedObjectIds.Add(4);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fas1", "test", "test", "test", "test3@siemens.at", UserTypes.firealarmsystem);
+            user = new User("fas1", "test", "Jürgen", "Schulz", "test3@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(7);
             user.AuthorizedObjectIds.Add(5);
             user.AuthorizedObjectIds.Add(2);
             user.AuthorizedObjectIds.Add(10);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fb2", "test", "test", "test", "test4@siemens.at", UserTypes.firebrigade);
+            user = new User("fb2", "test", "Maria", "Gusenbauer", "test4@siemens.at", UserTypes.firebrigade);
             user.AuthorizedObjectIds.Add(1);
             user.AuthorizedObjectIds.Add(8);
             user.AuthorizedObjectIds.Add(3);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("sm2", "test", "test", "test", "test5@siemens.at", UserTypes.servicemember);
+            user = new User("sm2", "test", "Martha", "Schuster", "test5@siemens.at", UserTypes.servicemember);
             user.AuthorizedObjectIds.Add(7);
             user.AuthorizedObjectIds.Add(2);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fas2", "test", "test", "test", "test6@siemens.at", UserTypes.firealarmsystem);
+            user = new User("fas2", "test", "Stanislaus", "Klein", "test6@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(6);
             user.AuthorizedObjectIds.Add(4);
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.Upsert(user, admin);
             
-            user = new User("fb3", "test", "test", "test", "test7@siemens.at", UserTypes.firebrigade);
+            user = new User("fb3", "test", "Dorothea", "Wildt", "test7@siemens.at", UserTypes.firebrigade);
             user.AuthorizedObjectIds.Add(2);
             user.AuthorizedObjectIds.Add(3);
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("sm3", "test", "test", "test", "test8@siemens.at", UserTypes.servicemember);
+            user = new User("sm3", "test", "Friedrich", "Mann", "test8@siemens.at", UserTypes.servicemember);
             user.AuthorizedObjectIds.Add(2);
             user.AuthorizedObjectIds.Add(7);
             user.AuthorizedObjectIds.Add(8);
             DatabaseOperations.Users.Upsert(user, admin); 
                
-            user = new User("fas3", "test", "test", "test", "test9@siemens.at", UserTypes.firealarmsystem);
+            user = new User("fas3", "test", "Beathe", "Grün", "test9@siemens.at", UserTypes.firealarmsystem);
             user.AuthorizedObjectIds.Add(9);
             user.AuthorizedObjectIds.Add(5);
             user.AuthorizedObjectIds.Add(1);

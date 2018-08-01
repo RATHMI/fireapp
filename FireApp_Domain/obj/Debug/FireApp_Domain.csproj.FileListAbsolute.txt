@@ -15,3 +15,9 @@ S:\Diplomarbeit\git\FireApp_Server\fireapp\_Binaries\Domain\FireApp.Domain.pdb
 S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Domain\obj\Debug\FireApp_Domain.csprojResolveAssemblyReference.cache
 S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.dll
 S:\Diplomarbeit\git\FireApp_Server\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.pdb
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.dll.config
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.dll
+C:\proj\fireapp\_Binaries\Domain\FireApp.Domain.pdb
+C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp_Domain.csprojResolveAssemblyReference.cache
+C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.dll
+C:\proj\fireapp\FireApp_Domain\obj\Debug\FireApp.Domain.pdb
