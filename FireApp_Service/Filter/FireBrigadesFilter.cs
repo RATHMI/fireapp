@@ -7,18 +7,18 @@ using FireApp.Domain;
 namespace FireApp.Service.Filter
 {
     /// <summary>
-    /// This class provide methods to filter FireBrigades by their properties and the UserType
+    /// This class provides methods to filter FireBrigades by their properties and the UserType.
     /// </summary>
     public class FireBrigadesFilter
     {
         /// <summary>
-        /// filters a list of FireBrigades according to the rights of a user
+        /// Filters a list of FireBrigades according to the rights of a user.
         /// </summary>
-        /// <param name="fireBrigades">a list of FireBrigades you want to filter</param>
-        /// <param name="user">the user you want the FireBrigade to filter for</param>
-        /// <returns>returns a filtered list of FireBrigades</returns>
+        /// <param name="fireBrigades">A list of FireBrigades you want to filter.</param>
+        /// <param name="user">The User you want the FireBrigade to filter for.</param>
+        /// <returns>Returns a filtered list of FireBrigades.</returns>
         public static IEnumerable<FireBrigade> UserFilter(IEnumerable<FireBrigade> fireBrigades, User user)
-        { // todo: filter is ok
+        { 
             List<FireBrigade> results = new List<FireBrigade>();
             if (fireBrigades != null && user != null)
             {
@@ -26,37 +26,58 @@ namespace FireApp.Service.Filter
                 {
                     results.AddRange(fireBrigades);
                 }
-                if (user.UserType == UserTypes.firealarmsystem)
+                else
                 {
-                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    if (user.UserType == UserTypes.firealarmsystem)
                     {
-                        results.AddRange(fireAlarmSystemFilter(fireBrigades, authorizedObject));
+                        foreach (int authorizedObject in user.AuthorizedObjectIds)
+                        {
+                            results.AddRange(fireAlarmSystemFilter(fireBrigades, authorizedObject));
+                        }
                     }
-                }
-                if (user.UserType == UserTypes.firebrigade)
-                {
-                    foreach (int authorizedObject in user.AuthorizedObjectIds)
+                    else
                     {
-                        results.Add(fireBrigadeFilter(fireBrigades, authorizedObject));
+                        if (user.UserType == UserTypes.firebrigade)
+                        {
+                            foreach (int authorizedObject in user.AuthorizedObjectIds)
+                            {
+                                results.Add(fireBrigadeFilter(fireBrigades, authorizedObject));
+                            }
+                        }
                     }
                 }
             }
 
+            results.RemoveAll(x => x == null);
             results.OrderBy(x => x.Name);
             return (IEnumerable<FireBrigade>)results.Distinct();
         }
 
         /// <summary>
-        /// only returns FireBrigades which are in the list of FireBrigades
+        /// Only returns FireBrigades which are in the list of FireBrigades.
         /// </summary>
-        /// <param name="fireBrigades">a list of FireBrigades you want to filter</param>
-        /// <param name="id">the id of the FireAlarmSystem</param>
-        /// <returns>returns a filtered list of FireBrigades</returns>
-        private static IEnumerable<FireBrigade> fireAlarmSystemFilter(IEnumerable<FireBrigade> fireBrigades, int id)
+        /// <param name="fireBrigades">A list of FireBrigades you want to filter.</param>
+        /// <param name="fireAlarmSystem">The id of the FireAlarmSystem.</param>
+        /// <returns>Returns a filtered list of FireBrigades.</returns>
+        private static IEnumerable<FireBrigade> fireAlarmSystemFilter(IEnumerable<FireBrigade> fireBrigades, int fireAlarmSystem)
         {
             List<FireBrigade> results = new List<FireBrigade>();
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(id);
-            if (fireBrigades != null) {
+            FireAlarmSystem fas = null;
+
+            try
+            {
+                // Get the FireAlarmSystem by its id.
+                fas = DatabaseOperations.FireAlarmSystems.GetById(fireAlarmSystem);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            if (fireBrigades != null)
+            {
+                // Only add FireBrigades to the result if the FireBrigade is contained in the list
+                // of FireBrigades of the FireAlarmSystem.
                 foreach (FireBrigade fb in fireBrigades)
                 {
                     if (fas.FireBrigades.Contains(fb.Id))
@@ -68,16 +89,16 @@ namespace FireApp.Service.Filter
             }
             else
             {
-                throw new ArgumentNullException();
+                return null;
             }        
         }
 
         /// <summary>
-        /// only returns FireBrigades with a matching id
+        /// Only returns FireBrigades with a matching id.
         /// </summary>
-        /// <param name="fireBrigades">a list of FireAlarmSystems you want to filter</param>
-        /// <param name="id">the id of the FireBrigade</param>
-        /// <returns>returns a filtered list of FireBrigades</returns>
+        /// <param name="fireBrigades">A list of FireAlarmSystems you want to filter.</param>
+        /// <param name="id">The id of the FireBrigade.</param>
+        /// <returns>Returns a filtered list of FireBrigades.</returns>
         private static FireBrigade fireBrigadeFilter(IEnumerable<FireBrigade> fireBrigades, int id)
         {
             if (fireBrigades != null)

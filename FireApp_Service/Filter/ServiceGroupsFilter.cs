@@ -7,19 +7,19 @@ using FireApp.Domain;
 namespace FireApp.Service.Filter
 {
     /// <summary>
-    /// This class provide methods to filter ServiceGroups by their properties and the UserType.
+    /// This class provides methods to filter ServiceGroups by their properties and the UserType.
     /// </summary>
     public static class ServiceGroupsFilter
     {
         /// <summary>
-        /// Filters a list of ServiceGroups according to the rights of a user.
+        /// Filters a list of ServiceGroups according to the rights of a User.
         /// </summary>
         /// <param name="serviceGroups">The list of ServiceGroups you want to filter.</param>
         /// <param name="user">The user you want the ServiceGroups to filter for.</param>
         /// <returns>Returns a filtered list of ServiceGroups.</returns>
-        public static IEnumerable<ServiceGroup> UserFilter(IEnumerable<ServiceGroup> serviceGroups, User user) //todo: comment
-        { // todo: filter is ok
-            HashSet<ServiceGroup> results = new HashSet<ServiceGroup>();
+        public static IEnumerable<ServiceGroup> UserFilter(IEnumerable<ServiceGroup> serviceGroups, User user)
+        {
+            List<ServiceGroup> results = new List<ServiceGroup>();
             if (serviceGroups != null && user != null)
             {
                 if (user.UserType == UserTypes.admin)
@@ -48,6 +48,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
+            results.RemoveAll(x => x == null);
             results.OrderBy(x => x.GroupName);
             return results.Distinct();
         }
@@ -56,14 +57,22 @@ namespace FireApp.Service.Filter
         /// Only returns ServiceGroups which are in the list of ServiceGroups of the FireAlarmSystem.
         /// </summary>
         /// <param name="serviceGroups">The list of ServiceGroups you want to filter.</param>
-        /// <param name="id">The id of the FireAlarmSystem.</param>
+        /// <param name="fireAlarmSystem">The id of the FireAlarmSystem.</param>
         /// <returns>Returns a filtered list of ServiceGroups.</returns>
         private static IEnumerable<ServiceGroup> fireAlarmSystemFilter(IEnumerable<ServiceGroup> serviceGroups, int fireAlarmSystem)
         {
             List<ServiceGroup> results = new List<ServiceGroup>();
+            FireAlarmSystem fas = null;
 
-            // Get the FireAlarmSystem by its id.
-            FireAlarmSystem fas = DatabaseOperations.FireAlarmSystems.GetById(fireAlarmSystem);
+            try
+            {
+                // Get the FireAlarmSystem by its id.
+                fas = DatabaseOperations.FireAlarmSystems.GetById(fireAlarmSystem);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
             if (serviceGroups != null)
             {
@@ -80,7 +89,7 @@ namespace FireApp.Service.Filter
             }
             else
             {
-                throw new ArgumentNullException();
+                return null;
             }
         }
 
@@ -89,7 +98,7 @@ namespace FireApp.Service.Filter
         /// </summary>
         /// <param name="serviceGroups">A list of ServiceGroups you want to filter.</param>
         /// <param name="id">The id of the ServiceGroup.</param>
-        /// <returns>Returns the ServiceGroup or null</returns>
+        /// <returns>Returns the ServiceGroup or null.</returns>
         private static ServiceGroup serviceGroupFilter(IEnumerable<ServiceGroup> serviceGroups, int id)
         {
             if (serviceGroups != null)

@@ -12,16 +12,17 @@ namespace FireApp.Service.Filter
     public static class UsersFilter
     {
         /// <summary>
-        /// Filters the list of Users and creates clones of them with censored password and token.
+        /// Filters the list of Users and creates clones with minimal information about the Users.
         /// </summary>
         /// <param name="users">A list of Users you want to filter.</param>
         /// <param name="user">The User that uses the filter.</param>
         /// <returns>Returns a filtered list of Users.</returns>
-        public static IEnumerable<User> UserFilter(IEnumerable<User> users, User user) //todo: comment
+        public static IEnumerable<User> UserFilter(IEnumerable<User> users, User user)
         {
             List<User> results = new List<User>();
             if (users != null && user != null)
-            {              
+            {        
+                // If the User is an admin return all Users.      
                 if (user.UserType == UserTypes.admin)
                 {
                     foreach(User u in adminFilter(users))
@@ -30,24 +31,19 @@ namespace FireApp.Service.Filter
                     }
                 }
                 else
-                {
-                    // If the User is a FireAlarmSystem show all Users that have an authorized object id 
-                    // matching one of its authorized object ids and all ServiceMembers of the FireAlarmSystems.
+                {                    
                     if (user.UserType == UserTypes.firealarmsystem)
                     {
                         results.AddRange(fireAlarmSystemFilter(users, user));
                     }
                     else
                     {
-                        // If the User is a FireBrigade show all Users of the same FireBrigade.
                         if (user.UserType == UserTypes.firebrigade)
                         {
                             results.AddRange(fireBrigadeFilter(users, user));
                         }
                         else
                         {
-                            // If the User is a ServiceMember show all Users of the same ServiceGroup and all Users of the 
-                            // FireAlarmSystems that are connected to its ServiceGroups.
                             if (user.UserType == UserTypes.servicemember)
                             {
                                 results.AddRange(serviceGroupFilter(users, user));
@@ -59,12 +55,13 @@ namespace FireApp.Service.Filter
                 if (results.Exists(x => x.Id == user.Id))
                 {
                     // If the User is contained in the result show more information about it.
-                    // Remove it from the list of Users so it is not redundant in the result.
+                    // Remove it from the result first so it is not redundant.
                     results.Remove(results.Find(x => x.Id == user.Id));
                     results.AddRange(adminFilter(new User[] { user }));                  
                 }
             }
 
+            results.RemoveAll(x => x == null);
             return results
                 .OrderBy(x => x.UserType)
                 .ThenBy(x => x.LastName)
@@ -73,7 +70,7 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// Returns a cloned list of users with censored password and token.
+        /// Returns a cloned list of Users with censored password and token.
         /// </summary>
         /// <param name="users">A list of Users you want to filter.</param>
         /// <returns>Returns the filtered list.</returns>
@@ -100,15 +97,19 @@ namespace FireApp.Service.Filter
             {
                 return null;
             }
-        }       
+        }
 
-        private static IEnumerable<User> fireAlarmSystemFilter(IEnumerable<User> users, User user) // todo: comment
+        /// <summary>
+        /// Returns all Users that have an authorized object id matching one of the User's 
+        /// authorized object ids and all ServiceMembers of the FireAlarmSystems.
+        /// </summary>
+        /// <param name="users">A list of Users you want to filter.</param>
+        /// <param name="user">The User that uses the filter.</param>
+        /// <returns>Returns the filtered list.</returns>
+        private static IEnumerable<User> fireAlarmSystemFilter(IEnumerable<User> users, User user)
         {
             HashSet<User> result = new HashSet<User>();
             FireAlarmSystem fas;
-
-            // If the User is a FireAlarmSystem show all Users that have an authorized object id 
-            // matching one of its authorized object ids and all ServiceMembers of the FireAlarmSystems.
 
             // Get all Users of the FireAlarmSystems the User is allowed to see.
             foreach (User u in users)
@@ -149,11 +150,16 @@ namespace FireApp.Service.Filter
             return result;
         }
 
-        private static IEnumerable<User> fireBrigadeFilter(IEnumerable<User> users, User user) // todo: comment
+        /// <summary>
+        /// Returns all Users with an authorizedObjectId matching one of the authorizedObjectIds of the User.
+        /// </summary>
+        /// <param name="users">A list of Users you want to filter.</param>
+        /// <param name="user">The User that uses the filter.</param>
+        /// <returns>Returns the filtered list.</returns>
+        private static IEnumerable<User> fireBrigadeFilter(IEnumerable<User> users, User user)
         {
             HashSet<User> result = new HashSet<User>();
 
-            // If the User is a FireBrigade show all Users of the same FireBrigade.
             foreach (User u in users)
             {
                 if (u.UserType == UserTypes.firebrigade) {
@@ -169,15 +175,18 @@ namespace FireApp.Service.Filter
             return result;
         }
 
-        private static IEnumerable<User> serviceGroupFilter(IEnumerable<User> users, User user)// todo: comment
+        /// <summary>
+        /// Returns all Users of the same ServiceGroups as the User and all Users of the FireAlarmSystems 
+        /// that are connected to its ServiceGroups.
+        /// </summary>
+        /// <param name="users">A list of Users you want to filter.</param>
+        /// <param name="user">The User that uses the filter.</param>
+        /// <returns>Returns the filtered list.</returns>
+        private static IEnumerable<User> serviceGroupFilter(IEnumerable<User> users, User user)
         {
-            HashSet<User> result = new HashSet<User>();
-   
-            // If the User is a ServiceMember show all Users of the same ServiceGroup and all Users of the 
-            // FireAlarmSystems that are connected to its ServiceGroups.
-            
+            HashSet<User> result = new HashSet<User>();            
 
-            // Get all Users of the same ServiceGroups as user.
+            // Get all Users of the same ServiceGroups as the User.
             foreach(User u in users)
             {
                 if (u.UserType == UserTypes.servicemember)
@@ -192,26 +201,19 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            // Get all FireAlarmSystems where the Users ServiceGroups are in the list of ServiceGroups.
-            HashSet<FireAlarmSystem> fireAlarmSystems = new HashSet<FireAlarmSystem>();
+            // Get all FireAlarmSystems where one of the User's ServiceGroups is in the list of ServiceGroups.
             foreach(int authobject in user.AuthorizedObjectIds)
             {
                 foreach (FireAlarmSystem fas in DatabaseOperations.ServiceGroups.GetFireAlarmSystems(authobject))
                 {
-                    fireAlarmSystems.Add(fas);
-                }
-            }
-
-            // Get all Users of the FireAlarmSystems the User is authorized for.
-            foreach(FireAlarmSystem fas in fireAlarmSystems)
-            {
-                // For each User of the FireAlarmSystem.
-                foreach(User u in DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem))
-                {
-                    // If the User is contained in users add it to the result.
-                    if (users.Contains(u))
+                    // For each User of the FireAlarmSystem.
+                    foreach (User u in DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem))
                     {
-                        result.Add(u);
+                        // If the User is contained in users add it to the result.
+                        if (users.Contains(u))
+                        {
+                            result.Add(u);
+                        }
                     }
                 }
             }

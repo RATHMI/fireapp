@@ -24,39 +24,40 @@ namespace FireApp.Service.Filter
         /// <returns>returns the filtered list of FireEvents</returns>
         public static IEnumerable<FireEvent> HeadersFilter(IEnumerable<FireEvent> events, HttpRequestHeaders headers)
         {
-            // date1 used for filter by timestamp
+            // Date1 used for filter by timestamp.
             DateTime date1 = DateTime.MaxValue;
 
-            // date2 used for filter by timestamp
+            // Date2 used for filter by timestamp.
             DateTime date2 = DateTime.MaxValue;
 
-            // datestring is used by filter by timestamp
-            // is for containing the split string of a date
+            // Datestring is used for filter by timestamp.
+            // Is for containing the split string of a date.
             string[] datestring = null;
 
-            // eventTypes used for filter by EventType
+            // EventTypes used for filter by EventType.
             List<EventTypes> eventTypes = new List<EventTypes>();
 
-            // types is used for filter by EventType 
-            // is for containing the split string of EventTypes
+            // Types is used for filter by EventType.
+            // Is for containing the split string of EventTypes.
             string[] types = null;
 
-            // key is for storing the value of a header
+            // Key is for storing the value of a header.
             IEnumerable<string> key = null;
 
-            // sourceId is used for filter by sourceId
-            // contains the sourceId of the FireEvents you want as output
+            // SourceId is used for filter by sourceId.
+            // Contains the sourceId of the FireEvents you want as output.
             int sourceId = -1;
 
             try
             {
-                // filter events by timestamp
+                // Filter events by timestamp.
                 // *************************************************************************************************************
                 if (headers.TryGetValues("startDate", out key) != false 
                     && headers.TryGetValues("endDate", out key) != false)
                 {
                     try
                     {
+                        // Get first date from the header and convert it to a new DateTime object.
                         headers.TryGetValues("startDate", out key);
                         datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
                         date1 = new DateTime(
@@ -64,6 +65,7 @@ namespace FireApp.Service.Filter
                             Convert.ToInt32(datestring[1]), 
                             Convert.ToInt32(datestring[2]));
 
+                        // Get second date from the header and convert it to a new DateTime object.
                         headers.TryGetValues("endDate", out key);
                         datestring = key.First<string>().Trim(new char[] { '"' }).Split('-');
                         date2 = new DateTime(
@@ -71,9 +73,10 @@ namespace FireApp.Service.Filter
                             Convert.ToInt32(datestring[1]), 
                             Convert.ToInt32(datestring[2]));
 
+                        // Check if the dates were changed.
                         if (date1 < DateTime.MaxValue && date2 < DateTime.MaxValue)
                         {
-                            events = DateFilter(events, date1, date2);
+                            events = dateFilter(events, date1, date2);
                         }
                     }
                     catch (Exception ex)
@@ -82,20 +85,20 @@ namespace FireApp.Service.Filter
                     }
                 }
 
-                // filter events by EventType
+                // Filter events by EventType.
                 // *************************************************************************************************************
                 if (headers.TryGetValues("events", out key) != false)
                 {
                     headers.TryGetValues("events", out key);
 
-                    // trim unwanted chars that could cause a problem when splitting the string
-                    // split string with EventTypes into seperate strings 
+                    // Trim unwanted chars that could cause a problem when splitting the string.
+                    // Split string with EventTypes into seperate strings.
                     types = (key.First<string>().Trim(new char[] { '"', ',' })).Split(',');
 
-                    // if types is not null and is not an empty array
+                    // If types is not null and is not an empty array.
                     if (types != null && types.Count() > 0) 
                     {
-                        // skip if you want all FireEvents or types is an empty string
+                        // Skip if you want all FireEvents or types is an empty string.
                         if (types[0] != "All" && types[0] != "")    
                         {
                             foreach (string s in types)
@@ -112,17 +115,18 @@ namespace FireApp.Service.Filter
                                     case "Test": eventTypes.Add(EventTypes.test); break;
                                 }
                             }
-                            events = EventTypeFilter(events, eventTypes.ToArray<EventTypes>());
+                            events = eventTypeFilter(events, eventTypes.ToArray<EventTypes>());
                         }
                     }
                 }
 
-                // filter events by sourceId
+                // Filter events by sourceId.
                 // *************************************************************************************************************
                 if (headers.TryGetValues("sourceId", out key) != false)
                 {
                     try
                     {
+                        // Get sourceId from the header.
                         headers.TryGetValues("sourceId", out key);
                         sourceId = Convert.ToInt32(key.First<string>().Trim('"'));
                         if (sourceId != -1)
@@ -136,34 +140,37 @@ namespace FireApp.Service.Filter
                     }
                 }
 
-                Console.WriteLine(key); // to prevent optimisation  
+                // To prevent optimisation.
+                Console.WriteLine(key);  
                 
             }catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+
+            ((List<FireEvent>)events).RemoveAll(x => x == null);
             return events.Distinct();
         }
 
         /// <summary>
-        /// This method returns FireEvents with an EventType that is matching an EventType of types
+        /// This method returns FireEvents with an EventType that is matching an EventType of types.
         /// </summary>
-        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="types">an array of EventType</param>
-        /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> EventTypeFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
+        /// <param name="fireEvents">A list of FireEvents you want to filter.</param>
+        /// <param name="types">An array of EventType.</param>
+        /// <returns>Returns a filtered list of FireEvents.</returns>
+        private static IEnumerable<FireEvent> eventTypeFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
         {
             return baseFilter(fireEvents, types).Distinct();
         }
 
         /// <summary>
-        /// This method returns FireEvents where the date of the timestamp is between date1 and date2
+        /// This method returns FireEvents where the date of the timestamp is between date1 and date2.
         /// </summary>
-        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="date1">startdate or enddate</param>
-        /// <param name="date2">startdate or enddate</param>
-        /// <returns>returns a filtered list of FireEvents</returns>
-        public static IEnumerable<FireEvent> DateFilter(IEnumerable<FireEvent> fireEvents, DateTime date1, DateTime date2)
+        /// <param name="fireEvents">A list of FireEvents you want to filter.</param>
+        /// <param name="date1">Startdate or enddate.</param>
+        /// <param name="date2">Startdate or enddate.</param>
+        /// <returns>Returns a filtered list of FireEvents.</returns>
+        private static IEnumerable<FireEvent> dateFilter(IEnumerable<FireEvent> fireEvents, DateTime date1, DateTime date2)
         {
             List<FireEvent> results = new List<FireEvent>();
             if (fireEvents != null && date1 != null && date2 != null)
@@ -183,7 +190,7 @@ namespace FireApp.Service.Filter
 
                 foreach (FireEvent fe in fireEvents)
                 {
-                    // used property date, because if date1 and date2 have the same value there would be no match
+                    // Used property date, because if date1 and date2 have the same value there would be no match.
                     if (fe.TimeStamp.Date <= newest.Date && fe.TimeStamp.Date >= oldest.Date)
                     {
                         results.Add(fe);
@@ -198,11 +205,11 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// filters a list of FireEvents according to the rights of a user
+        /// Filters a list of FireEvents according to the rights of a User.
         /// </summary>
-        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="user">the user you want the FireEvents to filter for</param>
-        /// <returns>returns a filtered list of FireEvents</returns>
+        /// <param name="fireEvents">A list of FireEvents you want to filter.</param>
+        /// <param name="user">The user you want the FireEvents to filter for.</param>
+        /// <returns>Returns a filtered list of FireEvents.</returns>
         public static IEnumerable<FireEvent> UserFilter(IEnumerable<FireEvent> fireEvents, User user)
         {
             List<FireEvent> results = new List<FireEvent>();
@@ -235,6 +242,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
+            results.RemoveAll(x => x == null);
             results.OrderBy(x => x.EventType);
             return (IEnumerable<FireEvent>)results.Distinct();
         }
@@ -293,18 +301,18 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// Only returns FireEvents that have an EventType that is free for ServiceGroups and where this
-        /// ServiceGroup is in the list of ServiceGroups of the FireAlarmSystem that sent the FireEvent
+        /// Only returns FireEvents that have an EventType that ServiceGroups are allowed to see and where this
+        /// ServiceGroup is in the list of ServiceGroups of the FireAlarmSystem that sent the FireEvent.
         /// </summary>
-        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="serviceGroup">the id of a ServiceGroup</param>
-        /// <returns>returns a filtered list of FireEvents</returns>
+        /// <param name="fireEvents">A list of FireEvents you want to filter.</param>
+        /// <param name="serviceGroup">The id of a ServiceGroup.</param>
+        /// <returns>Returns a filtered list of FireEvents.</returns>
         private static IEnumerable<FireEvent> serviceGroupFilter(IEnumerable<FireEvent> fireEvents, int serviceGroup)
         {
             List<FireEvent> results = new List<FireEvent>();
             List<Int32> fireAlarmSystems = new List<Int32>();
 
-            // get all IDs of the FireAlarmSystems where the ServiceGroup is present
+            // Get all IDs of the FireAlarmSystems where the ServiceGroup is in the list of ServiceGroups.
             foreach (FireAlarmSystem fas in LocalDatabase.GetAllFireAlarmSystems())
             {
                 if (fas.CheckServiceGroup(serviceGroup))
@@ -313,7 +321,7 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            // get all FireEvents from the FireAlarmSystems that are linked to the ServiceGroup
+            // Get all FireEvents from the FireAlarmSystems that are linked to the FireAlarmSystem.
             foreach (FireEvent fe in fireEvents)
             {
                 if (fireAlarmSystems.Contains(fe.Id.SourceId))
@@ -327,11 +335,11 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// Only returns FireEvents from this FireAlarmSystem
+        /// Only returns FireEvents from this FireAlarmSystem.
         /// </summary>
-        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="fireAlarmSystem">the id of the FireAlarmSystem</param>
-        /// <returns>returns a filtered list of FireEvents</returns>
+        /// <param name="fireEvents">A list of FireEvents you want to filter.</param>
+        /// <param name="fireAlarmSystem">The id of the FireAlarmSystem.</param>
+        /// <returns>Returns a filtered list of FireEvents.</returns>
         private static IEnumerable<FireEvent> fireAlarmSystemFilter(IEnumerable<FireEvent> fireEvents, int fireAlarmSystem)
         {
             List<FireEvent> results = new List<FireEvent>();
@@ -347,11 +355,11 @@ namespace FireApp.Service.Filter
         }
 
         /// <summary>
-        /// Only returns FireEvents that have an EventType that is in the given array of EventTypes
+        /// Only returns FireEvents that have an EventType that is in the given array of EventTypes.
         /// </summary>
-        /// <param name="fireEvents">a list of FireEvents you want to filter</param>
-        /// <param name="types">an array of EventTypes you want the filtered FireEvents to have</param>
-        /// <returns>returns a filtered list of FireEvents</returns>
+        /// <param name="fireEvents">A list of FireEvents you want to filter.</param>
+        /// <param name="types">An array of EventTypes you want the filtered FireEvents to have.</param>
+        /// <returns>Returns a filtered list of FireEvents.</returns>
         private static IEnumerable<FireEvent> baseFilter(IEnumerable<FireEvent> fireEvents, EventTypes[] types)
         {
             List<FireEvent> results = new List<FireEvent>();
@@ -365,6 +373,7 @@ namespace FireApp.Service.Filter
                     }
                 }
             }
+
             return results;
         }
     }
