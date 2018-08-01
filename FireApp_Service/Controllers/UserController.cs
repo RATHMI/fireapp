@@ -368,7 +368,10 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Users.GetActiveUsers().ToArray();
+                        IEnumerable<User> users;
+                        users = DatabaseOperations.Users.GetActiveUsers();
+                        users = Filter.UsersFilter.UserFilter(users, user);
+                        return users.ToArray();
                     }
                     else
                     {
@@ -402,7 +405,10 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.Users.GetInactiveUsers().ToArray();
+                        IEnumerable<User> users;
+                        users = DatabaseOperations.Users.GetInactiveUsers();
+                        users = Filter.UsersFilter.UserFilter(users, user);
+                        return users.ToArray();
                     }
                     else
                     {
