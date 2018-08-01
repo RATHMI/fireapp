@@ -104,7 +104,7 @@ namespace FireApp.Domain
         /// Returns a clone of this User with only the most nessesary data.
         /// </summary>
         /// <returns>Returns a clone of this User.</returns>
-        public User SaveClone()
+        public User SafeClone()
         {
             User user = new User();
             user.Id = this.Id;
