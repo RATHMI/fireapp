@@ -5,16 +5,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FireApp.Domain;
+using FireApp.Service;
 
 namespace UserController
 {
     [TestClass()]
     public class UserControllerTests
     {
+        private static User generateUser(string username, UserTypes usertype)
+        {
+            string password = "test";
+            string firstname = "firstname";
+            string lastname = "lastname";
+            string email = username + "@siemens.com";
+
+            return new User(username, password, firstname, lastname, email, usertype);
+        }
+
         [TestMethod()]
         public void UpsertUserTest()
         {
-            Assert.Fail();
+
         }
 
         [TestMethod()]

@@ -46,15 +46,22 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\UserControllerTests.cs" />
+    <Compile Include="DatabaseOperations\UsersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FireApp_Domain\FireApp_Domain.csproj">
+      <Project>{1024446b-7f5d-4982-a8ad-6768db546f4a}</Project>
+      <Name>FireApp_Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FireApp_Service\FireApp_Service.csproj">
       <Project>{079968D5-317F-4A61-A54E-09FC16037780}</Project>
       <Name>FireApp_Service</Name>

@@ -148,7 +148,6 @@ namespace FireApp.Service.Filter
                 Console.WriteLine(ex.Message);
             }
 
-            ((List<FireEvent>)events).RemoveAll(x => x == null);
             return events.Distinct();
         }
 

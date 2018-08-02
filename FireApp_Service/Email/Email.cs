@@ -12,8 +12,15 @@ namespace FireApp.Service.Email
 {
     public static class Email
     {
-        private static string templatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+        private static string serviceEmail = ConfigurationManager.AppSettings["serviceEmail"];
+        private static string serviceEmailPassword = ConfigurationManager.AppSettings["serviceEmailPassword"];
+
+        private static string welcomeEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+        private static string resetEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+        private static string helpEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+
         private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
+        private static string helpFile = HttpContext.Current.Request.Url.Host + ConfigurationManager.AppSettings["helpFile"];
 
 
         /// <summary>
@@ -22,25 +29,22 @@ namespace FireApp.Service.Email
         /// <param name="recipients">The recipients of this email.</param>
         /// <param name="subject">The subject of the email.</param>
         /// <param name="message">The message you want to send.</param>
-        public static void Send(string recipients, string subject, string message) {
+        public static void Send(string to, string subject, string message) {
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
-                Credentials = new NetworkCredential("fro.diplomarbeit@gmail.com", "Codebusters!"),
+                Credentials = new NetworkCredential(serviceEmail, serviceEmailPassword),
                 EnableSsl = true
             };
 
             var msg = new MailMessage();
             msg.IsBodyHtml = true;
-            msg.From = new MailAddress("fro.diplomarbeit@gmail.com");
+            msg.From = new MailAddress(serviceEmail);
             msg.Subject = subject;
-            msg.To.Add("fro.diplomarbeit@gmail.com");
-            //msg.To.Add(recipients);
+            msg.To.Add(serviceEmail);
+            //msg.To.Add(new MailAddress(to));
             msg.Body = message;
 
             client.Send(msg);
-            // todo: use real email
-            // client.Send("fro.diplomarbeit@gmail.com", recipients, subject, message);
-            //client.Send("fro.diplomarbeit@gmail.com", "fro.diplomarbeit@gmail.com", subject, message);
         }
 
         /// <summary>
@@ -49,24 +53,40 @@ namespace FireApp.Service.Email
         /// <param name="u">The User you want to send the email to.</param>
         public static void WelcomeEmail(User u) // todo: improve
         {
-            string title = "Welcome " + u.FirstName + " " + u.LastName + "!";
-            string message = "A new FireApp-account has been created for you.<br />";
-            message += "username: " + u.Id;
-            message += "<br />password: " + u.Password;
-            message += "<br /><br />Please follow this link to change your password: ";
-            message += passwordResetPath;
-            message += "<br /><br />With best regards, <br />your FireApp service team";
+            string header = "Schön, dass Sie da sind!";
+            string title = "Willkommen " + u.FirstName + " " + u.LastName + "!";
+            string info1 = "Ein neuer FireApp-Account wurde für Sie erstellt.";
+            string usernameInfo = "Ihr Benutzername lautet: " + u.Id;
+            string passwordInfo = "Ihr vorläufiges Passwort lautet: " + u.Password;
+            string info2 = "Bitte klicken Sie auf den untenstehenden Button, um ihr vorläufiges Passwort zu ändern.";
+            string buttonText = "PASSWORT ÄNDERN";
+            string helpTitle = "Sie benötigen Hilfe?";
+            string helpButtonText1 = "Email an Serviceteam";
+            string helpButtonText2 = "Bedienungsanleitung";
+            string helpUrl1 = "mailto:'" + serviceEmail + "'";
+            string helpUrl2 = helpFile;
 
             string body = string.Empty;
-            using (StreamReader reader = new StreamReader(templatePath))
+            using (StreamReader reader = new StreamReader(welcomeEmailTemplatePath))
             {
                 body = reader.ReadToEnd();
             }
 
+            body = body.Replace("{header}", header);
             body = body.Replace("{title}", title);
-            body = body.Replace("{message}", message);
+            body = body.Replace("{info}", info1);
+            body = body.Replace("{username_info}", usernameInfo);
+            body = body.Replace("{password_info}", passwordInfo);
+            body = body.Replace("{info2}", info2);
+            body = body.Replace("{button}", buttonText);
+            body = body.Replace("{url}", passwordResetPath);
+            body = body.Replace("{help_title}", helpTitle);
+            body = body.Replace("{help_button1}", helpButtonText1);
+            body = body.Replace("{help_url1}", helpUrl1);
+            body = body.Replace("{help_button2}", helpButtonText2);
+            body = body.Replace("{help_url1}", helpUrl2);
 
-            Send(u.Email, "welcome", body);
+            Send(u.Email, "FireApp Accout-Erstellung", body);
         }
 
         /// <summary>
@@ -77,14 +97,14 @@ namespace FireApp.Service.Email
         /// <param name="text">The text the user entered.</param>
         public static void HelpEmail(User user, string adminEmail, string text)
         {
-            string title = "Help!";
-            string message = "The User \"" + user.FirstName + " " + user.LastName + "\" has a question for you:<br /><br />";
+            string title = "Hilfe!";
+            string message = "Der Benutzer \"" + user.FirstName + " " + user.LastName + "\" hat eine Frage für Sie:<br /><br />";
             message += text;
-            message += "<br /><br />username: " + user.Id;
-            message += "<br /><br />With best regards,\nyour FireApp server";
+            message += "<br />Benutzer: " + user.Id;
+            message += "<br /><br />Mit besten Grüßen,\nIhr FireApp-Server";
 
             string body = string.Empty;   
-            using (StreamReader reader = new StreamReader(templatePath))
+            using (StreamReader reader = new StreamReader(helpEmailTemplatePath))
             {
                 body = reader.ReadToEnd();
             }
@@ -110,7 +130,7 @@ namespace FireApp.Service.Email
             message += "<br /><br />With best regards,\nyour FireApp service team";
 
             string body = string.Empty;
-            using (StreamReader reader = new StreamReader(templatePath))
+            using (StreamReader reader = new StreamReader(resetEmailTemplatePath))
             {
                 body = reader.ReadToEnd();
             }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Xml.Serialization;
 
@@ -23,6 +24,12 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
             BsonMapper.Global.Entity<User>()
                 .Id(x => x.Id, true);
+        }
+
+        public static string ServerIP()
+        {
+            string hostName = Dns.GetHostName();
+            return Dns.GetHostEntry(hostName).AddressList[0].ToString();
         }
 
         #region FireEventDB
