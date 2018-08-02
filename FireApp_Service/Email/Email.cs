@@ -21,7 +21,7 @@ namespace FireApp.Service.Email
 
         private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
         private static string helpFile = HttpContext.Current.Request.Url.Host + ConfigurationManager.AppSettings["helpFile"];
-
+        static int count = 0;
 
         /// <summary>
         /// Sends an email from a service email account to the reciepients.
@@ -30,6 +30,10 @@ namespace FireApp.Service.Email
         /// <param name="subject">The subject of the email.</param>
         /// <param name="message">The message you want to send.</param>
         public static void Send(string to, string subject, string message) {
+            if(count >= 1)
+            {
+                return;
+            }
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential(serviceEmail, serviceEmailPassword),
@@ -45,6 +49,7 @@ namespace FireApp.Service.Email
             msg.Body = message;
 
             client.Send(msg);
+            count++;
         }
 
         /// <summary>
@@ -63,7 +68,7 @@ namespace FireApp.Service.Email
             string helpTitle = "Sie benötigen Hilfe?";
             string helpButtonText1 = "Email an Serviceteam";
             string helpButtonText2 = "Bedienungsanleitung";
-            string helpUrl1 = "mailto:'" + serviceEmail + "'";
+            string helpUrl1 = "mailto:" + serviceEmail;
             string helpUrl2 = helpFile;
 
             string body = string.Empty;

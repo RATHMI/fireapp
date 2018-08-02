@@ -39,14 +39,13 @@ namespace DatabaseOperationsTests
             // Test duplicate email.
             User duplicateEmail = generateUser("duplicateEmail", UserTypes.unauthorized);
             duplicateEmail.Email = user.Email;
-            Assert.IsFalse(FireApp.Service.DatabaseOperations.Users.Upsert(duplicateEmail, duplicateEmail));
-            
+            Assert.IsFalse(FireApp.Service.DatabaseOperations.Users.Upsert(duplicateEmail, duplicateEmail));           
         }
 
         [TestMethod()]
         public void BulkUpsertTest()
         {
-            User admin = generateUser("admin", UserTypes.unauthorized);
+            User admin = generateUser("admin", UserTypes.admin);
             List<User> users = new List<User>()
             {
                 generateUser("test1", UserTypes.unauthorized),
@@ -56,18 +55,18 @@ namespace DatabaseOperationsTests
             };
 
             // Test insert.
-            Assert.Equals(4, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
+            Assert.AreEqual(4, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
 
             // Test duplicates.
             users.Add(generateUser("test1", UserTypes.unauthorized));
-            Assert.Equals(4, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
+            Assert.AreEqual(4, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
 
             // Test empty list.
             users.Clear();
-            Assert.Equals(0, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
+            Assert.AreEqual(0, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
 
             // Test null.
-            Assert.Equals(0, FireApp.Service.DatabaseOperations.Users.BulkUpsert(null, admin));
+            Assert.AreEqual(0, FireApp.Service.DatabaseOperations.Users.BulkUpsert(null, admin));
         }
 
         [TestMethod()]
