@@ -54,7 +54,7 @@ namespace FireApp.Domain
             set { this.token = value; TokenCreationDate = DateTime.Now; }
         }
         public DateTime TokenCreationDate { get; set; }
-        public int TokenValidDays { get; set; }
+        public int TokenValidDays { get; private set; }
 
         public static string EncryptPassword(string password)
         {

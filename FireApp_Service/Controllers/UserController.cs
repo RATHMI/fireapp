@@ -24,16 +24,132 @@ namespace FireApp.Service.Controllers
         public bool UpsertUser([FromBody] User u)
         {
             try {
+                if(u == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
                 User user;
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
-                {   // todo: allow to update the own user
+                {
                     if (user.UserType == UserTypes.admin)
                     {
+                        // todo: allow to change UserType when there are AuthorizedObjectIds?
                         return DatabaseOperations.Users.Upsert(u, user);
                     }
+                    else
+                    {
+                        // Allow User to edit its own User.
+                        if(user.Id == u.Id)
+                        {
+                            // Do not allow the User to change its UserType.
+                            if(user.UserType != u.UserType)
+                            {
+                                throw new InvalidOperationException();
+                            }
+
+                            // Allow the User to delete but not to add AuthorizedObjectIds.
+                            foreach (int authobject in u.AuthorizedObjectIds)
+                            {
+                                if (user.AuthorizedObjectIds.Contains(authobject) == false)
+                                {
+                                    throw new InvalidOperationException();
+                                }
+                            }
+
+                            return DatabaseOperations.Users.Upsert(u, user);
+                        }
+                        else
+                        {
+                            // Do not allow the User to create a user with another UserType.
+                            if (user.UserType != u.UserType)
+                            {
+                                throw new InvalidOperationException();
+                            }
+
+                            User old = DatabaseOperations.Users.GetById(u.Id);
+
+                            // Allow Users to add other another User to their group.
+                            if (old == null)
+                            {
+                                // The User does not already exist.
+                                // Allow to create a User of the same UserType with the same or less AuthorizedObejctIds.                             
+
+                                // Allow the User to delete but not to add AuthorizedObjectIds.
+                                foreach (int authobject in u.AuthorizedObjectIds)
+                                {
+                                    if (user.AuthorizedObjectIds.Contains(authobject) == false)
+                                    {
+                                        throw new InvalidOperationException();
+                                    }
+                                }
+
+                                return DatabaseOperations.Users.Upsert(u, user);
+                            }
+                            else
+                            {                                                       
+                                List<int> changedIds = new List<int>();
+
+                                // Get all AuthorizedObejectIds that were added.
+                                foreach (int authobject in u.AuthorizedObjectIds)
+                                {
+                                    if(old.AuthorizedObjectIds.Contains(authobject) == false)
+                                    {
+                                        changedIds.Add(authobject);
+                                    }
+                                }
+
+                                // Get all AuthorizedObejectIds that were deleted.
+                                foreach (int authobject in old.AuthorizedObjectIds)
+                                {
+                                    if (u.AuthorizedObjectIds.Contains(authobject) == false)
+                                    {
+                                        changedIds.Add(authobject);
+                                    }
+                                }
+
+                                // Only allow the User to add or delete AuthorizedObejectIds that are linked to its own User.
+                                foreach (int authobject in changedIds)
+                                {
+                                    if (user.AuthorizedObjectIds.Contains(authobject) == false)
+                                    {
+                                        throw new InvalidOperationException();
+                                    }
+                                }
+
+                                old.AuthorizedObjectIds = u.AuthorizedObjectIds;
+
+                                return DatabaseOperations.Users.Upsert(old, user);
+                            }
+                        }
+                    }
                 }
-                return false;   
+                else
+                {
+                    if (DatabaseOperations.Users.GetById(u.Id) == null)
+                    {
+                        // Allow everybody to create a new User but not with the UserType admin
+                        // and with no AuthorizedObjectIds. 
+
+                        if(u.UserType == UserTypes.admin)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
+                        if(u.AuthorizedObjectIds.Count != 0)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
+                        return DatabaseOperations.Users.Upsert(u, u);
+                    }
+                    else
+                    {
+                        // User must be logged in to update an existing User.
+                        throw new InvalidOperationException();
+                    }
+                } 
             }
             catch(Exception ex)
             {
