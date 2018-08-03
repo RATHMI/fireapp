@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DatabaseOperations\Info.txt" />
+    <Content Include="Email\EmailTemplate.html" />
     <Content Include="Email\images\Icon3.0.png" />
     <Content Include="Email\images\logo_siemens.png" />
     <Content Include="index.html" />

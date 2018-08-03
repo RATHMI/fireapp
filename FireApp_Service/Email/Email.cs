@@ -135,26 +135,44 @@ namespace FireApp.Service.Email
         /// Sends an email to the User with the User's username and new password.
         /// </summary>
         /// <param name="u">The User you want to send the email to.</param>
-        public static void ResetEmail(User u)// todo: improve
+        public static void ResetEmail(User u)
         {
-            string title = "Welcome " + u.FirstName + " " + u.LastName + "!";
-            string message = "You forgot your password so we generated you a new one.<br />";
-            message += "username: " + u.Id;
-            message += "<br />password: " + u.Password;
-            message += "<br /><br />Please follow this link to change your password: ";
-            message += passwordResetPath;
-            message += "<br /><br />With best regards,\nyour FireApp service team";
+            string header = "Passwort-Zurücksetzung";
+            string title = "Guten Tag, " + u.FirstName + " " + u.LastName + "!";
+            string info1 = "Das Passwort für Ihren FireApp-Account wurde zurückgesetzt";
+            string usernameInfo = "Ihr Benutzername lautet: " + u.Id;
+            string passwordInfo = "Ihr vorläufiges Passwort lautet: " + u.Password;
+            string info2 = "Bitte klicken Sie auf den untenstehenden Button, um ihr vorläufiges Passwort zu ändern.";
+            string buttonText = "PASSWORT ÄNDERN";
+            string helpTitle = "Sie benötigen Hilfe?";
+            string helpButtonText1 = "Email an Serviceteam";
+            string helpButtonText2 = "Bedienungsanleitung";
+            string helpUrl1 = "mailto:" + serviceEmail;
+            string helpUrl2 = helpFile;
 
             string body = string.Empty;
-            using (StreamReader reader = new StreamReader(resetEmailTemplatePath))
+            using (StreamReader reader = new StreamReader(welcomeEmailTemplatePath))
             {
                 body = reader.ReadToEnd();
             }
 
+            body = body.Replace("{logo}", logo);
+            body = body.Replace("{icon}", icon);
+            body = body.Replace("{header}", header);
             body = body.Replace("{title}", title);
-            body = body.Replace("{message}", message);
+            body = body.Replace("{info}", info1);
+            body = body.Replace("{username_info}", usernameInfo);
+            body = body.Replace("{password_info}", passwordInfo);
+            body = body.Replace("{info2}", info2);
+            body = body.Replace("{button}", buttonText);
+            body = body.Replace("{url}", passwordResetPath);
+            body = body.Replace("{help_title}", helpTitle);
+            body = body.Replace("{help_button1}", helpButtonText1);
+            body = body.Replace("{help_url1}", helpUrl1);
+            body = body.Replace("{help_button2}", helpButtonText2);
+            body = body.Replace("{help_url1}", helpUrl2);
 
-            Send(u.Email, "password reset", body);
+            Send(u.Email, "FireApp Passwort-Zurücksetzung", body);
         }
     }
 }
