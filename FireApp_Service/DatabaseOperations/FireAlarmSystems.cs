@@ -15,7 +15,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the FireAlarmSystem was inserted.</returns>
         public static bool Upsert(FireAlarmSystem fas, User user)
         {
-            if (fas != null)
+            if (fas != null && fas.Id != 0)
             {
                 bool ok = DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
                 if (ok)
@@ -82,7 +82,7 @@ namespace FireApp.Service.DatabaseOperations
 
             // If the id is already used by another FireAlarmSystem
             // return a new id.
-            if(rv == -1)
+            if(rv == -1 || id == 0)
             {
                 rv = maxId + 1;
             }

@@ -112,6 +112,11 @@ namespace FireApp.Domain
             user.LastName = this.LastName;
             user.Email = this.Email;
             user.UserType = this.UserType;
+            user.AuthorizedObjectIds = new HashSet<int>();
+            foreach(int authobject in this.AuthorizedObjectIds)
+            {
+                user.AuthorizedObjectIds.Add(authobject);
+            }
 
             return user;
         }

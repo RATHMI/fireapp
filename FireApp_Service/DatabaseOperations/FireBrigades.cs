@@ -15,7 +15,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the insert was successful.</returns>
         public static bool Upsert(FireBrigade fb, User user)
         {
-            if (fb != null)
+            if (fb != null && fb.Id != 0)
             {
                 bool ok = DatabaseOperations.DbUpserts.UpsertFireBrigade(fb);
                 if (ok)
@@ -134,7 +134,7 @@ namespace FireApp.Service.DatabaseOperations
                     maxId = fb.Id;
                 }
 
-                if (fb.Id == id)
+                if (fb.Id == id || id == 0)
                 {
                     rv = -1;
                 }

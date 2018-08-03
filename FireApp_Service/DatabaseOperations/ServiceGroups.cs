@@ -16,7 +16,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the ServiceGroup was inserted.</returns>
         public static bool Upsert(ServiceGroup sg, User user)
         {
-            if (sg != null)
+            if (sg != null && sg.Id != 0)
             {
                 bool ok = DatabaseOperations.DbUpserts.UpsertServiceGroup(sg);
                 if (ok)
@@ -146,7 +146,7 @@ namespace FireApp.Service.DatabaseOperations
 
             // If the id is already used by another ServiceGroup
             // return a new id.
-            if (rv == -1)
+            if (rv == -1 || id == 0)
             {
                 rv = maxId + 1;
             }

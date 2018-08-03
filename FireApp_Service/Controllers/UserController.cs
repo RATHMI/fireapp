@@ -35,8 +35,30 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        // todo: allow to change UserType when there are AuthorizedObjectIds?
-                        return DatabaseOperations.Users.Upsert(u, user);
+                        // Check if the User already exists.
+                        User old = DatabaseOperations.Users.GetById(u.Id);
+                        if (old != null)
+                        {
+                            // If the UserType changed
+                            if (old.UserType != u.UserType)
+                            {
+                                // Allow to change the UserType to change to admin and unauthorized.
+                                if (u.UserType != UserTypes.admin && u.UserType != UserTypes.unauthorized)
+                                {
+                                    if(u.AuthorizedObjectIds.Count != 0)
+                                    {
+                                        // Only change the UserType when there are no authorized obejects.
+                                        throw new InvalidOperationException();
+                                    }
+                                }
+                            }
+
+                            return DatabaseOperations.Users.Upsert(u, user);
+                        }
+                        else
+                        {
+                            return DatabaseOperations.Users.Upsert(u, user);
+                        }
                     }
                     else
                     {

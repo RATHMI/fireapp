@@ -28,7 +28,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the FireEvent was inserted.</returns>
         public static bool Upsert(FireEvent fe, User user)
         {
-            if (fe != null)
+            if (fe != null && fe.Id.SourceId != 0 && fe.Id.EventId != 0)
             {
                 bool ok = DatabaseOperations.DbUpserts.UpsertFireEvent(fe);
                 if (ok)
@@ -55,6 +55,11 @@ namespace FireApp.Service.DatabaseOperations
         public static bool CheckId(FireEventId id)
         {
             IEnumerable<FireEvent> all = LocalDatabase.GetAllFireEvents();
+            if(id.SourceId == 0 || id.EventId == 0)
+            {
+                return false;
+            }
+
             foreach(FireEvent fe in all)
             {
                 if(fe.Id.SourceId == id.SourceId && fe.Id.EventId == id.EventId)
