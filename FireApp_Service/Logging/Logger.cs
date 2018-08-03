@@ -30,7 +30,7 @@ namespace FireApp.Service.Logging
                 }
                 using (StreamWriter w = File.AppendText(logPath))
                 {
-                    w.Write("{0}", Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now));
+                    w.Write("{0};{1}", Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now), user);
                     w.WriteLine(";{0};{1};{2}\n", logMessage, changedObject.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(changedObject));
                     w.Close();
                 }

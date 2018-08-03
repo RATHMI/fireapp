@@ -29,14 +29,16 @@ namespace FireApp.Service.Controllers
             try {
                 User user;
                 Authentication.Token.CheckAccess(Request.Headers, out user);
-                if (user == null)
+                if (user != null)
                 {
-                    user = new User("dummy", "dummy", "dummy", "dummy", "dummy", UserTypes.unauthorized);
+                    // Allow upsert for every User, because there is no authentication concept for real
+                    // fire alarm systems yet.
+                    return DatabaseOperations.Events.Upsert(fe, user);
                 }
-
-                // Allow upsert without authentication, because there is no authentication concept for real
-                // fire alarm systems yet.
-                return DatabaseOperations.Events.Upsert(fe, user);
+                else
+                {
+                    throw new InvalidOperationException();
+                }                          
             }
             catch(Exception ex)
             {
