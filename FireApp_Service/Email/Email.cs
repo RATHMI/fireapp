@@ -20,7 +20,9 @@ namespace FireApp.Service.Email
         private static string helpEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
 
         private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
-        private static string helpFile = HttpContext.Current.Request.Url.Host + ConfigurationManager.AppSettings["helpFile"];
+        private static string logo = AppData.ServerAddress() + "/Email/images/logo_siemens.png";
+        private static string icon = AppData.ServerAddress() + "/Email/images/Icon3.0.png";
+        private static string helpFile = AppData.ServerAddress() + "/Email/helpFile.pdf";
 
         // Only for testing.
         static int count = 0;
@@ -84,6 +86,8 @@ namespace FireApp.Service.Email
                 body = reader.ReadToEnd();
             }
 
+            body = body.Replace("{logo}", logo);
+            body = body.Replace("{icon}", icon);
             body = body.Replace("{header}", header);
             body = body.Replace("{title}", title);
             body = body.Replace("{info}", info1);

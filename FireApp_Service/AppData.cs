@@ -26,10 +26,13 @@ namespace FireApp.Service {
                 .Id(x => x.Id, true);
         }
 
-        public static string ServerIP()
+        public static string ServerAddress()
         {
             string hostName = Dns.GetHostName();
-            return Dns.GetHostEntry(hostName).AddressList[0].ToString();
+            string address = Dns.GetHostEntry(hostName).AddressList[0].ToString();
+
+            address += ":" + ConfigurationManager.AppSettings["servicePort"];
+            return address;
         }
 
         #region FireEventDB
