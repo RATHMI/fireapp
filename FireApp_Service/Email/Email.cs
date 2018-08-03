@@ -65,7 +65,7 @@ namespace FireApp.Service.Email
         /// Sends a welcome email to the user.
         /// </summary>
         /// <param name="u">The User you want to send the email to.</param>
-        public static void WelcomeEmail(User u) // todo: improve
+        public static void WelcomeEmail(User u)
         {
             string header = "Schön, dass Sie da sind!";
             string title = "Willkommen " + u.FirstName + " " + u.LastName + "!";

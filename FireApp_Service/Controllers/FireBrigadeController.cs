@@ -19,7 +19,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="fb">The FireBrigade you want to upsert.</param>
         /// <returns>Returns true if the FireBrigade was inserted.</returns>
-        [HttpPost, Route("upload")]//todo: comment
+        [HttpPost, Route("upload")]
         public bool UploadFireBrigade([FromBody] FireBrigade fb)
         {
             try {
@@ -369,7 +369,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The FireBrigade you want to get the FireAlarmSystems of.</param>
         /// <returns>Returns all FireAlarmSystems that are associated with this FireBrigade.</returns>
-        [HttpGet, Route("fas/{id}")] // todo: comment
+        [HttpGet, Route("fas/{id}")]
         public FireAlarmSystem[] GetFireAlarmSystems(int id)
         {
             try

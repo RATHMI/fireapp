@@ -451,7 +451,7 @@ namespace FireApp.Service.Controllers
         /// <param name="type">The type of User (fb, sg, fas).</param>
         /// <returns>Returns Users of this FireAlarmSystem of the given type.</returns>
         [HttpGet, Route("users/{id}/{type}")]
-        public User[] GetUsers(int id, string type) //todo: comment
+        public User[] GetUsers(int id, string type)
         {
             List<User> results = new List<User>();
 
