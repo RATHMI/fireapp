@@ -18,7 +18,7 @@ namespace FireApp.Service.DatabaseOperations
         {
             try
             {
-                if (user != null)
+                if (user != null && user.Id != null)
                 {
                     // Try to find an existing User.
                     User old = GetById(user.Id);
