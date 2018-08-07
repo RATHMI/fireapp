@@ -611,6 +611,24 @@
                                                 &emsp;"delete" deletes the id from the authorized objects of the User.
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>&emsp;../resetpassword/{username}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Generates a new password for the User with a matching username and sends the new login credentials via to the User's email account.<br>
+                                                Returns true if the password was reset.<br>
+                                                Username: the username of the User you want to reset the password of.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../changepassword</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Changes the password of the logged in User to the password that was transmitted.<br>
+                                                Returns true if the password was changed.<br>
+                                                Transmit the password via POST in the body of the request.
+                                            </td>
+                                        </tr>
                                     </tbody>
                                     <!-- End of content -->
                                 </table>
