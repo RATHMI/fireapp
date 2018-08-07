@@ -108,7 +108,7 @@ namespace FireApp.Service.DatabaseOperations
             IEnumerable<FireEvent> events;
 
             // Get all active FireEvents from the database.
-            events = ActiveEvents.GetAll();
+            events = ActiveFireEvents.GetAll();
 
             // Filter the FireEvents according to the User.
             // If you do not filter the FireEvents the User will get some FireAlarmSystems 
@@ -164,7 +164,7 @@ namespace FireApp.Service.DatabaseOperations
         public static IEnumerable<int> GetUnregistered()
         {
             List<FireAlarmSystem> fireAlarmSystems = FireAlarmSystems.GetAll().OrderBy(x => x.Id).ToList();
-            List<FireEvent> events = Events.GetAll().OrderBy(x => x.Id.SourceId).ToList();
+            List<FireEvent> events = FireEvents.GetAll().OrderBy(x => x.Id.SourceId).ToList();
 
             // Use a HashSet to prevent redundant entries.
             HashSet<int> results = new HashSet<int>();

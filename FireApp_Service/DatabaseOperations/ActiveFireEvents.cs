@@ -6,7 +6,7 @@ using FireApp.Domain;
 
 namespace FireApp.Service.DatabaseOperations
 {
-    public static class ActiveEvents
+    public static class ActiveFireEvents
     {
         /// <summary>
         /// Upserts a FireEvents into the databases.

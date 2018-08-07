@@ -9,7 +9,7 @@ using System.Net;
 
 namespace FireApp.Service.DatabaseOperations
 {
-    public static class Events
+    public static class FireEvents
     {       
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace FireApp.Service.DatabaseOperations
                 {
                     Logging.Logger.Log("upsert", user.GetUserDescription(), fe);
 
-                    DatabaseOperations.ActiveEvents.Upsert(fe);
+                    DatabaseOperations.ActiveFireEvents.Upsert(fe);
                     LocalDatabase.UpsertFireEvent(fe);
                 }
 
