@@ -972,3 +972,133 @@
 
 "2018-08-07T10:34:04.5669934+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test12@siemens.at","Token":"2IrnOe0ibK4joOW92naSkip5qXWkCkuxXLMxO6Qx66ZVKo4lqw","TokenCreationDate":"2018-08-07T10:34:04.5600126+02:00","TokenValidDays":365}
 
+"2018-08-07T14:28:46.5920787+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"BWbdvS5Lk7CeI2M9CPCab4q22QAlGHtcIaYIIAW59JIJur4bOt","TokenCreationDate":"2018-08-07T14:23:08.015715+02:00","TokenValidDays":1}
+
+"2018-08-07T14:28:51.8935856+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin2","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Max","LastName":"Mustermann","Email":"admin2@siemens.at","Token":"RK9NBKg8bu1Vw3dwK8WHJD6VpMg1HNRdrLh16RpypGyRNquFNk","TokenCreationDate":"2018-08-07T14:28:46.7346557+02:00","TokenValidDays":1}
+
+"2018-08-07T14:28:51.9055504+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin3","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"John","LastName":"Doe","Email":"admin3@siemens.at","Token":"x87jxV9fdfhPfGSyo6LIEKXCtAb8CCxlggdaRtOxmsiXSst1zg","TokenCreationDate":"2018-08-07T14:28:51.8985689+02:00","TokenValidDays":1}
+
+"2018-08-07T14:28:51.9723716+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[0,1,3,6,8],"FirstName":"Mom's","LastName":"spaghetti","Email":"test1@siemens.at","Token":"VBlsJIjqljFpwsqAKmMeZdWI20QjZfJ8q3JWeRXM8dqj9hhHhw","TokenCreationDate":"2018-08-07T14:28:51.9095397+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:51.9959275+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,9,4],"FirstName":"David","LastName":"Grasser","Email":"test2@siemens.at","Token":"HXSZLUjiU9UHghFEGtZBPvdSBMKYGvxuPPlyiY3yJ2cURYoK56","TokenCreationDate":"2018-08-07T14:28:51.97736+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0075803+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[7,5,2,10],"FirstName":"Jürgen","LastName":"Schulz","Email":"test3@siemens.at","Token":"V6hoo1pyCwmtYstjKboNC5upaDUkmKqstmRETuSAROWzOuNynJ","TokenCreationDate":"2018-08-07T14:28:51.9999603+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0235799+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[1,8,3],"FirstName":"Maria","LastName":"Gusenbauer","Email":"test4@siemens.at","Token":"mYeGyjlLkWFK8Q2G9MRulP7AXw6Ug31dtRbbC6gfjzeqDmjPBY","TokenCreationDate":"2018-08-07T14:28:52.0115692+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0345504+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[7,2],"FirstName":"Martha","LastName":"Schuster","Email":"test5@siemens.at","Token":"rkvuO2irKXS3plPVKHX8cT8CrE4GYjvzT59RdUQjv0zQIRjgWN","TokenCreationDate":"2018-08-07T14:28:52.0285245+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0475155+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[6,4,1],"FirstName":"Stanislaus","LastName":"Klein","Email":"test6@siemens.at","Token":"sxfD7G4bIq3jNvO6Do804dWYOWKBAWDWfCTPCQQxs5Qdlz1gKW","TokenCreationDate":"2018-08-07T14:28:52.0395372+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0584441+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[2,3,1],"FirstName":"Dorothea","LastName":"Wildt","Email":"test7@siemens.at","Token":"DNlkTb8t2jo5WWafXH3QRpyEXXc3L8muxKwtW7K99LQ2RlYgXr","TokenCreationDate":"2018-08-07T14:28:52.0514626+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0714092+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,7,8],"FirstName":"Friedrich","LastName":"Mann","Email":"test8@siemens.at","Token":"3SZkRShNUCpEHQqY75oUN3hT3Ftg1PYFt5zHvm9HAFFH1iLqe2","TokenCreationDate":"2018-08-07T14:28:52.0634306+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.0874124+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[9,5,1],"FirstName":"Beathe","LastName":"Grün","Email":"test9@siemens.at","Token":"jiEBILELmL0XSdQUhKBxQd9KM1v5ZvMIdsaNJEuCbSRdtfBQ3V","TokenCreationDate":"2018-08-07T14:28:52.0763957+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.1003325+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test10@siemens.at","Token":"QKvpwOiBIhWF9dzA3q50zvrvJbgtakRCQ7UV9wExIconbIfGi1","TokenCreationDate":"2018-08-07T14:28:52.092372+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.1142972+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test11@siemens.at","Token":"0OChywy24KOcY1wmB0lodDnmUGxtABrbpsxeOjgy4KPyRIruXK","TokenCreationDate":"2018-08-07T14:28:52.10636+02:00","TokenValidDays":365}
+
+"2018-08-07T14:28:52.1312508+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test12@siemens.at","Token":"JePvOk1vlOKaOKcC0xp26TNgKgUw6Xz7INIdKTS1qkvrJVY0LF","TokenCreationDate":"2018-08-07T14:28:52.12028+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.5187331+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"BWbdvS5Lk7CeI2M9CPCab4q22QAlGHtcIaYIIAW59JIJur4bOt","TokenCreationDate":"2018-08-07T14:45:27.4828737+02:00","TokenValidDays":1}
+
+"2018-08-07T14:45:27.6693318+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin2","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Max","LastName":"Mustermann","Email":"admin2@siemens.at","Token":"RK9NBKg8bu1Vw3dwK8WHJD6VpMg1HNRdrLh16RpypGyRNquFNk","TokenCreationDate":"2018-08-07T14:45:27.6633482+02:00","TokenValidDays":1}
+
+"2018-08-07T14:45:27.6793048+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin3","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"John","LastName":"Doe","Email":"admin3@siemens.at","Token":"x87jxV9fdfhPfGSyo6LIEKXCtAb8CCxlggdaRtOxmsiXSst1zg","TokenCreationDate":"2018-08-07T14:45:27.67332+02:00","TokenValidDays":1}
+
+"2018-08-07T14:45:27.6922695+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[0,1,3,6,8],"FirstName":"Mom's","LastName":"spaghetti","Email":"test1@siemens.at","Token":"VBlsJIjqljFpwsqAKmMeZdWI20QjZfJ8q3JWeRXM8dqj9hhHhw","TokenCreationDate":"2018-08-07T14:45:27.6832929+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7032412+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,9,4],"FirstName":"David","LastName":"Grasser","Email":"test2@siemens.at","Token":"HXSZLUjiU9UHghFEGtZBPvdSBMKYGvxuPPlyiY3yJ2cURYoK56","TokenCreationDate":"2018-08-07T14:45:27.6972552+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7132141+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[7,5,2,10],"FirstName":"Jürgen","LastName":"Schulz","Email":"test3@siemens.at","Token":"V6hoo1pyCwmtYstjKboNC5upaDUkmKqstmRETuSAROWzOuNynJ","TokenCreationDate":"2018-08-07T14:45:27.7072289+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7221911+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[1,8,3],"FirstName":"Maria","LastName":"Gusenbauer","Email":"test4@siemens.at","Token":"mYeGyjlLkWFK8Q2G9MRulP7AXw6Ug31dtRbbC6gfjzeqDmjPBY","TokenCreationDate":"2018-08-07T14:45:27.7172023+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7371505+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[7,2],"FirstName":"Martha","LastName":"Schuster","Email":"test5@siemens.at","Token":"rkvuO2irKXS3plPVKHX8cT8CrE4GYjvzT59RdUQjv0zQIRjgWN","TokenCreationDate":"2018-08-07T14:45:27.7261801+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7463136+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[6,4,1],"FirstName":"Stanislaus","LastName":"Klein","Email":"test6@siemens.at","Token":"sxfD7G4bIq3jNvO6Do804dWYOWKBAWDWfCTPCQQxs5Qdlz1gKW","TokenCreationDate":"2018-08-07T14:45:27.7411383+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7553356+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[2,3,1],"FirstName":"Dorothea","LastName":"Wildt","Email":"test7@siemens.at","Token":"DNlkTb8t2jo5WWafXH3QRpyEXXc3L8muxKwtW7K99LQ2RlYgXr","TokenCreationDate":"2018-08-07T14:45:27.7503507+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7652651+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,7,8],"FirstName":"Friedrich","LastName":"Mann","Email":"test8@siemens.at","Token":"3SZkRShNUCpEHQqY75oUN3hT3Ftg1PYFt5zHvm9HAFFH1iLqe2","TokenCreationDate":"2018-08-07T14:45:27.7603225+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7752388+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[9,5,1],"FirstName":"Beathe","LastName":"Grün","Email":"test9@siemens.at","Token":"jiEBILELmL0XSdQUhKBxQd9KM1v5ZvMIdsaNJEuCbSRdtfBQ3V","TokenCreationDate":"2018-08-07T14:45:27.7692991+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7842581+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test10@siemens.at","Token":"QKvpwOiBIhWF9dzA3q50zvrvJbgtakRCQ7UV9wExIconbIfGi1","TokenCreationDate":"2018-08-07T14:45:27.7792294+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.7932351+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test11@siemens.at","Token":"0OChywy24KOcY1wmB0lodDnmUGxtABrbpsxeOjgy4KPyRIruXK","TokenCreationDate":"2018-08-07T14:45:27.7882478+02:00","TokenValidDays":365}
+
+"2018-08-07T14:45:27.80516+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test12@siemens.at","Token":"JePvOk1vlOKaOKcC0xp26TNgKgUw6Xz7INIdKTS1qkvrJVY0LF","TokenCreationDate":"2018-08-07T14:45:27.7971794+02:00","TokenValidDays":365}
+
+"2018-08-07T14:46:09.8705546+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"sesMoOY504dgNGPJCPedJpkmkS6ZIDHXa33bxQfdmpm6AmfpKG","TokenCreationDate":"2018-08-07T14:46:09.8545981+02:00","TokenValidDays":1}
+
+"2018-08-07T14:46:38.959054+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"X+nRkdfBk9ZXXOg37OzE4w==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"sesMoOY504dgNGPJCPedJpkmkS6ZIDHXa33bxQfdmpm6AmfpKG","TokenCreationDate":"2018-08-07T14:46:09.8545981+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:13.753559+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"vhjXmrWfwgvJ1uWfLBK28GhoywZ0VUKemooMyy21ChGebnynHY","TokenCreationDate":"2018-08-07T14:49:11.8336487+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:13.9002913+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin2","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Max","LastName":"Mustermann","Email":"admin2@siemens.at","Token":"hdsrWkJ5aVCLAo0DByUCtg2eZLmK2HQJODDW7TXcqSnMdSvuun","TokenCreationDate":"2018-08-07T14:49:13.8863287+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:13.9152531+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin3","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"John","LastName":"Doe","Email":"admin3@siemens.at","Token":"J6wI3e9iT9ZTcUYCnO45hsZ9Cv1mQfBUBEK6EyN5Efp5EebOs2","TokenCreationDate":"2018-08-07T14:49:13.9062765+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:13.9302572+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[0,1,3,6,8],"FirstName":"Mom's","LastName":"spaghetti","Email":"test1@siemens.at","Token":"dBq0yZCuPEU7TjzaanhDcmTmrQMGpqhertWSUQZsBMzFXam8r5","TokenCreationDate":"2018-08-07T14:49:13.9202424+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:13.9431781+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,9,4],"FirstName":"David","LastName":"Grasser","Email":"test2@siemens.at","Token":"kXnqIVVsLPoNCtL6Wk1jjpin2IvebXBnAdz9lhPnxAtfzcH3Fn","TokenCreationDate":"2018-08-07T14:49:13.9362108+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:13.9551449+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[7,5,2,10],"FirstName":"Jürgen","LastName":"Schulz","Email":"test3@siemens.at","Token":"EZWZrMUjxNnzLkeSxYMx2ckpEuVAi00kVbebsUTfNH0Heroahf","TokenCreationDate":"2018-08-07T14:49:13.9481638+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:13.9761278+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[1,8,3],"FirstName":"Maria","LastName":"Gusenbauer","Email":"test4@siemens.at","Token":"h9zsOP0u9SfhhZE93frRAdEGA0Bk3EJj5OSl981T2NhRuS1mso","TokenCreationDate":"2018-08-07T14:49:13.9611972+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:13.9881014+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[7,2],"FirstName":"Martha","LastName":"Schuster","Email":"test5@siemens.at","Token":"LeOj7hDoIaxRfoaWbxVBnSAlClVIlsnOK8Nwq5bHc60o809OQn","TokenCreationDate":"2018-08-07T14:49:13.9810752+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.0020206+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[6,4,1],"FirstName":"Stanislaus","LastName":"Klein","Email":"test6@siemens.at","Token":"zMw2yH98jpB5AWfFeepm2O0PSKY8cPf6t7sSDYJ80fcEFdGCeW","TokenCreationDate":"2018-08-07T14:49:13.9940439+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.0159821+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[2,3,1],"FirstName":"Dorothea","LastName":"Wildt","Email":"test7@siemens.at","Token":"VkOIQseRCBT6aW4rzhn9zjZREmLSudgQPTWOP7X3cihmPOhKAm","TokenCreationDate":"2018-08-07T14:49:14.0070074+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.0279516+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,7,8],"FirstName":"Friedrich","LastName":"Mann","Email":"test8@siemens.at","Token":"rk0kZLc6h1eTVNfV4FPA37YN2IpygQXYvGWbCqZ2WKgKiAhb4d","TokenCreationDate":"2018-08-07T14:49:14.0209689+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.03992+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[9,5,1],"FirstName":"Beathe","LastName":"Grün","Email":"test9@siemens.at","Token":"ZKZTca3geZoLNAZEjg510X2oyEioVD27ousHPemNkALV6jIFci","TokenCreationDate":"2018-08-07T14:49:14.0329377+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.0539281+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test10@siemens.at","Token":"obpMp1uMs3VoCELQypJW1L88tM2oQ3um0Z8aLg6ngYXumEeurB","TokenCreationDate":"2018-08-07T14:49:14.0459029+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.0668913+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test11@siemens.at","Token":"sktOGyhJmSXXtJuhU3NJ6b3rE9FxiSSeet9V7kMzdoLtCuNT45","TokenCreationDate":"2018-08-07T14:49:14.0588708+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:14.080824+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test12@siemens.at","Token":"GOz7Q05hT7kmztB7Od9m1ECB4KDXEvdqIHUnjgF2n9xmmgksUz","TokenCreationDate":"2018-08-07T14:49:14.0718383+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.0904643+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"vhjXmrWfwgvJ1uWfLBK28GhoywZ0VUKemooMyy21ChGebnynHY","TokenCreationDate":"2018-08-07T14:49:37.0516186+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:37.2630028+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin2","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Max","LastName":"Mustermann","Email":"admin2@siemens.at","Token":"hdsrWkJ5aVCLAo0DByUCtg2eZLmK2HQJODDW7TXcqSnMdSvuun","TokenCreationDate":"2018-08-07T14:49:37.2580167+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:37.2739741+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin3","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"John","LastName":"Doe","Email":"admin3@siemens.at","Token":"J6wI3e9iT9ZTcUYCnO45hsZ9Cv1mQfBUBEK6EyN5Efp5EebOs2","TokenCreationDate":"2018-08-07T14:49:37.2679901+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:37.2839478+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[0,1,3,6,8],"FirstName":"Mom's","LastName":"spaghetti","Email":"test1@siemens.at","Token":"dBq0yZCuPEU7TjzaanhDcmTmrQMGpqhertWSUQZsBMzFXam8r5","TokenCreationDate":"2018-08-07T14:49:37.2789708+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.2999039+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,9,4],"FirstName":"David","LastName":"Grasser","Email":"test2@siemens.at","Token":"kXnqIVVsLPoNCtL6Wk1jjpin2IvebXBnAdz9lhPnxAtfzcH3Fn","TokenCreationDate":"2018-08-07T14:49:37.2889339+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3098785+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[7,5,2,10],"FirstName":"Jürgen","LastName":"Schulz","Email":"test3@siemens.at","Token":"EZWZrMUjxNnzLkeSxYMx2ckpEuVAi00kVbebsUTfNH0Heroahf","TokenCreationDate":"2018-08-07T14:49:37.3038945+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3198609+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[1,8,3],"FirstName":"Maria","LastName":"Gusenbauer","Email":"test4@siemens.at","Token":"h9zsOP0u9SfhhZE93frRAdEGA0Bk3EJj5OSl981T2NhRuS1mso","TokenCreationDate":"2018-08-07T14:49:37.3138674+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3294688+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[7,2],"FirstName":"Martha","LastName":"Schuster","Email":"test5@siemens.at","Token":"LeOj7hDoIaxRfoaWbxVBnSAlClVIlsnOK8Nwq5bHc60o809OQn","TokenCreationDate":"2018-08-07T14:49:37.3244803+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3384466+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[6,4,1],"FirstName":"Stanislaus","LastName":"Klein","Email":"test6@siemens.at","Token":"zMw2yH98jpB5AWfFeepm2O0PSKY8cPf6t7sSDYJ80fcEFdGCeW","TokenCreationDate":"2018-08-07T14:49:37.3334577+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3484199+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fb3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[2,3,1],"FirstName":"Dorothea","LastName":"Wildt","Email":"test7@siemens.at","Token":"VkOIQseRCBT6aW4rzhn9zjZREmLSudgQPTWOP7X3cihmPOhKAm","TokenCreationDate":"2018-08-07T14:49:37.343433+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3583917+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"sm3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[2,7,8],"FirstName":"Friedrich","LastName":"Mann","Email":"test8@siemens.at","Token":"rk0kZLc6h1eTVNfV4FPA37YN2IpygQXYvGWbCqZ2WKgKiAhb4d","TokenCreationDate":"2018-08-07T14:49:37.3524077+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3673892+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"fas3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[9,5,1],"FirstName":"Beathe","LastName":"Grün","Email":"test9@siemens.at","Token":"ZKZTca3geZoLNAZEjg510X2oyEioVD27ousHPemNkALV6jIFci","TokenCreationDate":"2018-08-07T14:49:37.3623806+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3773408+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown1","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":1,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test10@siemens.at","Token":"obpMp1uMs3VoCELQypJW1L88tM2oQ3um0Z8aLg6ngYXumEeurB","TokenCreationDate":"2018-08-07T14:49:37.3714011+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3873141+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown2","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":2,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test11@siemens.at","Token":"sktOGyhJmSXXtJuhU3NJ6b3rE9FxiSSeet9V7kMzdoLtCuNT45","TokenCreationDate":"2018-08-07T14:49:37.3813305+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:37.3982862+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"unknown3","Password":"EnsBQ2WUplkueiv3Q9OsQg==","UserType":3,"AuthorizedObjectIds":[],"FirstName":"test","LastName":"test","Email":"test12@siemens.at","Token":"GOz7Q05hT7kmztB7Od9m1ECB4KDXEvdqIHUnjgF2n9xmmgksUz","TokenCreationDate":"2018-08-07T14:49:37.391311+02:00","TokenValidDays":365}
+
+"2018-08-07T14:49:38.2340503+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"31k4F3xUekiVQzKdERlVPg==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"bnQo3ZKuuxtgR8ZRkGyx8PVdmvkYLw1XdBOid3RQ3Kv5HVh7c8","TokenCreationDate":"2018-08-07T14:49:38.2290658+02:00","TokenValidDays":1}
+
+"2018-08-07T14:49:46.6733694+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"arA8b32gsVLmmPY1CQYUyw==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"bnQo3ZKuuxtgR8ZRkGyx8PVdmvkYLw1XdBOid3RQ3Kv5HVh7c8","TokenCreationDate":"2018-08-07T14:49:38.2290658+02:00","TokenValidDays":1}
+
+"2018-08-07T14:50:07.0571052+02:00";admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"arA8b32gsVLmmPY1CQYUyw==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"ZSMOs9d2J0nu5ioK6tOufp6jB1iDr1X1hyVpGL2fuGzCE5M8IT","TokenCreationDate":"2018-08-07T14:50:07.0491313+02:00","TokenValidDays":1}
+

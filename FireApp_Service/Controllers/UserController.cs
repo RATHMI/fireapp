@@ -659,7 +659,7 @@ namespace FireApp.Service.Controllers
             if(user != null)
             {
                 // Generate a new password.
-                user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics + Sets.Symbols);
+                user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics);
 
                 // Upsert the User with the new password.
                 DatabaseOperations.Users.Upsert(user, user);

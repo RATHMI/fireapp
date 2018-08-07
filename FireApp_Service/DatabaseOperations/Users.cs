@@ -62,7 +62,7 @@ namespace FireApp.Service.DatabaseOperations
                         if (old == null)
                         {
                             // Generate a new password.
-                            user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics + Sets.Symbols);
+                            user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics);
                         }
                         else
                         {
