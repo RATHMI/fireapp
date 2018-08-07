@@ -72,7 +72,6 @@ namespace FireApp.Service.Filter
                 }
             }
 
-            results.RemoveAll(x => x == null);
             return new HashSet<User>(results
                 .OrderBy(x => x.UserType)
                 .ThenBy(x => x.LastName)

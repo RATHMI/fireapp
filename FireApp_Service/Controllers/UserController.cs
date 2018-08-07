@@ -647,15 +647,15 @@ namespace FireApp.Service.Controllers
         }
 
         /// <summary>
-        /// Generates a new password for the User with a matching email address and sends the new
+        /// Generates a new password for the User with a matching username and sends the new
         /// login credentials via email to the User.
         /// </summary>
-        /// <param name="email">The email address of the User who wants to reset the password.</param>
+        /// <param name="username">The username of the User who wants to reset the password.</param>
         /// <returns>Returns true if the email was sent.</returns>
-        [HttpPost, Route("resetpassword")]
-        public bool ResetPassword([FromBody] string email)
+        [HttpGet, Route("resetpassword/{username}")]
+        public bool ResetPassword(string username)
         {
-            User user = DatabaseOperations.Users.GetByEmail(email);
+            User user = DatabaseOperations.Users.GetById(username);
             if(user != null)
             {
                 // Generate a new password.
@@ -667,7 +667,7 @@ namespace FireApp.Service.Controllers
                 
                 // Get a clone of the User so the password is not changed when decypting it.
                 user = (User)user.Clone();
-                user.Email = Encryption.Encrypt.DecryptString(user.Email);
+                user.Password = Encryption.Encrypt.DecryptString(user.Password);
 
                 // Send the User an email with the new password.
                 Email.Email.ResetEmail(user);
