@@ -11,7 +11,7 @@ using System.Text;
 
 namespace FireApp.Service.Controllers
 {
-    [RoutePrefix("service")]//todo: comment
+    [RoutePrefix("service")]
     public class ServiceGroupController : ApiController
     {
         /// <summary>
@@ -150,7 +150,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="byteArrayString">An array of bytes as a string that represents a CSV file.</param>
         /// <returns>The number of successfully upserted ServiceGroups.</returns>
-        [HttpPost, Route("uploadcsv")]//todo: comment
+        [HttpPost, Route("uploadcsv")]
         public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);

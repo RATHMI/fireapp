@@ -114,7 +114,7 @@ namespace FireApp.Service.Email
         public static void HelpEmail(User user, string adminEmail, string text)
         {
             string title = "Hilfe!";
-            string message = "Der Benutzer \"" + user.FirstName + " " + user.LastName + "\" hat eine Frage für Sie:<br /><br />";
+            string message = "Der Benutzer: \"" + user.FirstName + " " + user.LastName + "\" hat eine Frage für Sie:<br /><br />";
             message += text;
             message += "<br />Benutzer: " + user.Id;
             message += "<br /><br />Mit besten Grüßen,\nIhr FireApp-Server";
@@ -135,7 +135,7 @@ namespace FireApp.Service.Email
         /// Sends an email to the User with the User's username and new password.
         /// </summary>
         /// <param name="u">The User you want to send the email to.</param>
-        public static void ResetEmail(User u)
+        public static void ResetPasswordEmail(User u)
         {
             string header = "Passwort-Zurücksetzung";
             string title = "Guten Tag, " + u.FirstName + " " + u.LastName + "!";

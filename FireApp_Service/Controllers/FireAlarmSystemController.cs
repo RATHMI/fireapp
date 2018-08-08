@@ -95,7 +95,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="byteArrayString">An array of bytes as a string that represents a CSV file.</param>
         /// <returns>The number of successfully upserted FireAlarmSystems.</returns>
-        [HttpPost, Route("uploadcsv")]//todo: comment
+        [HttpPost, Route("uploadcsv")]
         public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -508,7 +508,22 @@ namespace FireApp.Service.Controllers
             }
         }
 
-        [HttpGet, Route("changemember/{fireAlarmSystem}/{type}/{member}/{operation}")] // todo: comment
+        /// <summary>
+        /// Adds or deletes an assoziation with FireBrigade or ServiceGroup.
+        /// </summary>
+        /// <param name="fireAlarmSystem">The id of the FireAlarmSytem you want to change a member of.</param>
+        /// <param name="type">The type of member you want to change (fb or sg).</param>
+        /// <param name="member">The id of the member you want to change.</param>
+        /// <param name="operation">The type of operation you want to perform (add or delete).</param>
+        /// <returns>
+        /// Returns an error code.
+        /// 1 : operation was successful.
+        /// 0 : the login was not successful.
+        /// -1 : the User is not an admin.
+        /// -2 : the type of member or operation was not found.
+        /// -3 : an error occured.
+        /// </returns>
+        [HttpGet, Route("changemember/{fireAlarmSystem}/{type}/{member}/{operation}")]
         public Int32 ChangeMember(int fireAlarmSystem, string type, int member, string operation)
         {
             try

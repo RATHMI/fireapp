@@ -28,6 +28,7 @@ namespace FireApp.Service {
 
         public static string ServerAddress()
         {
+            // todo: check if email resources work.
             string hostName = Dns.GetHostName();
             string address = Dns.GetHostEntry(hostName).AddressList[0].ToString();
 

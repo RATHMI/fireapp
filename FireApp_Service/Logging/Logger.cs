@@ -13,7 +13,9 @@ namespace FireApp.Service.Logging
     /// </summary>
     public static class Logger
     {
-        private static string logPath = ConfigurationManager.AppSettings["loggingPath"].ToFullPath();
+        private static string logPath() {
+            return ConfigurationManager.AppSettings["loggingPath"].ToFullPath() + DateTime.Now.Date.ToShortDateString() + "_log.txt";
+        }
 
         /// <summary>
         /// Writes a log message to the logPath
@@ -24,11 +26,11 @@ namespace FireApp.Service.Logging
         {
             try
             {
-                if (!File.Exists(logPath))
+                if (!File.Exists(logPath()))
                 {
-                    File.Create(logPath);
+                    File.Create(logPath());
                 }
-                using (StreamWriter w = File.AppendText(logPath))
+                using (StreamWriter w = File.AppendText(logPath()))
                 {
                     w.Write("{0};{1}", Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now), user);
                     w.WriteLine(";{0};{1};{2}\n", logMessage, changedObject.GetType().ToString(), Newtonsoft.Json.JsonConvert.SerializeObject(changedObject));

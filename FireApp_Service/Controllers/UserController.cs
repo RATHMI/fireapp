@@ -292,7 +292,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="byteArrayString">An array of bytes as a string that represents a CSV file.</param>
         /// <returns>The number of successfully upserted Users.</returns>
-        [HttpPost, Route("uploadcsv")]//todo: comment
+        [HttpPost, Route("uploadcsv")]
         public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -470,7 +470,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="usertypes">An array of usertypes.</param>
         /// <returns>Returns a list of all Users with matching usertypes.</returns>
-        [HttpPost, Route("usertype")]//todo: comment
+        [HttpPost, Route("usertype")]
         public User[] GetUserByUserTypes([FromBody] UserTypes[] usertypes)
         {
             try
@@ -703,7 +703,7 @@ namespace FireApp.Service.Controllers
                 user.Password = Encryption.Encrypt.DecryptString(user.Password);
 
                 // Send the User an email with the new password.
-                Email.Email.ResetEmail(user);
+                Email.Email.ResetPasswordEmail(user);
 
                 return true;
             }
