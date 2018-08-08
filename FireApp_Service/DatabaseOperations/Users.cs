@@ -77,16 +77,21 @@ namespace FireApp.Service.DatabaseOperations
                         Email.Email.WelcomeEmail(user);
                     }
 
-                    // Encrypt password.
-                    user.Password = Encryption.Encrypt.EncryptString(user.Password);
+                    if (DatabaseOperations.Users.CheckPassword(user) == 1)
+                    {
 
-                    // Save the User in the database.
-                    var ok = DatabaseOperations.DbUpserts.UpsertUser(user);
-                    if (ok) {
-                        LocalDatabase.UpsertUser(user);
-                        Logging.Logger.Log("upsert", admin.GetUserDescription(), user);
+                        // Encrypt password.
+                        user.Password = Encryption.Encrypt.EncryptString(user.Password);
+
+                        // Save the User in the database.
+                        var ok = DatabaseOperations.DbUpserts.UpsertUser(user);
+                        if (ok)
+                        {
+                            LocalDatabase.UpsertUser(user);
+                            Logging.Logger.Log("upsert", admin.GetUserDescription(), user);
+                        }
+                        return ok;
                     }
-                    return ok;
                 }
                 return false;
             }catch(Exception ex)
