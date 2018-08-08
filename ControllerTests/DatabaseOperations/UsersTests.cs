@@ -108,7 +108,12 @@ namespace DatabaseOperationsTests
         [TestMethod()]
         public void GetByIdTest()
         {
-            Assert.Fail();
+            User user = UsersTests.GenerateUser("test1", UserTypes.unauthorized);
+            FireApp.Service.DatabaseOperations.Users.Upsert(user, user);
+
+            User retrieved = FireApp.Service.DatabaseOperations.Users.GetById(user.Id);
+
+            Assert.IsTrue(user.Equals(retrieved));
         }
 
         [TestMethod()]

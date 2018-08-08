@@ -149,7 +149,7 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The id you want to check.</param>
         /// <returns>Returns id if id is not used by other FireAlarmSystem or else an unused id.</returns>
-        [HttpPost, Route("checkid/{id}")]
+        [HttpGet, Route("checkid/{id}")]
         public int CheckId(int id)
         {
             return DatabaseOperations.FireAlarmSystems.CheckId(id);

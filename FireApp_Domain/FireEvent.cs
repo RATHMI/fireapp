@@ -106,7 +106,7 @@ namespace FireApp.Domain {
 
         public bool Equals(FireEvent other)
         {
-            if (this.Id == other.Id)
+            if (this.Id.Equals(other.Id))
             {
                 return true;
             }

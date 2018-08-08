@@ -252,8 +252,8 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">The id you want to check.</param>
         /// <returns>Returns true if the id is not used by another FireBrigade or else a new id.</returns>
-        [HttpPost, Route("checkid/{id}")]
-        public static int CheckId(int id)
+        [HttpGet, Route("checkid/{id}")]
+        public int CheckId(int id)
         {
             return DatabaseOperations.FireBrigades.CheckId(id);
         }

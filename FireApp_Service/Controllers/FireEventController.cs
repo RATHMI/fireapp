@@ -117,7 +117,7 @@ namespace FireApp.Service.Controllers
         /// <param name="sourceId">The sourceId you want to check.</param>
         /// <param name="eventId">The eventId you want to check</param>
         /// <returns>Returns true if id is not used by other FireEvent.</returns>
-        [HttpPost, Route("checkid/{sourceId}/{eventId}")]     
+        [HttpGet, Route("checkid/{sourceId}/{eventId}")]     
         public bool CheckId(int sourceId, int eventId)
         {
             return DatabaseOperations.FireEvents.CheckId(new FireEventId(sourceId, eventId));
