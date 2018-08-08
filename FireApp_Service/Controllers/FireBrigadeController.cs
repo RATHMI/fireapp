@@ -153,11 +153,11 @@ namespace FireApp.Service.Controllers
                 return result;
             }
         }
-        
+
         /// <summary>
         /// Retrieves FireBrigades from a CSV and upserts them.
         /// </summary>
-        /// <param name="bytes">An array of bytes that represents a CSV file.</param>
+        /// <param name="byteArrayString">An array of bytes as a string that represents a CSV file.</param>
         /// <returns>The number of successfully upserted FireBrigades.</returns>
         [HttpPost, Route("uploadcsv")]//todo: comment
         public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
@@ -171,16 +171,20 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        // todo: comment
                         IEnumerable<FireBrigade> fb;
-                        byteArrayString = byteArrayString.Trim('"');
                         List<byte> bytes = new List<byte>();
-                        foreach(string s in byteArrayString.Split(' '))
+
+                        byteArrayString = byteArrayString.Trim('"');
+                        // Convert the string into an array of bytes.
+                        foreach (string s in byteArrayString.Split(' '))
                         {
                             bytes.Add(Convert.ToByte(s));
                         }
 
+                        // Get the FireBrigades from the array of bytes.
                         fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(bytes.ToArray());
+
+                        // Upsert the FireBrigades into the database.
                         int upserted = DatabaseOperations.FireBrigades.BulkUpsert(fb, user);
 
                         // Sets the content of the response to the number of upserted FireBrigades.
@@ -188,12 +192,14 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // The User is not an admin.
                         result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         result.Content = null;
                     }
                 }
                 else
                 {
+                    // Notify the User that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }

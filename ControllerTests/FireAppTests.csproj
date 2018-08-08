@@ -53,9 +53,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Controllers\UserControllerTests.cs" />
-    <Compile Include="DatabaseOperations\FireEventsTests.cs" />
-    <Compile Include="DatabaseOperations\UsersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

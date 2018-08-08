@@ -17,10 +17,12 @@ namespace FireApp.Service.Controllers
     {
         /// <summary>
         /// Inserts a User into the database or updates it if it already exists.
+        /// Allows unregistered Users to create a new User.
+        /// Allows registered Users to share an authorized object with another User.
         /// </summary>
         /// <param name="u">The User you want to upsert.</param>
         /// <returns>Returns true if the User was inserted.</returns>
-        [HttpPost, Route("upload")]//todo: comment
+        [HttpPost, Route("upload")]
         public bool UpsertUser([FromBody] User u)
         {
             try {
@@ -62,7 +64,7 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
-                        // Allow User to edit its own User.
+                        // Allow the User to edit its own User.
                         if(user.Id == u.Id)
                         {
                             // Do not allow the User to change its UserType.
@@ -288,10 +290,10 @@ namespace FireApp.Service.Controllers
         /// <summary>
         /// Retrieves Users from a CSV and upserts them.
         /// </summary>
-        /// <param name="bytes">An array of bytes that represents a CSV file.</param>
+        /// <param name="byteArrayString">An array of bytes as a string that represents a CSV file.</param>
         /// <returns>The number of successfully upserted Users.</returns>
         [HttpPost, Route("uploadcsv")]//todo: comment
-        public HttpResponseMessage UpsertCsv([FromBody] byte[] bytes)
+        public HttpResponseMessage UpsertCsv([FromBody] string byteArrayString)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             try
@@ -303,7 +305,19 @@ namespace FireApp.Service.Controllers
                     if (user.UserType == UserTypes.admin)
                     {
                         IEnumerable<User> users;
-                        users = FileOperations.UserFiles.GetUsersFromCSV(bytes);
+                        List<byte> bytes = new List<byte>();
+
+                        byteArrayString = byteArrayString.Trim('"'); 
+                        // Convert the string into an array of bytes.                  
+                        foreach (string s in byteArrayString.Split(' '))
+                        {
+                            bytes.Add(Convert.ToByte(s));
+                        }
+
+                        // Get the Users from the array of bytes.
+                        users = FileOperations.UserFiles.GetUsersFromCSV(bytes.ToArray());
+
+                        // Upsert the Users into the database.
                         int upserted = DatabaseOperations.Users.BulkUpsert(users, user);
 
                         // Sets the content of the response to the number of upserted Users.
@@ -311,12 +325,14 @@ namespace FireApp.Service.Controllers
                     }
                     else
                     {
+                        // The User is not an admin.
                         result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         result.Content = null;
                     }
                 }
                 else
                 {
+                    // Notify the User that the login was not successful.
                     result = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     result.Content = null;
                 }
@@ -351,6 +367,7 @@ namespace FireApp.Service.Controllers
         /// 1 : password is valid.
         /// 0 : password does not fit the criteria.
         /// -1 : password is too easy.
+        /// -2 : an error occured.
         /// </returns>
         [HttpPost, Route("checkpassword")]
         public Int32 CheckId([FromBody] User user)

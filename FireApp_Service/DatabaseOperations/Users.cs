@@ -78,9 +78,10 @@ namespace FireApp.Service.DatabaseOperations
                     }
                     int passwordOk = DatabaseOperations.Users.CheckPassword(user);
 
-#if DEBUG
+                    #if DEBUG
                     passwordOk = 1;
-#endif
+                    #endif
+
                     if (passwordOk == 1)
                     {
 
@@ -178,31 +179,34 @@ namespace FireApp.Service.DatabaseOperations
         /// 1 : password is valid.
         /// 0 : password does not fit the criteria.
         /// -1 : password is too easy.
+        /// -2 : an error occured.
         /// </returns>
         public static int CheckPassword(User user)
         {
             int rv = 1;
-
-            // Check if the password is long enough.
-            switch (user.UserType) {
-                case UserTypes.admin: if(user.Password.Length < 10) { rv = 0; } break;
-                default: if (user.Password.Length < 6) { rv = 0; } break;
-            }
-
-            // Check if the password contains upper and lower case letters and numbers.
-            if(
-                !Regex.IsMatch(user.Password, "[A-Z]") || 
-                !Regex.IsMatch(user.Password, "[a-z]") || 
-                !Regex.IsMatch(user.Password, "[0-9]"))
+            try
             {
-                rv = 0;
-            }
+                // Check if the password is long enough.
+                switch (user.UserType)
+                {
+                    case UserTypes.admin: if (user.Password.Length < 10) { rv = 0; } break;
+                    default: if (user.Password.Length < 6) { rv = 0; } break;
+                }
 
-            // Check for the most common passwords in Austria.
-            List<string> common = new List<string>();
-            common.AddRange
-                (
-                    new string[] {
+                // Check if the password contains upper and lower case letters and numbers.
+                if (
+                    !Regex.IsMatch(user.Password, "[A-Z]") ||
+                    !Regex.IsMatch(user.Password, "[a-z]") ||
+                    !Regex.IsMatch(user.Password, "[0-9]"))
+                {
+                    rv = 0;
+                }
+
+                // Check for the most common passwords in Austria.
+                List<string> common = new List<string>();
+                common.AddRange
+                    (
+                        new string[] {
                         "hallo",
                         "passwort",
                         "1234",
@@ -217,16 +221,21 @@ namespace FireApp.Service.DatabaseOperations
                         user.FirstName,
                         user.LastName,
                         user.Id
-                    }
-                );
+                        }
+                    );
 
-            foreach(string s in common)
-            {
-                if (user.Password.ToLower().Contains(s))
+                foreach (string s in common)
                 {
-                    rv = -1;
-                    break;
+                    if (user.Password.ToLower().Contains(s))
+                    {
+                        rv = -1;
+                        break;
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                rv = -2;
             }
 
             return rv;
