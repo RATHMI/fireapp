@@ -336,10 +336,26 @@ namespace FireApp.Service.Controllers
         /// </summary>
         /// <param name="id">the id you want to check</param>
         /// <returns>returns true if id is not used by other User</returns>
-        [HttpPost, Route("checkid/{id}")]
+        [HttpGet, Route("checkid/{id}")]
         public bool CheckId(string id)
         {
             return DatabaseOperations.Users.CheckId(id);
+        }
+
+        /// <summary>
+        /// Checks if a password is valid.
+        /// </summary>
+        /// <param name="user">The User whose password is to be checked.</param>
+        /// <returns>
+        /// Returns an error code.
+        /// 1 : password is valid.
+        /// 0 : password does not fit the criteria.
+        /// -1 : password is too easy.
+        /// </returns>
+        [HttpPost, Route("checkpassword")]
+        public Int32 CheckId([FromBody] User user)
+        {
+            return DatabaseOperations.Users.CheckPassword(user);
         }
 
         /// <summary>

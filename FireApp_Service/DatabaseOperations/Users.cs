@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using MlkPwgen;
+using System.Text.RegularExpressions;
 
 namespace FireApp.Service.DatabaseOperations
 {
@@ -157,6 +158,69 @@ namespace FireApp.Service.DatabaseOperations
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Checks if a password is valid.
+        /// </summary>
+        /// <param name="user">The User whose password is to be checked.</param>
+        /// <returns>
+        /// Returns an error code.
+        /// 1 : password is valid.
+        /// 0 : password does not fit the criteria.
+        /// -1 : password is too easy.
+        /// </returns>
+        public static int CheckPassword(User user)
+        {
+            int rv = 1;
+
+            // Check if the password is long enough.
+            switch (user.UserType) {
+                case UserTypes.admin: if(user.Password.Length < 10) { rv = 0; } break;
+                default: if (user.Password.Length < 6) { rv = 0; } break;
+            }
+
+            // Check if the password contains upper and lower case letters and numbers.
+            if(
+                !Regex.IsMatch(user.Password, "[A-Z]") || 
+                !Regex.IsMatch(user.Password, "[a-z]") || 
+                !Regex.IsMatch(user.Password, "[0-9]"))
+            {
+                rv = 0;
+            }
+
+            // Check for the most common passwords in Austria.
+            List<string> common = new List<string>();
+            common.AddRange
+                (
+                    new string[] {
+                        "hallo",
+                        "passwort",
+                        "1234",
+                        "12345678",
+                        "0000",
+                        "qwertz",
+                        "test",
+                        "schatz",
+                        "arschloch",
+                        "ficken",
+                        "blink182",
+                        user.FirstName,
+                        user.LastName,
+                        user.Id
+                    }
+                );
+
+            foreach(string s in common)
+            {
+                if (user.Password.ToLower().Contains(s))
+                {
+                    rv = -1;
+                    break;
+                }
+            }
+
+            return rv;
         }
 
         /// <summary>

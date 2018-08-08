@@ -14,7 +14,7 @@ namespace DatabaseOperationsTests
     [TestClass()]
     public class UsersTests
     {
-        private static User generateUser(string username, UserTypes usertype)
+        public static User GenerateUser(string username, UserTypes usertype)
         {
             string password = "test";
             string firstname = "firstname";
@@ -28,7 +28,7 @@ namespace DatabaseOperationsTests
         public void UpsertTest()
         {
             // Test insert. 
-            User user = generateUser("admin", UserTypes.unauthorized);                                        
+            User user = GenerateUser("admin", UserTypes.unauthorized);                                        
             Assert.IsTrue(FireApp.Service.DatabaseOperations.Users.Upsert(user, user));
 
             // Test upsert.
@@ -37,7 +37,7 @@ namespace DatabaseOperationsTests
             Assert.IsTrue(FireApp.Service.DatabaseOperations.Users.Upsert(copy, copy));
 
             // Test duplicate email.
-            User duplicateEmail = generateUser("duplicateEmail", UserTypes.unauthorized);
+            User duplicateEmail = GenerateUser("duplicateEmail", UserTypes.unauthorized);
             duplicateEmail.Email = user.Email;
             Assert.IsFalse(FireApp.Service.DatabaseOperations.Users.Upsert(duplicateEmail, duplicateEmail));           
         }
@@ -45,20 +45,20 @@ namespace DatabaseOperationsTests
         [TestMethod()]
         public void BulkUpsertTest()
         {
-            User admin = generateUser("admin", UserTypes.admin);
+            User admin = GenerateUser("admin", UserTypes.admin);
             List<User> users = new List<User>()
             {
-                generateUser("test1", UserTypes.unauthorized),
-                generateUser("test2", UserTypes.unauthorized),
-                generateUser("test3", UserTypes.unauthorized),
-                generateUser("test4", UserTypes.unauthorized)
+                GenerateUser("test1", UserTypes.unauthorized),
+                GenerateUser("test2", UserTypes.unauthorized),
+                GenerateUser("test3", UserTypes.unauthorized),
+                GenerateUser("test4", UserTypes.unauthorized)
             };
 
             // Test insert.
             Assert.AreEqual(4, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
 
             // Test duplicates.
-            users.Add(generateUser("test1", UserTypes.unauthorized));
+            users.Add(GenerateUser("test1", UserTypes.unauthorized));
             Assert.AreEqual(4, FireApp.Service.DatabaseOperations.Users.BulkUpsert(users, admin));
 
             // Test empty list.

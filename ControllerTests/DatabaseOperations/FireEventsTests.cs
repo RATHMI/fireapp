@@ -5,16 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FireApp.Domain;
 
-namespace DatabaseOperations
+namespace DatabaseOperationsTests
 {
     [TestClass()]
     public class FireEventsTests
     {
+
+
         [TestMethod()]
         public void GetAllTest()
         {
-            Assert.Fail();
+            UsersTests.GenerateUser("test1", UserTypes.unauthorized);
         }
 
         [TestMethod()]
