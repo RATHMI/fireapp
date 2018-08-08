@@ -76,15 +76,19 @@ namespace FireApp.Service.DatabaseOperations
                     {
                         Email.Email.WelcomeEmail(user);
                     }
+                    int passwordOk = DatabaseOperations.Users.CheckPassword(user);
 
-                    if (DatabaseOperations.Users.CheckPassword(user) == 1)
+#if DEBUG
+                    passwordOk = 1;
+#endif
+                    if (passwordOk == 1)
                     {
 
                         // Encrypt password.
                         user.Password = Encryption.Encrypt.EncryptString(user.Password);
 
                         // Save the User in the database.
-                        var ok = DatabaseOperations.DbUpserts.UpsertUser(user);
+                        bool ok = DatabaseOperations.DbUpserts.UpsertUser(user);
                         if (ok)
                         {
                             LocalDatabase.UpsertUser(user);

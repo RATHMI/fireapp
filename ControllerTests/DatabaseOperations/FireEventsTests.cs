@@ -42,7 +42,10 @@ namespace DatabaseOperationsTests
             int sourceId2 = 2;
 
             user = UsersTests.GenerateUser("test1", UserTypes.unauthorized);
-            
+
+            retrieved = FireApp.Service.DatabaseOperations.FireEvents.GetBySourceId(sourceId1);
+            Assert.IsTrue(retrieved.Count() == 0);
+
             fe = new FireEvent(new FireEventId(sourceId1, 1), DateTime.Now, "target", "description", EventTypes.test);
             FireApp.Service.DatabaseOperations.FireEvents.Upsert(fe, user);
             retrieved = FireApp.Service.DatabaseOperations.FireEvents.GetBySourceId(sourceId1);
