@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
+    /// <summary>
+    /// This class represents a user of this application.
+    /// </summary>
     public class User : ICloneable, IEquatable<User>
     {
         private User() { }
@@ -49,6 +52,7 @@ namespace FireApp.Domain
         public string LastName { get; set; }
         public string Email { get; set; }
 
+        // Is used to identify the user when sending an request to the API.
         public string Token {
             get { return token; }
             set { this.token = value; TokenCreationDate = DateTime.Now; }
@@ -56,19 +60,8 @@ namespace FireApp.Domain
         public DateTime TokenCreationDate { get; set; }
         public int TokenValidDays { get; private set; }
 
-        public static string EncryptPassword(string password)
-        {
-            int sum = 0;
-            for(int i = 0; i < password.Length; i++)
-            {
-                sum += (int)password[i];
-            }
-
-            return sum.ToString();
-        }
-
         /// <summary>
-        /// 
+        /// Get a short descriptions of the User.
         /// </summary>
         /// <returns>Returns a short description of the User.</returns>
         public string GetUserDescription()

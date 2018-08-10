@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
+
+    /// <summary>
+    /// This class is used to transfer the login credentials between two systems.
+    /// </summary>
     public class UserLogin
     {
         private UserLogin() { }

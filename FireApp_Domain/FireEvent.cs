@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FireApp.Domain {
+
+    /// <summary>
+    /// Is an abstract version of a message that was sent by a fire alarm system.
+    /// </summary>
     public class FireEvent : IEquatable<FireEvent>
     {
         private FireEvent(){}
@@ -150,6 +154,11 @@ namespace FireApp.Domain {
             {
                 return false;
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return SourceId.GetHashCode() ^ EventId.GetHashCode();
         }
     }
 
