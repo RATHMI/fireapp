@@ -387,7 +387,7 @@ namespace FireApp.Service.DatabaseOperations
             if (user != null)
             {
                 // If the UserType is firealarmsystem.
-                if (user.UserType == UserTypes.firealarmsystem)
+                if (user.UserType == UserTypes.fireSafetyEngineer)
                 {
                     // Get all FireAlarmSystems that are contained in AuthorizedObjectIds.
                     foreach (int id in user.AuthorizedObjectIds)
@@ -404,7 +404,7 @@ namespace FireApp.Service.DatabaseOperations
                 }
 
                 // If the UserType is firebrigade.
-                if (user.UserType == UserTypes.firebrigade)
+                if (user.UserType == UserTypes.fireFighter)
                 {
                     // Get all FireBrigades that are contained in AuthorizedObjectIds.
                     foreach (int id in user.AuthorizedObjectIds)

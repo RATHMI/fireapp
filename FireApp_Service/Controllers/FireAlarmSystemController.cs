@@ -471,7 +471,7 @@ namespace FireApp.Service.Controllers
 
                     if (type == "fb")
                     {
-                        results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firebrigade));
+                        results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.fireFighter));
                     }
                     else
                     {
@@ -483,7 +483,7 @@ namespace FireApp.Service.Controllers
                         {
                             if (type == "fas")
                             {
-                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem));
+                                results.AddRange(DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.fireSafetyEngineer));
                             }
                             else
                             {

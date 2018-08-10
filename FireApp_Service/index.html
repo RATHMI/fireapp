@@ -84,14 +84,34 @@
                                             <td>&emsp;../all</td>
                                             <td>FireEvent[]</td>
                                             <td>
-                                                Returns an array of all FireEvents.
+                                                Returns an array of all FireEvents.<br>
+                                                To use a filter on these FireEvents send you can send following headers. You can also use several filters at once:<br>
+                                                &emsp;Return all FireEvents with a timestamp between start- and enddate:<br>
+                                                &emsp;&emsp;startDate : "yyyy-MM-dd".<br>
+                                                &emsp;&emsp;endDate : "yyyy-MM-dd".<br>
+                                                &emsp;Return all FireEvent of the given EventTypes:<br>
+                                                &emsp;&emsp;events : EventTypes starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
+                                                &emsp;&emsp;events : "All" --> returns all EventTypes.<br>
+                                                &emsp;Return all FireEvent of the given sourceId:<br>
+                                                &emsp;&emsp;sourceId : id (e.g. "2").<br>
+                                                &emsp;&emsp;sourceId : -1 --> returns FireEvents from all sourceIds.<br>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../active</td>
                                             <td>FireEvent[]</td>
                                             <td>
-                                                Returns an array of all active FireEvents.
+                                                Returns an array of all active FireEvents.<br>
+                                                To use a filter on these FireEvents send you can send following headers. You can also use several filters at once:<br>
+                                                &emsp;Return all FireEvents with a timestamp between start- and enddate:<br>
+                                                &emsp;&emsp;startDate : "yyyy-MM-dd".<br>
+                                                &emsp;&emsp;endDate : "yyyy-MM-dd".<br>
+                                                &emsp;Return all FireEvent of the given EventTypes:<br>
+                                                &emsp;&emsp;events : EventTypes starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
+                                                &emsp;&emsp;events : "All" --> returns all EventTypes.<br>
+                                                &emsp;Return all FireEvent of the given sourceId:<br>
+                                                &emsp;&emsp;sourceId : id (e.g. "2").<br>
+                                                &emsp;&emsp;sourceId : -1 --> returns FireEvents from all sourceIds.<br>
                                             </td>
                                         </tr>
                                         <tr>

@@ -789,7 +789,7 @@ namespace FireApp.Service.Controllers
 
                             // Get the authorized object by the id.
                             // The method throws an Exception if the object does not exist.
-                            if(changedUser.UserType == UserTypes.firebrigade)
+                            if(changedUser.UserType == UserTypes.fireFighter)
                             {
                                 DatabaseOperations.FireBrigades.GetById(authobj);
                             }
@@ -801,7 +801,7 @@ namespace FireApp.Service.Controllers
                                 }
                                 else
                                 {
-                                    if (changedUser.UserType == UserTypes.firealarmsystem)
+                                    if (changedUser.UserType == UserTypes.fireSafetyEngineer)
                                     {
                                         DatabaseOperations.FireAlarmSystems.GetById(authobj);
                                     }

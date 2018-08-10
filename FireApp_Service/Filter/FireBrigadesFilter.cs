@@ -28,7 +28,7 @@ namespace FireApp.Service.Filter
                 }
                 else
                 {
-                    if (user.UserType == UserTypes.firealarmsystem)
+                    if (user.UserType == UserTypes.fireSafetyEngineer)
                     {
                         foreach (int authorizedObject in user.AuthorizedObjectIds)
                         {
@@ -37,7 +37,7 @@ namespace FireApp.Service.Filter
                     }
                     else
                     {
-                        if (user.UserType == UserTypes.firebrigade)
+                        if (user.UserType == UserTypes.fireFighter)
                         {
                             foreach (int authorizedObject in user.AuthorizedObjectIds)
                             {

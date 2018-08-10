@@ -26,14 +26,14 @@ namespace FireApp.Service.Filter
                 {
                     results.AddRange(fireAlarmSystems);
                 }
-                if (user.UserType == UserTypes.firealarmsystem)
+                if (user.UserType == UserTypes.fireSafetyEngineer)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
                         results.Add(fireAlarmSystemFilter(fireAlarmSystems, authorizedObject));
                     }
                 }
-                if (user.UserType == UserTypes.firebrigade)
+                if (user.UserType == UserTypes.fireFighter)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {

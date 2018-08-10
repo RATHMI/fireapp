@@ -29,7 +29,7 @@ namespace FireApp.Service.Filter
                         results.Add(sg);
                     }
                 }
-                if (user.UserType == UserTypes.firealarmsystem)
+                if (user.UserType == UserTypes.fireSafetyEngineer)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {

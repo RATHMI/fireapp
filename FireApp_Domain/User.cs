@@ -36,8 +36,8 @@ namespace FireApp.Domain
                 switch (value)
                 {
                     case UserTypes.admin: TokenValidDays = 1; break;
-                    case UserTypes.firealarmsystem: TokenValidDays = 365; break;
-                    case UserTypes.firebrigade: TokenValidDays = 365; break;
+                    case UserTypes.fireSafetyEngineer: TokenValidDays = 365; break;
+                    case UserTypes.fireFighter: TokenValidDays = 365; break;
                     case UserTypes.servicemember: TokenValidDays = 365; break;
                     default: TokenValidDays = 0; break;
                 }
@@ -179,8 +179,8 @@ namespace FireApp.Domain
                     switch (values[2])
                     {
                         case "0": sg.UserType = UserTypes.admin; break;
-                        case "1": sg.UserType = UserTypes.firealarmsystem; break;
-                        case "2": sg.UserType = UserTypes.firebrigade; break;
+                        case "1": sg.UserType = UserTypes.fireSafetyEngineer; break;
+                        case "2": sg.UserType = UserTypes.fireFighter; break;
                         case "3": sg.UserType = UserTypes.servicemember; break;
                     }
 
@@ -220,5 +220,11 @@ namespace FireApp.Domain
     /// <summary>
     /// Helps to distinguish the different types of users.
     /// </summary>
-    public enum UserTypes {unauthorized = -1, admin = 0, firealarmsystem = 1, firebrigade = 2, servicemember = 3 }
+    public enum UserTypes {
+        unauthorized = -1,
+        admin = 0,
+        fireSafetyEngineer = 1,
+        fireFighter = 2,
+        servicemember = 3
+    }
 }

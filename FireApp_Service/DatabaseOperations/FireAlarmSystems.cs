@@ -206,7 +206,7 @@ namespace FireApp.Service.DatabaseOperations
             List<object> authorizedObjects = DatabaseOperations.Users.GetAuthorizedObjects(user).ToList();
 
 
-            if (user.UserType == UserTypes.firebrigade)
+            if (user.UserType == UserTypes.fireFighter)
             {                              
                 foreach (FireBrigade fb in authorizedObjects)
                 {
@@ -222,7 +222,7 @@ namespace FireApp.Service.DatabaseOperations
                 }
             }
 
-            if(user.UserType == UserTypes.firealarmsystem)
+            if(user.UserType == UserTypes.fireSafetyEngineer)
             {
                 foreach(FireAlarmSystem fas in authorizedObjects)
                 {
@@ -285,7 +285,7 @@ namespace FireApp.Service.DatabaseOperations
             // Get all Users from the FireBrigades of the FireAlarmSystem.
             foreach(int firebrigade in fas.FireBrigades)
             {
-                results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
+                results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.fireFighter));
             }
 
             // Get all Users from the ServiceGroups of the FireAlarmSystem.
@@ -295,7 +295,7 @@ namespace FireApp.Service.DatabaseOperations
             }
 
             // Get all Users from the FireAlarmSystem itself.
-            results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
+            results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.fireSafetyEngineer));
 
             return results;
         }
@@ -310,11 +310,11 @@ namespace FireApp.Service.DatabaseOperations
         {
             List<User> results = new List<User>();
 
-            if (type == UserTypes.firebrigade)
+            if (type == UserTypes.fireFighter)
             {
                 foreach (int firebrigade in fas.FireBrigades)
                 {
-                    results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade));
+                    results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.fireFighter));
                 }
             }else
             {
@@ -327,9 +327,9 @@ namespace FireApp.Service.DatabaseOperations
                 }
                 else
                 {
-                    if(type == UserTypes.firealarmsystem)
+                    if(type == UserTypes.fireSafetyEngineer)
                     {
-                        results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.firealarmsystem));
+                        results.AddRange(DatabaseOperations.Users.GetByAuthorizedObject(fas.Id, UserTypes.fireSafetyEngineer));
                     }
                 }
             }

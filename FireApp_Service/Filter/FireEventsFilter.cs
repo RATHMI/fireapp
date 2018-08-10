@@ -218,14 +218,14 @@ namespace FireApp.Service.Filter
                 {
                     results.AddRange(fireEvents);
                 }
-                if (user.UserType == UserTypes.firealarmsystem)
+                if (user.UserType == UserTypes.fireSafetyEngineer)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {
                         results.AddRange(fireAlarmSystemFilter(fireEvents, authorizedObject));
                     }
                 }
-                if (user.UserType == UserTypes.firebrigade)
+                if (user.UserType == UserTypes.fireFighter)
                 {
                     foreach (int authorizedObject in user.AuthorizedObjectIds)
                     {

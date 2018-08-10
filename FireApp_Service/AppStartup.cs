@@ -40,7 +40,7 @@ namespace FireApp.Service {
             user = new User("admin3", "admin", "John", "Doe", "admin3@siemens.at", UserTypes.admin);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fb1", "test", "Mom's", "spaghetti", "test1@siemens.at", UserTypes.firebrigade);
+            user = new User("fb1", "test", "Mom's", "spaghetti", "test1@siemens.at", UserTypes.fireFighter);
             user.AuthorizedObjectIds.Add(0);
             user.AuthorizedObjectIds.Add(1);
             user.AuthorizedObjectIds.Add(3);
@@ -54,14 +54,14 @@ namespace FireApp.Service {
             user.AuthorizedObjectIds.Add(4);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fas1", "test", "Jürgen", "Schulz", "test3@siemens.at", UserTypes.firealarmsystem);
+            user = new User("fas1", "test", "Jürgen", "Schulz", "test3@siemens.at", UserTypes.fireSafetyEngineer);
             user.AuthorizedObjectIds.Add(7);
             user.AuthorizedObjectIds.Add(5);
             user.AuthorizedObjectIds.Add(2);
             user.AuthorizedObjectIds.Add(10);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fb2", "test", "Maria", "Gusenbauer", "test4@siemens.at", UserTypes.firebrigade);
+            user = new User("fb2", "test", "Maria", "Gusenbauer", "test4@siemens.at", UserTypes.fireFighter);
             user.AuthorizedObjectIds.Add(1);
             user.AuthorizedObjectIds.Add(8);
             user.AuthorizedObjectIds.Add(3);
@@ -72,13 +72,13 @@ namespace FireApp.Service {
             user.AuthorizedObjectIds.Add(2);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("fas2", "test", "Stanislaus", "Klein", "test6@siemens.at", UserTypes.firealarmsystem);
+            user = new User("fas2", "test", "Stanislaus", "Klein", "test6@siemens.at", UserTypes.fireSafetyEngineer);
             user.AuthorizedObjectIds.Add(6);
             user.AuthorizedObjectIds.Add(4);
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.Upsert(user, admin);
             
-            user = new User("fb3", "test", "Dorothea", "Wildt", "test7@siemens.at", UserTypes.firebrigade);
+            user = new User("fb3", "test", "Dorothea", "Wildt", "test7@siemens.at", UserTypes.fireFighter);
             user.AuthorizedObjectIds.Add(2);
             user.AuthorizedObjectIds.Add(3);
             user.AuthorizedObjectIds.Add(1);
@@ -90,16 +90,16 @@ namespace FireApp.Service {
             user.AuthorizedObjectIds.Add(8);
             DatabaseOperations.Users.Upsert(user, admin); 
                
-            user = new User("fas3", "test", "Beathe", "Grün", "test9@siemens.at", UserTypes.firealarmsystem);
+            user = new User("fas3", "test", "Beathe", "Grün", "test9@siemens.at", UserTypes.fireSafetyEngineer);
             user.AuthorizedObjectIds.Add(9);
             user.AuthorizedObjectIds.Add(5);
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("unknown1", "test", "test", "test", "test10@siemens.at", UserTypes.firealarmsystem);
+            user = new User("unknown1", "test", "test", "test", "test10@siemens.at", UserTypes.fireSafetyEngineer);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("unknown2", "test", "test", "test", "test11@siemens.at", UserTypes.firebrigade);
+            user = new User("unknown2", "test", "test", "test", "test11@siemens.at", UserTypes.fireFighter);
             DatabaseOperations.Users.Upsert(user, admin);
 
             user = new User("unknown3", "test", "test", "test", "test12@siemens.at", UserTypes.servicemember);

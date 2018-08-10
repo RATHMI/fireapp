@@ -73,7 +73,7 @@ namespace FireApp.Service.DatabaseOperations
                 // Delete from authorizedObjectIds of Users in the cache.
                 foreach (User u in DatabaseOperations.Users.GetAll())
                 {
-                    if (u.UserType == UserTypes.firebrigade && u.AuthorizedObjectIds.Contains(id))
+                    if (u.UserType == UserTypes.fireFighter && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
                         DatabaseOperations.Users.Upsert(u, user);
@@ -93,7 +93,7 @@ namespace FireApp.Service.DatabaseOperations
                 // Delete from authorizedObjectIds of Users in the database.
                 foreach (User u in DatabaseOperations.DbQueries.QueryUsers())
                 {
-                    if (u.UserType == UserTypes.firebrigade && u.AuthorizedObjectIds.Contains(id))
+                    if (u.UserType == UserTypes.fireFighter && u.AuthorizedObjectIds.Contains(id))
                     {
                         u.AuthorizedObjectIds.Remove(id);
                         DatabaseOperations.DbUpserts.UpsertUser(u);
@@ -209,7 +209,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns all Users that are associated with this FireBrigade.</returns>
         public static IEnumerable<User> GetUsers(int firebrigade)
         {
-            return DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.firebrigade);
+            return DatabaseOperations.Users.GetByAuthorizedObject(firebrigade, UserTypes.fireFighter);
         }
 
         /// <summary>

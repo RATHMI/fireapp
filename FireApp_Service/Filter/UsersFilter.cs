@@ -43,13 +43,13 @@ namespace FireApp.Service.Filter
                         }
                     }
 
-                    if (user.UserType == UserTypes.firealarmsystem)
+                    if (user.UserType == UserTypes.fireSafetyEngineer)
                     {
                         results.AddRange(fireAlarmSystemFilter(users, user));
                     }
                     else
                     {
-                        if (user.UserType == UserTypes.firebrigade)
+                        if (user.UserType == UserTypes.fireFighter)
                         {
                             results.AddRange(fireBrigadeFilter(users, user));
                         }
@@ -124,7 +124,7 @@ namespace FireApp.Service.Filter
             // Get all Users of the FireAlarmSystems the User is allowed to see.
             foreach (User u in users)
             {
-                if (u.UserType == UserTypes.firealarmsystem)
+                if (u.UserType == UserTypes.fireSafetyEngineer)
                 {
                     foreach (int authobject in u.AuthorizedObjectIds)
                     {
@@ -172,7 +172,7 @@ namespace FireApp.Service.Filter
 
             foreach (User u in users)
             {
-                if (u.UserType == UserTypes.firebrigade) {
+                if (u.UserType == UserTypes.fireFighter) {
                     foreach (int authobject in u.AuthorizedObjectIds)
                     {
                         if (user.AuthorizedObjectIds.Contains(authobject)){
@@ -217,7 +217,7 @@ namespace FireApp.Service.Filter
                 foreach (FireAlarmSystem fas in DatabaseOperations.ServiceGroups.GetFireAlarmSystems(authobject))
                 {
                     // For each User of the FireAlarmSystem.
-                    foreach (User u in DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.firealarmsystem))
+                    foreach (User u in DatabaseOperations.FireAlarmSystems.GetUsers(fas, UserTypes.fireSafetyEngineer))
                     {
                         // If the User is contained in users add it to the result.
                         if (users.Contains(u))
