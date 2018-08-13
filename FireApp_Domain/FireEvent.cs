@@ -31,7 +31,7 @@ namespace FireApp.Domain {
         // Name of the Fire detector (e.g. MG 13/5).
         public string TargetId { get; set; } 
 
-        // Description of the Location/Fire Detector (e.g. Melder Büro).
+        // Description/location of the fire detector (e.g. Melder Büro).
         public string TargetDescription { get; set; } 
 
         // Type of the event that ocurred.

@@ -45,7 +45,7 @@ namespace FireApp.Service.Cache
 
         public virtual object GetItem(string key)
         {
-            return base.GetItem(key, true);//Remove default is true because it's Global Cache!
+            return base.GetItem(key, true);
         }
 
         public virtual new object GetItem(string key, bool remove)

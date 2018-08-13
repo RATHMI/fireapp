@@ -27,13 +27,16 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin)
+                    // Allow the admin and authorized Users to upsert a FireAlarmSystem.
+                    if (user.UserType == UserTypes.admin || 
+                        (user.UserType == UserTypes.fireSafetyEngineer && 
+                        user.AuthorizedObjectIds.Contains(fas.Id)))
                     {
                         return DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
                     }
                     else
                     {
-                        // User is not an admin.
+                        // User is not an authorized.
                         throw new InvalidOperationException();
                     }
                 }
