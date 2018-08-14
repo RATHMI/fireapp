@@ -96,13 +96,13 @@ namespace FireApp.Service {
             user.AuthorizedObjectIds.Add(1);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("unauthorized1", "test", "Oskar", "Schindler", "test10@siemens.at", UserTypes.unauthorized);
+            user = new User("unauthorized1", "test", "Oskar", "Schindler", "test90@siemens.at", UserTypes.unauthorized);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("unauthorized2", "test", "Cordula", "Grün", "test11@siemens.at", UserTypes.unauthorized);
+            user = new User("unauthorized2", "test", "Cordula", "Grün", "test91@siemens.at", UserTypes.unauthorized);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("unauthorized3", "test", "Herbert", "Fritzl", "test12@siemens.at", UserTypes.unauthorized);
+            user = new User("unauthorized3", "test", "Herbert", "Fritzl", "test92@siemens.at", UserTypes.unauthorized);
             DatabaseOperations.Users.Upsert(user, admin);
 #endif
             #endregion
