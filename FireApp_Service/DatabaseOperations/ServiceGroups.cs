@@ -62,12 +62,13 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the ServiceGroup was deleted from the DB.</returns>
         public static bool Delete(int id, User user)
         {
+            ServiceGroup old = GetById(id);
+
             // Delete from database.
             bool ok = DatabaseOperations.DbDeletes.DeleteServiceGroup(id);
             if (ok)
             {
-                // Write log message.
-                ServiceGroup old = GetById(id);
+                // Write log message.               
                 Logging.Logger.Log("delete", user.GetUserDescription(), old);
 
                 // Delete from authorizedObjectIds of Users.

@@ -171,10 +171,12 @@ namespace FireApp.Service.DatabaseOperations
         /// <param name="year">The year of the FireEvents' TimeStamp.</param>
         /// <returns>Returns an array with the number of FireEvents of the given EventType 
         /// that occured in the given year. Each column represents one month.</returns>
-        public static Int32[] CountByEventTypePerYear(EventTypes eventType, int year)
+        public static Int32[] CountByEventTypePerYear(EventTypes eventType, int year, User user)
         {
             // Find all FireEvents with a matching EventType.
             IEnumerable<FireEvent> events = GetByEventType(eventType);
+            events = Filter.FireEventsFilter.UserFilter(events, user);
+
             Int32[] months = new Int32[12];
 
             foreach (FireEvent fe in events)

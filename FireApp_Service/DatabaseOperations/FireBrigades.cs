@@ -59,12 +59,13 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if FireBrigade was deleted from DB.</returns>
         public static bool Delete(int id, User user)
         {
+            FireBrigade old = GetById(id);
+
             // Delete from database
             bool ok = DatabaseOperations.DbDeletes.DeleteFireBrigade(id);
             if (ok)
             {
-                // Write log message.
-                FireBrigade old = GetById(id);
+                // Write log message.               
                 Logging.Logger.Log("delete", user.GetUserDescription(), old);
 
                 // Delete from authorizedObjectIds of Users in the cache.
@@ -77,7 +78,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // Delete from List of ServiceGroups of FireAlarmSystems in the cache.
+                // Delete from List of FireBrigades of FireAlarmSystems in the cache.
                 foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.FireBrigades.Contains(id))

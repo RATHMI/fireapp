@@ -124,7 +124,7 @@ namespace FireApp.Service.DatabaseOperations
         public static bool UpsertUser(User user)
         {
             try
-            {
+            {     
                 // Insert into local database.
                 LocalDatabase.UpsertUser(user);
 

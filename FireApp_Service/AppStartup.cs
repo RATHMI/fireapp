@@ -30,11 +30,13 @@ namespace FireApp.Service {
             app.UseWebApi(config);
             LocalDatabase.InitializeDatabase();
 
+            // Create admin account
+            User admin = new User("admin", "Password1!", "Benjamin", "Blümchen", "admin1@siemens.at", UserTypes.admin);
+            DatabaseOperations.Users.Upsert(admin, admin);
+
             //debug: use only in debugging
             #region debugging
-            #if DEBUG
-            User admin = new User("admin", "admin", "Benjamin", "Blümchen", "admin1@siemens.at", UserTypes.admin);
-            DatabaseOperations.Users.Upsert(admin, admin);
+#if DEBUG
             User user = new User("admin2", "admin", "Max", "Mustermann", "admin2@siemens.at", UserTypes.admin);
             DatabaseOperations.Users.Upsert(user, admin);
             user = new User("admin3", "admin", "John", "Doe", "admin3@siemens.at", UserTypes.admin);

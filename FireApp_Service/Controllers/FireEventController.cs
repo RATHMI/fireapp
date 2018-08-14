@@ -342,14 +342,7 @@ namespace FireApp.Service.Controllers
                 Authentication.Token.CheckAccess(Request.Headers, out user);
                 if (user != null)
                 {
-                    if (user.UserType == UserTypes.admin)
-                    {
-                        return DatabaseOperations.FireEvents.CountByEventTypePerYear(eventType, year);
-                    }
-                    else
-                    {
-                        throw new UnauthorizedAccessException();
-                    }
+                    return DatabaseOperations.FireEvents.CountByEventTypePerYear(eventType, year, user);
                 }
                 else
                 {
@@ -367,7 +360,7 @@ namespace FireApp.Service.Controllers
         /// Returns a list of the latest FireEvents where there is no FireAlarmSystem with a matching Id.
         /// </summary>
         /// <returns>Returns a list of FireEvents.</returns>
-        [HttpGet, Route("unregistered")] //todo: add to api description.
+        [HttpGet, Route("unregistered")]
         public FireEvent[] GetUnregistered()
         {
             try

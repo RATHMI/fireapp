@@ -5,6 +5,7 @@ using System.Web;
 using FireApp.Domain;
 using System.Net.Http.Headers;
 using MlkPwgen;
+using System.Runtime.CompilerServices;
 
 namespace FireApp.Service.Authentication
 {
@@ -19,6 +20,7 @@ namespace FireApp.Service.Authentication
         /// </summary>
         /// <param name="login">The login data of a user.</param>
         /// <returns>Returns the token if the login worked or null if not.</returns>
+        [MethodImpl(MethodImplOptions.NoOptimization)]
         public static string RefreshToken(UserLogin login)
         {
             try
@@ -33,6 +35,7 @@ namespace FireApp.Service.Authentication
                     user.Password = Encryption.Encrypt.DecryptString(user.Password);
 
                     // If password is right.
+                    // Compiler tries to optimize this if statement then which causes a bug.
                     if (user.Password == login.Password)
                     {
                         // Generate a new token.
@@ -92,10 +95,10 @@ namespace FireApp.Service.Authentication
                 {
                     if (u != null && u.Token != null)
                     {
-                        // if the toke of the user and the given token are matching
+                        // if the token of the User and the given token are matching
                         if (u.Token == token)
                         {
-                            // if the token of the user is still valid
+                            // if the token of the User is still valid
                             if (DateTime.Now < u.TokenCreationDate.AddDays(u.TokenValidDays))
                             {
                                 return u;
