@@ -18,7 +18,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns all FireEvents.</returns>
         public static IEnumerable<FireEvent> GetAll()
         {
-            return LocalDatabase.GetAllFireEvents();
+            return DatabaseOperations.DbQueries.QueryFireEvents();
         }
 
         /// <summary>
@@ -35,8 +35,7 @@ namespace FireApp.Service.DatabaseOperations
                 {
                     Logging.Logger.Log("upsert", user.GetUserDescription(), fe);
 
-                    DatabaseOperations.ActiveFireEvents.Upsert(fe);
-                    LocalDatabase.UpsertFireEvent(fe);
+                    DatabaseOperations.ActiveFireEvents.Upsert(fe);                  
                 }
 
                 return ok;
@@ -54,7 +53,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if id is not used by other FireEvent.</returns>
         public static bool CheckId(FireEventId id)
         {
-            IEnumerable<FireEvent> all = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> all = GetAll();
             if(id.SourceId == 0 || id.EventId == 0)
             {
                 return false;
@@ -79,7 +78,7 @@ namespace FireApp.Service.DatabaseOperations
         /// (all Fireevents from a distinct fire alarm system).</returns>
         public static IEnumerable<FireEvent> GetBySourceId(int sourceId)
         {
-            IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> events = GetAll();
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -151,7 +150,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of all FireEvents with a matching EventType.</returns>
         public static IEnumerable<FireEvent> GetByEventType(EventTypes eventType)
         {
-            IEnumerable<FireEvent> events = LocalDatabase.GetAllFireEvents();
+            IEnumerable<FireEvent> events = GetAll();
             List<FireEvent> results = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -216,7 +215,7 @@ namespace FireApp.Service.DatabaseOperations
 
             try
             {
-                foreach (int id in FireAlarmSystems.GetUnregistered())
+                foreach (int id in DatabaseOperations.FireAlarmSystems.GetUnregistered())
                 {
                     try
                     {

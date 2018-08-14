@@ -19,8 +19,7 @@ namespace FireApp.Service.DatabaseOperations
             {
                 bool ok = DatabaseOperations.DbUpserts.UpsertFireBrigade(fb);
                 if (ok)
-                {
-                    LocalDatabase.UpsertFireBrigade(fb);
+                {                    
                     Logging.Logger.Log("upsert", user.GetUserDescription(), fb);
                 }
                 return ok;
@@ -60,15 +59,13 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if FireBrigade was deleted from DB.</returns>
         public static bool Delete(int id, User user)
         {
+            // Delete from database
             bool ok = DatabaseOperations.DbDeletes.DeleteFireBrigade(id);
             if (ok)
             {
                 // Write log message.
                 FireBrigade old = GetById(id);
                 Logging.Logger.Log("delete", user.GetUserDescription(), old);
-
-                // Delete from cache.
-                LocalDatabase.DeleteFireBrigade(id);
 
                 // Delete from authorizedObjectIds of Users in the cache.
                 foreach (User u in DatabaseOperations.Users.GetAll())
@@ -88,27 +85,7 @@ namespace FireApp.Service.DatabaseOperations
                         fas.FireBrigades.Remove(id);
                         DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
                     }
-                }
-
-                // Delete from authorizedObjectIds of Users in the database.
-                foreach (User u in DatabaseOperations.DbQueries.QueryUsers())
-                {
-                    if (u.UserType == UserTypes.fireFighter && u.AuthorizedObjectIds.Contains(id))
-                    {
-                        u.AuthorizedObjectIds.Remove(id);
-                        DatabaseOperations.DbUpserts.UpsertUser(u);
-                    }
-                }
-
-                // Delete from List of ServiceGroups of FireAlarmSystems in the database.
-                foreach (FireAlarmSystem fas in DatabaseOperations.DbQueries.QueryFireAlarmSystems())
-                {
-                    if (fas.FireBrigades.Contains(id))
-                    {
-                        fas.FireBrigades.Remove(id);
-                        DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
-                    }
-                }
+                }                               
 
             }
             return ok;
@@ -121,7 +98,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the id is not used by another FireBrigade.</returns>
         public static int CheckId(int id)
         {
-            IEnumerable<FireBrigade> all = LocalDatabase.GetAllFireBrigades();
+            IEnumerable<FireBrigade> all = GetAll();
 
             // The highest Id of all FireBrigades.
             int maxId = 0;
@@ -156,7 +133,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list with all FireBrigades.</returns>
         public static IEnumerable<FireBrigade> GetAll()
         {
-            return LocalDatabase.GetAllFireBrigades().OrderBy(x => x.Name);
+            return DatabaseOperations.DbQueries.QueryFireBrigades().OrderBy(x => x.Name);
         }
 
         /// <summary>
@@ -166,7 +143,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a FireBrigade with a matching id.</returns>
         public static FireBrigade GetById(int id)
         {
-            IEnumerable<FireBrigade> fireBrigades = LocalDatabase.GetAllFireBrigades();
+            IEnumerable<FireBrigade> fireBrigades = GetAll();
             foreach (FireBrigade fb in fireBrigades)
             {
                 if (fb.Id == id)

@@ -20,8 +20,7 @@ namespace FireApp.Service.DatabaseOperations
                 bool ok = DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
                 if (ok)
                 {
-                    Logging.Logger.Log("upsert", user.GetUserDescription(), fas);
-                    LocalDatabase.UpsertFireAlarmSystem(fas);
+                    Logging.Logger.Log("upsert", user.GetUserDescription(), fas);                    
                 }
 
                 return ok;
@@ -61,7 +60,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if id is not used by other FireAlarmSystem.</returns>
         public static int CheckId(int id)
         {
-            IEnumerable<FireAlarmSystem> all = LocalDatabase.GetAllFireAlarmSystems();
+            IEnumerable<FireAlarmSystem> all = GetAll();
 
             // The highest Id of all FireAlarmSystems.
             int maxId = 0;
@@ -96,7 +95,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of all FireAlarmSystems.</returns>
         public static IEnumerable<FireAlarmSystem> GetAll()
         {
-            return LocalDatabase.GetAllFireAlarmSystems().OrderBy(x => x.Company);
+            return DatabaseOperations.DbQueries.QueryFireAlarmSystems().OrderBy(x => x.Company);
         }
 
         /// <summary>
@@ -108,7 +107,7 @@ namespace FireApp.Service.DatabaseOperations
             IEnumerable<FireEvent> events;
 
             // Get all active FireEvents from the database.
-            events = ActiveFireEvents.GetAll();
+            events = DatabaseOperations.ActiveFireEvents.GetAll();
 
             // Filter the FireEvents according to the User.
             // If you do not filter the FireEvents the User will get some FireAlarmSystems 
@@ -144,7 +143,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a FireAlarmSystem with a matching id.</returns>
         public static FireAlarmSystem GetById(int id)
         {
-            IEnumerable<FireAlarmSystem> fireAlarmSystems = LocalDatabase.GetAllFireAlarmSystems();
+            IEnumerable<FireAlarmSystem> fireAlarmSystems = GetAll();
             foreach (FireAlarmSystem fas in fireAlarmSystems)
             {
                 if (fas.Id == id)
@@ -163,8 +162,8 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of IDs.</returns>
         public static IEnumerable<int> GetUnregistered()
         {
-            List<FireAlarmSystem> fireAlarmSystems = FireAlarmSystems.GetAll().OrderBy(x => x.Id).ToList();
-            List<FireEvent> events = FireEvents.GetAll().OrderBy(x => x.Id.SourceId).ToList();
+            List<FireAlarmSystem> fireAlarmSystems = GetAll().OrderBy(x => x.Id).ToList();
+            List<FireEvent> events = DatabaseOperations.FireEvents.GetAll().OrderBy(x => x.Id.SourceId).ToList();
 
             // Use a HashSet to prevent redundant entries.
             HashSet<int> results = new HashSet<int>();

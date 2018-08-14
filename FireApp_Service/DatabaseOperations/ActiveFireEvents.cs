@@ -21,10 +21,7 @@ namespace FireApp.Service.DatabaseOperations
                 fe.EventType == EventTypes.disfunction ||
                 fe.EventType == EventTypes.deactivated)
             {
-                // Insert into local database.
-                LocalDatabase.UpsertActiveFireEvent(fe);
-
-                // Insert into remote database.                
+                // Insert into the database.                
                 DatabaseOperations.DbUpserts.UpsertActiveFireEvent(fe);
             }
             else
@@ -32,10 +29,7 @@ namespace FireApp.Service.DatabaseOperations
                 // If the EventType is reset delete active FireEvents of this target.
                 if (fe.EventType == EventTypes.reset)
                 {
-                    // Delete active FireEvent from local database.
-                    LocalDatabase.DeleteActiveFireEvent(fe);
-
-                    // Delete active FireEvent from remote database.
+                    // Delete active FireEvent from the database.
                     return DatabaseOperations.DbDeletes.DeleteActiveFireEvent(fe);
                 }
             }
@@ -50,7 +44,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of all active FireEvents.</returns>
         public static IEnumerable<FireEvent> GetAll()
         {
-            return LocalDatabase.GetActiveFireEvents();
+            return DatabaseOperations.DbQueries.QueryActiveFireEvents();
         }
 
         /// <summary>
@@ -61,7 +55,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a FireEvent with a matching sourceId and targetId.</returns>
         public static IEnumerable<FireEvent> GetByTarget(int sourceId, string targetId)
         {
-            IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
+            IEnumerable<FireEvent> events = GetAll();
             List<FireEvent> result = new List<FireEvent>();
             foreach (FireEvent fe in events)
             {
@@ -82,7 +76,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of active FireEvents with a matching sourceId.</returns>
         public static IEnumerable<FireEvent> GetBySourceId(int sourceId)
         {
-            IEnumerable<FireEvent> events = LocalDatabase.GetActiveFireEvents();
+            IEnumerable<FireEvent> events = GetAll();
             List<FireEvent> results = new List<FireEvent>();
             foreach(FireEvent fe in events)
             {

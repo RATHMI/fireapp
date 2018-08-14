@@ -378,7 +378,7 @@ namespace FireApp.Service.Controllers
                 {
                     if (user.UserType == UserTypes.admin)
                     {
-                        return DatabaseOperations.FireEvents.GetUnregistered().ToArray();
+                        return DatabaseOperations.FireEvents.GetUnregistered().OrderBy(x => x.TimeStamp).ToArray();
                     }
                 }
                 else

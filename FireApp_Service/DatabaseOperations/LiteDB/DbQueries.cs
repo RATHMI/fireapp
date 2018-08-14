@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations
+namespace FireApp.Service.DatabaseOperations.LiteDB
 {
     /// <summary>
     /// This class is for querying objects from the LiteDB.
     /// </summary>
-    public static class DbQueries
+    public static class LiteDbQueries
     {
         /// <summary>
         /// Queries all FireEvents from the LiteDB.

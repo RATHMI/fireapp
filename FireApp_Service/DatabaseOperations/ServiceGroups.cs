@@ -22,7 +22,6 @@ namespace FireApp.Service.DatabaseOperations
                 if (ok)
                 {
                     Logging.Logger.Log("upsert", user.GetUserDescription(), sg);
-                    LocalDatabase.UpsertServiceGroup(sg);
                 }
 
                 return ok;
@@ -71,10 +70,7 @@ namespace FireApp.Service.DatabaseOperations
                 ServiceGroup old = GetById(id);
                 Logging.Logger.Log("delete", user.GetUserDescription(), old);
 
-                // Delete from cache.
-                LocalDatabase.DeleteServiceGroup(id);
-
-                // Delete from authorizedObjectIds of Users from cache.
+                // Delete from authorizedObjectIds of Users.
                 foreach (User u in DatabaseOperations.Users.GetAll())
                 {
                     if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
@@ -84,7 +80,7 @@ namespace FireApp.Service.DatabaseOperations
                     }
                 }
 
-                // Delete from List of ServiceGroups of FireAlarmSystems from cache.
+                // Delete from List of ServiceGroups of FireAlarmSystems.
                 foreach (FireAlarmSystem fas in DatabaseOperations.FireAlarmSystems.GetAll())
                 {
                     if (fas.ServiceGroups.Contains(id))
@@ -92,27 +88,7 @@ namespace FireApp.Service.DatabaseOperations
                         fas.ServiceGroups.Remove(id);
                         DatabaseOperations.FireAlarmSystems.Upsert(fas, user);
                     }
-                }
-
-                // Delete from authorizedObjectIds of Users in database.
-                foreach (User u in DatabaseOperations.DbQueries.QueryUsers())
-                {
-                    if (u.UserType == UserTypes.servicemember && u.AuthorizedObjectIds.Contains(id))
-                    {
-                        u.AuthorizedObjectIds.Remove(id);
-                        DatabaseOperations.DbUpserts.UpsertUser(u);
-                    }
-                }
-
-                // Delete from List of ServiceGroups of FireAlarmSystems in database.
-                foreach (FireAlarmSystem fas in DatabaseOperations.DbQueries.QueryFireAlarmSystems())
-                {
-                    if (fas.ServiceGroups.Contains(id))
-                    {
-                        fas.ServiceGroups.Remove(id);
-                        DatabaseOperations.DbUpserts.UpsertFireAlarmSystem(fas);
-                    }
-                }
+                }               
 
             }
             return ok;
@@ -125,7 +101,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the id is not used by another ServiceGroup.</returns>
         public static int CheckId(int id)
         {
-            IEnumerable<ServiceGroup> all = LocalDatabase.GetAllServiceGroups();
+            IEnumerable<ServiceGroup> all = GetAll();
 
             // The highest Id of all ServiceGroups.
             int maxId = 0;
@@ -160,7 +136,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of all ServiceGroups.</returns>
         public static IEnumerable<ServiceGroup> GetAll()
         {
-            return LocalDatabase.GetAllServiceGroups();
+            return DatabaseOperations.DbQueries.QueryServiceGroups();
         }
 
         /// <summary>
@@ -170,7 +146,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a ServiceGroup with a matching id.</returns>
         public static ServiceGroup GetById(int id)
         {
-            IEnumerable<ServiceGroup> serviceGroups = LocalDatabase.GetAllServiceGroups();
+            IEnumerable<ServiceGroup> serviceGroups = GetAll();
             foreach (ServiceGroup sg in serviceGroups)
             {
                 if (sg.Id == id)
@@ -195,7 +171,7 @@ namespace FireApp.Service.DatabaseOperations
             {
                 foreach (int id in fas.FireBrigades)
                 {
-                    results.Add(DatabaseOperations.ServiceGroups.GetById(id));
+                    results.Add(GetById(id));
                 }
 
                 return results;

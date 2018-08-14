@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations
+namespace FireApp.Service.DatabaseOperations.LiteDB
 {
     /// <summary>
     /// This class is for deleting objects from the LiteDB.
     /// </summary>
-    public static class DbDeletes
+    public static class LiteDbDeletes
     {
         /// <summary>
         /// Deletes an active FireEvent from the LiteDB.

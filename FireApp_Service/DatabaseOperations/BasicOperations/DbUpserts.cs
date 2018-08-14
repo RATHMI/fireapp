@@ -4,140 +4,134 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 
-namespace FireApp.Service.DatabaseOperations.LiteDB
+namespace FireApp.Service.DatabaseOperations
 {
     /// <summary>
-    /// This class is for upserting objects into the LiteDB.
+    /// This class is for upserting objects into the database.
     /// </summary>
-    public static class LiteDbUpserts
+    public static class DbUpserts
     {
         /// <summary>
-        /// Upserts an active FireEvent into the LiteDB.
+        /// Upserts an active FireEvent into the database.
         /// </summary>
         /// <param name="fe">The FireEvent you want to upsert.</param>
         /// <returns>Returns true if the FireEvent was upserted.</returns>
         public static bool UpsertActiveFireEvent(FireEvent fe)
-        {
-            if (fe != null)
+        {         
+            try
             {
-                using (var db = AppData.ActiveFireEventDB())
-                {
-                    var table = db.ActiveFireEventTable();
-                    table.Upsert(fe);
-                    return true;
-                }
+                // Insert into local database.
+                LocalDatabase.UpsertActiveFireEvent(fe);
+
+                // Insert into remote database.                
+                return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertActiveFireEvent(fe);
             }
-            else
+            catch (Exception)
             {
                 return false;
             }
         }
 
         /// <summary>
-        /// Upserts a FireEvent into the LiteDB.
+        /// Upserts a FireEvent into the database.
         /// </summary>
         /// <param name="fe">The FireEvent you want to upsert.</param>
         /// <returns>Returns true if the FireEvent was upserted.</returns>
         public static bool UpsertFireEvent(FireEvent fe)
         {
-            if (fe != null)
+            try
             {
-                using (var db = AppData.FireEventDB())
-                {
-                    var table = db.FireEventTable();
-                    table.Upsert(fe);
-                    return true;
-                }
+                // Insert into local database.
+                LocalDatabase.UpsertFireEvent(fe);
+
+                // Insert into remote database.                
+                return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertFireEvent(fe);
             }
-            else
+            catch (Exception)
             {
                 return false;
             }
         }
 
         /// <summary>
-        /// Upserts a FireAlarmSystem into the LiteDB.
+        /// Upserts a FireAlarmSystem into the database.
         /// </summary>
         /// <param name="fas">The FireAlarmSystem you want to upsert.</param>
         /// <returns>Returns true if the FireAlarmSystem was upserted.</returns>
         public static bool UpsertFireAlarmSystem(FireAlarmSystem fas)
         {
-            if (fas != null)
+            try
             {
-                using (var db = AppData.FireAlarmSystemDB())
-                {
-                    var table = db.FireAlarmSystemTable();
-                    table.Upsert(fas);
-                    return true;
-                }
+                // Insert into local database.
+                LocalDatabase.UpsertFireAlarmSystem(fas);
+
+                // Insert into remote database.                
+                return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertFireAlarmSystem(fas);
             }
-            else
+            catch (Exception)
             {
                 return false;
             }
         }
 
         /// <summary>
-        /// Upserts a FireBrigade into the LiteDB.
+        /// Upserts a FireBrigade into the database.
         /// </summary>
         /// <param name="fb">the FireBrigade you want to upsert.</param>
         /// <returns>Returns true if the FireBrigade was upserted.</returns>
         public static bool UpsertFireBrigade(FireBrigade fb)
         {
-            if (fb != null)
+            try
             {
-                using (var db = AppData.FireBrigadeDB())
-                {
-                    var table = db.FireBrigadeTable();
-                    table.Upsert(fb);
-                    return true;
-                }
+                // Insert into local database.
+                LocalDatabase.UpsertFireBrigade(fb);
+
+                // Insert into remote database.                
+                return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertFireBrigade(fb);
             }
-            else
+            catch (Exception)
             {
                 return false;
-            }
+            }      
         }
 
         /// <summary>
-        /// Upserts a ServiceGroup into the LiteDB.
+        /// Upserts a ServiceGroup into the database.
         /// </summary>
         /// <param name="sg">The ServiceGroup you want to upsert.</param>
         /// <returns>Returns true if the ServiceGroup was upserted.</returns>
         public static bool UpsertServiceGroup(ServiceGroup sg)
         {
-            if (sg != null)
+            try
             {
-                using (var db = AppData.ServiceGroupDB())
-                {
-                    var table = db.ServiceGroupTable();
-                    table.Upsert(sg);
-                    return true;
-                }
+                // Insert into local database.
+                LocalDatabase.UpsertServiceGroup(sg);
+
+                // Insert into remote database.                
+                return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertServiceGroup(sg);
             }
-            else
+            catch (Exception)
             {
                 return false;
             }
         }
 
         /// <summary>
-        /// Upserts a User into the LiteDB.
+        /// Upserts a User into the database.
         /// </summary>
         /// <param name="user">The User you want to upsert.</param>
         /// <returns>Returns true if the User was upserted.</returns>
         public static bool UpsertUser(User user)
         {
-            if (user != null)
+            try
             {
-                using (var db = AppData.UserDB())
-                {
-                    var table = db.UserTable();
-                    table.Upsert(user);
-                    return true;
-                }
+                // Insert into local database.
+                LocalDatabase.UpsertUser(user);
+
+                // Insert into remote database.                
+                return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertUser(user);
             }
-            else
+            catch (Exception)
             {
                 return false;
             }

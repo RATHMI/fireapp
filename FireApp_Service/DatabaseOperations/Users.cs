@@ -91,8 +91,7 @@ namespace FireApp.Service.DatabaseOperations
                         // Save the User in the database.
                         bool ok = DatabaseOperations.DbUpserts.UpsertUser(user);
                         if (ok)
-                        {
-                            LocalDatabase.UpsertUser(user);
+                        {                           
                             Logging.Logger.Log("upsert", admin.GetUserDescription(), user);
                         }
                         return ok;
@@ -140,8 +139,7 @@ namespace FireApp.Service.DatabaseOperations
                 try
                 {
                     User old = GetById(userName);
-                    Logging.Logger.Log("delete", user.GetUserDescription(), old);
-                    LocalDatabase.DeleteUser(userName);
+                    Logging.Logger.Log("delete", user.GetUserDescription(), old);                   
                 }
                 catch (Exception)
                 {
@@ -159,7 +157,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns true if the id is not used by another User.</returns>
         public static bool CheckId(string id)
         {
-            IEnumerable<User> all = LocalDatabase.GetAllUsers();
+            IEnumerable<User> all = GetAll();
             foreach (User user in all)
             {
                 if (user.Id == id)
@@ -247,7 +245,7 @@ namespace FireApp.Service.DatabaseOperations
         /// <returns>Returns a list of all Users.</returns>
         public static IEnumerable<User> GetAll()
         {
-            return LocalDatabase.GetAllUsers();
+            return DatabaseOperations.DbQueries.QueryUsers();
         }
 
         /// <summary>

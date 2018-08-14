@@ -37,12 +37,12 @@ namespace FireApp.Service
         /// </summary>
         public static void InitializeDatabase()
         {
-            IEnumerable<FireEvent> events = (DatabaseOperations.DbQueries.QueryFireEvents());
-            IEnumerable<FireEvent> active = (DatabaseOperations.DbQueries.QueryActiveFireEvents());
-            IEnumerable<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.DbQueries.QueryFireAlarmSystems());
-            IEnumerable<FireBrigade> fireBrigades = (DatabaseOperations.DbQueries.QueryFireBrigades());
-            IEnumerable<ServiceGroup> serviceGroups = (DatabaseOperations.DbQueries.QueryServiceGroups());
-            IEnumerable<User> users = (DatabaseOperations.DbQueries.QueryUsers());
+            IEnumerable<FireEvent> events = (DatabaseOperations.LiteDB.LiteDbQueries.QueryFireEvents());
+            IEnumerable<FireEvent> active = (DatabaseOperations.LiteDB.LiteDbQueries.QueryActiveFireEvents());
+            IEnumerable<FireAlarmSystem> fireAlarmSystems = (DatabaseOperations.LiteDB.LiteDbQueries.QueryFireAlarmSystems());
+            IEnumerable<FireBrigade> fireBrigades = (DatabaseOperations.LiteDB.LiteDbQueries.QueryFireBrigades());
+            IEnumerable<ServiceGroup> serviceGroups = (DatabaseOperations.LiteDB.LiteDbQueries.QueryServiceGroups());
+            IEnumerable<User> users = (DatabaseOperations.LiteDB.LiteDbQueries.QueryUsers());
 
             if (events != null)     // trying to insert null into the cache creates a server error
             {
