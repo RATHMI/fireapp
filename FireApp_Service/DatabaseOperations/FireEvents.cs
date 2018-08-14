@@ -204,5 +204,38 @@ namespace FireApp.Service.DatabaseOperations
 
             return months;
         }
+
+        /// <summary>
+        /// Returns a list of the latest FireEvents where there is no FireAlarmSystem with a matching Id.
+        /// </summary>
+        /// <returns>Returns a list of FireEvents.</returns>
+        public static IEnumerable<FireEvent> GetUnregistered()
+        {
+            List<FireAlarmSystem> fireAlarmSystems = new List<FireAlarmSystem>();
+            List<FireEvent> events = new List<FireEvent>();   
+
+            try
+            {
+                foreach (int id in FireAlarmSystems.GetUnregistered())
+                {
+                    try
+                    {
+                        events.Add(GetBySourceId(id).OrderBy(x => x.TimeStamp).First());
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+
+                return events;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return events;
+            }
+
+        }
     }
 }

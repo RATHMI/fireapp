@@ -362,5 +362,36 @@ namespace FireApp.Service.Controllers
                 return new Int32[12];
             }
         }
+
+        /// <summary>
+        /// Returns a list of the latest FireEvents where there is no FireAlarmSystem with a matching Id.
+        /// </summary>
+        /// <returns>Returns a list of FireEvents.</returns>
+        [HttpGet, Route("unregistered")] //todo: add to api description.
+        public FireEvent[] GetUnregistered()
+        {
+            try
+            {
+                User user;
+                Authentication.Token.CheckAccess(Request.Headers, out user);
+                if (user != null)
+                {
+                    if (user.UserType == UserTypes.admin)
+                    {
+                        return DatabaseOperations.FireEvents.GetUnregistered().ToArray();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+                return new FireEvent[0];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new FireEvent[0];
+            }
+        }
     }
 }
