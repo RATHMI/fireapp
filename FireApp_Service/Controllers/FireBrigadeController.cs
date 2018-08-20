@@ -112,7 +112,7 @@ namespace FireApp.Service.Controllers
                         IEnumerable<FireBrigade> fb = DatabaseOperations.FireBrigades.GetAll();
 
                         // Convert FireBrigades into a CSV file.
-                        byte[] file = FileOperations.FireBrigadeFiles.ExportToCSV(fb);
+                        byte[] file = FileOperations.UserGroupFiles.ExportToCSV(fb);
 
                         // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
@@ -182,7 +182,7 @@ namespace FireApp.Service.Controllers
                         }
 
                         // Get the FireBrigades from the array of bytes.
-                        fb = FileOperations.FireBrigadeFiles.GetFireBrigadesFromCSV(bytes.ToArray());
+                        fb = (IEnumerable<FireBrigade>)FileOperations.UserGroupFiles.GetFromCSV(bytes.ToArray());
 
                         // Upsert the FireBrigades into the database.
                         int upserted = DatabaseOperations.FireBrigades.BulkUpsert(fb, user);

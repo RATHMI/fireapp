@@ -103,7 +103,7 @@ namespace FireApp.Service.Controllers
                         IEnumerable<ServiceGroup> sg = DatabaseOperations.ServiceGroups.GetAll();
 
                         // Convert ServiceGroups into a CSV file.
-                        byte[] file = FileOperations.ServiceGroupFiles.ExportToCSV(sg);
+                        byte[] file = FileOperations.UserGroupFiles.ExportToCSV(sg);
 
                         // Write CSV file into the stream.
                         stream.Write(file, 0, file.Length);
@@ -173,7 +173,7 @@ namespace FireApp.Service.Controllers
                         }
 
                         // Get the ServiceGroups from the array of bytes.
-                        sg = FileOperations.ServiceGroupFiles.GetServiceGroupsFromCSV(bytes.ToArray());
+                        sg = (IEnumerable<ServiceGroup>)FileOperations.UserGroupFiles.GetFromCSV(bytes.ToArray());
 
                         // Upsert the ServiceGroups into the database.
                         int upserted = DatabaseOperations.ServiceGroups.BulkUpsert(sg, user);

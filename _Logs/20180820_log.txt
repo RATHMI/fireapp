@@ -1,0 +1,1 @@
+2018.08.20 09:09:03;admin(Benjamin, Blümchen);upsert;FireApp.Domain.User;{"Id":"admin","Password":"B8qzgaalD7O4FQdj9nTKhw==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Benjamin","LastName":"Blümchen","Email":"admin1@siemens.at","Token":"Rv28HlCrMbORlY4bHWh1TIVrqJYsCQR6HxdxcXhot2vLUeg1Kq","TokenCreationDate":"2018-08-20T09:09:03.5728829+02:00","TokenValidDays":1}

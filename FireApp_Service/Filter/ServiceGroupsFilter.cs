@@ -49,7 +49,7 @@ namespace FireApp.Service.Filter
             }
 
             results.RemoveAll(x => x == null);
-            results.OrderBy(x => x.GroupName);
+            results.OrderBy(x => x.Name);
             return results.Distinct();
         }
 
