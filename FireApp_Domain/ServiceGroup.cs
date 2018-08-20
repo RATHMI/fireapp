@@ -11,10 +11,18 @@ namespace FireApp.Domain
     /// </summary>
     public class ServiceGroup : UserGroup
     {
-        protected static new UserTypes userType = UserTypes.servicemember;
+        protected ServiceGroup() { }
 
         public ServiceGroup(int id, string name) : base(id, name)
         {
-        }            
+        }
+
+        public override UserTypes UserType
+        {
+            get
+            {
+                return UserTypes.servicemember;
+            }
+        }
     }
 }

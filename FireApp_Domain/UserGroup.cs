@@ -8,8 +8,6 @@ namespace FireApp.Domain
 {
     public class UserGroup : IEquatable<UserGroup>
     {
-        protected UserTypes userType = UserTypes.unauthorized;
-
         protected UserGroup() { }
 
         protected UserGroup(int id, string name)
@@ -22,7 +20,7 @@ namespace FireApp.Domain
 
         public string Name { get; set; }
 
-        public UserTypes UserType { get { return userType; } }
+        public virtual UserTypes UserType { get; }
 
         /// <summary>
         /// Use the return value as headers of a CSV file.

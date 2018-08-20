@@ -8,15 +8,15 @@ using System.Text;
 namespace FireApp.Service.FileOperations
 {
     /// <summary>
-    /// This class includes methods used for converting FireAlarmSystems into different file types an vice versa
+    /// This class includes methods used for converting FireAlarmSystems into different file types and vice versa.
     /// </summary>
     public static class FireAlarmSystemFiles
     {
         /// <summary>
-        /// converts a csv file into a list of FireAlarmSystems
+        /// Converts a csv file into a list of FireAlarmSystems.
         /// </summary>
-        /// <param name="bytes">the csv file as a byte array</param>
-        /// <returns>returns a list of FireAlarmSystems</returns>
+        /// <param name="bytes">The csv file as a byte array.</param>
+        /// <returns>Returns a list of FireAlarmSystems.</returns>
         public static IEnumerable<FireAlarmSystem> GetFireAlarmSystemsFromCSV(byte[] bytes)
         {
             string csv = System.Text.Encoding.Default.GetString(bytes);
@@ -42,10 +42,10 @@ namespace FireApp.Service.FileOperations
         }
 
         /// <summary>
-        /// Converts a list of FireAlarmSystems into a csv file
+        /// Converts a list of FireAlarmSystems into a csv file.
         /// </summary>
-        /// <param name="fireAlarmSystems">a list of FireAlarmSystems you want to convert</param>
-        /// <returns>returns a csv file as a byte array</returns>
+        /// <param name="fireAlarmSystems">A list of FireAlarmSystems you want to convert.</param>
+        /// <returns>Returns a csv file as a byte array.</returns>
         public static byte[] ExportToCSV(IEnumerable<FireAlarmSystem> fireAlarmSystems)
         {
             StringBuilder sb = new StringBuilder();

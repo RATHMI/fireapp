@@ -11,7 +11,7 @@ namespace FireApp.Service {
         public static string ServicePath { get; set; }
 
 
-        public static string FireEventDBPath { get; set; }
+        public static string DBPath { get; set; }
 
 
         static AppSettings() {
@@ -19,7 +19,7 @@ namespace FireApp.Service {
             ServicePath = new Uri(Path.GetDirectoryName(fullSystemPath)).LocalPath;
             QualityMode = fullSystemPath.ToLower().Contains("_q");
 
-            FireEventDBPath = ConfigurationManager.AppSettings["fireEventDBPath"].ToFullPath();
+            DBPath = ConfigurationManager.AppSettings["dbPath"].ToFullPath();
         }
 
         public static string ToFullPath(this string path) {
@@ -43,7 +43,8 @@ namespace FireApp.Service {
         }
 
         public static void InitializeApp() {
-            //method is called by iis before global appstart // therefore following entry is needed in the assemblyInfo.cs
+            //method is called by iis before global appstart
+            // therefore following entry is needed in the assemblyInfo.cs
             //[assembly: PreApplicationStartMethod(typeof(Ticket_Monitor.AppSettings), "InitializeApp")]
             //Ticket_Monitor.DAL.AppData.Initialize(ASCDB, string.Empty);
         }

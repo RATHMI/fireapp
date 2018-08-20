@@ -11,10 +11,18 @@ namespace FireApp.Domain
     /// </summary>
     public class FireBrigade : UserGroup
     {
-        protected static new UserTypes userType = UserTypes.fireFighter;
+        protected FireBrigade() { }
 
         public FireBrigade(int id, string name) : base(id, name)
         {
+        }
+
+        public override UserTypes UserType
+        {
+            get
+            {
+                return UserTypes.fireFighter;
+            }
         }
     }
 }

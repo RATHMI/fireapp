@@ -45,6 +45,7 @@ C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.Cookies.dll
 C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.dll
 C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.dll
 C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OpenIdConnect.dll
+C:\proj\fireapp\FireApp_Service\bin\MlkPwgen.dll
 C:\proj\fireapp\FireApp_Service\bin\Newtonsoft.Json.dll
 C:\proj\fireapp\FireApp_Service\bin\Owin.dll
 C:\proj\fireapp\FireApp_Service\bin\System.IdentityModel.Tokens.Jwt.dll
@@ -70,6 +71,7 @@ C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.xml
 C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.Cookies.xml
 C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OAuth.xml
 C:\proj\fireapp\FireApp_Service\bin\Microsoft.Owin.Security.OpenIdConnect.xml
+C:\proj\fireapp\FireApp_Service\bin\MlkPwgen.xml
 C:\proj\fireapp\FireApp_Service\bin\Newtonsoft.Json.xml
 C:\proj\fireapp\FireApp_Service\bin\System.IdentityModel.Tokens.Jwt.xml
 C:\proj\fireapp\FireApp_Service\bin\System.Net.Http.Formatting.xml
@@ -79,5 +81,3 @@ C:\proj\fireapp\FireApp_Service\bin\System.Web.Http.WebHost.xml
 C:\proj\fireapp\FireApp_Service\obj\Release\FireApp_Service.csprojResolveAssemblyReference.cache
 C:\proj\fireapp\FireApp_Service\obj\Release\FireApp.Service.dll
 C:\proj\fireapp\FireApp_Service\obj\Release\FireApp.Service.pdb
-C:\proj\fireapp\FireApp_Service\bin\MlkPwgen.dll
-C:\proj\fireapp\FireApp_Service\bin\MlkPwgen.xml

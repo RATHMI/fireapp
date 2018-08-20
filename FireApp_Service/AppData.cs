@@ -38,11 +38,11 @@ namespace FireApp.Service {
 
         #region FireEventDB
         /// <summary>
-        /// Stores all FireEvents
+        /// Stores all FireEvents.
         /// </summary>
-        /// <returns>returns the database</returns>
+        /// <returns>Returns the database.</returns>
         public static LiteDatabase FireEventDB() {
-            return new LiteDatabase(AppSettings.FireEventDBPath);
+            return new LiteDatabase(AppSettings.DBPath);
         }
         public static LiteCollection<FireEvent> FireEventTable(this LiteDatabase db) {
             return db.GetCollection<FireEvent>("events");
@@ -51,27 +51,27 @@ namespace FireApp.Service {
 
         #region FireAlarmSystemDB
         /// <summary>
-        /// Stores FireAlarmSystems
+        /// Stores FireAlarmSystems.
         /// </summary>
-        /// <returns>returns the database</returns>
+        /// <returns>Returns the database.</returns>
         public static LiteDatabase FireAlarmSystemDB()
         {
-            return new LiteDatabase(AppSettings.FireEventDBPath);
+            return new LiteDatabase(AppSettings.DBPath);
         }
         public static LiteCollection<FireAlarmSystem> FireAlarmSystemTable(this LiteDatabase db)
         {
             return db.GetCollection<FireAlarmSystem>("fas");
         }
-        #endregion
+        #endregion      
 
         #region FireBrigadeDB
         /// <summary>
-        /// Stores all FireBrigades
+        /// Stores all FireBrigades.
         /// </summary>
-        /// <returns>returns the database</returns>
+        /// <returns>Returns the database.</returns>
         public static LiteDatabase FireBrigadeDB()
         {
-            return new LiteDatabase(AppSettings.FireEventDBPath);
+            return new LiteDatabase(AppSettings.DBPath);
         }
         public static LiteCollection<FireBrigade> FireBrigadeTable(this LiteDatabase db)
         {
@@ -81,12 +81,12 @@ namespace FireApp.Service {
 
         #region ServiceGroupDB
         /// <summary>
-        /// Stores all ServiceGroups
+        /// Stores all ServiceGroups.
         /// </summary>
-        /// <returns>returns the database</returns>
+        /// <returns>Returns the database.</returns>
         public static LiteDatabase ServiceGroupDB()
         {
-            return new LiteDatabase(AppSettings.FireEventDBPath);
+            return new LiteDatabase(AppSettings.DBPath);
         }
         public static LiteCollection<ServiceGroup> ServiceGroupTable(this LiteDatabase db)
         {
@@ -96,12 +96,12 @@ namespace FireApp.Service {
 
         #region ActiveFireEventDB
         /// <summary>
-        /// Stores all active FireEvents
+        /// Stores all active FireEvents.
         /// </summary>
-        /// <returns>returns the database</returns>
+        /// <returns>Returns the database.</returns>
         public static LiteDatabase ActiveFireEventDB()
         {
-            return new LiteDatabase(AppSettings.FireEventDBPath);
+            return new LiteDatabase(AppSettings.DBPath);
         }
         public static LiteCollection<FireEvent> ActiveFireEventTable(this LiteDatabase db)
         {
@@ -111,12 +111,12 @@ namespace FireApp.Service {
 
         #region UserDB
         /// <summary>
-        /// Stores all Users
+        /// Stores all Users.
         /// </summary>
-        /// <returns>returns the database</returns>
+        /// <returns>Returns the database.</returns>
         public static LiteDatabase UserDB()
         {
-            return new LiteDatabase(AppSettings.FireEventDBPath);
+            return new LiteDatabase(AppSettings.DBPath);
         }
         public static LiteCollection<User> UserTable(this LiteDatabase db)
         {
