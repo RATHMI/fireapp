@@ -8,9 +8,11 @@ namespace FireApp.Domain
 {
     public class UserGroup : IEquatable<UserGroup>
     {
-        protected static UserTypes userType = UserTypes.unauthorized;
+        protected UserTypes userType = UserTypes.unauthorized;
 
-        public UserGroup(int id, string name)
+        protected UserGroup() { }
+
+        protected UserGroup(int id, string name)
         {
             this.Id = id;
             this.Name = name;
