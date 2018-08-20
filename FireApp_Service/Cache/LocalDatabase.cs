@@ -8,32 +8,32 @@ using FireApp.Service.Cache;
 namespace FireApp.Service
 {
     /// <summary>
-    /// this class is for storing the FireEvents in a cache
+    /// This class is for storing the FireEvents in a cache.
     /// </summary>
     public static class LocalDatabase
     {
-        // the key to retrieve the list of all FireEvents from the cache
+        // The key to retrieve the list of all FireEvents from the cache.
         const string allFireEventsString = "allFireEvents";
 
-        // the key to retrieve the list of active FireEvents from the cache
+        // The key to retrieve the list of active FireEvents from the cache.
         const string activeFireEventsString = "activeFireEvents";
 
-        // the key to retrieve the list of FireAlarmSystems from the cache
+        // The key to retrieve the list of FireAlarmSystems from the cache.
         const string fireAlarmSystemsString = "fireAlarmSystems";
 
-        // the key to retrieve the list of FireBrigades from the cache
+        // The key to retrieve the list of FireBrigades from the cache.
         const string fireBrigadesString = "fireBrigades";
 
-        // the key to retrieve the list of FireBrigades from the cache
+        // The key to retrieve the list of FireBrigades from the cache.
         const string serviceGroupsString = "serviceGroups";
 
-        // the key to retrieve the list of Users from the cache
+        // The key to retrieve the list of Users from the cache.
         const string userString = "users";
 
         static LocalDatabase(){}
 
         /// <summary>
-        /// Queries domain objects from the database and stores them in the cache
+        /// Queries domain objects from the database and stores them in the cache.
         /// </summary>
         public static void InitializeDatabase()
         {
@@ -44,7 +44,7 @@ namespace FireApp.Service
             IEnumerable<ServiceGroup> serviceGroups = (DatabaseOperations.LiteDB.LiteDbQueries.QueryServiceGroups());
             IEnumerable<User> users = (DatabaseOperations.LiteDB.LiteDbQueries.QueryUsers());
 
-            if (events != null)     // trying to insert null into the cache creates a server error
+            if (events != null)
             {
                 GlobalCachingProvider.Instance.AddItem(allFireEventsString, events);
             }
@@ -53,7 +53,7 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(allFireEventsString, new List<FireEvent>());
             }
 
-            if (active != null)  // trying to insert null into the cache creates a server error
+            if (active != null)
             {
                 GlobalCachingProvider.Instance.AddItem(activeFireEventsString, active);
             }
@@ -62,7 +62,7 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(activeFireEventsString, new List<FireEvent>());
             }
 
-            if (fireAlarmSystems != null)     // trying to insert null into the cache creates a server error
+            if (fireAlarmSystems != null)
             {
                 GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, fireAlarmSystems);
             }
@@ -71,7 +71,7 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(fireAlarmSystemsString, new List<FireAlarmSystem>());
             }
 
-            if (fireBrigades != null)     // trying to insert null into the cache creates a server error
+            if (fireBrigades != null)
             {
                 GlobalCachingProvider.Instance.AddItem(fireBrigadesString, fireBrigades);
             }
@@ -80,7 +80,7 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(fireBrigadesString, new List<FireBrigade>());
             }
 
-            if (serviceGroups != null)     // trying to insert null into the cache creates a server error
+            if (serviceGroups != null)
             {
                 GlobalCachingProvider.Instance.AddItem(serviceGroupsString, serviceGroups);
             }
@@ -89,7 +89,7 @@ namespace FireApp.Service
                 GlobalCachingProvider.Instance.AddItem(serviceGroupsString, new List<ServiceGroup>());
             }
 
-            if (users != null)     // trying to insert null into the cache creates a server error
+            if (users != null)
             {
                 GlobalCachingProvider.Instance.AddItem(userString, users);
             }
@@ -103,7 +103,7 @@ namespace FireApp.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
+        /// <returns>Returns a List of all FireEvents that are stored in the cache.</returns>
         public static IEnumerable<FireEvent> GetAllFireEvents()
         {
             IEnumerable<FireEvent> rv = (IEnumerable<FireEvent>)GlobalCachingProvider.Instance.GetItem(allFireEventsString, false);
@@ -115,9 +115,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// Inserts or updates a FireEvent in the cache
+        /// Inserts or updates a FireEvent in the cache.
         /// </summary>
-        /// <param name="fe">FireEvent that should be stored in the cache</param>
+        /// <param name="fe">FireEvent that should be stored in the cache.</param>
         public static void UpsertFireEvent(FireEvent fe)
         {
             if (fe != null)
@@ -127,7 +127,7 @@ namespace FireApp.Service
 
                 foreach (FireEvent f in allFireEvents)
                 {
-                    if (f.Id.SourceId == fe.Id.SourceId && f.TargetId == fe.TargetId)
+                    if (f.Id.SourceId == fe.Id.SourceId && f.Id.EventId == fe.Id.EventId)
                     {
                         old = f;
                         break;
@@ -152,9 +152,9 @@ namespace FireApp.Service
 
         #region ActiveFireEvents
         /// <summary>
-        /// Inserts or updates an active FireEvent in the cache
+        /// Inserts or updates an active FireEvent in the cache.
         /// </summary>
-        /// <param name="fe">active FireEvent that should be stored in the cache</param>
+        /// <param name="fe">Active FireEvent that should be stored in the cache.</param>
         public static void UpsertActiveFireEvent(FireEvent fe)
         {
             if (fe != null)
@@ -189,7 +189,7 @@ namespace FireApp.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a list of all active FireEvents from the cache</returns>
+        /// <returns>Returns a list of all active FireEvents from the cache.</returns>
         public static IEnumerable<FireEvent> GetActiveFireEvents()
         {
             IEnumerable<FireEvent> rv = (IEnumerable<FireEvent>)GlobalCachingProvider.Instance.GetItem(activeFireEventsString, false);
@@ -201,9 +201,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// Deletes the active FireEvent 'fe' from the cache
+        /// Deletes the active FireEvent 'fe' from the cache.
         /// </summary>
-        /// <param name="fe">The active FireEvent that should be deleted from the cache</param>
+        /// <param name="fe">The active FireEvent that should be deleted from the cache.</param>
         public static void DeleteActiveFireEvent(FireEvent fe)
         {
             IEnumerable<FireEvent> activeFireEvents = GetActiveFireEvents();
@@ -232,9 +232,9 @@ namespace FireApp.Service
 
         #region FireAlarmSystems
         /// <summary>
-        /// 
+        /// Returns all FireAlarmSystems.
         /// </summary>
-        /// <returns>returns a List of all FireAlarmSystems that are stored in the cache</returns>
+        /// <returns>Returns a List of all FireAlarmSystems that are stored in the cache.</returns>
         public static IEnumerable<FireAlarmSystem> GetAllFireAlarmSystems()
         {
             IEnumerable<FireAlarmSystem> rv = (IEnumerable<FireAlarmSystem>)GlobalCachingProvider.Instance.GetItem(fireAlarmSystemsString, false);
@@ -246,9 +246,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// Inserts or updates a FireAlarmSystem in the cache
+        /// Inserts or updates a FireAlarmSystem in the cache.
         /// </summary>
-        /// <param name="fireAlarmSystem">FireBrigade that should be stored in the cache</param>
+        /// <param name="fireAlarmSystem">FireBrigade that should be stored in the cache.</param>
         public static void UpsertFireAlarmSystem(FireAlarmSystem fireAlarmSystem)
         {
             if (fireAlarmSystem != null)
@@ -281,9 +281,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// deletes a FireAlarmSystem from the cache
+        /// Deletes a FireAlarmSystem from the cache.
         /// </summary>
-        /// <param name="id">id of the FireAlarmSystem you want to delete</param>
+        /// <param name="id">Id of the FireAlarmSystem you want to delete.</param>
         public static void DeleteFireAlarmSystem(int id)
         {
             List<FireAlarmSystem> allFireAlarmSystems = GetAllFireAlarmSystems().ToList();
@@ -314,7 +314,7 @@ namespace FireApp.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a List of all FireEvents that are stored in the cache</returns>
+        /// <returns>Returns a List of all FireEvents that are stored in the cache.</returns>
         public static IEnumerable<FireBrigade> GetAllFireBrigades()
         {
             IEnumerable<FireBrigade> rv = (IEnumerable<FireBrigade>)GlobalCachingProvider.Instance.GetItem(fireBrigadesString, false);
@@ -326,9 +326,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// Inserts or updates a FireBrigade in the cache
+        /// Inserts or updates a FireBrigade in the cache.
         /// </summary>
-        /// <param name="fireBrigade">FireBrigade that should be stored in the cache</param>
+        /// <param name="fireBrigade">FireBrigade that should be stored in the cache.</param>
         public static void UpsertFireBrigade(FireBrigade fireBrigade)
         {
             if (fireBrigade != null)
@@ -361,9 +361,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// deletes a FireBrigade from the cache and from the lists of the FireAlarmSystems
+        /// Deletes a FireBrigade from the cache and from the lists of the FireAlarmSystems.
         /// </summary>
-        /// <param name="id">id of the FireBrigade you want to delete</param>
+        /// <param name="id">Id of the FireBrigade you want to delete.</param>
         public static void DeleteFireBrigade(int id)
         {
             List<FireBrigade> allFireBrigades = GetAllFireBrigades().ToList();
@@ -475,7 +475,7 @@ namespace FireApp.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>returns a List of all Users that are stored in the cache</returns>
+        /// <returns>Returns a List of all Users that are stored in the cache.</returns>
         public static IEnumerable<User> GetAllUsers()
         {
             IEnumerable<User> rv = (IEnumerable<User>)GlobalCachingProvider.Instance.GetItem(userString, false);
@@ -487,9 +487,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// Inserts or updates a User in the cache
+        /// Inserts or updates a User in the cache.
         /// </summary>
-        /// <param name="user">User that should be stored in the cache</param>
+        /// <param name="user">User that should be stored in the cache.</param>
         public static void UpsertUser(User user)
         {
             if (user != null)
@@ -522,9 +522,9 @@ namespace FireApp.Service
         }
 
         /// <summary>
-        /// deletes a User from the cache
+        /// Deletes a User from the cache.
         /// </summary>
-        /// <param name="username">id of the User you want to delete</param>
+        /// <param name="username">Id of the User you want to delete.</param>
         public static void DeleteUser(string userName)
         {
             List<User> allUsers = GetAllUsers().ToList();
