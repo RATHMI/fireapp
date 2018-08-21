@@ -9,4 +9,3 @@ C:\proj\fireapp\FireApp_Domain\bin\Release\Newtonsoft.Json.dll
 C:\proj\fireapp\FireApp_Domain\bin\Release\Newtonsoft.Json.xml
 C:\proj\fireapp\FireApp_Domain\obj\Release\FireApp.Domain.dll
 C:\proj\fireapp\FireApp_Domain\obj\Release\FireApp.Domain.pdb
-C:\proj\fireapp\FireApp_Domain\obj\Release\FireApp_Domain.csprojResolveAssemblyReference.cache

@@ -161,10 +161,16 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseOperations\Info.txt" />
-    <EmbeddedResource Include="Email\EmailTemplate.html" />
-    <EmbeddedResource Include="Email\images\Icon3.0.png" />
-    <EmbeddedResource Include="Email\images\logo_siemens.png" />
+    <AdditionalFiles Include="DatabaseOperations\Info.txt" />
+    <EmbeddedResource Include="Email\EmailTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Email\images\Icon3.0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Email\images\logo_siemens.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -211,7 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <EmbeddedResource Include="Email\helpFile.pdf" />
+    <EmbeddedResource Include="Email\helpFile.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Properties\PublishProfiles\Web.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

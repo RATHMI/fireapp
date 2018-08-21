@@ -1,0 +1,729 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="website/plugins/images/favicon.ico">
+    <title>Siemens FireApp API-Description</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="website/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- animation CSS -->
+    <link href="website/css/animate.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="website/css/style.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="website/css/colors/blue-dark.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="js/script.js"></script>
+</head>
+
+<body>
+    <!-- Preloader -->
+    <!--
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    -->
+    <div id="wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sg-4 col-xs-12">
+                        <h4 class="page-title">API - Description<br>FireApp Service</h4> </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /row -->
+                <div class="row">
+                    <div class="white-box">
+                        <p>
+                            To use these REST-API interfaces you have to authenticate by sending a token with the key "token" in the header of your request.<br />
+                            If the request returns null it means that the token is invalid.<br>
+                            Send all request via the HTTP protocol and all objects in the Json format.
+                        </p>
+                    </div>
+                    <div class="col-sg-12">
+                        <div class="white-box">
+                            <h1>FireEvents</h1>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <!-- Content goes here -->
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/events/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the FireBrigades was inserted not updated.<br>
+                                                Transmit the FireEvent via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{sourceId}/{eventId}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the id is not already used by another FireEvent.<br>
+                                                SourceId : the sourceId of the FireEvent.<br>
+                                                EventId : the eventId of the FireEvent.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireEvent[]</td>
+                                            <td>
+                                                Returns an array of all FireEvents.<br>
+                                                To use a filter on these FireEvents send you can send following headers. You can also use several filters at once:<br>
+                                                &emsp;Return all FireEvents with a timestamp between start- and enddate:<br>
+                                                &emsp;&emsp;startDate : "yyyy-MM-dd".<br>
+                                                &emsp;&emsp;endDate : "yyyy-MM-dd".<br>
+                                                &emsp;Return all FireEvent of the given EventTypes:<br>
+                                                &emsp;&emsp;events : EventTypes starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
+                                                &emsp;&emsp;events : "All" --> returns all EventTypes.<br>
+                                                &emsp;Return all FireEvent of the given sourceId:<br>
+                                                &emsp;&emsp;sourceId : id (e.g. "2").<br>
+                                                &emsp;&emsp;sourceId : -1 --> returns FireEvents from all sourceIds.<br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../active</td>
+                                            <td>FireEvent[]</td>
+                                            <td>
+                                                Returns an array of all active FireEvents.<br>
+                                                To use a filter on these FireEvents send you can send following headers. You can also use several filters at once:<br>
+                                                &emsp;Return all FireEvents with a timestamp between start- and enddate:<br>
+                                                &emsp;&emsp;startDate : "yyyy-MM-dd".<br>
+                                                &emsp;&emsp;endDate : "yyyy-MM-dd".<br>
+                                                &emsp;Return all FireEvent of the given EventTypes:<br>
+                                                &emsp;&emsp;events : EventTypes starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
+                                                &emsp;&emsp;events : "All" --> returns all EventTypes.<br>
+                                                &emsp;Return all FireEvent of the given sourceId:<br>
+                                                &emsp;&emsp;sourceId : id (e.g. "2").<br>
+                                                &emsp;&emsp;sourceId : -1 --> returns FireEvents from all sourceIds.<br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Returns all FireEvents as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../source/{sourceId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>
+                                                Returns an array of all FireEvent from a distinct FireAlarmSystem.<br>
+                                                SourceId : the Id of the FireAlarmSystem.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{sourceId}/{eventId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>
+                                                Returns a distinct FireEvent.<br>
+                                                SourceId : the sourceId of the FireEvent.<br>
+                                                EventId : the eventId of the FireEvent.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../target/{sourceId}/{targetId}</td>
+                                            <td>FireEvent[]</td>
+                                            <td>
+                                                Returns an array of all FireEvents of a distinct target.<br>
+                                                SourceId : the sourceId of the FireAlarmSystem.<br>
+                                                TargetId : the targetId of the FireEvent.
+                                            </td>
+                                        </tr>                                             
+                                        <tr>
+                                            <td>&emsp;../typeyear/{eventType}/{year}</td>
+                                            <td>Int32[12]</td>
+                                            <td>
+                                                Returns an array with the number of FireEvents that occured in the given year where each column represents one month.<br>
+                                                Only counts FireEvents of the given EventType.<br>
+                                                EventType : the EventType of the FireEvents you want to count.<br>
+                                                Year : the year in which the FireEvents occured.       
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../unregistered</td>
+                                            <td>FireEvent[]</td>
+                                            <td>
+                                                Returns an array of FireEvets with no matching FireAlarmSystem.<br>
+                                                Only returns the latest FireEvent per sourceId.<br>                                               
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>    
+                        <div class="white-box">
+                            <h1>FireAlarmSystems</h1>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/fas/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the FireBrigades was inserted not updated.<br>
+                                                Transmit the FireAlarmSystem via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadbulk</td>
+                                            <td>int</td>
+                                            <td>
+                                                Returns the number of upserted FireAlarmSystems or a negative error code<br>
+                                                Transmit the array of FireAlarmSystems via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>int</td>
+                                            <td>
+                                                Checks if an id is already used by another FireAlarmSystem.<br>
+                                                If not the sent id is returned else a new unused id is returned.<br>
+                                                Id : the id you want to check.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>
+                                                Returns an array of all FireAlarmSystems.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../active</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>
+                                                Returns an array of all FireAlarmSystems where there is an active FireEvent with the same sourceId.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Returns all FireAlarmSystems as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert FireAlarmSystems from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../unregistered</td>
+                                            <td>int[]</td>
+                                            <td>
+                                                Returns the sourceIds of the FireEvents where there is no FireAlarmSystem with an id matching the sourceId.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{id}</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>
+                                                Returns the FireAlarmSystem with a matching id.<br>
+                                                Id : the id of the FireAlarmSystem.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../members/{id}/{type}</td>
+                                            <td>object[]</td>
+                                            <td>
+                                                Returns an array of the FireBrigades and or ServiceGroups of a FireAlarmSystem.<br>
+                                                Id : the id of the FireAlarmSystem.<br>
+                                                Type : the type of object you want. <br>
+                                                &emsp;"fb" for FireBrigades.<br>
+                                                &emsp;"sg" for ServiceGroups.<br>
+                                                &emsp;everything else returns both.<br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../users/{id}/{type}</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns an array of Users of the given type from a FireAlarmSystem.<br>
+                                                Id : the id of the FireAlarmSystem.<br>
+                                                Type : the type of User you want.<br>
+                                                &emsp;"fb" for Users from FireBrigades.<br>
+                                                &emsp;"sg" for Users from ServiceGroups.<br>
+                                                &emsp;"fas" for Users from the FireAlarmSystem itself.<br>
+                                                &emsp;everything else returns all types of Users.<br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../changemember/{fas}/{type}/{member}/{operation}</td>
+                                            <td>Int32</td>
+                                            <td>
+                                                Returns an error code.<br>
+                                                &emsp;1 : the operation was successful.<br>
+                                                &emsp;0 : the User is not logged in.<br>
+                                                &emsp;-1 : the User is not an admin.<br>
+                                                &emsp;-2 : a parameter was null or invalid.<br>
+                                                &emsp;-3 : an error occured.<br>
+                                                Fas : the id of the FireAlarmSystem.<br>
+                                                Type : the type of member you want to change.<br>
+                                                &emsp;"fb" for FireBrigades.<br>
+                                                &emsp;"sg" for ServiceGroups.<br>
+                                                Member : the id of the member you want to change.<br>
+                                                Operation : the type of operation you want to perform.<br>
+                                                &emsp;"add" to add the member.<br>
+                                                &emsp;"delete" to delete the member.<br>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <h1>FireBrigades</h1>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/fb/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the FireBrigade was inserted not updated.<br>
+                                                Transmit the FireBrigade via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadbulk</td>
+                                            <td>int</td>
+                                            <td>
+                                                Returns the number of upserted FireBrigades or a negative error code<br>
+                                                Transmit the FireBrigades as array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../delete/{id}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the FireBrigade was deleted.<br>
+                                                Id : the id of the FireBrigade you want to delete.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>int</td>
+                                            <td>
+                                                Checks if an id is already used by another FireBrigade.<br>
+                                                If not the sent id is returned else a new unused id is returned.<br>
+                                                Id : the id you want to check.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>FireBrigade[]</td>
+                                            <td>
+                                                Returns an array of all FireBrigades.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Returns all FireAlarmSystems as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert FireBrigades from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{id}</td>
+                                            <td>FireBrigade[]</td>
+                                            <td>
+                                                Returns the FireBrigade with a matching id.<br>
+                                                Id : the id of the FireBrigade.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../users/{id}</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns all Users that are associated with this FireBrigade.<br>
+                                                Id : the id of the FireBrigade.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../fas/{id}</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>
+                                                Returns all FireAlarmSystems that are associated with this FireBrigade.<br>
+                                                Id : the id of the FireBrigade.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <h1>ServiceGroups</h1>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/service/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the ServiceGroup was inserted not updated.<br>
+                                                Transmit the ServiceGroup via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadbulk</td>
+                                            <td>int</td>
+                                            <td>
+                                                Returns the number of upserted ServiceGroups or a negative error code<br>
+                                                Transmit the ServiceGroups as array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../delete/{id}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the ServiceGroup was deleted.<br>
+                                                Id : the id of the ServiceGroup you want to delete.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>int</td>
+                                            <td>
+                                                Checks if an id is already used by another ServiceGroup.<br>
+                                                If not the sent id is returned else a new unused id is returned.<br>
+                                                Id : the id you want to check.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>ServiceGroup[]</td>
+                                            <td>
+                                                Returns an array of all ServiceGroups.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Returns all ServiceGroups as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert ServiceGroups from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{id}</td>
+                                            <td>ServiceGroup[]</td>
+                                            <td>
+                                                Returns the ServiceGroup with a matching id.<br>
+                                                Id : the id of the ServiceGroup.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../users/{id}</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns all Users that are associated with this ServiceGroup.<br>
+                                                Id : the id of the ServiceGroup.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../fas/{id}</td>
+                                            <td>FireAlarmSystem[]</td>
+                                            <td>
+                                                Returns all FireAlarmSystems that are associated with this ServiceGroup.<br>
+                                                Id : the id of the ServiceGroup.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <h1>Users</h1>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/user/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../upload</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the User was inserted not updated.<br>
+                                                Transmit the User via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadbulk</td>
+                                            <td>int</td>
+                                            <td>
+                                                Returns the number of upserted Users or a negative error code<br>
+                                                Transmit the Users as array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../delete/{username}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the User was deleted.<br>
+                                                Id : the id of the User you want to delete.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../all</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns an array of all Users.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../uploadcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Upsert Users from a CSV file.<br>
+                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getcsv</td>
+                                            <td>HttpResponseMessage</td>
+                                            <td>
+                                                Returns all Users as a CSV file.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkid/{id}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Returns true if the id is not already used by another User.<br>
+                                                Id : the id you want to check.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../checkpassword</td>
+                                            <td>Int32</td>
+                                            <td>
+                                                Returns an error code.<br>
+                                                &emsp;1 : the password is safe.<br>
+                                                &emsp;0 : the password does not fit the criteria.<br>
+                                                &emsp;-1 : the password is too easy.<br>
+                                                &emsp;-2 : an error occured.<br>
+                                                Transmit the User object via Post in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../authenticate</td>
+                                            <td>string</td>
+                                            <td>
+                                                Returns new token or null if login data was incorrect.<br> 
+                                                Transmit the UserLogin via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../getuser</td>
+                                            <td>User</td>
+                                            <td>
+                                                Returns the User if the token is valid or null if it is invalid.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../usertype</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns all Users with a UserType that matches with one of the UserTypes.<br>
+                                                Transmit the array of UserTypes via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../id/{username}</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns a distinct User.<br>
+                                                Id : the id of the user.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../active</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns an array of all Users with a valid token.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../inactive</td>
+                                            <td>User[]</td>
+                                            <td>
+                                                Returns an array of all Users with an invalid token.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../authobjects/{username}/{type}</td>
+                                            <td>object[]</td>
+                                            <td>
+                                                Returns an array of objects that are associated with this User.<br>
+                                                Username : the username of the User.<br>
+                                                Type : the type of authorized object you want.<br>
+                                                &emsp;"groups" returns the FireBrigades, ServiceGroups or FireAlarmSystems that are associated with this User.<br>
+                                                &emsp;"fas" returns all FireAlarmSystems that are associated with this User.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../changeauthobject/{username}/{authobj}/{operation}</td>
+                                            <td>Int32</td>
+                                            <td>
+                                                Adds or removes an authorized object of a User.<br>
+                                                Returns an error code.<br>
+                                                &emsp;1 : the operation was successful.<br>
+                                                &emsp;0 : the User is not logged in.<br>
+                                                &emsp;-1 : the User is not an admin.<br>
+                                                &emsp;-2 : the User can not have authorized objects.<br>
+                                                &emsp;-3 : one of the parameters was null.<br>
+                                                &emsp;-4 : the operation does not exist.<br>
+                                                &emsp;-5 : an error occured.<br>
+                                                Username : the username of the User.<br>
+                                                Authobj : the id of the authorized object.<br>
+                                                Operation : the type of operation you want to perform.<br>
+                                                &emsp;"add" adds the id to the authorized objects of the User.<br>
+                                                &emsp;"delete" deletes the id from the authorized objects of the User.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../resetpassword/{username}</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Generates a new password for the User with a matching username and sends the new login credentials via to the User's email account.<br>
+                                                Returns true if the password was reset.<br>
+                                                Username: the username of the User you want to reset the password of.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../changepassword</td>
+                                            <td>bool</td>
+                                            <td>
+                                                Changes the password of the logged in User to the password that was transmitted.<br>
+                                                Returns true if the password was changed.<br>
+                                                Transmit the password via POST in the body of the request.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="white-box">
+                            <h1>Email</h1>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable no-footer" id="fas">
+                                    <thead>
+                                    <th>URL</th>
+                                    <th>RETURN VALUE</th>
+                                    <th>DESCRIPTION</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><b>http://ip:port/email/..</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&emsp;../help</td>
+                                            <td>Int32</td>
+                                            <td>
+                                                Returns an exit code as integer.<br>
+                                                &emsp;1 : email was sent.<br />
+                                                &emsp;0 : User is not logged in<br />
+                                                &emsp;-1 : an error occured<br />
+                                                Transmit the text of the email as string via POST in the body of the request.
+                                            </td>
+                                        </tr>                                       
+                                    </tbody>
+                                    <!-- End of content -->
+                                </table>
+                            </div>
+                        </div>
+                        <row class="pull-left" class="col-sg-6">
+                            <!--<p><span id="cnt_rows">0</span> Lines</p>-->
+                            <p>Last Update: 14 August 2018</p>
+                        </row>
+                        <row class="pull-right" class="col-sg-6">
+                            <p>2018 &copy; Siemens Austria</p>
+                        </row>
+                    </div>
+                </div>
+                <!-- /.row --> 
+            </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <!--<script src="../plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="website/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <!--<script src="js/custom.min.js"></script>-->
+</body>
+
+</html>
