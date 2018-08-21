@@ -20,7 +20,7 @@ namespace FireApp.Domain
 
         public string Name { get; set; }
 
-        public virtual UserTypes UserType { get; }
+        // public virtual UserTypes UserType { get; }
 
         /// <summary>
         /// Use the return value as headers of a CSV file.

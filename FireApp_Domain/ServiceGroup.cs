@@ -17,12 +17,11 @@ namespace FireApp.Domain
         {
         }
 
+        /*
         public override UserTypes UserType
         {
-            get
-            {
-                return UserTypes.servicemember;
-            }
+            get {return UserTypes.servicemember;}
         }
+        */
     }
 }
