@@ -162,9 +162,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DatabaseOperations\Info.txt" />
-    <Content Include="Email\EmailTemplate.html" />
-    <Content Include="Email\images\Icon3.0.png" />
-    <Content Include="Email\images\logo_siemens.png" />
+    <EmbeddedResource Include="Email\EmailTemplate.html" />
+    <EmbeddedResource Include="Email\images\Icon3.0.png" />
+    <EmbeddedResource Include="Email\images\logo_siemens.png" />
     <Content Include="index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -211,7 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="Email\helpFile.pdf" />
+    <EmbeddedResource Include="Email\helpFile.pdf" />
     <None Include="Properties\PublishProfiles\Web.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
