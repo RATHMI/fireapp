@@ -26,7 +26,7 @@ namespace FireApp.Service.FileOperations
             {
                 foreach (string s in csv.Split('\n'))
                 {
-                    fas = FireAlarmSystem.GetFireAlarmSystemFromCsv(s);
+                    fas = FireAlarmSystem.GetFromCsv(s);
                     if (fas != null)
                     {
                         results.Add(fas);

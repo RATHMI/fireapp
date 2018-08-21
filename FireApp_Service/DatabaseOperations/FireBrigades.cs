@@ -120,7 +120,7 @@ namespace FireApp.Service.DatabaseOperations
 
             // If the id is already used by another FireBrigade
             // return a new id.
-            if (rv == -1)
+            if (rv == -1 || id == 0)
             {
                 rv = maxId + 1;
             }

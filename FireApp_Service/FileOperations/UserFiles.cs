@@ -27,7 +27,7 @@ namespace FireApp.Service.FileOperations
             {
                 foreach (string s in csv.Split('\n'))
                 {
-                    results.Add(User.GetUserFromCsv(s));               
+                    results.Add(User.GetFromCsv(s));               
                 }                
             }
             catch(Exception ex)

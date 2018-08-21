@@ -192,7 +192,7 @@ namespace FireApp.Domain
         /// </summary>
         /// <param name="csv">A line of a CSV-File you want to convert.</param>
         /// <returns>Returns a new FireAlarmSystem or null if an error occures.</returns>
-        public static FireAlarmSystem GetFireAlarmSystemFromCsv(string csv)
+        public static FireAlarmSystem GetFromCsv(string csv)
         {
             string[] values;
 

@@ -153,7 +153,7 @@ namespace FireApp.Domain
         /// </summary>
         /// <param name="csv">A line of a CSV-File you want to convert.</param>
         /// <returns>Returns a new User or null if an error occures.</returns>
-        public static User GetUserFromCsv(string csv)
+        public static User GetFromCsv(string csv)
         {
             string[] values;
 
