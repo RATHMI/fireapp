@@ -28,12 +28,23 @@ namespace FireApp.Service {
 
         public static string ServerAddress()
         {
-            // todo: check if email resources work.
-            string hostName = Dns.GetHostName();
-            string address = Dns.GetHostEntry(hostName).AddressList[0].ToString();
+            return ConfigurationManager.AppSettings["serviceBaseAddress"];
+        }
 
-            address += ":" + ConfigurationManager.AppSettings["servicePort"];
-            return address;
+        public static Int64 TokenValidHours(UserTypes userType)
+        {
+            Int64 rv = 0;
+
+            switch (userType)
+            {
+                case UserTypes.admin: rv = Convert.ToInt64(ConfigurationManager.AppSettings["tokenValidHours_Admin"]); break;
+                case UserTypes.fireSafetyEngineer: rv = Convert.ToInt64(ConfigurationManager.AppSettings["tokenValidHours_FireSafetyEngineer"]); break;
+                case UserTypes.servicemember: rv = Convert.ToInt64(ConfigurationManager.AppSettings["tokenValidHours_Servicemember"]); break;
+                case UserTypes.fireFighter: rv = Convert.ToInt64(ConfigurationManager.AppSettings["tokenValidHours_Firefighter"]); break;
+                case UserTypes.unauthorized: rv = Convert.ToInt64(ConfigurationManager.AppSettings["tokenValidHours_Unauthorized"]); break;
+            }
+
+            return rv;
         }
 
         #region FireEventDB

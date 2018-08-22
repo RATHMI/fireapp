@@ -1,0 +1,10 @@
+#scrolltable {
+    margin-top: 20px; 
+    height: 30em; 
+    overflow: auto; 
+}
+
+#scrolltable th div {
+    position: absolute; 
+    margin-top: -20px; 
+}

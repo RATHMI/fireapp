@@ -99,7 +99,7 @@ namespace FireApp.Service.Authentication
                         if (u.Token == token)
                         {
                             // if the token of the User is still valid
-                            if (DateTime.Now < u.TokenCreationDate.AddDays(u.TokenValidDays))
+                            if (DateTime.Now < u.TokenCreationDate.AddHours(AppData.TokenValidHours(u.UserType)))
                             {
                                 return u;
                             }

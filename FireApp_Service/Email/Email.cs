@@ -15,14 +15,15 @@ namespace FireApp.Service.Email
         private static string serviceEmail = ConfigurationManager.AppSettings["serviceEmail"];
         private static string serviceEmailPassword = ConfigurationManager.AppSettings["serviceEmailPassword"];
 
-        private static string welcomeEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
-        private static string resetEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
-        private static string helpEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+        private static string emailFolder = ConfigurationManager.AppSettings["emailFolder"].ToFullPath();
+        private static string welcomeEmailTemplatePath = emailFolder + "EmailTemplate.html";
+        private static string resetEmailTemplatePath = emailFolder + "EmailTemplate.html";
+        private static string helpEmailTemplatePath = emailFolder + "EmailTemplate.html";
 
         private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
-        private static string logo = AppData.ServerAddress() + "/Email/images/logo_siemens.png";
-        private static string icon = AppData.ServerAddress() + "/Email/images/Icon3.0.png";
-        private static string helpFile = AppData.ServerAddress() + "/Email/helpFile.pdf";
+        private static string logo = emailFolder + "images\\logo_siemens.png";
+        private static string icon = emailFolder + "images\\Icon3.0.png";
+        private static string helpFile = emailFolder + "helpFile.pdf";
 
         // Only for testing.
         static int count = 0;
@@ -53,6 +54,7 @@ namespace FireApp.Service.Email
             msg.IsBodyHtml = true;
             msg.From = new MailAddress(serviceEmail);
             msg.Subject = subject;
+            // todo: use right email address
             msg.To.Add(serviceEmail);
             //msg.To.Add(new MailAddress(to));
             msg.Body = message;

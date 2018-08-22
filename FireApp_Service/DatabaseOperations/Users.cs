@@ -347,7 +347,7 @@ namespace FireApp.Service.DatabaseOperations
             List<User> results = new List<User>();
             foreach(User user in GetAll())
             {
-                if (DateTime.Now < user.TokenCreationDate.AddDays(user.TokenValidDays))
+                if (DateTime.Now < user.TokenCreationDate.AddHours(AppData.TokenValidHours(user.UserType)))
                 {
                     results.Add(user);
                 }
@@ -365,7 +365,7 @@ namespace FireApp.Service.DatabaseOperations
             List<User> results = new List<User>();
             foreach (User user in GetAll())
             {
-                if (DateTime.Now >= user.TokenCreationDate.AddDays(user.TokenValidDays))
+                if (DateTime.Now >= user.TokenCreationDate.AddHours(AppData.TokenValidHours(user.UserType)))
                 {
                     results.Add(user);
                 }
