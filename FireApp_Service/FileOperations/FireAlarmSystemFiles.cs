@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using System.Text;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.FileOperations
 {
@@ -26,7 +27,7 @@ namespace FireApp.Service.FileOperations
             {
                 foreach (string s in csv.Split('\n'))
                 {
-                    fas = FireAlarmSystem.GetFromCsv(s);
+                    fas = FireAlarmSystemExtensions.GetFromCsv(s);
                     if (fas != null)
                     {
                         results.Add(fas);
@@ -49,7 +50,7 @@ namespace FireApp.Service.FileOperations
         public static byte[] ExportToCSV(IEnumerable<FireAlarmSystem> fireAlarmSystems)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(FireAlarmSystem.GetCsvHeader());
+            sb.AppendLine(FireAlarmSystemExtensions.GetCsvHeader());
             foreach (FireAlarmSystem fas in fireAlarmSystems)
             {
                 sb.AppendLine(fas.ToCsv());

@@ -339,6 +339,10 @@
       <Project>{1024446b-7f5d-4982-a8ad-6768db546f4a}</Project>
       <Name>FireApp_Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FireApp_Domain_Extensionmethods\FireApp_Domain_Extensionmethods.csproj">
+      <Project>{909c8c69-6f90-4c9e-b3d2-1d6b4c00e05c}</Project>
+      <Name>FireApp_Domain_Extensionmethods</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

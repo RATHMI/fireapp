@@ -12,6 +12,8 @@ using Newtonsoft.Json.Converters;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Text;
+using static FireApp.Domain.FireEvent;
+using static FireApp.Domain.User;
 
 namespace FireApp.Service.Controllers
 {

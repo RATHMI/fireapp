@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using System.Text;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.FileOperations
 {
@@ -27,7 +28,7 @@ namespace FireApp.Service.FileOperations
                 {
                     try
                     {
-                        results.Add(UserGroup.GetFromCsv(s));
+                        results.Add(UserGroupExtensions.GetFromCsv(s));
                     }
                     catch (Exception)
                     {
@@ -51,7 +52,7 @@ namespace FireApp.Service.FileOperations
         public static byte[] ExportToCSV(IEnumerable<UserGroup> userGroups)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(UserGroup.GetCsvHeader());
+            sb.AppendLine(UserGroupExtensions.GetCsvHeader());
             foreach (UserGroup ug in userGroups)
             {
                 sb.AppendLine(ug.ToCsv());

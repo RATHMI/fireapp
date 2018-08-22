@@ -6,6 +6,7 @@ using FireApp.Domain;
 using System.IO;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.FileOperations
 {
@@ -27,7 +28,7 @@ namespace FireApp.Service.FileOperations
             {
                 foreach (string s in csv.Split('\n'))
                 {
-                    results.Add(User.GetFromCsv(s));               
+                    results.Add(UserExtensions.GetFromCsv(s));               
                 }                
             }
             catch(Exception ex)
@@ -46,7 +47,7 @@ namespace FireApp.Service.FileOperations
         public static byte[] ExportToCSV(IEnumerable<User> users)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(User.GetCsvHeader());
+            sb.AppendLine(UserExtensions.GetCsvHeader());
             foreach (User u in users)
             {
                 sb.AppendLine(u.ToCsv());

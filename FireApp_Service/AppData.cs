@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Xml.Serialization;
+using static FireApp.Domain.User;
 
 namespace FireApp.Service {
     public static class AppData {

@@ -9,6 +9,8 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
 using MlkPwgen;
+using static FireApp.Domain.User;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.Controllers
 {

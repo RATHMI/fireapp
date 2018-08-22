@@ -1,0 +1,7 @@
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\bin\Release\FireApp_Domain_Extensionmethods.dll
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\bin\Release\FireApp_Domain_Extensionmethods.pdb
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\bin\Release\FireApp.Domain.dll
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\bin\Release\FireApp.Domain.pdb
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\obj\Release\FireApp_Domain_Extensionmethods.csprojResolveAssemblyReference.cache
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\obj\Release\FireApp_Domain_Extensionmethods.dll
+C:\proj\fireapp\FireApp_Domain_Extensionmethods\obj\Release\FireApp_Domain_Extensionmethods.pdb

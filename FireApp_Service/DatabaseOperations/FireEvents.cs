@@ -6,6 +6,8 @@ using FireApp.Domain;
 using System.Threading;
 using FireApp.Service;
 using System.Net;
+using static FireApp.Domain.FireEvent;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.DatabaseOperations
 {

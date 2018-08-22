@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using FireApp.Domain;
 using System.Net.Http.Headers;
+using static FireApp.Domain.FireEvent;
+using static FireApp.Domain.User;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.Filter
 {

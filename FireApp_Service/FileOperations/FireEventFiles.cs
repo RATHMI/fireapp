@@ -5,6 +5,7 @@ using System.Web;
 using FireApp.Domain;
 using System.IO;
 using System.Text;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.FileOperations
 {
@@ -21,7 +22,7 @@ namespace FireApp.Service.FileOperations
         public static byte[] ExportToCSV(IEnumerable<FireEvent> events)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(FireEvent.GetCsvHeader());
+            sb.AppendLine(FireEventExtensions.GetCsvHeader());
             foreach(FireEvent fe in events)
             {
                 sb.AppendLine(fe.ToCsv());

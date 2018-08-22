@@ -120,3 +120,5 @@ C:\proj\fireapp\FireApp_Service\bin\website\bootstrap\dist\fonts\glyphicons-half
 C:\proj\fireapp\FireApp_Service\bin\website\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf
 C:\proj\fireapp\FireApp_Service\bin\website\bootstrap\dist\fonts\glyphicons-halflings-regular.woff
 C:\proj\fireapp\FireApp_Service\bin\website\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2
+C:\proj\fireapp\FireApp_Service\bin\FireApp_Domain_Extensionmethods.dll
+C:\proj\fireapp\FireApp_Service\bin\FireApp_Domain_Extensionmethods.pdb
