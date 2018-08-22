@@ -36,17 +36,9 @@ namespace FireApp.Service.Email
         /// <param name="subject">The subject of the email.</param>
         /// <param name="message">The message you want to send.</param>
         public static void Send(string to, string subject, string message) {
-
-            // Only for testing.
-            if(count >= 1)
-            {
-                return;
-            }
-            //******************
-
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
-                Credentials = new NetworkCredential(serviceEmail, serviceEmailPassword),
+                Credentials = new NetworkCredential(serviceEmail, Encryption.Encrypt.DecryptString(serviceEmailPassword)),
                 EnableSsl = true
             };
 
@@ -59,8 +51,11 @@ namespace FireApp.Service.Email
             //msg.To.Add(new MailAddress(to));
             msg.Body = message;
 
-            client.Send(msg);
-            count++;
+            try
+            {
+                client.Send(msg);
+            }
+            catch (Exception) { }
         }
 
         /// <summary>

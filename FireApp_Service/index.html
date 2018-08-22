@@ -46,7 +46,14 @@
                         <p>
                             To use these REST-API interfaces you have to authenticate by sending a token with the key "token" in the header of your request.<br />
                             If the request returns null it means that the token is invalid.<br>
-                            Send all request via the HTTP protocol and all objects in the Json format.
+                            All request and responses are sent via the HTTP protocol and all objects are transmitted in the Json format.<br>
+                            The standard method for all requests is GET if not described else.<br><br>
+
+                            You can find a description of all domain objects and DTOs here: <a href="http://www.example.com">object description</a><br><br>
+
+                            {parameter} : this text should be replaced by the client using the API.<br>
+                            <b>Type</b> : this is a data type defined in the domain of the API.<br>
+                            "text" : name of a variable or a value.
                         </p>
                     </div>
                     <div class="col-sg-12">
@@ -68,102 +75,102 @@
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the FireBrigades was inserted not updated.<br>
-                                                Transmit the FireEvent via POST in the body of the request.
+                                                Returns "true" if the <b>FireEvent</b> was inserted or updated.<br>
+                                                Transmit the <b>FireEvent</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../checkid/{sourceId}/{eventId}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the id is not already used by another FireEvent.<br>
-                                                SourceId : the sourceId of the FireEvent.<br>
-                                                EventId : the eventId of the FireEvent.
+                                                Returns "true" if the ID is not already used by another <b>FireEvent</b>.<br>
+                                                "SourceId" : the sourceId of the <b>FireEvent</b>.<br>
+                                                "EventId" : the eventId of the <b>FireEvent</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../all</td>
-                                            <td>FireEvent[]</td>
+                                            <td><b>FireEvent</b>[]</td>
                                             <td>
-                                                Returns an array of all FireEvents.<br>
-                                                To use a filter on these FireEvents send you can send following headers. You can also use several filters at once:<br>
-                                                &emsp;Return all FireEvents with a timestamp between start- and enddate:<br>
-                                                &emsp;&emsp;startDate : "yyyy-MM-dd".<br>
-                                                &emsp;&emsp;endDate : "yyyy-MM-dd".<br>
-                                                &emsp;Return all FireEvent of the given EventTypes:<br>
-                                                &emsp;&emsp;events : EventTypes starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
+                                                Returns an array of all <b>FireEvent</b>s.<br>
+                                                To use a filter on these <b>FireEvent</b>s send you can send following headers. You can also use several filters at once:<br>                                        
+                                                &emsp;Return all <b>FireEvent</b>s with a timestamp between start- and enddate:<br>
+                                                &emsp;&emsp;startDate : {yyyy-MM-dd}.<br>
+                                                &emsp;&emsp;endDate : {yyyy-MM-dd}.<br>
+                                                &emsp;Return all <b>FireEvent</b>s of the given EventTypes:<br>
+                                                &emsp;&emsp;events : <b>EventTypes</b> starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
                                                 &emsp;&emsp;events : "All" --> returns all EventTypes.<br>
-                                                &emsp;Return all FireEvent of the given sourceId:<br>
-                                                &emsp;&emsp;sourceId : id (e.g. "2").<br>
-                                                &emsp;&emsp;sourceId : -1 --> returns FireEvents from all sourceIds.<br>
+                                                &emsp;Return all <b>FireEvent</b>s of the given sourceId:<br>
+                                                &emsp;&emsp;sourceId : {id} (e.g. "2").<br>
+                                                &emsp;&emsp;sourceId : "-1" --> returns <b>FireEvent</b>s from all sourceIds.<br>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../active</td>
-                                            <td>FireEvent[]</td>
+                                            <td><b>FireEvent</b>[]</td>
                                             <td>
-                                                Returns an array of all active FireEvents.<br>
-                                                To use a filter on these FireEvents send you can send following headers. You can also use several filters at once:<br>
-                                                &emsp;Return all FireEvents with a timestamp between start- and enddate:<br>
-                                                &emsp;&emsp;startDate : "yyyy-MM-dd".<br>
-                                                &emsp;&emsp;endDate : "yyyy-MM-dd".<br>
-                                                &emsp;Return all FireEvent of the given EventTypes:<br>
-                                                &emsp;&emsp;events : EventTypes starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
+                                                Returns an array of all active <b>FireEvent</b>s.<br>
+                                                To use a filter on these <b>FireEvent</b>s send you can send following headers. You can also use several filters at once:<br>
+                                                &emsp;Return all <b>FireEvent</b>s with a timestamp between start- and enddate:<br>
+                                                &emsp;&emsp;startDate : {yyyy-MM-dd}.<br>
+                                                &emsp;&emsp;endDate : {yyyy-MM-dd}.<br>
+                                                &emsp;Return all <b>FireEvent</b>s of the given EventTypes:<br>
+                                                &emsp;&emsp;events : <b>EventTypes</b> starting with capital letters seperated with ',' (e.g. "Alarm,Prealarm").<br>
                                                 &emsp;&emsp;events : "All" --> returns all EventTypes.<br>
-                                                &emsp;Return all FireEvent of the given sourceId:<br>
-                                                &emsp;&emsp;sourceId : id (e.g. "2").<br>
-                                                &emsp;&emsp;sourceId : -1 --> returns FireEvents from all sourceIds.<br>
+                                                &emsp;Return all <b>FireEvent</b>s of the given sourceId:<br>
+                                                &emsp;&emsp;sourceId : {id} (e.g. "2").<br>
+                                                &emsp;&emsp;sourceId : "-1" --> returns <b>FireEvent</b>s from all sourceIds.<br>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../getcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Returns all FireEvents as a CSV file.
+                                                Returns all <b>FireEvent</b>s as a CSV file.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../source/{sourceId}</td>
-                                            <td>FireEvent[]</td>
+                                            <td><b>FireEvent</b>[]</td>
                                             <td>
-                                                Returns an array of all FireEvent from a distinct FireAlarmSystem.<br>
-                                                SourceId : the Id of the FireAlarmSystem.
+                                                Returns an array of all <b>FireEvent</b>s from a distinct <b>FireAlarmSystem</b>.<br>
+                                                "SourceId" : the id of the <b>FireAlarmSystem</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{sourceId}/{eventId}</td>
-                                            <td>FireEvent[]</td>
+                                            <td><b>FireEvent</b>[]</td>
                                             <td>
-                                                Returns a distinct FireEvent.<br>
-                                                SourceId : the sourceId of the FireEvent.<br>
-                                                EventId : the eventId of the FireEvent.
+                                                Returns a distinct <b>FireEvent</b>.<br>
+                                                "SourceId" : the sourceId of the <b>FireEvent</b>.<br>
+                                                "EventId" : the eventId of the <b>FireEvent</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../target/{sourceId}/{targetId}</td>
-                                            <td>FireEvent[]</td>
+                                            <td><b>FireEvent</b>[]</td>
                                             <td>
-                                                Returns an array of all FireEvents of a distinct target.<br>
-                                                SourceId : the sourceId of the FireAlarmSystem.<br>
-                                                TargetId : the targetId of the FireEvent.
+                                                Returns an array of all <b>FireEvent</b>s of a distinct target.<br>
+                                                "SourceId" : the sourceId of the <b>FireEvent</b>s.<br>
+                                                "TargetId" : the targetId of the <b>FireEvent</b>s.
                                             </td>
                                         </tr>                                             
                                         <tr>
                                             <td>&emsp;../typeyear/{eventType}/{year}</td>
                                             <td>Int32[12]</td>
                                             <td>
-                                                Returns an array with the number of FireEvents that occured in the given year where each column represents one month.<br>
-                                                Only counts FireEvents of the given EventType.<br>
-                                                EventType : the EventType of the FireEvents you want to count.<br>
-                                                Year : the year in which the FireEvents occured.       
+                                                Returns an array with the number of <b>FireEvent</b>s that occured in the given. Each column represents one month.<br>
+                                                Only counts <b>FireEvent</b>s of the given "EventType".<br>
+                                                "EventType" : the "EventType" of the <b>FireEvent</b>s you want to count.<br>
+                                                "Year" : the year in which the <b>FireEvent</b>s occured.       
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../unregistered</td>
-                                            <td>FireEvent[]</td>
+                                            <td><b>FireEvent</b>[]</td>
                                             <td>
-                                                Returns an array of FireEvets with no matching FireAlarmSystem.<br>
-                                                Only returns the latest FireEvent per sourceId.<br>                                               
+                                                Returns an array of <b>FireEvent</b>s with no matching <b>FireAlarmSystem</b>.<br>
+                                                Only returns the latest <b>FireEvent</b> per sourceId.<br>                                               
                                             </td>
                                         </tr>
                                     </tbody>
@@ -188,53 +195,53 @@
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the FireBrigades was inserted not updated.<br>
-                                                Transmit the FireAlarmSystem via POST in the body of the request.
+                                                Returns "true" if the <b>FireAlarmSystem</b> was inserted or updated.<br>
+                                                Transmit the <b>FireAlarmSystem</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadbulk</td>
                                             <td>int</td>
                                             <td>
-                                                Returns the number of upserted FireAlarmSystems or a negative error code<br>
-                                                Transmit the array of FireAlarmSystems via POST in the body of the request.
+                                                Returns the number of upserted <b>FireAlarmSystem</b>s or a negative error code<br>
+                                                Transmit the array of <b>FireAlarmSystem</b>s via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../checkid/{id}</td>
                                             <td>int</td>
                                             <td>
-                                                Checks if an id is already used by another FireAlarmSystem.<br>
-                                                If not the sent id is returned else a new unused id is returned.<br>
-                                                Id : the id you want to check.
+                                                Checks if an id is already used by another <b>FireAlarmSystem</b>.<br>
+                                                If not, the sent id is returned, else a new unused id is returned.<br>
+                                                "Id" : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../all</td>
-                                            <td>FireAlarmSystem[]</td>
+                                            <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
-                                                Returns an array of all FireAlarmSystems.
+                                                Returns an array of all <b>FireAlarmSystem</b>s.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../active</td>
-                                            <td>FireAlarmSystem[]</td>
+                                            <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
-                                                Returns an array of all FireAlarmSystems where there is an active FireEvent with the same sourceId.
+                                                Returns an array of all <b>FireAlarmSystem</b>s where there is an active <b>FireEvent</b> with a matching "sourceId".
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../getcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Returns all FireAlarmSystems as a CSV file.
+                                                Returns all <b>FireAlarmSystem</b>s as a CSV file.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Upsert FireAlarmSystems from a CSV file.<br>
+                                                Upsert <b>FireAlarmSystem</b>s from a CSV file.<br>
                                                 Transmit the CSV file as byte array via POST in the body of the request.
                                             </td>
                                         </tr>
@@ -242,40 +249,40 @@
                                             <td>&emsp;../unregistered</td>
                                             <td>int[]</td>
                                             <td>
-                                                Returns the sourceIds of the FireEvents where there is no FireAlarmSystem with an id matching the sourceId.
+                                                Returns the sourceIds of the <b>FireEvent</b>s where there is no <b>FireAlarmSystem</b> with an id matching the sourceId.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{id}</td>
-                                            <td>FireAlarmSystem[]</td>
+                                            <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
-                                                Returns the FireAlarmSystem with a matching id.<br>
-                                                Id : the id of the FireAlarmSystem.
+                                                Returns the <b>FireAlarmSystem</b> with a matching id.<br>
+                                                "Id" : the id of the <b>FireAlarmSystem</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../members/{id}/{type}</td>
                                             <td>object[]</td>
                                             <td>
-                                                Returns an array of the FireBrigades and or ServiceGroups of a FireAlarmSystem.<br>
-                                                Id : the id of the FireAlarmSystem.<br>
-                                                Type : the type of object you want. <br>
-                                                &emsp;"fb" for FireBrigades.<br>
-                                                &emsp;"sg" for ServiceGroups.<br>
+                                                Returns an array of the <b>FireBrigade</b>s and or <b>ServiceGroup</b>s of a <b>FireAlarmSystem</b>.<br>
+                                                "Id" : the id of the <b>FireAlarmSystem</b>.<br>
+                                                "Type" : the type of object you want. <br>
+                                                &emsp;"fb" for <b>FireBrigade</b>s.<br>
+                                                &emsp;"sg" for <b>ServiceGroup</b>s.<br>
                                                 &emsp;everything else returns both.<br>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../users/{id}/{type}</td>
-                                            <td>User[]</td>
+                                            <td>&emsp;../Users/{id}/{type}</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns an array of Users of the given type from a FireAlarmSystem.<br>
-                                                Id : the id of the FireAlarmSystem.<br>
-                                                Type : the type of User you want.<br>
-                                                &emsp;"fb" for Users from FireBrigades.<br>
-                                                &emsp;"sg" for Users from ServiceGroups.<br>
-                                                &emsp;"fas" for Users from the FireAlarmSystem itself.<br>
-                                                &emsp;everything else returns all types of Users.<br>
+                                                Returns an array of <b>User</b>s of the given type from a <b>FireAlarmSystem</b>.<br>
+                                                "Id" : the id of the <b>FireAlarmSystem</b>.<br>
+                                                "Type" : the type of <b>User</b> you want.<br>
+                                                &emsp;"fb" for <b>User</b>s from <b>FireBrigade</b>s.<br>
+                                                &emsp;"sg" for <b>User</b>s from <b>ServiceGroup</b>s.<br>
+                                                &emsp;"fas" for <b>User</b>s from the <b>FireAlarmSystem</b> itself.<br>
+                                                &emsp;everything else returns all types of <b>User</b>s.<br>
                                             </td>
                                         </tr>
                                         <tr>
@@ -283,17 +290,17 @@
                                             <td>Int32</td>
                                             <td>
                                                 Returns an error code.<br>
-                                                &emsp;1 : the operation was successful.<br>
-                                                &emsp;0 : the User is not logged in.<br>
-                                                &emsp;-1 : the User is not an admin.<br>
-                                                &emsp;-2 : a parameter was null or invalid.<br>
-                                                &emsp;-3 : an error occured.<br>
-                                                Fas : the id of the FireAlarmSystem.<br>
-                                                Type : the type of member you want to change.<br>
-                                                &emsp;"fb" for FireBrigades.<br>
-                                                &emsp;"sg" for ServiceGroups.<br>
-                                                Member : the id of the member you want to change.<br>
-                                                Operation : the type of operation you want to perform.<br>
+                                                &emsp;"1" : the operation was successful.<br>
+                                                &emsp;"0" : the <b>User</b> is not logged in.<br>
+                                                &emsp;"-1" : the <b>User</b> is not an admin.<br>
+                                                &emsp;"-2" : a parameter was null or invalid.<br>
+                                                &emsp;"-3" : an error occured.<br>
+                                                "Fas" : the id of the <b>FireAlarmSystem</b>.<br>
+                                                "Type" : the type of member you want to change.<br>
+                                                &emsp;"fb" for <b>FireBrigade</b>s.<br>
+                                                &emsp;"sg" for <b>ServiceGroup</b>s.<br>
+                                                "Member" : the id of the member you want to change.<br>
+                                                "Operation" : the type of operation you want to perform.<br>
                                                 &emsp;"add" to add the member.<br>
                                                 &emsp;"delete" to delete the member.<br>
                                             </td>
@@ -320,79 +327,79 @@
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the FireBrigade was inserted not updated.<br>
-                                                Transmit the FireBrigade via POST in the body of the request.
+                                                Returns "true" if the <b>FireBrigade</b> was inserted or updated.<br>
+                                                Transmit the <b>FireBrigade</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadbulk</td>
                                             <td>int</td>
                                             <td>
-                                                Returns the number of upserted FireBrigades or a negative error code<br>
-                                                Transmit the FireBrigades as array via POST in the body of the request.
+                                                Returns the number of upserted <b>FireBrigade</b>s or a negative error code<br>
+                                                Transmit the <b>FireBrigade</b>s as array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../delete/{id}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the FireBrigade was deleted.<br>
-                                                Id : the id of the FireBrigade you want to delete.
+                                                Returns true if the <b>FireBrigade</b> was deleted.<br>
+                                                Id : the id of the <b>FireBrigade</b> you want to delete.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../checkid/{id}</td>
                                             <td>int</td>
                                             <td>
-                                                Checks if an id is already used by another FireBrigade.<br>
+                                                Checks if an id is already used by another <b>FireBrigade</b>.<br>
                                                 If not the sent id is returned else a new unused id is returned.<br>
                                                 Id : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../all</td>
-                                            <td>FireBrigade[]</td>
+                                            <td><b>FireBrigade</b>[]</td>
                                             <td>
-                                                Returns an array of all FireBrigades.
+                                                Returns an array of all <b>FireBrigade</b>s.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../getcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Returns all FireAlarmSystems as a CSV file.
+                                                Returns all <b>FireAlarmSystem</b>s as a CSV file.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Upsert FireBrigades from a CSV file.<br>
+                                                Upsert <b>FireBrigade</b>s from a CSV file.<br>
                                                 Transmit the CSV file as byte array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{id}</td>
-                                            <td>FireBrigade[]</td>
+                                            <td><b>FireBrigade</b>[]</td>
                                             <td>
-                                                Returns the FireBrigade with a matching id.<br>
-                                                Id : the id of the FireBrigade.
+                                                Returns the <b>FireBrigade</b> with a matching id.<br>
+                                                Id : the id of the <b>FireBrigade</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../users/{id}</td>
-                                            <td>User[]</td>
+                                            <td>&emsp;../<b>User</b>s/{id}</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns all Users that are associated with this FireBrigade.<br>
-                                                Id : the id of the FireBrigade.
+                                                Returns all <b>User</b>s that are associated with this <b>FireBrigade</b>.<br>
+                                                Id : the id of the <b>FireBrigade</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../fas/{id}</td>
-                                            <td>FireAlarmSystem[]</td>
+                                            <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
-                                                Returns all FireAlarmSystems that are associated with this FireBrigade.<br>
-                                                Id : the id of the FireBrigade.
+                                                Returns all <b>FireAlarmSystem</b>s that are associated with this <b>FireBrigade</b>.<br>
+                                                Id : the id of the <b>FireBrigade</b>.
                                             </td>
                                         </tr>
                                     </tbody>
@@ -417,79 +424,79 @@
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the ServiceGroup was inserted not updated.<br>
-                                                Transmit the ServiceGroup via POST in the body of the request.
+                                                Returns true if the <b>ServiceGroup</b> was inserted or updated.<br>
+                                                Transmit the <b>ServiceGroup</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadbulk</td>
                                             <td>int</td>
                                             <td>
-                                                Returns the number of upserted ServiceGroups or a negative error code<br>
-                                                Transmit the ServiceGroups as array via POST in the body of the request.
+                                                Returns the number of upserted <b>ServiceGroup</b>s or a negative error code<br>
+                                                Transmit the <b>ServiceGroup</b>s as array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../delete/{id}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the ServiceGroup was deleted.<br>
-                                                Id : the id of the ServiceGroup you want to delete.
+                                                Returns true if the <b>ServiceGroup</b> was deleted.<br>
+                                                Id : the id of the <b>ServiceGroup</b> you want to delete.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../checkid/{id}</td>
                                             <td>int</td>
                                             <td>
-                                                Checks if an id is already used by another ServiceGroup.<br>
+                                                Checks if an id is already used by another <b>ServiceGroup</b>.<br>
                                                 If not the sent id is returned else a new unused id is returned.<br>
                                                 Id : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../all</td>
-                                            <td>ServiceGroup[]</td>
+                                            <td><b>ServiceGroup</b>[]</td>
                                             <td>
-                                                Returns an array of all ServiceGroups.
+                                                Returns an array of all <b>ServiceGroup</b>s.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../getcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Returns all ServiceGroups as a CSV file.
+                                                Returns all <b>ServiceGroup</b>s as a CSV file.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Upsert ServiceGroups from a CSV file.<br>
+                                                Upsert <b>ServiceGroup</b>s from a CSV file.<br>
                                                 Transmit the CSV file as byte array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{id}</td>
-                                            <td>ServiceGroup[]</td>
+                                            <td><b>ServiceGroup</b>[]</td>
                                             <td>
-                                                Returns the ServiceGroup with a matching id.<br>
-                                                Id : the id of the ServiceGroup.
+                                                Returns the <b>ServiceGroup</b> with a matching id.<br>
+                                                Id : the id of the <b>ServiceGroup</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../users/{id}</td>
-                                            <td>User[]</td>
+                                            <td>&emsp;../<b>User</b>s/{id}</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns all Users that are associated with this ServiceGroup.<br>
-                                                Id : the id of the ServiceGroup.
+                                                Returns all <b>User</b>s that are associated with this <b>ServiceGroup</b>.<br>
+                                                Id : the id of the <b>ServiceGroup</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../fas/{id}</td>
-                                            <td>FireAlarmSystem[]</td>
+                                            <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
-                                                Returns all FireAlarmSystems that are associated with this ServiceGroup.<br>
-                                                Id : the id of the ServiceGroup.
+                                                Returns all <b>FireAlarmSystem</b>s that are associated with this <b>ServiceGroup</b>.<br>
+                                                Id : the id of the <b>ServiceGroup</b>.
                                             </td>
                                         </tr>
                                     </tbody>
@@ -508,44 +515,44 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td colspan="3"><b>http://ip:port/user/..</b></td>
+                                            <td colspan="3"><b>http://ip:port/<b>User</b>/..</b></td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the User was inserted not updated.<br>
-                                                Transmit the User via POST in the body of the request.
+                                                Returns true if the <b>User</b> was inserted or updated.<br>
+                                                Transmit the <b>User</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadbulk</td>
                                             <td>int</td>
                                             <td>
-                                                Returns the number of upserted Users or a negative error code<br>
-                                                Transmit the Users as array via POST in the body of the request.
+                                                Returns the number of upserted <b>User</b>s or a negative error code<br>
+                                                Transmit the <b>User</b>s as array via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../delete/{username}</td>
+                                            <td>&emsp;../delete/{<b>User</b>name}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the User was deleted.<br>
-                                                Id : the id of the User you want to delete.
+                                                Returns true if the <b>User</b> was deleted.<br>
+                                                Id : the id of the <b>User</b> you want to delete.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../all</td>
-                                            <td>User[]</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns an array of all Users.
+                                                Returns an array of all <b>User</b>s.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../uploadcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Upsert Users from a CSV file.<br>
+                                                Upsert <b>User</b>s from a CSV file.<br>
                                                 Transmit the CSV file as byte array via POST in the body of the request.
                                             </td>
                                         </tr>
@@ -553,14 +560,14 @@
                                             <td>&emsp;../getcsv</td>
                                             <td>HttpResponseMessage</td>
                                             <td>
-                                                Returns all Users as a CSV file.
+                                                Returns all <b>User</b>s as a CSV file.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../checkid/{id}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the id is not already used by another User.<br>
+                                                Returns true if the id is not already used by another <b>User</b>.<br>
                                                 Id : the id you want to check.
                                             </td>
                                         </tr>
@@ -573,7 +580,7 @@
                                                 &emsp;0 : the password does not fit the criteria.<br>
                                                 &emsp;-1 : the password is too easy.<br>
                                                 &emsp;-2 : an error occured.<br>
-                                                Transmit the User object via Post in the body of the request.
+                                                Transmit the <b>User</b> object via Post in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
@@ -581,91 +588,91 @@
                                             <td>string</td>
                                             <td>
                                                 Returns new token or null if login data was incorrect.<br> 
-                                                Transmit the UserLogin via POST in the body of the request.
+                                                Transmit the <b>User</b>Login via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../getuser</td>
-                                            <td>User</td>
+                                            <td>&emsp;../get<b>User</b></td>
+                                            <td><b>User</b></td>
                                             <td>
-                                                Returns the User if the token is valid or null if it is invalid.
+                                                Returns the <b>User</b> if the token is valid or null if it is invalid.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../usertype</td>
-                                            <td>User[]</td>
+                                            <td>&emsp;../<b>User</b>type</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns all Users with a UserType that matches with one of the UserTypes.<br>
-                                                Transmit the array of UserTypes via POST in the body of the request.
+                                                Returns all <b>User</b>s with a <b>User</b>Type that matches with one of the <b>User</b>Types.<br>
+                                                Transmit the array of <b>User</b>Types via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../id/{username}</td>
-                                            <td>User[]</td>
+                                            <td>&emsp;../id/{<b>User</b>name}</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns a distinct User.<br>
-                                                Id : the id of the user.
+                                                Returns a distinct <b>User</b>.<br>
+                                                Id : the id of the <b>User</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../active</td>
-                                            <td>User[]</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns an array of all Users with a valid token.
+                                                Returns an array of all <b>User</b>s with a valid token.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../inactive</td>
-                                            <td>User[]</td>
+                                            <td><b>User</b>[]</td>
                                             <td>
-                                                Returns an array of all Users with an invalid token.
+                                                Returns an array of all <b>User</b>s with an invalid token.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../authobjects/{username}/{type}</td>
+                                            <td>&emsp;../authobjects/{<b>User</b>name}/{type}</td>
                                             <td>object[]</td>
                                             <td>
-                                                Returns an array of objects that are associated with this User.<br>
-                                                Username : the username of the User.<br>
+                                                Returns an array of objects that are associated with this <b>User</b>.<br>
+                                                <b>User</b>name : the <b>User</b>name of the <b>User</b>.<br>
                                                 Type : the type of authorized object you want.<br>
-                                                &emsp;"groups" returns the FireBrigades, ServiceGroups or FireAlarmSystems that are associated with this User.<br>
-                                                &emsp;"fas" returns all FireAlarmSystems that are associated with this User.
+                                                &emsp;"groups" returns the <b>FireBrigade</b>s, <b>ServiceGroup</b>s or <b>FireAlarmSystem</b>s that are associated with this <b>User</b>.<br>
+                                                &emsp;"fas" returns all <b>FireAlarmSystem</b>s that are associated with this <b>User</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../changeauthobject/{username}/{authobj}/{operation}</td>
+                                            <td>&emsp;../changeauthobject/{<b>User</b>name}/{authobj}/{operation}</td>
                                             <td>Int32</td>
                                             <td>
-                                                Adds or removes an authorized object of a User.<br>
+                                                Adds or removes an authorized object of a <b>User</b>.<br>
                                                 Returns an error code.<br>
                                                 &emsp;1 : the operation was successful.<br>
-                                                &emsp;0 : the User is not logged in.<br>
-                                                &emsp;-1 : the User is not an admin.<br>
-                                                &emsp;-2 : the User can not have authorized objects.<br>
+                                                &emsp;0 : the <b>User</b> is not logged in.<br>
+                                                &emsp;-1 : the <b>User</b> is not an admin.<br>
+                                                &emsp;-2 : the <b>User</b> can not have authorized objects.<br>
                                                 &emsp;-3 : one of the parameters was null.<br>
                                                 &emsp;-4 : the operation does not exist.<br>
                                                 &emsp;-5 : an error occured.<br>
-                                                Username : the username of the User.<br>
+                                                <b>User</b>name : the <b>User</b>name of the <b>User</b>.<br>
                                                 Authobj : the id of the authorized object.<br>
                                                 Operation : the type of operation you want to perform.<br>
-                                                &emsp;"add" adds the id to the authorized objects of the User.<br>
-                                                &emsp;"delete" deletes the id from the authorized objects of the User.
+                                                &emsp;"add" adds the id to the authorized objects of the <b>User</b>.<br>
+                                                &emsp;"delete" deletes the id from the authorized objects of the <b>User</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../resetpassword/{username}</td>
+                                            <td>&emsp;../resetpassword/{<b>User</b>name}</td>
                                             <td>bool</td>
                                             <td>
-                                                Generates a new password for the User with a matching username and sends the new login credentials via to the User's email account.<br>
+                                                Generates a new password for the <b>User</b> with a matching <b>User</b>name and sends the new login credentials via to the <b>User</b>'s email account.<br>
                                                 Returns true if the password was reset.<br>
-                                                Username: the username of the User you want to reset the password of.
+                                                <b>User</b>name: the <b>User</b>name of the <b>User</b> you want to reset the password of.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../changepassword</td>
                                             <td>bool</td>
                                             <td>
-                                                Changes the password of the logged in User to the password that was transmitted.<br>
+                                                Changes the password of the logged in <b>User</b> to the password that was transmitted.<br>
                                                 Returns true if the password was changed.<br>
                                                 Transmit the password via POST in the body of the request.
                                             </td>
@@ -694,7 +701,7 @@
                                             <td>
                                                 Returns an exit code as integer.<br>
                                                 &emsp;1 : email was sent.<br />
-                                                &emsp;0 : User is not logged in<br />
+                                                &emsp;0 : <b>User</b> is not logged in<br />
                                                 &emsp;-1 : an error occured<br />
                                                 Transmit the text of the email as string via POST in the body of the request.
                                             </td>
