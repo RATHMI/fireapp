@@ -68,11 +68,11 @@ namespace FireApp.Domain
         // Address of the building where the FireAlarmSystem is installed.
         public string Address { get; set; }
 
-        // List of the identifiers of the FireBrigades
+        // List of the identifiers of FireBrigades
         // that should have access to certain information.
         public HashSet<int> FireBrigades { get; set; }
 
-        // List of the identifiers of the ServiceGroups 
+        // List of the identifiers of ServiceGroups 
         // that should have access to certain information.
         public HashSet<int> ServiceGroups { get; set; }     
     }

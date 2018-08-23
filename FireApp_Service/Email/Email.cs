@@ -25,10 +25,6 @@ namespace FireApp.Service.Email
         private static string icon = emailFolder + "images\\Icon3.0.png";
         private static string helpFile = emailFolder + "helpFile.pdf";
 
-        // Only for testing.
-        static int count = 0;
-        //******************
-
         /// <summary>
         /// Sends an email from a service email account to the reciepients.
         /// </summary>

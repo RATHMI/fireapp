@@ -17,6 +17,10 @@ namespace FireApp.Service.Logging
         private static string logPath() {
             return ConfigurationManager.AppSettings["loggingPath"].ToFullPath() + DateTime.Now.ToString("yyyyMMdd") + "_log.txt";
         }
+        private static string eventLogPath()
+        {
+            return ConfigurationManager.AppSettings["loggingPath"].ToFullPath() + DateTime.Now.ToString("yyyyMMdd") + "_Eventlog.txt";
+        }
 
         /// <summary>
         /// Writes a log message to the logPath.
@@ -27,6 +31,16 @@ namespace FireApp.Service.Logging
         {
             try
             {
+                string path;
+                if(changedObject.GetType() == typeof(FireApp.Domain.FireEvent))
+                {
+                    path = logPath();
+                }
+                else
+                {
+                    path = eventLogPath();
+                }
+
                 if (!File.Exists(logPath()))
                 {
                     File.Create(logPath());
@@ -56,5 +70,6 @@ namespace FireApp.Service.Logging
                 Console.WriteLine("Problem with logger\n" + ex.Message);
             }
         }       
+                
     }
 }

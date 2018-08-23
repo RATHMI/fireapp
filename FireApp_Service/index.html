@@ -49,7 +49,7 @@
                             All request and responses are sent via the HTTP protocol and all objects are transmitted in the Json format.<br>
                             The standard method for all requests is GET if not described else.<br><br>
 
-                            You can find a description of all domain objects and DTOs here: <a href="http://www.example.com">object description</a><br><br>
+                            You can find a description of all domain objects and DTOs here: <a href="DomainObjects.pdf">object description</a><br><br>
 
                             {parameter} : this text should be replaced by the client using the API.<br>
                             <b>Type</b> : this is a data type defined in the domain of the API.<br>
@@ -62,9 +62,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable no-footer" id="fas">
                                     <thead>
-                                    <th>URL</th>
-                                    <th>RETURN VALUE</th>
-                                    <th>DESCRIPTION</th>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>RETURN VALUE</th>
+                                            <th>DESCRIPTION</th>
+                                        </tr>                         
                                     </thead>
                                     <!-- Content goes here -->
                                     <tbody>
@@ -84,8 +86,8 @@
                                             <td>bool</td>
                                             <td>
                                                 Returns "true" if the ID is not already used by another <b>FireEvent</b>.<br>
-                                                "SourceId" : the sourceId of the <b>FireEvent</b>.<br>
-                                                "EventId" : the eventId of the <b>FireEvent</b>.
+                                                "SourceId", Int32 : the sourceId of the <b>FireEvent</b>.<br>
+                                                "EventId", Int32 : the eventId of the <b>FireEvent</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -134,7 +136,7 @@
                                             <td><b>FireEvent</b>[]</td>
                                             <td>
                                                 Returns an array of all <b>FireEvent</b>s from a distinct <b>FireAlarmSystem</b>.<br>
-                                                "SourceId" : the id of the <b>FireAlarmSystem</b>.
+                                                "SourceId", Int32 : the id of the <b>FireAlarmSystem</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -142,8 +144,8 @@
                                             <td><b>FireEvent</b>[]</td>
                                             <td>
                                                 Returns a distinct <b>FireEvent</b>.<br>
-                                                "SourceId" : the sourceId of the <b>FireEvent</b>.<br>
-                                                "EventId" : the eventId of the <b>FireEvent</b>.
+                                                "SourceId", Int32 : the sourceId of the <b>FireEvent</b>.<br>
+                                                "EventId", Int32 : the eventId of the <b>FireEvent</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -151,8 +153,8 @@
                                             <td><b>FireEvent</b>[]</td>
                                             <td>
                                                 Returns an array of all <b>FireEvent</b>s of a distinct target.<br>
-                                                "SourceId" : the sourceId of the <b>FireEvent</b>s.<br>
-                                                "TargetId" : the targetId of the <b>FireEvent</b>s.
+                                                "SourceId", Int32 : the sourceId of the <b>FireEvent</b>s.<br>
+                                                "TargetId", String : the targetId of the <b>FireEvent</b>s.
                                             </td>
                                         </tr>                                             
                                         <tr>
@@ -161,8 +163,8 @@
                                             <td>
                                                 Returns an array with the number of <b>FireEvent</b>s that occured in the given. Each column represents one month.<br>
                                                 Only counts <b>FireEvent</b>s of the given "EventType".<br>
-                                                "EventType" : the "EventType" of the <b>FireEvent</b>s you want to count.<br>
-                                                "Year" : the year in which the <b>FireEvent</b>s occured.       
+                                                "EventType", Enum : the "EventType" of the <b>FireEvent</b>s you want to count.<br>
+                                                "Year", Int32 : the year in which the <b>FireEvent</b>s occured.       
                                             </td>
                                         </tr>
                                         <tr>
@@ -183,10 +185,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable no-footer" id="fas">
                                     <thead>
-                                    <th>URL</th>
-                                    <th>RETURN VALUE</th>
-                                    <th>DESCRIPTION</th>
-                                    </thead>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>RETURN VALUE</th>
+                                            <th>DESCRIPTION</th>
+                                        </tr> 
                                     <tbody>
                                         <tr>
                                             <td colspan="3"><b>http://ip:port/fas/..</b></td>
@@ -213,7 +216,7 @@
                                             <td>
                                                 Checks if an id is already used by another <b>FireAlarmSystem</b>.<br>
                                                 If not, the sent id is returned, else a new unused id is returned.<br>
-                                                "Id" : the id you want to check.
+                                                "Id", Int32 : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
@@ -242,34 +245,35 @@
                                             <td>HttpResponseMessage</td>
                                             <td>
                                                 Upsert <b>FireAlarmSystem</b>s from a CSV file.<br>
-                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                                Convert the CSV file into a byte array that you write into a String seperated by single whitespaces and send it via POST in the body of the request.<br>
+                                                e.g. "105 100 59 110 97 109 101 13 10 50 59 70 70 32 ..."
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../unregistered</td>
                                             <td>int[]</td>
                                             <td>
-                                                Returns the sourceIds of the <b>FireEvent</b>s where there is no <b>FireAlarmSystem</b> with an id matching the sourceId.
+                                                Returns the "sourceId"s of the <b>FireEvent</b>s where there is no <b>FireAlarmSystem</b> with an "id" matching the "sourceId" of the <b>FireEvent</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{id}</td>
                                             <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
-                                                Returns the <b>FireAlarmSystem</b> with a matching id.<br>
-                                                "Id" : the id of the <b>FireAlarmSystem</b>.
+                                                Returns the <b>FireAlarmSystem</b> with a matching "id".<br>
+                                                "Id", Int32 : the "id" of the <b>FireAlarmSystem</b>.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../members/{id}/{type}</td>
                                             <td>object[]</td>
                                             <td>
-                                                Returns an array of the <b>FireBrigade</b>s and or <b>ServiceGroup</b>s of a <b>FireAlarmSystem</b>.<br>
-                                                "Id" : the id of the <b>FireAlarmSystem</b>.<br>
-                                                "Type" : the type of object you want. <br>
+                                                Returns an array of <b>Usergroup</b>s of the given type of a <b>FireAlarmSystem</b>.<br>
+                                                "Id", Int32 : the "id" of the <b>FireAlarmSystem</b>.<br>
+                                                "Type", String : the type of object you want. <br>
                                                 &emsp;"fb" for <b>FireBrigade</b>s.<br>
                                                 &emsp;"sg" for <b>ServiceGroup</b>s.<br>
-                                                &emsp;everything else returns both.<br>
+                                                &emsp;everything else returns all <b>Usergroups</b>.<br>
                                             </td>
                                         </tr>
                                         <tr>
@@ -277,11 +281,11 @@
                                             <td><b>User</b>[]</td>
                                             <td>
                                                 Returns an array of <b>User</b>s of the given type from a <b>FireAlarmSystem</b>.<br>
-                                                "Id" : the id of the <b>FireAlarmSystem</b>.<br>
-                                                "Type" : the type of <b>User</b> you want.<br>
-                                                &emsp;"fb" for <b>User</b>s from <b>FireBrigade</b>s.<br>
-                                                &emsp;"sg" for <b>User</b>s from <b>ServiceGroup</b>s.<br>
-                                                &emsp;"fas" for <b>User</b>s from the <b>FireAlarmSystem</b> itself.<br>
+                                                "Id", Int32 : the "id" of the <b>FireAlarmSystem</b>.<br>
+                                                "Type", String : the type of <b>User</b>s you want.<br>
+                                                &emsp;"fb" for <b>User</b>s with the "userType" <b>FireFighter</b>s.<br>
+                                                &emsp;"sg" for <b>User</b>s  with the "userType" <b>Servicemember</b>s.<br>
+                                                &emsp;"fas" for <b>User</b>s with the "userType" <b>FireSafetyEngineer</b>s.<br>
                                                 &emsp;everything else returns all types of <b>User</b>s.<br>
                                             </td>
                                         </tr>
@@ -295,12 +299,12 @@
                                                 &emsp;"-1" : the <b>User</b> is not an admin.<br>
                                                 &emsp;"-2" : a parameter was null or invalid.<br>
                                                 &emsp;"-3" : an error occured.<br>
-                                                "Fas" : the id of the <b>FireAlarmSystem</b>.<br>
-                                                "Type" : the type of member you want to change.<br>
+                                                "Fas", Int32 : the "id" of the <b>FireAlarmSystem</b>.<br>
+                                                "Type", String : the type of member you want to change.<br>
                                                 &emsp;"fb" for <b>FireBrigade</b>s.<br>
                                                 &emsp;"sg" for <b>ServiceGroup</b>s.<br>
-                                                "Member" : the id of the member you want to change.<br>
-                                                "Operation" : the type of operation you want to perform.<br>
+                                                "Member", Int32 : the "id" of the member you want to change.<br>
+                                                "Operation", String : the type of operation you want to perform.<br>
                                                 &emsp;"add" to add the member.<br>
                                                 &emsp;"delete" to delete the member.<br>
                                             </td>
@@ -315,9 +319,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable no-footer" id="fas">
                                     <thead>
-                                    <th>URL</th>
-                                    <th>RETURN VALUE</th>
-                                    <th>DESCRIPTION</th>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>RETURN VALUE</th>
+                                            <th>DESCRIPTION</th>
+                                        </tr> 
                                     </thead>
                                     <tbody>
                                         <tr>
@@ -343,8 +349,8 @@
                                             <td>&emsp;../delete/{id}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the <b>FireBrigade</b> was deleted.<br>
-                                                Id : the id of the <b>FireBrigade</b> you want to delete.
+                                                Returns "true" if the <b>FireBrigade</b> was deleted.<br>
+                                                "Id", Int32 : the "id" of the <b>FireBrigade</b> you want to delete.
                                             </td>
                                         </tr>
                                         <tr>
@@ -353,7 +359,7 @@
                                             <td>
                                                 Checks if an id is already used by another <b>FireBrigade</b>.<br>
                                                 If not the sent id is returned else a new unused id is returned.<br>
-                                                Id : the id you want to check.
+                                                "Id", Int32 : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
@@ -375,23 +381,24 @@
                                             <td>HttpResponseMessage</td>
                                             <td>
                                                 Upsert <b>FireBrigade</b>s from a CSV file.<br>
-                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                                Convert the CSV file into a byte array that you write into a String seperated by single whitespaces and send it via POST in the body of the request.<br>
+                                                e.g. "105 100 59 110 97 109 101 13 10 50 59 70 70 32 ..."
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{id}</td>
                                             <td><b>FireBrigade</b>[]</td>
                                             <td>
-                                                Returns the <b>FireBrigade</b> with a matching id.<br>
-                                                Id : the id of the <b>FireBrigade</b>.
+                                                Returns the <b>FireBrigade</b> with a matching "id".<br>
+                                                "Id", Int32 : the "id" of the <b>FireBrigade</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../<b>User</b>s/{id}</td>
+                                            <td>&emsp;../users/{id}</td>
                                             <td><b>User</b>[]</td>
                                             <td>
                                                 Returns all <b>User</b>s that are associated with this <b>FireBrigade</b>.<br>
-                                                Id : the id of the <b>FireBrigade</b>.
+                                                "Id", Int32 : the "id" of the <b>FireBrigade</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -399,7 +406,7 @@
                                             <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
                                                 Returns all <b>FireAlarmSystem</b>s that are associated with this <b>FireBrigade</b>.<br>
-                                                Id : the id of the <b>FireBrigade</b>.
+                                                "Id", Int32 : the "id" of the <b>FireBrigade</b>.
                                             </td>
                                         </tr>
                                     </tbody>
@@ -412,10 +419,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable no-footer" id="fas">
                                     <thead>
-                                    <th>URL</th>
-                                    <th>RETURN VALUE</th>
-                                    <th>DESCRIPTION</th>
-                                    </thead>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>RETURN VALUE</th>
+                                            <th>DESCRIPTION</th>
+                                        </tr> 
                                     <tbody>
                                         <tr>
                                             <td colspan="3"><b>http://ip:port/service/..</b></td>
@@ -424,7 +432,7 @@
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the <b>ServiceGroup</b> was inserted or updated.<br>
+                                                Returns "true" if the <b>ServiceGroup</b> was inserted or updated.<br>
                                                 Transmit the <b>ServiceGroup</b> via POST in the body of the request.
                                             </td>
                                         </tr>
@@ -440,8 +448,8 @@
                                             <td>&emsp;../delete/{id}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the <b>ServiceGroup</b> was deleted.<br>
-                                                Id : the id of the <b>ServiceGroup</b> you want to delete.
+                                                Returns "true" if the <b>ServiceGroup</b> was deleted.<br>
+                                                "Id" : the "id" of the <b>ServiceGroup</b> you want to delete.
                                             </td>
                                         </tr>
                                         <tr>
@@ -450,7 +458,7 @@
                                             <td>
                                                 Checks if an id is already used by another <b>ServiceGroup</b>.<br>
                                                 If not the sent id is returned else a new unused id is returned.<br>
-                                                Id : the id you want to check.
+                                                "Id", Int32 : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
@@ -472,15 +480,16 @@
                                             <td>HttpResponseMessage</td>
                                             <td>
                                                 Upsert <b>ServiceGroup</b>s from a CSV file.<br>
-                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                                Convert the CSV file into a byte array that you write into a String seperated by single whitespaces and send it via POST in the body of the request.<br>
+                                                e.g. "105 100 59 110 97 109 101 13 10 50 59 70 70 32 ..."
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../id/{id}</td>
                                             <td><b>ServiceGroup</b>[]</td>
                                             <td>
-                                                Returns the <b>ServiceGroup</b> with a matching id.<br>
-                                                Id : the id of the <b>ServiceGroup</b>.
+                                                Returns the <b>ServiceGroup</b> with a matching "id".<br>
+                                                "Id", Int32 : the "id" of the <b>ServiceGroup</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -488,7 +497,7 @@
                                             <td><b>User</b>[]</td>
                                             <td>
                                                 Returns all <b>User</b>s that are associated with this <b>ServiceGroup</b>.<br>
-                                                Id : the id of the <b>ServiceGroup</b>.
+                                                "Id", Int32 : the "id" of the <b>ServiceGroup</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -496,7 +505,7 @@
                                             <td><b>FireAlarmSystem</b>[]</td>
                                             <td>
                                                 Returns all <b>FireAlarmSystem</b>s that are associated with this <b>ServiceGroup</b>.<br>
-                                                Id : the id of the <b>ServiceGroup</b>.
+                                                "Id" : the "id" of the <b>ServiceGroup</b>.
                                             </td>
                                         </tr>
                                     </tbody>
@@ -509,9 +518,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable no-footer" id="fas">
                                     <thead>
-                                    <th>URL</th>
-                                    <th>RETURN VALUE</th>
-                                    <th>DESCRIPTION</th>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>RETURN VALUE</th>
+                                            <th>DESCRIPTION</th>
+                                        </tr> 
                                     </thead>
                                     <tbody>
                                         <tr>
@@ -521,7 +532,7 @@
                                             <td>&emsp;../upload</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the <b>User</b> was inserted or updated.<br>
+                                                Returns "true" if the <b>User</b> was inserted or updated.<br>
                                                 Transmit the <b>User</b> via POST in the body of the request.
                                             </td>
                                         </tr>
@@ -534,11 +545,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../delete/{<b>User</b>name}</td>
+                                            <td>&emsp;../delete/{username}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the <b>User</b> was deleted.<br>
-                                                Id : the id of the <b>User</b> you want to delete.
+                                                Returns "true" if the <b>User</b> was deleted.<br>
+                                                "username", String : the "id" of the <b>User</b> you want to delete.
                                             </td>
                                         </tr>
                                         <tr>
@@ -553,7 +564,8 @@
                                             <td>HttpResponseMessage</td>
                                             <td>
                                                 Upsert <b>User</b>s from a CSV file.<br>
-                                                Transmit the CSV file as byte array via POST in the body of the request.
+                                                Convert the CSV file into a byte array that you write into a String seperated by single whitespaces and send it via POST in the body of the request.<br>
+                                                e.g. "105 100 59 110 97 109 101 13 10 50 59 70 70 32 ..."
                                             </td>
                                         </tr>
                                         <tr>
@@ -567,8 +579,8 @@
                                             <td>&emsp;../checkid/{id}</td>
                                             <td>bool</td>
                                             <td>
-                                                Returns true if the id is not already used by another <b>User</b>.<br>
-                                                Id : the id you want to check.
+                                                Returns "true" if the id is not already used by another <b>User</b>.<br>
+                                                "Id", String : the id you want to check.
                                             </td>
                                         </tr>
                                         <tr>
@@ -576,42 +588,42 @@
                                             <td>Int32</td>
                                             <td>
                                                 Returns an error code.<br>
-                                                &emsp;1 : the password is safe.<br>
-                                                &emsp;0 : the password does not fit the criteria.<br>
-                                                &emsp;-1 : the password is too easy.<br>
-                                                &emsp;-2 : an error occured.<br>
-                                                Transmit the <b>User</b> object via Post in the body of the request.
+                                                &emsp;"1" : the password is safe.<br>
+                                                &emsp;"0" : the password does not fit the criteria.<br>
+                                                &emsp;"-1" : the password is too easy.<br>
+                                                &emsp;"-2" : an error occured.<br>
+                                                Transmit the <b>User</b> via Post in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../authenticate</td>
                                             <td>string</td>
                                             <td>
-                                                Returns new token or null if login data was incorrect.<br> 
-                                                Transmit the <b>User</b>Login via POST in the body of the request.
+                                                Returns new token or "null" if the login credentials were incorrect.<br> 
+                                                Transmit the <b>UserLogin</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../get<b>User</b></td>
                                             <td><b>User</b></td>
                                             <td>
-                                                Returns the <b>User</b> if the token is valid or null if it is invalid.
+                                                Returns the <b>User</b> that is associated with the token if the token is valid or "null" if it is invalid.
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>&emsp;../<b>User</b>type</td>
                                             <td><b>User</b>[]</td>
                                             <td>
-                                                Returns all <b>User</b>s with a <b>User</b>Type that matches with one of the <b>User</b>Types.<br>
-                                                Transmit the array of <b>User</b>Types via POST in the body of the request.
+                                                Returns all <b>User</b>s with a "userType" that matches with one of the <b>UserTypes</b>.<br>
+                                                Transmit the array of <b>UserTypes</b> via POST in the body of the request.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../id/{<b>User</b>name}</td>
+                                            <td>&emsp;../id/{username}</td>
                                             <td><b>User</b>[]</td>
                                             <td>
                                                 Returns a distinct <b>User</b>.<br>
-                                                Id : the id of the <b>User</b>.
+                                                "Username", String : the "id" of the <b>User</b>.
                                             </td>
                                         </tr>
                                         <tr>
@@ -629,43 +641,43 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../authobjects/{<b>User</b>name}/{type}</td>
+                                            <td>&emsp;../authobjects/{username}/{type}</td>
                                             <td>object[]</td>
                                             <td>
                                                 Returns an array of objects that are associated with this <b>User</b>.<br>
-                                                <b>User</b>name : the <b>User</b>name of the <b>User</b>.<br>
-                                                Type : the type of authorized object you want.<br>
+                                                "Username", String : the "id" of the <b>User</b>.<br>
+                                                "Type", String : the type of authorized object you want.<br>
                                                 &emsp;"groups" returns the <b>FireBrigade</b>s, <b>ServiceGroup</b>s or <b>FireAlarmSystem</b>s that are associated with this <b>User</b>.<br>
-                                                &emsp;"fas" returns all <b>FireAlarmSystem</b>s that are associated with this <b>User</b>.
+                                                &emsp;"fas" returns all <b>FireAlarmSystem</b>s that are directly or indirectly associated with this <b>User</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../changeauthobject/{<b>User</b>name}/{authobj}/{operation}</td>
+                                            <td>&emsp;../changeauthobject/{username}/{authobj}/{operation}</td>
                                             <td>Int32</td>
                                             <td>
                                                 Adds or removes an authorized object of a <b>User</b>.<br>
                                                 Returns an error code.<br>
-                                                &emsp;1 : the operation was successful.<br>
-                                                &emsp;0 : the <b>User</b> is not logged in.<br>
-                                                &emsp;-1 : the <b>User</b> is not an admin.<br>
-                                                &emsp;-2 : the <b>User</b> can not have authorized objects.<br>
-                                                &emsp;-3 : one of the parameters was null.<br>
-                                                &emsp;-4 : the operation does not exist.<br>
-                                                &emsp;-5 : an error occured.<br>
-                                                <b>User</b>name : the <b>User</b>name of the <b>User</b>.<br>
-                                                Authobj : the id of the authorized object.<br>
-                                                Operation : the type of operation you want to perform.<br>
+                                                &emsp;"1" : the operation was successful.<br>
+                                                &emsp;"0" : the <b>User</b> is not logged in.<br>
+                                                &emsp;"-1" : the <b>User</b> is not an admin.<br>
+                                                &emsp;"-2" : the <b>User</b> can not have authorized objects.<br>
+                                                &emsp;"-3" : one of the parameters was null.<br>
+                                                &emsp;"-4" : the operation does not exist.<br>
+                                                &emsp;"-5" : an error occured.<br>
+                                                "Username", String : the "id" of the <b>User</b>.<br>
+                                                "Authobj", Int32 : the id of the authorized object.<br>
+                                                "Operation", String : the type of operation you want to perform.<br>
                                                 &emsp;"add" adds the id to the authorized objects of the <b>User</b>.<br>
                                                 &emsp;"delete" deletes the id from the authorized objects of the <b>User</b>.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>&emsp;../resetpassword/{<b>User</b>name}</td>
+                                            <td>&emsp;../resetpassword/{username}</td>
                                             <td>bool</td>
                                             <td>
-                                                Generates a new password for the <b>User</b> with a matching <b>User</b>name and sends the new login credentials via to the <b>User</b>'s email account.<br>
-                                                Returns true if the password was reset.<br>
-                                                <b>User</b>name: the <b>User</b>name of the <b>User</b> you want to reset the password of.
+                                                Generates a new password for the <b>User</b> with an "id" matching "username" and sends the new login credentials to the <b>User</b>'s email account.<br>
+                                                Returns "true" if the password was reset.<br>
+                                                "username", String : the "id" of the <b>User</b> you want to reset the password of.
                                             </td>
                                         </tr>
                                         <tr>
@@ -673,7 +685,7 @@
                                             <td>bool</td>
                                             <td>
                                                 Changes the password of the logged in <b>User</b> to the password that was transmitted.<br>
-                                                Returns true if the password was changed.<br>
+                                                Returns "true" if the password was changed.<br>
                                                 Transmit the password via POST in the body of the request.
                                             </td>
                                         </tr>
@@ -687,9 +699,11 @@
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable no-footer" id="fas">
                                     <thead>
-                                    <th>URL</th>
-                                    <th>RETURN VALUE</th>
-                                    <th>DESCRIPTION</th>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>RETURN VALUE</th>
+                                            <th>DESCRIPTION</th>
+                                        </tr> 
                                     </thead>
                                     <tbody>
                                         <tr>
@@ -700,9 +714,9 @@
                                             <td>Int32</td>
                                             <td>
                                                 Returns an exit code as integer.<br>
-                                                &emsp;1 : email was sent.<br />
-                                                &emsp;0 : <b>User</b> is not logged in<br />
-                                                &emsp;-1 : an error occured<br />
+                                                &emsp;"1" : email was sent.<br />
+                                                &emsp;"0" : the token is invalid.<br />
+                                                &emsp;"-1" : an error occured<br />
                                                 Transmit the text of the email as string via POST in the body of the request.
                                             </td>
                                         </tr>                                       
@@ -711,11 +725,11 @@
                                 </table>
                             </div>
                         </div>
-                        <row class="pull-left" class="col-sg-6">
+                        <row class="pull-left">
                             <!--<p><span id="cnt_rows">0</span> Lines</p>-->
-                            <p>Last Update: 14 August 2018</p>
+                            <p>Last Update: 23 August 2018</p>
                         </row>
-                        <row class="pull-right" class="col-sg-6">
+                        <row class="pull-right">
                             <p>2018 &copy; Siemens Austria</p>
                         </row>
                     </div>
