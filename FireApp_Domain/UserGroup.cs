@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FireApp.Domain
 {
+    /// <summary>
+    /// This class is used as a link between Users and FireAlarmSystems.
+    /// </summary>
     public class UserGroup
     {
         protected UserGroup() { }
