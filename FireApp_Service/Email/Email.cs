@@ -15,14 +15,14 @@ namespace FireApp.Service.Email
         private static string serviceEmail = ConfigurationManager.AppSettings["serviceEmail"];
         private static string serviceEmailPassword = ConfigurationManager.AppSettings["serviceEmailPassword"];
 
-        private static string emailFolder = ConfigurationManager.AppSettings["emailFolder"].ToFullPath();
+        private static string emailFolder = ConfigurationManager.AppSettings["serviceBaseAddress"] + "Email/";
         private static string welcomeEmailTemplatePath = emailFolder + "EmailTemplate.html";
         private static string resetEmailTemplatePath = emailFolder + "EmailTemplate.html";
         private static string helpEmailTemplatePath = emailFolder + "EmailTemplate.html";
 
         private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
-        private static string logo = emailFolder + "images\\logo_siemens.png";
-        private static string icon = emailFolder + "images\\Icon3.0.png";
+        private static string logo = emailFolder + "images/logo_siemens.png";
+        private static string icon = emailFolder + "images/Icon3.0.png";
         private static string helpFile = emailFolder + "helpFile.pdf";
 
         /// <summary>

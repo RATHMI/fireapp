@@ -1,0 +1,1 @@
+2018.08.27 13:36:26;admin(Max, Mustermann);upsert;FireApp.Domain.User;{"Id":"admin","Password":"B8qzgaalD7O4FQdj9nTKhw==","UserType":0,"AuthorizedObjectIds":[],"FirstName":"Max","LastName":"Mustermann","Email":"fro.diplomarbeit@gmail.com","Token":"xqd6fEILjtD3IeY6UzNqV7bISiRFpGPh33K3V0Y3JzfbJWkP01","TokenCreationDate":"2018-08-27T13:36:26.5886008+02:00"}
