@@ -3,73 +3,71 @@
   <Class Name="FireApp.Domain.FireAlarmSystem" BaseTypeListCollapsed="true">
     <Position X="5.5" Y="0.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AIACAgAAAAAgUAAIoAAAAAAAAAIBAJACEAAABAAAABA=</HashCode>
+      <HashCode>AAACAgAAAAAgAAAIIAAAAAAAAAIBAAACAAAABAAAAAA=</HashCode>
       <FileName>FireAlarmSystem.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FireApp.Domain.FireBrigade">
-    <Position X="1.75" Y="4.25" Width="1.5" />
+    <Position X="1.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>FireBrigade.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FireApp.Domain.FireEvent" BaseTypeListCollapsed="true">
-    <Position X="11.75" Y="0.75" Width="2" />
+    <Position X="5.75" Y="4.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="FireApp.Domain.FireEvent.FireEventId">
+        <TypeIdentifier>
+          <NewMemberFileName>FireEvent.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAACAACAAAAAQAAEgAAAAAAEAAAAAJAAAAQIAAABAAA=</HashCode>
+      <HashCode>AAACAACAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAABAAA=</HashCode>
       <FileName>FireEvent.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="FireApp.Domain.FireEventId" BaseTypeListCollapsed="true">
-    <Position X="14" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAAAAAAgAAAAABAAAAAAIAAAAAAAAAAAAA=</HashCode>
-      <FileName>FireEvent.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FireApp.Domain.ServiceGroup">
-    <Position X="3.5" Y="4.25" Width="1.5" />
+    <Position X="3.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ServiceGroup.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FireApp.Domain.User" BaseTypeListCollapsed="true">
-    <Position X="7.75" Y="0.75" Width="2" />
+    <Position X="1.75" Y="4.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAECAEAAACAAUCAAgAAAAAAAgAAACNACAAgIAAgBABg=</HashCode>
+      <HashCode>AAECAEAAACAAACAAAAAAAAAAAAAACEACAAAAAAABAAg=</HashCode>
       <FileName>User.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FireApp.Domain.UserGroup">
     <Position X="2.5" Y="0.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAUAAAgAAAAAQAAAAAAJAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>UserGroup.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FireApp.Domain.UserLogin">
-    <Position X="10" Y="0.75" Width="1.5" />
+    <Position X="4" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>UserLogin.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="FireApp.Domain.EventTypes">
-    <Position X="11.75" Y="4.5" Width="1.5" />
+    <Position X="5.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAUAAQAAAAAAAAABAAAAAAAAEAIQAAAAAAAAAA=</HashCode>
       <FileName>FireEvent.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="FireApp.Domain.UserTypes">
-    <Position X="7.75" Y="6.5" Width="1.5" />
+    <Position X="1.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAABAAAAAQAAAAAAAAAAAAEAAAAAABAAAAAAAAA=</HashCode>
       <FileName>User.cs</FileName>
