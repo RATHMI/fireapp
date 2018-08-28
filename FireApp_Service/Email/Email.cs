@@ -74,28 +74,35 @@ namespace FireApp.Service.Email
             string helpUrl2 = helpFile;
 
             string body = string.Empty;
-            using (StreamReader reader = new StreamReader(welcomeEmailTemplatePath))
+            try
             {
-                body = reader.ReadToEnd();
+                using (StreamReader reader = new StreamReader(welcomeEmailTemplatePath))
+                {
+                    body = reader.ReadToEnd();
+                }
+
+                body = body.Replace("{logo}", logo);
+                body = body.Replace("{icon}", icon);
+                body = body.Replace("{header}", header);
+                body = body.Replace("{title}", title);
+                body = body.Replace("{info}", info1);
+                body = body.Replace("{username_info}", usernameInfo);
+                body = body.Replace("{password_info}", passwordInfo);
+                body = body.Replace("{info2}", info2);
+                body = body.Replace("{button}", buttonText);
+                body = body.Replace("{url}", passwordResetPath);
+                body = body.Replace("{help_title}", helpTitle);
+                body = body.Replace("{help_button1}", helpButtonText1);
+                body = body.Replace("{help_url1}", helpUrl1);
+                body = body.Replace("{help_button2}", helpButtonText2);
+                body = body.Replace("{help_url1}", helpUrl2);
+
+                Send(u.Email, "FireApp Accout-Erstellung", body);
             }
-
-            body = body.Replace("{logo}", logo);
-            body = body.Replace("{icon}", icon);
-            body = body.Replace("{header}", header);
-            body = body.Replace("{title}", title);
-            body = body.Replace("{info}", info1);
-            body = body.Replace("{username_info}", usernameInfo);
-            body = body.Replace("{password_info}", passwordInfo);
-            body = body.Replace("{info2}", info2);
-            body = body.Replace("{button}", buttonText);
-            body = body.Replace("{url}", passwordResetPath);
-            body = body.Replace("{help_title}", helpTitle);
-            body = body.Replace("{help_button1}", helpButtonText1);
-            body = body.Replace("{help_url1}", helpUrl1);
-            body = body.Replace("{help_button2}", helpButtonText2);
-            body = body.Replace("{help_url1}", helpUrl2);
-
-            Send(u.Email, "FireApp Accout-Erstellung", body);
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         /// <summary>
@@ -112,16 +119,21 @@ namespace FireApp.Service.Email
             message += "<br />Benutzer: " + user.Id;
             message += "<br /><br />Mit besten Grüßen,\nIhr FireApp-Server";
 
-            string body = string.Empty;   
-            using (StreamReader reader = new StreamReader(helpEmailTemplatePath))
+            string body = string.Empty;
+            try
             {
-                body = reader.ReadToEnd();
+                using (StreamReader reader = new StreamReader(helpEmailTemplatePath))
+                {
+                    body = reader.ReadToEnd();
+                }
+
+                body = body.Replace("{title}", title);
+                body = body.Replace("{message}", message);
+
+                Send(adminEmail, "User question", body);
+            }catch(Exception){
+                return;
             }
-
-            body = body.Replace("{title}", title);
-            body = body.Replace("{message}", message);
-
-            Send(adminEmail, "User question", body);
         }
 
         /// <summary>
