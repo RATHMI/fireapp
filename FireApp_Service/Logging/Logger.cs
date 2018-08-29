@@ -34,18 +34,18 @@ namespace FireApp.Service.Logging
                 string path;
                 if(changedObject.GetType() == typeof(FireApp.Domain.FireEvent))
                 {
-                    path = logPath();
+                    path = eventLogPath(); 
                 }
                 else
                 {
-                    path = eventLogPath();
+                    path = logPath();
                 }
 
-                if (!File.Exists(logPath()))
+                if (!File.Exists(path))
                 {
-                    File.Create(logPath());
+                    File.Create(path);
                 }
-                using (StreamWriter w = File.AppendText(logPath()))
+                using (StreamWriter w = File.AppendText(path))
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append(DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss"));
