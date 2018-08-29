@@ -215,8 +215,6 @@ namespace FireApp.Service.DatabaseOperations
                         "qwertz",
                         "test",
                         "schatz",
-                        "arschloch",
-                        "ficken",
                         "blink182",
                         user.FirstName,
                         user.LastName,
