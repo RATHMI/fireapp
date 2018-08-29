@@ -210,7 +210,7 @@ namespace FireApp.Service.DatabaseOperations
                         "hallo",
                         "passwort",
                         "1234",
-                        "12345678",
+                        "5678",
                         "0000",
                         "qwertz",
                         "test",

@@ -95,7 +95,7 @@ namespace FireApp.Service.Email
                 body = body.Replace("{help_button1}", helpButtonText1);
                 body = body.Replace("{help_url1}", helpUrl1);
                 body = body.Replace("{help_button2}", helpButtonText2);
-                body = body.Replace("{help_url1}", helpUrl2);
+                body = body.Replace("{help_url2}", helpUrl2);
 
                 Send(u.Email, "FireApp Accout-Erstellung", body);
             }
@@ -175,7 +175,7 @@ namespace FireApp.Service.Email
             body = body.Replace("{help_button1}", helpButtonText1);
             body = body.Replace("{help_url1}", helpUrl1);
             body = body.Replace("{help_button2}", helpButtonText2);
-            body = body.Replace("{help_url1}", helpUrl2);
+            body = body.Replace("{help_url2}", helpUrl2);
 
             Send(u.Email, "FireApp Passwort-Zurücksetzung", body);
         }
