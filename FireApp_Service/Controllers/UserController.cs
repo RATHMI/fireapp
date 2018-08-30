@@ -694,7 +694,8 @@ namespace FireApp.Service.Controllers
             if(user != null)
             {
                 // Generate a new password.
-                user.Password = PasswordGenerator.Generate(10, Sets.Alphanumerics);
+                string password = PasswordGenerator.Generate(10, Sets.Alphanumerics);
+                user.Password = password;
 
                 // Upsert the User with the new password.
                 DatabaseOperations.Users.Upsert(user, user);
@@ -702,7 +703,7 @@ namespace FireApp.Service.Controllers
                 
                 // Get a clone of the User so the password is not changed when decypting it.
                 user = (User)user.Clone();
-                user.Password = Encryption.Encrypt.DecryptString(user.Password);
+                user.Password = password;
 
                 // Send the User an email with the new password.
                 Email.Email.ResetPasswordEmail(user);
