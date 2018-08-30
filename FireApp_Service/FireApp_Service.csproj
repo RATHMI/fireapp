@@ -162,6 +162,9 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="DatabaseOperations\Info.txt" />
+    <EmbeddedResource Include="Email\EmailTemplate_Help.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="website\bootstrap\dist\css\bootstrap-theme.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

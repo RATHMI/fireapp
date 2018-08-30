@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
+using FireApp.Domain.Extensionmethods;
 
 namespace FireApp.Service.Email
 {
@@ -18,12 +19,22 @@ namespace FireApp.Service.Email
         private static string emailFolder = ConfigurationManager.AppSettings["serviceBaseAddress"] + "Email/";
         private static string welcomeEmailTemplatePath = emailFolder + "EmailTemplate.html";
         private static string resetEmailTemplatePath = emailFolder + "EmailTemplate.html";
-        private static string helpEmailTemplatePath = emailFolder + "EmailTemplate.html";
+        private static string helpEmailTemplatePath = emailFolder + "EmailTemplate_Help.html";
 
         private static string passwordResetPath = ConfigurationManager.AppSettings["passwordResetPath"];
         private static string logo = emailFolder + "images/logo_siemens.png";
         private static string icon = emailFolder + "images/Icon3.0.png";
         private static string helpFile = emailFolder + "helpFile.pdf";
+
+        static Email()
+        {
+#if DEBUG
+            emailFolder = "..\\Email".ToFullPath();
+            welcomeEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+            resetEmailTemplatePath = "..\\Email\\EmailTemplate.html".ToFullPath();
+            helpEmailTemplatePath = "..\\Email\\EmailTemplate_Help.html".ToFullPath();
+#endif
+        }
 
         /// <summary>
         /// Sends an email from a service email account to the reciepients.
@@ -113,12 +124,12 @@ namespace FireApp.Service.Email
         /// <param name="text">The text the user entered.</param>
         public static void HelpEmail(User user, string adminEmail, string text)
         {
-            string title = "Hilfe!";
-            string message = "Der Benutzer: \"" + user.FirstName + " " + user.LastName + "\" hat eine Frage für Sie:<br /><br />";
-            message += text;
-            message += "<br />Benutzer: " + user.Id;
-            message += "<br /><br />Mit besten Grüßen,\nIhr FireApp-Server";
-
+            string header = "Hilfe!";
+            string title = text;
+            string info = "Gesendet von:";
+            info += "<br>Benutzername: " + user.Id;
+            info += "<br>Vorname: " + user.FirstName;
+            info += "<br>Nachname: " + user.LastName;
             string body = string.Empty;
             try
             {
@@ -127,15 +138,20 @@ namespace FireApp.Service.Email
                     body = reader.ReadToEnd();
                 }
 
+                body = body.Replace("{logo}", logo);
+                body = body.Replace("{icon}", icon);
+                body = body.Replace("{header}", header);
                 body = body.Replace("{title}", title);
-                body = body.Replace("{message}", message);
+                body = body.Replace("{info}", info);
 
                 Send(adminEmail, "User question", body);
-            }catch(Exception){
+            }
+            catch (Exception)
+            {
                 return;
             }
         }
-
+          
         /// <summary>
         /// Sends an email to the User with the User's username and new password.
         /// </summary>

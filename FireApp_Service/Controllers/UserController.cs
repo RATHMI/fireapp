@@ -734,6 +734,14 @@ namespace FireApp.Service.Controllers
                     // If the User is logged in, change the password.
                     user.Password = password;
                     DatabaseOperations.Users.Upsert(user, user);
+
+                    // Get a clone of the User so the password is not changed when decypting it.
+                    user = (User)user.Clone();
+                    user.Password = password;
+
+                    // Send the User an email with the new password.
+                    Email.Email.ResetPasswordEmail(user);
+
                     return true;
                 }
                 else

@@ -187,3 +187,4 @@ C:\proj\fireapp\FireApp_Service\bin\Email\images\logo_siemens.png
 C:\proj\fireapp\FireApp_Service\bin\Email\helpFile.pdf
 C:\proj\fireapp\FireApp_Service\bin\FireApp_Domain_Extensionmethods.dll
 C:\proj\fireapp\FireApp_Service\bin\FireApp_Domain_Extensionmethods.pdb
+C:\proj\fireapp\FireApp_Service\bin\Email\EmailTemplate_Help.html
