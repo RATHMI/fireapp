@@ -21,7 +21,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Delete active FireEvent from local database.
-                LocalDatabase.DeleteActiveFireEvent(fe);
+                //LocalDatabase.DeleteActiveFireEvent(fe);
 
                 // Delete active FireEvent from remote database.
                 return DatabaseOperations.LiteDB.LiteDbDeletes.DeleteActiveFireEvent(fe);
@@ -42,7 +42,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Delete from local database.
-                LocalDatabase.DeleteUser(userName);
+                //LocalDatabase.DeleteUser(userName);
 
                 // Delete from remote database.
                 return DatabaseOperations.LiteDB.LiteDbDeletes.DeleteUser(userName);
@@ -63,7 +63,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Delete from local database.
-                LocalDatabase.DeleteFireBrigade(id);
+                //LocalDatabase.DeleteFireBrigade(id);
 
                 // Delete from remote database.
                 return DatabaseOperations.LiteDB.LiteDbDeletes.DeleteFireBrigade(id);
@@ -84,7 +84,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Delete from local database.
-                LocalDatabase.DeleteServiceGroup(id);
+                //LocalDatabase.DeleteServiceGroup(id);
 
                 // Delete from remote database.
                 return DatabaseOperations.LiteDB.LiteDbDeletes.DeleteServiceGroup(id);

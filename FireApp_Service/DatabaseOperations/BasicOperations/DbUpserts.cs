@@ -21,7 +21,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Insert into local database.
-                LocalDatabase.UpsertActiveFireEvent(fe);
+                //LocalDatabase.UpsertActiveFireEvent(fe);
 
                 // Insert into remote database.                
                 return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertActiveFireEvent(fe);
@@ -42,7 +42,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Insert into local database.
-                LocalDatabase.UpsertFireEvent(fe);
+                //LocalDatabase.UpsertFireEvent(fe);
 
                 // Insert into remote database.                
                 return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertFireEvent(fe);
@@ -63,7 +63,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Insert into local database.
-                LocalDatabase.UpsertFireAlarmSystem(fas);
+                //LocalDatabase.UpsertFireAlarmSystem(fas);
 
                 // Insert into remote database.                
                 return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertFireAlarmSystem(fas);
@@ -84,7 +84,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Insert into local database.
-                LocalDatabase.UpsertFireBrigade(fb);
+                //LocalDatabase.UpsertFireBrigade(fb);
 
                 // Insert into remote database.                
                 return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertFireBrigade(fb);
@@ -105,7 +105,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {
                 // Insert into local database.
-                LocalDatabase.UpsertServiceGroup(sg);
+                //LocalDatabase.UpsertServiceGroup(sg);
 
                 // Insert into remote database.                
                 return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertServiceGroup(sg);
@@ -126,7 +126,7 @@ namespace FireApp.Service.DatabaseOperations
             try
             {     
                 // Insert into local database.
-                LocalDatabase.UpsertUser(user);
+                //LocalDatabase.UpsertUser(user);
 
                 // Insert into remote database.                
                 return DatabaseOperations.LiteDB.LiteDbUpserts.UpsertUser(user);

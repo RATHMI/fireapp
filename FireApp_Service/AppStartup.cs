@@ -28,13 +28,18 @@ namespace FireApp.Service {
             config.MapHttpAttributeRoutes();
 
             app.UseWebApi(config);
-            LocalDatabase.InitializeDatabase();
+            //LocalDatabase.InitializeDatabase();
 
-            // Create admin account
+            // Create admin accounts
+
+            // Caution security risk!
+            // Password should be reset when restarting the service.
             User admin = new User("admin", "Password1!", "Max", "Mustermann", "fro.diplomarbeit@gmail.com", UserTypes.admin);
             DatabaseOperations.Users.Upsert(admin, admin);
+            admin = new User("admin2", "Password1!", "Max", "Mustermann", "test@example.org", UserTypes.admin);
+            DatabaseOperations.Users.Upsert(admin, admin);
 
-            //debug: use only in debugging
+            //debug: use only when debugging
             #region debugging
 #if DEBUG
             User user = new User("admin2", "admin", "Max", "Mustermann", "admin2@siemens.at", UserTypes.admin);
@@ -104,7 +109,7 @@ namespace FireApp.Service {
             user = new User("unauthorized2", "test", "Cordula", "Grün", "test91@siemens.at", UserTypes.unauthorized);
             DatabaseOperations.Users.Upsert(user, admin);
 
-            user = new User("unauthorized3", "test", "Herbert", "Fritzl", "test92@siemens.at", UserTypes.unauthorized);
+            user = new User("unauthorized3", "test", "Herbert", "Kurz", "test92@siemens.at", UserTypes.unauthorized);
             DatabaseOperations.Users.Upsert(user, admin);
 #endif
             #endregion
